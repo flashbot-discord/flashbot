@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 const auth = require('./auth.json');
 
-const http = require('http');
+
 
 var prefix = '//';
 
@@ -38,9 +38,8 @@ client.on('message', msg => {
     }
 });
 
-// http handler
-http.createServer((req, res) => {
-    res.writeHead(200, {'Content-Type': 'text/plain'});
-    res.end('Flashbot Dashboard coming soon\n');
-}).listen(80);
-console.log('Web server running');
+// web server
+const express = require('express');
+const app = express();
+app.use(express.static('public'));
+app.listen(5000, () => console.log('Web server on port 5000'));
