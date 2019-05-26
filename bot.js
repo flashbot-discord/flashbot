@@ -37,6 +37,9 @@ client.on('message', msg => {
         case 'help':
             cmd.help(msg, new Discord.RichEmbed());
             break;
+        case 'beep':
+            cmd.beep(msg);
+            break;
     }
 });
 
