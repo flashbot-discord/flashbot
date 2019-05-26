@@ -1,40 +1,35 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const auth = require('./auth.json');
+const { prefix, token } = require('./config.json');
+const cmd = require('./commands');
+const db = require('./firebase');
 
-
-
-var prefix = '//';
-
-client.on('ready', () => {
+client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
 });
 
-client.login(auth.token);
+client.login(token);
 
 client.on('message', msg => {
+    console.log(msg);
     /*
     if (msg.content === 'ping') {
       msg.reply('pong');
     } */
-    if(msg.content.startsWith(prefix)) {
-        var m = msg.content.substring(prefix.length, msg.content.length);
-        var cmd = m.split(' ')[0];
-        switch(cmd) {
-            case 'ping':
-                msg.reply('pong');
-                break;
-            case 'eval':
-                var input = m.substring(4, m.length);
-                try {
-                    var result = eval(input);
-                    msg.reply('Input:\n```' + input + '```\nand Output:\n```' + result + '```');
-                } catch(error) {
-                    msg.reply(error.stack);
-                    console.log(error);
-                }
-                break;
-        }
+    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
+
+    const args = msg.content.slice(prefix.length).split(/ +/); //regex
+    const command = args.shift().toLowerCase();
+
+    switch (command) {
+        case 'ping':
+            cmd.ping(msg);
+            break;
+        case 'eval':
+            cmd.eval(msg, prefix.length);
+            break;
+        case 'args-info':
+            cmd.args_info(msg, command, args)
     }
 });
 
@@ -44,4 +39,4 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 app.use(express.static('public'));
-app.listen(PORT, () => console.log('Web server on port ' + PORT));
+app.listen(PORT, () => console.log(`Web server on port ${PORT}`));
