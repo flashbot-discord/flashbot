@@ -1,7 +1,7 @@
 const config = require('../config.json');
 
 // Basic help
-var help = function (msg, embed) {
+const help = function (msg, embed) {
     embed.setTitle('FlashBot Help Page')
         .setURL('http://flashbot-discord.herokuapp.com')
         .setAuthor('FlashBot')

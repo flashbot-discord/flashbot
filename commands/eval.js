@@ -3,7 +3,7 @@ const discord = require('discord.js');
 const client = new discord.Client();
 const perm = require('../permission');
 
-var _eval = function (msg, len) {
+const _eval = function (msg, len) {
     if (perm.isAdmin(msg.member)) {
         var input = msg.content.slice(len + 5); // eval command slice
         try {

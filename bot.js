@@ -1,11 +1,14 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
-const { prefix, token } = require('./config.json');
+const config = require('./config.json');
 const cmd = require('./commands');
 const db = require('./firebase');
 
+const token = process.env.token || config.token;
+
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+    client.user.setPresence({ status: 'online', game: { name: 'game' } });
 });
 
 client.login(token);
@@ -16,9 +19,9 @@ client.on('message', msg => {
     if (msg.content === 'ping') {
       msg.reply('pong');
     } */
-    if (!msg.content.startsWith(prefix) || msg.author.bot) return;
+    if (!msg.content.startsWith(config.prefix) || msg.author.bot) return;
 
-    const args = msg.content.slice(prefix.length).split(/ +/); //regex
+    const args = msg.content.slice(config.prefix.length).split(/ +/); //regex
     const command = args.shift().toLowerCase();
 
     switch (command) {
@@ -26,7 +29,7 @@ client.on('message', msg => {
             cmd.ping(msg);
             break;
         case 'eval':
-            cmd.eval(msg, prefix.length);
+            cmd.eval(msg, config.prefix.length);
             break;
         case 'args-info':
             cmd.args_info(msg, command, args);
