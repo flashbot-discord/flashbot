@@ -20,7 +20,8 @@ const help = function (msg, embed) {
         + `명령어에 대한 자세한 정보는 \`${config.prefix}명령어\`를 입력하세요.\n`
         + `(예: \`${config.prefix}help ping\`)\n\n`
         + '**기타**\n'
-        + '`ping` - pong!\n\n'
+        + '`ping` - pong!\n'
+        + '`beep` - boop\n\n'
         + '**테스트**\n'
         + '`eval` - 자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능\n'
         + '`args-info` - 명령어 인자 체크용\n\n'
