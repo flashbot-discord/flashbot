@@ -29,7 +29,11 @@ client.on('message', msg => {
             cmd.eval(msg, prefix.length);
             break;
         case 'args-info':
-            cmd.args_info(msg, command, args)
+            cmd.args_info(msg, command, args);
+            break;
+        case 'help':
+            cmd.help(msg, new Discord.RichEmbed());
+            break;
     }
 });
 
