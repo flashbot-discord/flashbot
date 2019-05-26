@@ -1,5 +1,5 @@
 const ping = function(msg) {
-    msg.channel.send('pong');
+    msg.reply('Pong!');
 };
 
 module.exports = ping;
