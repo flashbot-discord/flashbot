@@ -4,7 +4,7 @@ const config = require('./config.json');
 const cmd = require('./commands');
 const db = require('./firebase');
 
-const token = process.env.token || config.token;
+const token = process.env.token || require('./token.json').token;
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
