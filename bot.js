@@ -14,7 +14,7 @@ client.once('ready', () => {
 client.login(token);
 
 client.on('message', msg => {
-    console.log(msg);
+    console.log(msg.content);
     /*
     if (msg.content === 'ping') {
       msg.reply('pong');
