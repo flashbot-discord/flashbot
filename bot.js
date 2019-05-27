@@ -40,6 +40,12 @@ client.on('message', msg => {
         case 'beep':
             cmd.beep(msg);
             break;
+        case 'serverinfo':
+            cmd.serverinfo(msg);
+            break;
+        case 'userinfo':
+            cmd.userinfo(msg);
+            break;
     }
 });
 
