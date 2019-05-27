@@ -8,7 +8,7 @@ const token = process.env.token || require('./token.json').token;
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setPresence({ status: 'online', game: { name: 'game' } });
+    client.user.setPresence({ status: 'online', game: { name: `${config.prefix}help` } });
 });
 
 client.login(token);
@@ -39,6 +39,12 @@ client.on('message', msg => {
             break;
         case 'beep':
             cmd.beep(msg);
+            break;
+        case 'serverinfo':
+            cmd.serverinfo(msg);
+            break;
+        case 'userinfo':
+            cmd.userinfo(msg);
             break;
     }
 });
