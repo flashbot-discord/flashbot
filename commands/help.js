@@ -14,7 +14,7 @@ const help = function (msg, embed) {
             + '`userinfo` - 명령어를 입력한 이용자에 대한 정보를 보여줍니다.')
         .addField('테스트', '`eval` - 자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능\n'
             + '`args-info` - 명령어 인자 체크용')
-        .setFooter(`현재 버전: ${config.version} (2019/5/26)`);
+        .setFooter(`현재 버전: ${config.version} (${config.build_date})`);
 
     msg.channel.send(embed).catch(error => {
         msg.channel.send('```링크 첨부 권한이 없어 embed 형식의 도움말을 표시할 수 없으므로 텍스트로 대신하겠습니다.\n'
@@ -30,7 +30,7 @@ const help = function (msg, embed) {
             + '**테스트**\n'
             + '`eval` - 자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능\n'
             + '`args-info` - 명령어 인자 체크용\n\n'
-            + `현재 버전: \`${config.version}\` (2019/5/26)`);
+            + `현재 버전: \`${config.version}\` (${config.build_date})`);
     });
 }
 
