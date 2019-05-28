@@ -1,9 +1,11 @@
+const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
+
 const config = require('./config.json');
-const cmd = require('./commands');
 const db = require('./firebase');
 
+client.commands = new Discord.Collection();
 const token = process.env.token || require('./token.json').token;
 
 client.once('ready', () => {
@@ -12,6 +14,12 @@ client.once('ready', () => {
 });
 
 client.login(token);
+
+const cmdFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+for (const file of cmdFiles) {
+    const cmd = require(`./commands/${file}`);
+    client.commands.set(cmd.name, cmd);
+}
 
 client.on('message', msg => {
     console.log(msg.content);
@@ -24,28 +32,13 @@ client.on('message', msg => {
     const args = msg.content.slice(config.prefix.length).split(/ +/); //regex
     const command = args.shift().toLowerCase();
 
-    switch (command) {
-        case 'ping':
-            cmd.ping(msg);
-            break;
-        case 'eval':
-            cmd.eval(msg, config.prefix.length);
-            break;
-        case 'args-info':
-            cmd.args_info(msg, command, args);
-            break;
-        case 'help':
-            cmd.help(msg, new Discord.RichEmbed());
-            break;
-        case 'beep':
-            cmd.beep(msg);
-            break;
-        case 'serverinfo':
-            cmd.serverinfo(msg);
-            break;
-        case 'userinfo':
-            cmd.userinfo(msg);
-            break;
+    if (!client.commands.has(command)) return;
+
+    try {
+        client.commands.get(command).execute(msg, args);
+    } catch (error) {
+        console.error(error);
+        msg.reply('명령어를 실행하는 도중에 오류가 발생했습니다.');
     }
 });
 
