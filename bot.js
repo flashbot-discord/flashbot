@@ -18,7 +18,9 @@ client.login(token);
 const cmdFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of cmdFiles) {
     const cmd = require(`./commands/${file}`);
-    client.commands.set(cmd.name, cmd);
+    if(!(process.env.dev !== 'true' && cmd.dev)) {
+        client.commands.set(cmd.name, cmd);
+    }
 }
 
 client.on('message', msg => {

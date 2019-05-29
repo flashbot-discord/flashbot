@@ -5,6 +5,7 @@ const config = require('../config.json');
 module.exports = {
     name: 'help',
     desc: '',
+    dev: false,
     execute(msg, args) {
         const embed = new Discord.RichEmbed();
         embed.setTitle('FlashBot Help Page')
