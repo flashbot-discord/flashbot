@@ -5,12 +5,19 @@ const client = new Discord.Client();
 const config = require('./config.json');
 const db = require('./firebase');
 
+// devMode
+function checkDevMode() {return process.env.dev !== 'true';}
+const devMode = checkDevMode();
+console.log(`devMode = ${devMode}`);
+
 client.commands = new Discord.Collection();
 const token = process.env.token || require('./token.json').token;
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    client.user.setPresence({ status: 'online', game: { name: `${config.prefix}help` } });
+    if(devMode) {
+        client.user.setPresence({ status: 'online', game: { name: `${config.prefix}help | DEV Mode` } });
+    } else client.user.setPresence({ status: 'online', game: { name: `${config.prefix}help` } });
 });
 
 client.login(token);
@@ -18,7 +25,7 @@ client.login(token);
 const cmdFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of cmdFiles) {
     const cmd = require(`./commands/${file}`);
-    if(!(process.env.dev !== 'true' && cmd.dev)) {
+    if (devMode) {
         client.commands.set(cmd.name, cmd);
     }
 }
@@ -37,7 +44,13 @@ client.on('message', msg => {
     if (!client.commands.has(command)) return;
 
     try {
-        client.commands.get(command).execute(msg, args);
+        // 특정 데이터가 필요한 명령어는 처리 방식 분리
+        if (command === 'help') {
+            client.commands.get('help').execute(msg, args, client.commands, devMode);
+        } else {
+            // 나머지는 한 번에 처리
+            client.commands.get(command).execute(msg, args);
+        }
     } catch (error) {
         console.error(error);
         msg.reply('명령어를 실행하는 도중에 오류가 발생했습니다.');
