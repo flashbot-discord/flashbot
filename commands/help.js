@@ -46,7 +46,7 @@ module.exports = {
                 msgTemp = msgTemp + '**테스트**\n' + getHelp('eval') + getHelp('args-info') + '\n'
                 + `현재 버전: \`${config.version}\` (${config.build_date}) - 개발자 모드`;
             } else {
-                msgTemp = msgTemp + `현재 버전: \`${config.version}\` (${config.build_date}`;
+                msgTemp = msgTemp + `현재 버전: \`${config.version}\` (${config.build_date})`;
             }
             msg.channel.send(msgTemp);
         });
