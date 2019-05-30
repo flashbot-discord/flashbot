@@ -5,9 +5,13 @@ const client = new Discord.Client();
 const config = require('./config.json');
 const db = require('./firebase');
 
-// devMode
-function checkDevMode() {return process.env.dev !== 'true';}
-const devMode = checkDevMode();
+var devMode = false;
+
+// arguments
+process.argv.forEach((val, index, array) => {
+    if(index >= 2 && val === '--dev') devMode = true;
+});
+
 console.log(`devMode = ${devMode}`);
 
 client.commands = new Discord.Collection();
@@ -25,7 +29,7 @@ client.login(token);
 const cmdFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 for (const file of cmdFiles) {
     const cmd = require(`./commands/${file}`);
-    if (devMode) {
+    if (!(!devMode && cmd.dev)) {
         client.commands.set(cmd.name, cmd);
     }
 }
