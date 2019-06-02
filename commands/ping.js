@@ -1,5 +1,8 @@
-const ping = function(msg) {
-    msg.reply('Pong!');
+module.exports = {
+    name: 'ping',
+    desc: 'Pong!',
+    dev: false,
+    execute(msg, args) {
+        msg.reply('Pong!');
+    }
 };
-
-module.exports = ping;
