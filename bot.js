@@ -35,7 +35,8 @@ for (const file of cmdFiles) {
 }
 
 client.on('message', msg => {
-    console.log(msg.content);
+    if(devMode) console.log(msg);
+    else console.log(msg.content);
     /*
     if (msg.content === 'ping') {
       msg.reply('pong');
