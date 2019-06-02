@@ -27,7 +27,7 @@ module.exports = {
                 + `(예: \`${config.prefix}help ping\`)`)
             .addField('기타', getHelp('ping') + getHelp('beep') + getHelp('serverinfo') + getHelp('userinfo'));
         if (dev) {
-            embed.addField('테스트', getHelp('eval') + getHelp('args-info'));
+            embed.addField('테스트', getHelp('eval') + getHelp('args-info') + getHelp('reload'));
             embed.setFooter(`현재 버전: ${config.version} (${config.build_date}) - 개발자 모드`);
         } else {
             embed.setFooter(`현재 버전: ${config.version} (${config.build_date})`);
@@ -43,7 +43,7 @@ module.exports = {
             + `(예: \`${config.prefix}help ping\`)\n\n`
             + '**기타**\n' + getHelp('ping') + getHelp('beep') + getHelp('serverinfo') + getHelp('userinfo') + '\n';
             if(dev) {
-                msgTemp = msgTemp + '**테스트**\n' + getHelp('eval') + getHelp('args-info') + '\n'
+                msgTemp = msgTemp + '**테스트**\n' + getHelp('eval') + getHelp('args-info') + getHelp('reload') + '\n'
                 + `현재 버전: \`${config.version}\` (${config.build_date}) - 개발자 모드`;
             } else {
                 msgTemp = msgTemp + `현재 버전: \`${config.version}\` (${config.build_date})`;
