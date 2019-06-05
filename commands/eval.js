@@ -12,6 +12,8 @@ const config = require('../config.json');
 exports.name = 'eval';
 exports.desc = '자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능';
 exports.dev = true;
+exports.callSign = ['eval'];
+
 exports.execute = (msg, args) => {
     if (perm.isAdmin(msg.member)) {
         var input = msg.content.slice(config.prefix.length + 5); // eval command slice

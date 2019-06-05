@@ -6,6 +6,8 @@
 exports.name = 'args-info';
 exports.desc = '명령어 인자 체크용';
 exports.dev = true;
+exports.callSign = ['args-info'];
+
 exports.execute = (msg, args) => {
     if (!args.length) {
         return msg.reply('인수가 입력되지 않았습니다.');

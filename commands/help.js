@@ -34,6 +34,14 @@ function getHelpObj(cmd) {
 exports.name = 'help';
 exports.desc = '도움말';
 exports.dev = false;
+exports.callSign = ['help', '도움말'];
+
+/**
+ * @param {Message} msg
+ * @param {Array<string>} args
+ * @param {Map<string>} _cmdMap
+ * @param {boolean} dev 개발자 모드
+ */
 exports.execute = (msg, args, _cmdMap, dev) => {
     cmdMap = _cmdMap;
 

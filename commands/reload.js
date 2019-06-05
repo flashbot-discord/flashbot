@@ -4,9 +4,11 @@
  * @todo 현재 작동하지 않음
  */
 
-exports.name = '';
+exports.name = 'reload';
 exports.desc = '';
 exports.dev = true;
+exports.callSign = ['reload'];
+
 exports.execute = (msg, args) => {
     if(args.length < 1) {
         return msg.reply('다시 로드할 명령어를 입력해 주세요. (현재 작동되지 않음)')
