@@ -16,7 +16,7 @@ const db = require('./firebase');
 var devMode = false;
 
 // arguments
-process.argv.forEach((val, index, array) => {
+process.argv.forEach((val, index) => {
     if(index >= 2 && val === '--dev') devMode = true;
 });
 
@@ -38,17 +38,18 @@ const cmdFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'
 for (const file of cmdFiles) {
     const cmd = require(`./commands/${file}`);
     if (!(!devMode && cmd.dev)) {
-        client.commands.set(cmd.name, cmd);
+        //client.commands.set(cmd.name, cmd);
+
+        cmd.callSign.forEach(callSign => {
+            client.commands.set(callSign, cmd);
+        });
     }
 }
 
 client.on('message', msg => {
     if(devMode) console.log(msg);
     else console.log(msg.content);
-    /*
-    if (msg.content === 'ping') {
-      msg.reply('pong');
-    } */
+
     if (!msg.content.startsWith(config.prefix) || msg.author.bot) return;
 
     const args = msg.content.slice(config.prefix.length).split(/ +/); //regex
