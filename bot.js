@@ -1,3 +1,8 @@
+/**
+ * @name bot.js
+ * @description Main Bot Script
+ */
+
 const fs = require('fs');
 const Discord = require('discord.js');
 const client = new Discord.Client();
@@ -5,6 +10,9 @@ const client = new Discord.Client();
 const config = require('./config.json');
 const db = require('./firebase');
 
+/**
+ * 개발자 모드
+ */
 var devMode = false;
 
 // arguments

@@ -1,8 +1,11 @@
-module.exports = {
-    name: 'beep',
-    desc: 'boop',
-    dev: false,
-    execute(msg, args) {
-        msg.channel.send('boop');
-    }
+/**
+ * @name beep.js
+ * @description beep - boop
+ */
+
+exports.name = 'beep';
+exports.desc = 'boop';
+exports.dev = false;
+exports.execute = (msg, args) => {
+    msg.channel.send('boop');
 };
