@@ -47,7 +47,7 @@ function formatAliases(callSign) {
 
 // Basic help
 exports.name = 'help';
-exports.desc = '도움말';
+exports.desc = 'FlashBot의 도움말을 보여줍니다.';
 exports.dev = false;
 exports.callSign = ['help', '도움말'];
 
