@@ -8,6 +8,8 @@ exports.desc = 'boop';
 exports.dev = false;
 exports.callSign = ['beep'];
 
-exports.execute = (msg, args) => {
+exports.args = [];
+
+exports.execute = (msg) => {
     msg.channel.send('boop');
 };

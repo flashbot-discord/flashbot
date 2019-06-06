@@ -6,7 +6,15 @@
 exports.name = 'args-info';
 exports.desc = '명령어 인자 체크용';
 exports.dev = true;
-exports.callSign = ['args-info'];
+exports.callSign = ['args-info', 'argsinfo'];
+
+exports.args = [
+    {
+        name: "인수",
+        desc: "테스트할 인수를 입력합니다.",
+        must: true
+    }
+];
 
 exports.execute = (msg, args) => {
     if (!args.length) {
