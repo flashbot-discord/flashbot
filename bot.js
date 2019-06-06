@@ -58,12 +58,17 @@ client.on('message', msg => {
     if (!client.commands.has(command)) return;
 
     try {
+        /**
+         * 명령어 객체
+         */
+        const cmd = client.commands.get(command);
+
         // 특정 데이터가 필요한 명령어는 처리 방식 분리
-        if (command === 'help') {
-            client.commands.get('help').execute(msg, args, client.commands, devMode);
+        if (command === 'help' || command === '도움말') {
+            cmd.execute(msg, args, client.commands, devMode);
         } else {
             // 나머지는 한 번에 처리
-            client.commands.get(command).execute(msg, args);
+            cmd.get(command).execute(msg, args);
         }
     } catch (error) {
         console.error(error);
