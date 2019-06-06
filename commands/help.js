@@ -39,7 +39,9 @@ function getHelpObj(cmd) {
 function formatAliases(callSign) {
     let str = '';
     callSign.forEach((val, index) => {
-        if (index > 0) str = str + ', ';
+        if (index > 0) {
+            str = str + ', ';
+        }
         str = str + `${val}`;
     });
     return str;
@@ -51,10 +53,12 @@ function formatAliases(callSign) {
  * @returns {string} 인수 정보 변환 결과
  */
 function formatArgs(args) {
-    if (args.length < 1) return '인수가 없습니다.\n';
+    if (args.length < 1) {
+        return '인수가 없습니다.\n';
+    }
 
     let str = '';
-    args.forEach(val => {
+    args.forEach((val) => {
         str = str + `\`${val.name}\` - ${val.must ? '**필수**' : '선택'}. ${val.desc}\n`;
     });
 
@@ -101,7 +105,7 @@ exports.execute = (msg, args, _cmdMap, dev) => {
             embed.setFooter(`현재 버전: ${config.version} (${config.build_date})`);
         }
 
-        msg.channel.send({ embed }).catch(error => {
+        msg.channel.send({ embed }).catch(() => {
             let msgTemp = '```링크 첨부 권한이 없어 embed 형식의 도움말을 표시할 수 없으므로 텍스트로 대신하겠습니다.\n'
                 + '(이 알림을 끄는 기능은 현재 개발 중)```\n'
                 + '이 봇은 아무 명령어 입력도 없을 시 30분~1시간 뒤에 꺼집니다.\n'
@@ -120,18 +124,20 @@ exports.execute = (msg, args, _cmdMap, dev) => {
         });
     } else {
         const obj = getHelpObj(args[0]);
-        if (!obj) return msg.reply('해당 명령어가 존재하지 않습니다.');
+        if (!obj) {
+            return msg.reply('해당 명령어가 존재하지 않습니다.');
+        }
         const embed = new Discord.RichEmbed();
         embed.setTitle(`\`${obj.name}\`에 대한 도움말`)
             .setDescription(obj.desc)
             .addField('인수')
             .addField('별칭', formatAliases(obj.callSign));
 
-        msg.channel.send(embed).catch(error => {
+        msg.channel.send(embed).catch(() => {
             const msgTemp = '```링크 첨부 권한이 없어 embed 형식의 도움말을 표시할 수 없으므로 텍스트로 대신하겠습니다.\n'
                 + '(이 알림을 끄는 기능은 현재 개발 중)```\n'
                 + `**\`${obj.name}\`에 대한 도움말**\n\n${obj.desc}\n\n인수: \n${formatArgs(obj.args)}\n별칭: ${formatAliases(obj.callSign)}`;
             msg.channel.send(msgTemp);
         });
     }
-}
+};

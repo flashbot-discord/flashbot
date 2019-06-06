@@ -15,11 +15,11 @@ exports.args = [
         desc: "다시 로드할 명령어의 이름",
         must: true
     }
-]
+];
 
 exports.execute = (msg, args) => {
     if(args.length < 1) {
-        return msg.reply('다시 로드할 명령어를 입력해 주세요. (현재 작동되지 않음)')
+        return msg.reply('다시 로드할 명령어를 입력해 주세요. (현재 작동되지 않음)');
     }
     delete require.cache[require.resolve(`./${args[1]}`)];
     require(`./${args[1]}`);

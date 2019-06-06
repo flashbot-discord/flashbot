@@ -11,4 +11,4 @@ exports.args = [];
 
 exports.execute = (msg) => {
     msg.reply('Pong!');
-}
+};

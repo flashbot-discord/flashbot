@@ -17,7 +17,9 @@ var devMode = false;
 
 // arguments
 process.argv.forEach((val, index) => {
-    if(index >= 2 && val === '--dev') devMode = true;
+    if (index >= 2 && val === '--dev') {
+        devMode = true;
+    }
 });
 
 console.log(`devMode = ${devMode}`);
@@ -27,35 +29,44 @@ const token = process.env.token || require('./token.json').token;
 
 client.once('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
-    if(devMode) {
+    if (devMode) {
         client.user.setPresence({ status: 'online', game: { name: `${config.prefix}help | DEV Mode` } });
-    } else client.user.setPresence({ status: 'online', game: { name: `${config.prefix}help` } });
+    } else {
+        client.user.setPresence({ status: 'online', game: { name: `${config.prefix}help` } });
+    }
 });
 
 client.login(token);
 
-const cmdFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
+const cmdFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
 for (const file of cmdFiles) {
     const cmd = require(`./commands/${file}`);
     if (!(!devMode && cmd.dev)) {
         //client.commands.set(cmd.name, cmd);
 
-        cmd.callSign.forEach(callSign => {
+        cmd.callSign.forEach((callSign) => {
             client.commands.set(callSign, cmd);
         });
     }
 }
 
-client.on('message', msg => {
-    if(devMode) console.log(msg);
-    else console.log(msg.content);
+client.on('message', (msg) => {
+    if (devMode) {
+        console.log(msg);
+    } else {
+        console.log(msg.content);
+    }
 
-    if (!msg.content.startsWith(config.prefix) || msg.author.bot) return;
+    if (!msg.content.startsWith(config.prefix) || msg.author.bot) {
+        return;
+    }
 
     const args = msg.content.slice(config.prefix.length).split(/ +/); //regex
     const command = args.shift().toLowerCase();
 
-    if (!client.commands.has(command)) return;
+    if (!client.commands.has(command)) {
+        return;
+    }
 
     try {
         /**

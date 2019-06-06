@@ -20,7 +20,7 @@ exports.args = [
         desc: "실행할 JavaScript 코드",
         must: true
     }
-]
+];
 
 exports.execute = (msg) => {
     if (perm.isAdmin(msg.member)) {
