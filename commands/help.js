@@ -30,6 +30,21 @@ function getHelpObj(cmd) {
     return cmdMap.get(cmd);
 }
 
+/**
+ * 명령어의 별칭을 가져옵니다.
+ * @param {string[]} callSign 별칭 배열
+ * @returns {string} 별칭을 `,`로 나눠놓은 문장
+ * @private
+ */
+function formatAliases(callSign) {
+    let str = '';
+    callSign.forEach((val, index) => {
+        if(index > 0) str = str + ', ';
+        str = str + `${val}`;
+    });
+    return str;
+}
+
 // Basic help
 exports.name = 'help';
 exports.desc = '도움말';
@@ -85,12 +100,13 @@ exports.execute = (msg, args, _cmdMap, dev) => {
         if (!obj) return msg.reply('해당 명령어가 존재하지 않습니다.');
         const embed = new Discord.RichEmbed();
         embed.setTitle(`\`${obj.name}\`에 대한 도움말`)
-            .setDescription(obj.desc);
+            .setDescription(obj.desc)
+            .addField('별칭', formatAliases(obj.callSign));
 
         msg.channel.send(embed).catch(error => {
             const msgTemp = '```링크 첨부 권한이 없어 embed 형식의 도움말을 표시할 수 없으므로 텍스트로 대신하겠습니다.\n'
                 + '(이 알림을 끄는 기능은 현재 개발 중)```\n'
-                + `**\`${obj.name}\`에 대한 도움말**\n${obj.desc}`;
+                + `**\`${obj.name}\`에 대한 도움말**\n\n${obj.desc}\n\n별칭: ${formatAliases(obj.callSign)}`;
             msg.channel.send(msgTemp);
         });
     }
