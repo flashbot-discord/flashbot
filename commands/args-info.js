@@ -2,9 +2,10 @@
  * @name args-info.js
  * @description 입력된 인수를 체크하는 명령어입니다.
  */
+let gt;
 
 exports.name = 'args-info';
-exports.desc = '명령어 인자 체크용';
+exports.desc = /*'명령어 인자 체크용'*/gt.gettext('명령어 인자 체크용');
 exports.dev = true;
 exports.callSign = ['args-info', 'argsinfo'];
 
@@ -16,7 +17,9 @@ exports.args = [
     }
 ];
 
-exports.execute = (msg, args) => {
+exports.execute = (msg, _gt, args) => {
+    gt = _gt;
+
     if (!args.length) {
         return msg.reply('인수가 입력되지 않았습니다.');
     }

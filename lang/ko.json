@@ -1,0 +1,12 @@
+{
+    "bot.error": "명령어를 실행하는 도중에 오류가 발생했습니다.",
+    "commands.args-info.desc": "명령어 인자 체크용",
+    "commands.args-info.args": [
+        {
+            "name": "인수",
+            "desc": "테스트할 인수를 입력합니다."
+        }
+    ],
+    "commands.args-info.execute.args_length_error": "인수가 입력되지 않았습니다.",
+    "commands.args-info.execute.result": "명령어 이름: args-info\n인수: ${args}"
+}

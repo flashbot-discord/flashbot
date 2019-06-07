@@ -14,7 +14,9 @@
     "express": "^4.17.0",
     "firebase": "^6.0.4",
     "fs": "0.0.1-security",
+    "gettext-parser": "^4.0.0",
     "http": "0.0.0",
+    "node-gettext": "^2.0.0",
     "path": "^0.12.7"
   }
 }
