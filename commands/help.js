@@ -130,7 +130,7 @@ exports.execute = (msg, args, _cmdMap, dev) => {
         const embed = new Discord.RichEmbed();
         embed.setTitle(`\`${obj.name}\`에 대한 도움말`)
             .setDescription(obj.desc)
-            .addField('인수')
+            .addField('인수', formatArgs(obj.args))
             .addField('별칭', formatAliases(obj.callSign));
 
         msg.channel.send(embed).catch(() => {
