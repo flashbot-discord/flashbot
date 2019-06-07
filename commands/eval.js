@@ -22,9 +22,8 @@ exports.args = [
     }
 ];
 
-exports.execute = (msg) => {
+exports.execute = (msg, input) => {
     if (perm.isAdmin(msg.member)) {
-        var input = msg.content.slice(config.prefix.length + 5); // eval command slice
         try {
             var result = eval(input);
             msg.reply('입력:\n```' + input + '```\n그리고 출력:\n```' + util.inspect(result, false, null, false) + '```');

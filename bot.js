@@ -63,6 +63,7 @@ client.on('message', (msg) => {
 
     const args = msg.content.slice(config.prefix.length).split(/ +/); //regex
     const command = args.shift().toLowerCase();
+    const input = msg.content.slice(config.prefix.length + command.length);
 
     if (!client.commands.has(command)) {
         return;
@@ -77,6 +78,8 @@ client.on('message', (msg) => {
         // 특정 데이터가 필요한 명령어는 처리 방식 분리
         if (command === 'help' || command === '도움말') {
             cmd.execute(msg, args, client.commands, devMode);
+        } else if (command === 'eval' || command === 'say' || command === '말하기') {
+            cmd.execute(msg, input);
         } else {
             // 나머지는 한 번에 처리
             cmd.get(command).execute(msg, args);
