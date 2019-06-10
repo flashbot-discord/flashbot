@@ -2,10 +2,7 @@ const Discord = require('discord.js');
 const config = require('../config.json');
 
 const c = require('../classes');
-const obj = new c.command('help',
-    'FlashBot의 도움말을 보여줍니다.',
-    false,
-    ['help', '도움말']);
+const obj = new c.Command();
 /**
  * @name help.js
  * @description 도움말
@@ -71,8 +68,13 @@ function formatArgs(args) {
     return str;
 }
 
+obj.name = 'help';
+obj.desc = 'FlashBot의 도움말을 보여줍니다.';
+obj.dev = false;
+obj.callSign = ['help', '도움말'];
+
 obj.args = [
-    new c.args("명령어", "세부 도움말을 볼 명령어", false)
+    new c.Args("명령어", "세부 도움말을 볼 명령어", false)
 ];
 
 /**

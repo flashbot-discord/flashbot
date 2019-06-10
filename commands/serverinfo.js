@@ -4,7 +4,7 @@
  */
 
 const c = require('../classes');
-const obj = new c.command();
+const obj = new c.Command();
 
 obj.name = 'serverinfo';
 obj.desc = '서버에 대한 정보를 보여줍니다.';

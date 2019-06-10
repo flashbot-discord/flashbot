@@ -1,4 +1,4 @@
-class command {
+class Command {
     /**
      * @param {string} name
      * @param {string} desc
@@ -6,7 +6,7 @@ class command {
      * @param {string[]} callSign
      * @param {args[]} args
      */
-    constructor(name, desc, dev, callSign, args) {
+    constructor() {
         /**
          * 명령어의 원래 이름
          * @type {string}
@@ -40,7 +40,7 @@ class command {
     }
 }
 
-class args {
+class Args {
     /**
      * 
      * @param {string} name 
@@ -69,7 +69,5 @@ class args {
     }
 }
 
-module.exports = {
-    command: command,
-    args: args
-};
+exports.Command = Command;
+exports.Args = Args;

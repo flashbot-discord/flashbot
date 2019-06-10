@@ -5,18 +5,20 @@ const perm = require('../permission');
 const config = require('../config.json');
 
 const c = require('../classes');
-const obj = new c.command('eval',
-    '자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능',
-    true,
-    ['eval']);
+const obj = new c.Command();
 
 /**
  * @name eval.js
  * @description 자바스크립트 명령어를 실행합니다.
  */
 
+obj.name = 'eval';
+obj.desc = '자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능';
+obj.dev = true;
+obj.callSign = ['eval'];
+
 obj.args = [
-    new c.args("JavaScript 코드", "실행할 JavaScript 코드", true)
+    new c.Args("JavaScript 코드", "실행할 JavaScript 코드", true)
 ];
 
 obj.execute = (msg, input) => {

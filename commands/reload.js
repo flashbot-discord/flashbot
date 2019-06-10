@@ -5,7 +5,7 @@
  */
 
 const c = require('../classes');
-const obj = new c.command();
+const obj = new c.Command();
 
 obj.name = 'reload';
 obj.desc = '';
@@ -13,7 +13,7 @@ obj.dev = true;
 obj.callSign = ['reload'];
 
 obj.args = [
-    new c.args("명령어", "다시 로드할 명령어의 이름", true)
+    new c.Args("명령어", "다시 로드할 명령어의 이름", true)
 ];
 
 obj.execute = (msg, args) => {

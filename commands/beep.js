@@ -17,7 +17,7 @@ exports.execute = (msg) => {
 */
 
 const c = require('../classes');
-const obj = new c.command();
+const obj = new c.Command();
 
 obj.name = 'beep';
 obj.desc = 'boop';

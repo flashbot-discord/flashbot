@@ -4,7 +4,7 @@
  */
 
 const c = require('../classes');
-const obj = new c.command();
+const obj = new c.Command();
 
 obj.name = 'say';
 obj.desc = '사용자가 입력한 문장을 따라 말합니다.';
@@ -12,7 +12,7 @@ obj.dev = false;
 obj.callSign = ['say', '말하기'];
 
 obj.args = [
-    new c.args("말", "따라 말할 말", true)
+    new c.Args("말", "따라 말할 말", true)
 ];
 
 obj.execute = (msg, input) => {

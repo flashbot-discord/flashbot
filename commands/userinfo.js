@@ -4,7 +4,7 @@
  */
 
 const c = require('../classes');
-const obj = new c.command();
+const obj = new c.Command();
 
 obj.name = 'userinfo';
 obj.desc = '명령어를 입력한 이용자에 대한 정보를 보여줍니다.';
