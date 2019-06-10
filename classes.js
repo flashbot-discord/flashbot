@@ -11,32 +11,32 @@ class Command {
          * 명령어의 원래 이름
          * @type {string}
          */
-        this.name = name || '';
+        this.name = '';
 
         /**
          * 명령어의 설명
          * @type {string}
          */
-        this.desc = desc || '';
+        this.desc = '';
 
         /**
          * 개발자 모드 전용 명령어 여부
          * @type {boolean}
          * @default false
          */
-        this.dev = dev || false;
+        this.dev = false;
 
         /**
          * 명령어의 별칭
          * @type {string[]}
          */
-        this.callSign = callSign || [];
+        this.callSign = [];
 
         /**
          * 명령어의 인수 모음
          * @type {args[]}
          */
-        this.args = args || [];
+        this.args = [];
     }
 }
 
