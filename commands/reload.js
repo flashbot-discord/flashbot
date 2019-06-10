@@ -4,20 +4,19 @@
  * @todo 현재 작동하지 않음
  */
 
-exports.name = 'reload';
-exports.desc = '';
-exports.dev = true;
-exports.callSign = ['reload'];
+const c = require('../classes');
+const obj = new c.command();
 
-exports.args = [
-    {
-        name: "명령어",
-        desc: "다시 로드할 명령어의 이름",
-        must: true
-    }
+obj.name = 'reload';
+obj.desc = '';
+obj.dev = true;
+obj.callSign = ['reload'];
+
+obj.args = [
+    new c.args("명령어", "다시 로드할 명령어의 이름", true)
 ];
 
-exports.execute = (msg, args) => {
+obj.execute = (msg, args) => {
     if(args.length < 1) {
         return msg.reply('다시 로드할 명령어를 입력해 주세요. (현재 작동되지 않음)');
     }
@@ -25,3 +24,5 @@ exports.execute = (msg, args) => {
     require(`./${args[1]}`);
     msg.channel.send(`\`${args[1]}\`이(가) 다시 로드되었습니다! (현재 작동되지 않음)`);
 };
+
+module.exports = obj;

@@ -2,13 +2,19 @@
  * @name ping.js
  * @description Pong!
  */
-exports.name = 'ping';
-exports.desc = 'Pong!';
-exports.dev = false;
-exports.callSign = ['ping', '핑'];
 
-exports.args = [];
+const c = require('../classes');
+const obj = new c.command();
 
-exports.execute = (msg) => {
+obj.name = 'ping';
+obj.desc = 'Pong!';
+obj.dev = false;
+obj.callSign = ['ping', '핑'];
+
+obj.args = [];
+
+obj.execute = (msg) => {
     msg.reply('Pong!');
 };
+
+module.exports = obj;
