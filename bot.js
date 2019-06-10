@@ -38,12 +38,13 @@ client.once('ready', () => {
 
 client.login(token);
 
-const cmdFiles = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
-for (const file of cmdFiles) {
+const commands = fs.readdirSync('./commands').filter((file) => file.endsWith('.js'));
+for (const file of commands) {
     const cmd = require(`./commands/${file}`);
     if (!(!devMode && cmd.dev)) {
-        //client.commands.set(cmd.name, cmd);
-
+        client.commands.set(cmd.name, cmd);
+        
+        // call by ref
         cmd.callSign.forEach((callSign) => {
             client.commands.set(callSign, cmd);
         });
@@ -82,7 +83,7 @@ client.on('message', (msg) => {
             cmd.execute(msg, input);
         } else {
             // 나머지는 한 번에 처리
-            cmd.get(command).execute(msg, args);
+            cmd.execute(msg, args);
         }
     } catch (error) {
         console.error(error);

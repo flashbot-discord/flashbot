@@ -1,5 +1,8 @@
 const Discord = require('discord.js');
 const config = require('../config.json');
+
+const c = require('../classes');
+const obj = new c.Command();
 /**
  * @name help.js
  * @description 도움말
@@ -65,17 +68,13 @@ function formatArgs(args) {
     return str;
 }
 
-exports.name = 'help';
-exports.desc = 'FlashBot의 도움말을 보여줍니다.';
-exports.dev = false;
-exports.callSign = ['help', '도움말'];
+obj.name = 'help';
+obj.desc = 'FlashBot의 도움말을 보여줍니다.';
+obj.dev = false;
+obj.callSign = ['help', '도움말'];
 
-exports.args = [
-    {
-        name: "명령어",
-        desc: "세부 도움말을 볼 명령어",
-        must: false
-    }
+obj.args = [
+    new c.Args("명령어", "세부 도움말을 볼 명령어", false)
 ];
 
 /**
@@ -84,7 +83,7 @@ exports.args = [
  * @param {Map<string>} _cmdMap
  * @param {boolean} dev 개발자 모드
  */
-exports.execute = (msg, args, _cmdMap, dev) => {
+obj.execute = (msg, args, _cmdMap, dev) => {
     cmdMap = _cmdMap;
 
     if (args.length < 1) {
@@ -141,3 +140,5 @@ exports.execute = (msg, args, _cmdMap, dev) => {
         });
     }
 };
+
+module.exports = obj;
