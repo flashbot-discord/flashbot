@@ -4,25 +4,24 @@ const client = new discord.Client(); // for developing
 const perm = require('../permission');
 const config = require('../config.json');
 
+const c = require('../classes');
+const obj = new c.Command();
+
 /**
  * @name eval.js
  * @description 자바스크립트 명령어를 실행합니다.
  */
 
-exports.name = 'eval';
-exports.desc = '자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능';
-exports.dev = true;
-exports.callSign = ['eval'];
+obj.name = 'eval';
+obj.desc = '자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능';
+obj.dev = true;
+obj.callSign = ['eval'];
 
-exports.args = [
-    {
-        name: "JavaScript 코드",
-        desc: "실행할 JavaScript 코드",
-        must: true
-    }
+obj.args = [
+    new c.Args("JavaScript 코드", "실행할 JavaScript 코드", true)
 ];
 
-exports.execute = (msg, input) => {
+obj.execute = (msg, input) => {
     if (perm.isAdmin(msg.member)) {
         try {
             var result = eval(input);
@@ -36,3 +35,5 @@ exports.execute = (msg, input) => {
         msg.reply('당신은 관리자 권한을 가지고 있지 않습니다!');
     }
 };
+
+module.exports = obj;
