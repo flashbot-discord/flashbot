@@ -10,40 +10,9 @@ const client = new Discord.Client();
 const config = require('./config.json');
 const db = require('./firebase');
 
-// ----
-
-const Gettext = require('node-gettext');
-const { po } = require('gettext-parser')
-
-const translationsDir = './lang'
-const locales = ['ko'];
-const domain = 'bot';
-
-const gt = new Gettext();
-locales.forEach((locale) => {
-    const filename = `${domain}.po`
-    const translationsFilePath = translationsDir + '/' + locale + '/' + domain + '.po';
-    const translationsContent = fs.readFileSync(translationsFilePath);
-
-    const parsedTranslations = po.parse(translationsContent);
-    gt.addTranslations(locale, domain, parsedTranslations);
-});
-
-// ----
-
 /**
- * 언어 파일 저장소
- * @type {Map<string>}
+ * @todo i18n system
  */
-
-/*
-const lang = new Map();
-const langFiles = fs.readdirSync('./lang').filter((file) => file.endsWith('.json'));
-langFiles.forEach((val) => {
-    const l = require('./lang/' + val);
-    lang.set(val, l);
-});
-*/
 
 /**
  * 개발자 모드
@@ -123,7 +92,6 @@ client.on('message', (msg) => {
     } catch (error) {
         console.error(error);
         msg.reply('명령어를 실행하는 도중에 오류가 발생했습니다.');
-        msg.reply(gt.gettext('명령어를 실행하는 도중에 오류가 발생했습니다.'));
     }
 });
 

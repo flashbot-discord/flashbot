@@ -2,8 +2,6 @@
  * @name args-info.js
  * @description 입력된 인수를 체크하는 명령어입니다.
  */
-let gt;
-
 const c = require('../classes');
 const obj = new c.Command();
 
