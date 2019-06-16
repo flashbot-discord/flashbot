@@ -3,30 +3,19 @@
  * @description beep - boop
  */
 
-/*
-exports.name = 'beep';
-exports.desc = 'boop';
-exports.dev = false;
-exports.callSign = ['beep'];
-
-exports.args = [];
-
-exports.execute = (msg) => {
-   msg.channel.send('boop');
-};
-*/
+var i18n = require('i18n');
 
 const c = require('../classes');
 const obj = new c.Command();
 
 obj.name = 'beep';
-obj.desc = 'boop';
+obj.desc = 'commands.beep.desc';
 obj.dev = false;
 obj.callSign = ['beep'];
 obj.args = [];
 
 obj.execute = (msg) => {
-    msg.channel.send('boop');
+    msg.channel.send(i18n.__('commands.beep.execute'));
 };
 
 module.exports = obj;

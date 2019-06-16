@@ -6,18 +6,29 @@
 const c = require('../classes');
 const obj = new c.Command();
 
+const i18n = require('i18n');
+
 obj.name = 'say';
-obj.desc = '사용자가 입력한 문장을 따라 말합니다.';
+/**
+ * 사용자가 입력한 문장을 따라 말합니다.
+ */
+obj.desc = 'commands.say.desc';
 obj.dev = false;
 obj.callSign = ['say', '말하기'];
 
 obj.args = [
-    new c.Args("말", "따라 말할 말", true)
+    /**
+     * "말", "따라 말할 말"
+     */
+    new c.Args('commands.say.args.0.name', 'commands.say.args.0.desc', true)
 ];
 
 obj.execute = (msg, input) => {
     if (!input.length) {
-        return msg.reply('따라 말할 말을 입력해 주세요.');
+        /**
+         * 따라 말할 말을 입력해 주세요.
+         */
+        return msg.reply(i18n.__('commands.say.execute.no_args'));
     }
     msg.channel.send(input);
 };

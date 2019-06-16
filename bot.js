@@ -13,6 +13,11 @@ const db = require('./firebase');
 /**
  * @todo i18n system
  */
+const i18n = require('i18n');
+i18n.configure({
+    directory: './lang',
+    objectNotation: true
+});
 
 /**
  * 개발자 모드
@@ -55,9 +60,12 @@ for (const file of commands) {
     }
 }
 
+// var m;
+
 client.on('message', (msg) => {
     if (devMode) {
         console.log(msg);
+        // m = msg;
     } else {
         console.log(msg.content);
     }
@@ -91,7 +99,10 @@ client.on('message', (msg) => {
         }
     } catch (error) {
         console.error(error);
-        msg.reply('명령어를 실행하는 도중에 오류가 발생했습니다.');
+        /**
+         * An error occured when executing the command.
+         */
+        msg.reply(i18n.__('command_error'));
     }
 });
 

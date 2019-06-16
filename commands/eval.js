@@ -7,32 +7,44 @@ const config = require('../config.json');
 const c = require('../classes');
 const obj = new c.Command();
 
+const i18n = require('i18n');
+
 /**
  * @name eval.js
  * @description 자바스크립트 명령어를 실행합니다.
  */
 
 obj.name = 'eval';
-obj.desc = '자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능';
+/**
+ * 자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능
+ */
+obj.desc = 'commands.eval.desc';
 obj.dev = true;
 obj.callSign = ['eval'];
 
+/**
+ * "JavaScript 코드", "실행할 JavaScript 코드"
+ */
 obj.args = [
-    new c.Args("JavaScript 코드", "실행할 JavaScript 코드", true)
+    new c.Args('commands.eval.args.0.name', 'commands.eval.args.0.desc', true)
 ];
 
 obj.execute = (msg, input) => {
     if (perm.isAdmin(msg.member)) {
         try {
             var result = eval(input);
-            msg.reply('입력:\n```' + input + '```\n그리고 출력:\n```' + util.inspect(result, false, null, false) + '```');
+            //msg.reply(i18n.__('commands.eval.execute.result.input') + '\n```' + input + '```\n' + i18n.__('commands.eval.execute.result.output') + '\n```' + util.inspect(result, false, null, false) + '```');
+            msg.reply(`${i18n.__('commands.eval.execute.result.input')}\n\`\`\`${input}\`\`\`\n${i18n.__('commands.eval.execute.result.output')}\n\`\`\`${util.inspect(result, false, null, false)}\`\`\``);
             console.log(result);
         } catch (error) {
             msg.reply(error.stack);
             console.log(error);
         }
     } else {
-        msg.reply('당신은 관리자 권한을 가지고 있지 않습니다!');
+        /**
+         * 당신은 관리자 권한을 가지고 있지 않습니다!
+         */
+        msg.reply(i18n.__('commands.eval.execute.no_admin'));
     }
 };
 

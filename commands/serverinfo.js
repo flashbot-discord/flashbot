@@ -6,8 +6,13 @@
 const c = require('../classes');
 const obj = new c.Command();
 
+const i18n = require('i18n');
+
 obj.name = 'serverinfo';
-obj.desc = '서버에 대한 정보를 보여줍니다.';
+/**
+ * 서버에 대한 정보를 보여줍니다.
+ */
+obj.desc = 'commands.serverinfo.desc';
 obj.dev = false;
 obj.callSign = ['serverinfo', 'server-info', '서버정보'];
 
@@ -15,11 +20,16 @@ obj.args = [];
 
 obj.execute = (msg) => {
     if (msg.channel.type === 'dm') {
-        return msg.channel.send('이 명령어는 DM에서 사용할 수 없습니다.');
+        /**
+         * 이 명령어는 DM에서 사용할 수 없습니다.
+         */
+        return msg.channel.send(i18n.__('commands.serverinfo.execute.isDM'));
     }
 
-    msg.channel.send(`서버 이름: **${msg.guild.name}**\n`
-        + `전체 이용자 수: ${msg.guild.memberCount}`);
+    /**
+     * 서버 이름: %s\n전체 이용자 수: %s
+     */
+    msg.channel.send(i18n.__('commands.serverinfo.result', msg.guild.name, msg.guild.memberCount));
 };
 
 module.exports = obj;

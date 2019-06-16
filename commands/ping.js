@@ -6,15 +6,23 @@
 const c = require('../classes');
 const obj = new c.Command();
 
+const i18n = require('i18n');
+
 obj.name = 'ping';
-obj.desc = 'Pong!';
+/**
+ * Pong!
+ */
+obj.desc = 'commands.ping.desc';
 obj.dev = false;
 obj.callSign = ['ping', '핑'];
 
 obj.args = [];
 
 obj.execute = (msg) => {
-    msg.reply('Pong!');
+    /**
+     * Pong!
+     */
+    msg.reply(i18n.__('commands.ping.execute'));
 };
 
 module.exports = obj;
