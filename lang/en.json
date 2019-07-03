@@ -1,0 +1,62 @@
+{
+	"commands": {
+		"help": {
+			"execute": {
+				"desc": "이 봇은 아무 명령어 입력도 없을 시 30분~1시간 뒤에 꺼집니다.\n만약 봇의 접속이 끊겼을 경우, 위의 링크로 들어가면 봇이 켜집니다.\n\n아래에서 모든 명령어들을 볼 수 있습니다.\n명령어에 대한 자세한 정보는 `%s명령어`를 입력하세요.\n(예: `%shelp ping`)",
+				"desc_noEmbed": "이 봇은 아무 명령어 입력도 없을 시 30분~1시간 뒤에 꺼집니다.\n만약 봇의 접속이 끊겼을 경우, http://flashbot-discord.herokuapp.com 으로 들어가면 봇이 켜집니다.\n\n아래에서 모든 명령어들을 볼 수 있습니다.\n명령어에 대한 자세한 정보는 `%s명령어`를 입력하세요.\n(예: `%shelp ping`)",
+				"title": "FlashBot Help"
+			}
+		},
+		"ping": {
+			"desc": "Pong!",
+			"execute": "Pong!"
+		},
+		"beep": {
+			"desc": "boop",
+			"execute": "boop"
+		},
+		"serverinfo": {
+			"desc": "Shows some server informations.",
+			"result": "Server Name: **%s**\nMembers in the Server: %s",
+			"execute": {
+				"isDM": "This command cannot use in DM."
+			}
+		},
+		"userinfo": {
+			"desc": "Shows some informations of the user who execute the command.",
+			"result": "Username: %1$s\nUser ID: %2$s"
+		},
+		"eval": {
+			"desc": "Evaluates JS code. Needs Administrator permission to use this.",
+			"execute": {
+				"no_admin": "You do not have Administrator permission!",
+				"result": {
+					"input": "Input:",
+					"output": "and Output:"
+				}
+			}
+		},
+		"args-info": {
+			"desc": "for checking command arguments",
+			"execute": {
+				"no_args": "No arguments given.",
+				"result": {
+					"cmd_name": "Command name: args-info",
+					"cmd_args": "Arguments: %s"
+				}
+			}
+		},
+		"reload": {
+			"desc": "commands.reload.desc",
+			"execute": {
+				"no_args": "Enter command to reload. (currently not working)"
+			}
+		},
+		"say": {
+			"execute": {
+				"no_args": "Enter words to say."
+			}
+		}
+	},
+	"command_error": "An error occured when executing the command."
+}
