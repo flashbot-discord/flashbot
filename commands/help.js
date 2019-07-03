@@ -94,10 +94,10 @@ obj.args = [
  * @param {Map<string>} _cmdMap
  * @param {boolean} dev 개발자 모드
  */
-obj.execute = (msg, args, _cmdMap, dev) => {
+obj.execute = (msg, _args, _cmdMap, dev) => {
     cmdMap = _cmdMap;
 
-    if (args.length < 1) {
+    if (_args.length < 1) {
         const embed = new Discord.RichEmbed();
 
         /**
@@ -149,7 +149,7 @@ obj.execute = (msg, args, _cmdMap, dev) => {
             msg.channel.send(msgTemp);
         });
     } else {
-        const obj = getHelpObj(args[0]);
+        const obj = getHelpObj(_args[0]);
         if (!obj) {
             /**
              * 해당 명령어가 존재하지 않습니다.
