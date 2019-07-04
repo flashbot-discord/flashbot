@@ -54,10 +54,11 @@ function formatAliases(callSign) {
 
 /**
  * 명령어의 인수 정보를 텍스트로 변환합니다.
- * @param {Object[]} args 인수 정보 배열
+ * @param {c.Args[]} args 인수 정보 배열
+ * @param {string} cmd 실행한 명령어
  * @returns {string} 인수 정보 변환 결과
  */
-function formatArgs(args) {
+function formatArgs(args, cmd) {
     if (args.length < 1) {
         /**
          * No arguments.
@@ -66,8 +67,14 @@ function formatArgs(args) {
     }
 
     let str = '';
+    // 반복되는 부분은 미리 입력.
+    const msgTemp = 'commands.' + cmd + '.args';
+    
+    // 인수들을 하나씩 확인하면서 변환 작업 진행
     args.forEach((val) => {
-        str = str + '`' + val.name + '` - ' + val.must ? /* **필수.** */i18n.__('commands.help.func_formatArgs.must') : /* 선택. */i18n.__('commands.help.func_formatArgs.optional') + i18n.__(val.desc) + '\n'
+        str = str + '`' + i18n.__(msgTemp + '.' +  val.name + '.name') + '` - '
+        + (val.must ? /* **필수.** */i18n.__('commands.help.func_formatArgs.must') : /* 선택. */i18n.__('commands.help.func_formatArgs.optional'))
+        + i18n.__(msgTemp + '.' + val.name + '.desc') + '\n'
     });
 
     return str;
@@ -77,7 +84,7 @@ obj.name = 'help';
 /**
  * FlashBot의 도움말을 보여줍니다.
  */
-obj.desc = 'commands.help.desc';
+//obj.desc = 'commands.help.desc';
 obj.dev = false;
 obj.callSign = ['help', '도움말'];
 
@@ -85,12 +92,12 @@ obj.args = [
     /**
      * "명령어", "세부 도움말을 볼 명령어"
      */
-    new c.Args('commands.help.args.0.name', 'commands.help.args.0.desc', false)
+    new c.Args('commands', 'commands you want to see its help message', false)
 ];
 
 /**
  * @param {Message} msg
- * @param {Array<string>} args
+ * @param {Array<string>} _args
  * @param {Map<string>} _cmdMap
  * @param {boolean} dev 개발자 모드
  */
@@ -169,12 +176,15 @@ obj.execute = (msg, _args, _cmdMap, dev) => {
         const aliases = i18n.__('commands.help.execute.cmdHelp.result.aliases'); // 별칭
         const args_noEmbed = i18n.__('commands.help.execute.cmdHelp.result.args_noEmbed'); // 인수: 
         const aliases_noEmbed = i18n.__('commands.help.execute.cmdHelp.result.aliases_noEmbed'); // 별칭: 
+
+        const obj_desc = i18n.__('commands.' + obj.name + '.desc');
+
         embed.setTitle(title)
-            .setDescription(obj.desc)
+            .setDescription(obj_desc)
             /**
              * 인수
              */
-            .addField(args, formatArgs(obj.args))
+            .addField(args, formatArgs(obj.args, obj.name))
             /**
              * 별칭
              */
@@ -183,7 +193,7 @@ obj.execute = (msg, _args, _cmdMap, dev) => {
         msg.channel.send(embed).catch(() => {
             const msgTemp = '```링크 첨부 권한이 없어 embed 형식의 도움말을 표시할 수 없으므로 텍스트로 대신하겠습니다.\n'
                 + '(이 알림을 끄는 기능은 현재 개발 중)```\n'
-                + title_noEmbed + `\n\n${obj.desc}\n\n${args_noEmbed}\n${formatArgs(obj.args)}\n${aliases_noEmbed}${formatAliases(obj.callSign)}`;
+                + title_noEmbed + `\n\n${obj_desc}\n\n${args_noEmbed}\n${formatArgs(obj.args, obj.name)}\n${aliases_noEmbed}${formatAliases(obj.callSign)}`;
             msg.channel.send(msgTemp);
         });
     }
