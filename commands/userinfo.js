@@ -12,7 +12,6 @@ obj.name = 'userinfo';
 /**
  * 명령어를 입력한 이용자에 대한 정보를 보여줍니다.
  */
-obj.desc = 'commands.userinfo.desc';
 obj.dev = false;
 obj.callSign = ['userinfo', 'user-info', '이용자정보', '사용자정보', '유저정보'];
 

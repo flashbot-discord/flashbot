@@ -42,7 +42,7 @@ function getHelpObj(cmd) {
  * @private
  */
 function formatAliases(callSign) {
-    let str = '';
+    let str = ' ';
     callSign.forEach((val, index) => {
         if (index > 0) {
             str = str + ', ';
@@ -74,7 +74,7 @@ function formatArgs(args, cmd) {
     args.forEach((val) => {
         str = str + '`' + i18n.__(msgTemp + '.' +  val.name + '.name') + '` - '
         + (val.must ? /* **필수.** */i18n.__('commands.help.func_formatArgs.must') : /* 선택. */i18n.__('commands.help.func_formatArgs.optional'))
-        + i18n.__(msgTemp + '.' + val.name + '.desc') + '\n'
+        + ' ' +i18n.__(msgTemp + '.' + val.name + '.desc') + '\n'
     });
 
     return str;
@@ -92,7 +92,7 @@ obj.args = [
     /**
      * "명령어", "세부 도움말을 볼 명령어"
      */
-    new c.Args('commands', 'commands you want to see its help message', false)
+    new c.Args('commands', false)
 ];
 
 /**

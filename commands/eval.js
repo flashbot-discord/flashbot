@@ -18,7 +18,6 @@ obj.name = 'eval';
 /**
  * 자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능
  */
-obj.desc = 'commands.eval.desc';
 obj.dev = true;
 obj.callSign = ['eval'];
 
@@ -26,7 +25,7 @@ obj.callSign = ['eval'];
  * "JavaScript 코드", "실행할 JavaScript 코드"
  */
 obj.args = [
-    new c.Args('commands.eval.args.0.name', 'commands.eval.args.0.desc', true)
+    new c.Args('JavaScript Code', true)
 ];
 
 obj.execute = (msg, input) => {

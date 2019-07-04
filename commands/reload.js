@@ -10,7 +10,6 @@ const obj = new c.Command();
 const i18n = require('i18n');
 
 obj.name = 'reload';
-obj.desc = 'commands.reload.desc';
 obj.dev = true;
 obj.callSign = ['reload'];
 
@@ -18,7 +17,7 @@ obj.args = [
     /**
      * "명령어", "다시 로드할 명령어의 이름"
      */
-    new c.Args('commands.reload.args.0.name', 'commands.reload.args.0.desc', true)
+    new c.Args('commands', true)
 ];
 
 obj.execute = (msg, args) => {

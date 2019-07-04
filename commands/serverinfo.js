@@ -12,7 +12,6 @@ obj.name = 'serverinfo';
 /**
  * 서버에 대한 정보를 보여줍니다.
  */
-obj.desc = 'commands.serverinfo.desc';
 obj.dev = false;
 obj.callSign = ['serverinfo', 'server-info', '서버정보'];
 

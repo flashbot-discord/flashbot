@@ -12,7 +12,6 @@ obj.name = 'ping';
 /**
  * Pong!
  */
-obj.desc = 'commands.ping.desc';
 obj.dev = false;
 obj.callSign = ['ping', '핑'];
 

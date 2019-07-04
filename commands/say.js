@@ -12,7 +12,6 @@ obj.name = 'say';
 /**
  * 사용자가 입력한 문장을 따라 말합니다.
  */
-obj.desc = 'commands.say.desc';
 obj.dev = false;
 obj.callSign = ['say', '말하기'];
 
@@ -20,7 +19,7 @@ obj.args = [
     /**
      * "말", "따라 말할 말"
      */
-    new c.Args('commands.say.args.0.name', 'commands.say.args.0.desc', true)
+    new c.Args('text', true)
 ];
 
 obj.execute = (msg, input) => {

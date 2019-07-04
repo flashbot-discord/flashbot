@@ -42,23 +42,15 @@ class Command {
 
 class Args {
     /**
-     * 
      * @param {string} name 
-     * @param {string} desc 
      * @param {boolean} must 
      */
-    constructor(name, desc, must) {
+    constructor(name, must) {
         /**
          * 명령어 인수의 이름
          * @type {string}
          */
         this.name = name || '';
-
-        /**
-         * 명령어 인수의 설명
-         * @type {string}
-         */
-        this.desc = desc || '';
 
         /**
          * 명령어 인수 필수 사용 여부
