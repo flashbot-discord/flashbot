@@ -33,7 +33,10 @@ obj.execute = (msg, input) => {
         try {
             var result = eval(input);
             //msg.reply(i18n.__('commands.eval.execute.result.input') + '\n```' + input + '```\n' + i18n.__('commands.eval.execute.result.output') + '\n```' + util.inspect(result, false, null, false) + '```');
-            msg.reply(`${i18n.__('commands.eval.execute.result.input')}\n\`\`\`${input}\`\`\`\n${i18n.__('commands.eval.execute.result.output')}\n\`\`\`${util.inspect(result, false, null, false)}\`\`\``);
+            /**
+             * @todo optimize code for long eval results
+             */
+            msg.reply(`${i18n.__('commands.eval.execute.result.input')}\n\`\`\`js\n${input}\`\`\`\n${i18n.__('commands.eval.execute.result.output')}\n\`\`\`${util.inspect(result, false, null, false)}\`\`\``);
             console.log(result);
         } catch (error) {
             msg.reply(error.stack);
