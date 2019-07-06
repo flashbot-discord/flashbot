@@ -1,10 +1,11 @@
 {
   "name": "flashbot",
-  "version": "0.5.0",
-  "description": "",
+  "version": "0.6.1",
+  "description": "[![Codacy Badge](https://api.codacy.com/project/badge/Grade/debbd11ee96447e2bb9522ac60acb880)](https://www.codacy.com/app/comjun04/flashbot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=comjun04/flashbot&amp;utm_campaign=Badge_Grade)\r [![CodeFactor](https://www.codefactor.io/repository/github/comjun04/flashbot/badge)](https://www.codefactor.io/repository/github/comjun04/flashbot)",
   "main": "bot.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node ."
   },
   "keywords": [],
   "author": "comjun04",
@@ -15,6 +16,16 @@
     "firebase": "^6.0.4",
     "fs": "0.0.1-security",
     "http": "0.0.0",
+    "i18n": "^0.8.3",
     "path": "^0.12.7"
-  }
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/comjun04/flashbot.git"
+  },
+  "bugs": {
+    "url": "https://github.com/comjun04/flashbot/issues"
+  },
+  "homepage": "https://github.com/comjun04/flashbot#readme"
 }
