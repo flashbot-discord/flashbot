@@ -23,7 +23,7 @@ var cmdMap;
  */
 function getHelp(cmd) {
     const obj = cmdMap.get(cmd);
-    return `\`${obj.name}\` - ${i18n.__(obj.desc)}\n`;
+    return `\`${obj.name}\` - ${i18n.__('commands.' + obj.name + '.desc')}\n`;
 }
 
 /**
@@ -128,30 +128,33 @@ obj.execute = (msg, _args, _cmdMap, dev) => {
          * 명령어에 대한 자세한 정보는 `%s명령어`를 입력하세요. | %s = config.prefix
          * (예: `%shelp ping`) | %s = config.prefix
          */
-        const desc_noEmbed = i18n.__('commands.help.execute.desc_noEmbed', config.prefix, config.prefix);
+        const descNotEmbed = i18n.__('commands.help.execute.descNotEmbed', config.prefix, config.prefix);
 
         embed.setTitle(title)
-            .setURL('http://flashbot-discord.herokuapp.com')
+            .setURL('https://flashbot-discord.herokuapp.com')
             .setAuthor('FlashBot')
             .setDescription(desc)
-            .addField('기타', getHelp('ping') + getHelp('beep') + getHelp('serverinfo') + getHelp('userinfo'));
+            .addField(i18n.__('commandGroup.etc.embed'), getHelp('ping') + getHelp('beep') + getHelp('serverinfo') + getHelp('userinfo'));
         if (dev) {
-            embed.addField('테스트', getHelp('eval') + getHelp('args-info') + getHelp('reload'));
-            embed.setFooter(`현재 버전: ${config.version} (${config.build_date}) - 개발자 모드`);
+            embed.addField(i18n.__('commandGroup.test.embed'), getHelp('eval') + getHelp('args-info') + getHelp('reload'));
+            embed.setFooter(i18n.__('commands.help.execute.currentVersionDev', config.version, config.build_date));
         } else {
-            embed.setFooter(`현재 버전: ${config.version} (${config.build_date})`);
+            embed.setFooter(i18n.__('commands.help.execute.currentVersion', config.version, config.build_date));
         }
 
         msg.channel.send({ embed }).catch(() => {
-            let msgTemp = '```링크 첨부 권한이 없어 embed 형식의 도움말을 표시할 수 없으므로 텍스트로 대신하겠습니다.\n'
-                + '(이 알림을 끄는 기능은 현재 개발 중)```\n'
-                + desc_noEmbed
-                + '**기타**\n' + getHelp('ping') + getHelp('beep') + getHelp('serverinfo') + getHelp('userinfo') + '\n';
+            /**
+             * ```링크 첨부 권한이 없어 embed 형식의 도움말을 표시할 수 없으므로 텍스트로 대신하겠습니다.\n'
+             *  + '(이 알림을 끄는 기능은 현재 개발 중)```
+             */
+            let msgTemp = i18n.__('commands.help.execute.noEmbedPerm') + '\n'
+                + descNotEmbed
+                + '\n\n' + i18n.__('commandGroup.etc.notEmbed') + '\n' + getHelp('ping') + getHelp('beep') + getHelp('serverinfo') + getHelp('userinfo') + '\n';
             if (dev) {
-                msgTemp = msgTemp + '**테스트**\n' + getHelp('eval') + getHelp('args-info') + getHelp('reload') + '\n'
-                    + `현재 버전: \`${config.version}\` (${config.build_date}) - 개발자 모드`;
+                msgTemp = msgTemp + i18n.__('commandGroup.test.notEmbed') + '\n' + getHelp('eval') + getHelp('args-info') + getHelp('reload') + '\n'
+                    + i18n.__('commands.help.execute.currentVersionDev', config.version, config.build_date);
             } else {
-                msgTemp = msgTemp + `현재 버전: \`${config.version}\` (${config.build_date})`;
+                msgTemp = msgTemp + i18n.__('commands.help.execute.currentVersion', config.version, config.build_date);
             }
             msg.channel.send(msgTemp);
         });
@@ -191,8 +194,7 @@ obj.execute = (msg, _args, _cmdMap, dev) => {
             .addField(aliases, formatAliases(obj.callSign));
 
         msg.channel.send(embed).catch(() => {
-            const msgTemp = '```링크 첨부 권한이 없어 embed 형식의 도움말을 표시할 수 없으므로 텍스트로 대신하겠습니다.\n'
-                + '(이 알림을 끄는 기능은 현재 개발 중)```\n'
+            const msgTemp = i18n.__('commands.help.execute.noEmbedPerm') + '\n'
                 + title_noEmbed + `\n\n${obj_desc}\n\n${args_noEmbed}\n${formatArgs(obj.args, obj.name)}\n${aliases_noEmbed}${formatAliases(obj.callSign)}`;
             msg.channel.send(msgTemp);
         });

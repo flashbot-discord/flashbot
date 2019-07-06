@@ -20,8 +20,6 @@ obj.args = [
 ];
 
 obj.execute = (msg, args) => {
-    msg.reply('lang cmd test');
-
     /**
      * @todo For global changes only. In future, locales will be managed per guild using databases.
      */
