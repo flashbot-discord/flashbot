@@ -9,13 +9,6 @@
             "request": "launch",
             "name": "Run the Bot",
             "program": "${workspaceFolder}\\bot.js"
-        },
-        {
-            "type": "node",
-            "request": "launch",
-            "name": "Run the Bot as DevMode",
-            "program": "${workspaceFolder}\\bot.js",
-            "args": ["--dev"]
         }
     ]
 }
