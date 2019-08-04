@@ -1,5 +1,7 @@
 {
-    "prefix": "//",
+    "prefix": "///",
+    "owner": "393674169243402240",
+    "db": "json",
     "version": "v0.6.1",
     "build_date": "2019/7/6"
 }
