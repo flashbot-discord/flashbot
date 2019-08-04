@@ -1,4 +1,5 @@
 const { Command } = require('discord.js-commando');
+const i18n = require('i18n');
 
 module.exports = class ActivateCommand extends Command {
     constructor(client) {
@@ -8,11 +9,15 @@ module.exports = class ActivateCommand extends Command {
             group: 'activation',
             memberName: 'activate',
             description: 'Activate this bot on the server',
-            userPermissions: ['ADMINISTRATOR']
+            userPermissions: ['ADMINISTRATOR'],
+            guildOnly: true
         })
     }
 
     run(msg) {
-        msg.channel.send('');
+        msg.client.provider.set(msg.guild, 'activate', true);
+
+        msg.channel.send('activation complete (needs translation / testing)');
+        msg.channel.send(i18n.__('commands.activate.execute.1'));
     }
 }
