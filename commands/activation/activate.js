@@ -17,7 +17,8 @@ module.exports = class ActivateCommand extends Command {
     run(msg) {
         msg.client.provider.set(msg.guild, 'activate', true);
 
-        msg.channel.send('activation complete (needs translation / testing)');
-        msg.channel.send(i18n.__('commands.activate.execute.1'));
+        msg.channel.send(i18n.__('commands.activate.execute.title') + '\n\n'
+            + i18n.__('commands.activate.execute.content.1') + '\n' + i18n.__('commands.activate.execute.content.2') + '\n' + i18n.__('commands.activate.execute.content.3') + '\n\n' 
+            + i18n.__('commands.activate.execute.content.4'));
     }
 }
