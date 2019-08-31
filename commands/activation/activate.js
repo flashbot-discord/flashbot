@@ -37,9 +37,6 @@ module.exports = class ActivateCommand extends Command {
             } else return false;
         };
 
-        // testing
-        msg.client.provider.set(msg.guild, 'activate', true);
-
         const botMsg = await msg.channel.send(i18n.__('commands.activate.execute.title') + '\n\n'
             + i18n.__('commands.activate.execute.content') + '\n\n' + i18n.__('commands.activate.execute.confirm'));
 
