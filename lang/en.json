@@ -114,13 +114,10 @@
 		"activate": {
 			"execute": {
 				"title": "Activate **FlashBot**",
-				"content": {
-					"1": "**FlashBot** stores registered user's name, discordTag, id, and many other things.",
-					"2": "Also, **FlashBot** stores activated server's name, id, roles, members, owner, and more.",
-					"3": "*In order to activate **FlashBot** in this server, you must agree to the Privacy Policy.*",
-					"4": "Please read the document carefully, and agree them to activate and use **FlashBot**.",
-					"5": "You can deny them if you want. If so, you can't use **FlashBot**."
-				}
+				"content": "**FlashBot** stores registered user's name, discordTag, id, and many other things. \nAlso, **FlashBot** stores activated server's name, id, roles, members, owner, and more.\nIn order to activate **FlashBot** in this server, you must agree to the Privacy Policy.\nPlease read the document carefully, and agree them to activate and use **FlashBot**.\nYou can deny them if you want. If so, you can't use **FlashBot**.",
+				"confirm": "React with :white_check_mark: or type `Yes` to agree, otherwise react with :x: or type `No` to deny.",
+				"deny": "You denied our Privacy Policy. Bot Activation for this server cancelled.",
+				"agree": "Thank you! You agreed with our Privacy Policy. The Bot is now activated on this server. You (and this server's member) can use this bot right now!"
 			}
 		}
 	},
