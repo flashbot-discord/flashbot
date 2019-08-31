@@ -14,11 +14,19 @@ module.exports = class ArgsInfoCommand extends Command {
             group: 'dev',
             memberName: 'args-info',
             description: '',
+            args: [
+                {
+                    key: "args",
+                    prompt: "Enter argument to parse.",
+                    type: "string",
+                    infinite: true
+                }
+            ]
         });
     }
 
-    run(msg) {
-        if (!args.length) {
+    run(msg, args) {
+        if (!args.args.length) {
             /**
              * 인수가 입력되지 않았습니다.
              */
@@ -29,6 +37,6 @@ module.exports = class ArgsInfoCommand extends Command {
          * ----
          * Arguments: %s
          */
-        msg.channel.send(i18n.__('commands.args-info.execute.result.cmd_name') + '\n' + i18n.__('commands.args-info.execute.result.cmd_args', args + '')); // args-info hardcoded
+        msg.channel.send(i18n.__('commands.args-info.execute.result.cmd_name') + '\n' + i18n.__('commands.args-info.execute.result.cmd_args', args.args + '')); // args-info hardcoded
     }
 };
