@@ -84,6 +84,15 @@ client.registry
     ])
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
+// for debug purposes
+client.on('message', msg => {
+    if (msg.guild) {
+        console.log(`${msg.guild.name} > ${msg.channel.name} > ${msg.author.username} (${msg.member.nickname}) > ${msg.content}`);
+    } else {
+        console.log(`DM (${msg.channel.id}) > ${msg.author.username} > ${msg.content}`);
+    }
+});
+
 // web server (Heroku web dyno placeholder)
 const express = require('express');
 const app = express();

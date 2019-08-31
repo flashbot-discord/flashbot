@@ -110,6 +110,18 @@
 				"get": "The current language is: `%s`",
 				"set": "Language setting changed to `%s`."
 			}
+		},
+		"activate": {
+			"execute": {
+				"title": "Activate **FlashBot**",
+				"content": {
+					"1": "**FlashBot** stores registered user's name, discordTag, id, and many other things.",
+					"2": "Also, **FlashBot** stores activated server's name, id, roles, members, owner, and more.",
+					"3": "*In order to activate **FlashBot** in this server, you must agree to the Privacy Policy.*",
+					"4": "Please read the document carefully, and agree them to activate and use **FlashBot**.",
+					"5": "You can deny them if you want. If so, you can't use **FlashBot**."
+				}
+			}
 		}
 	},
 	"command_error": "An error occured while executing the command.",
