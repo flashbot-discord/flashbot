@@ -173,7 +173,7 @@ module.exports = class JSONProvider extends SettingProvider {
 
     addGuild(guild_id) {
         Object.defineProperty(obj, guild_id, this.propertyTemplate);
-        obj[guild_ids] = {};
+        obj[guild_id] = {};
         this.write(obj);
     }
 }
