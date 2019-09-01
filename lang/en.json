@@ -119,6 +119,15 @@
 				"deny": "You denied our Privacy Policy. Bot Activation for this server cancelled.",
 				"agree": "Thank you! You agreed with our Privacy Policy. The Bot is now activated on this server. You (and this server's member) can use this bot right now!"
 			}
+		},
+		"deactivate": {
+			"execute": {
+				"title": "Deactivate **FlashBot**",
+				"content": "You're now going to disable **FlashBot** on this server.\nWhen deactivated, the bot will not respond any commands except `activate`.\nThe data for this server will be stored after you deactivated the bot.",
+				"confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
+				"agree": "Thank you for using our bot. The bot is now disabled in this server. To reactivate, use the `activate` command.",
+				"deny": "Bot deactivation cancelled."
+			}
 		}
 	},
 	"command_error": "An error occured while executing the command.",
