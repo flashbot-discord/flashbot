@@ -20,10 +20,10 @@ module.exports = class ActivateCommand extends Command {
     async run(msg) {
 
         const mcFilter = (msg) => {
-            if(this.author === msg.author.id) {
-                if(msg.content.toLowerCase() !== 'yes' && msg.content.toLowerCase() !== 'no') return false;
-                else if(msg.content.toLowerCase() === 'yes') this.result = true;
-                else if(msg.content.toLowerCase() === 'no') this.result = false;
+            if (this.author === msg.author.id) {
+                if (msg.content.toLowerCase() !== 'yes' && msg.content.toLowerCase() !== 'no') return false;
+                else if (msg.content.toLowerCase() === 'yes') this.result = true;
+                else if (msg.content.toLowerCase() === 'no') this.result = false;
                 return true;
             } else return false;
         };
@@ -40,8 +40,12 @@ module.exports = class ActivateCommand extends Command {
         const botMsg = await msg.channel.send(i18n.__('commands.activate.execute.title') + '\n\n'
             + i18n.__('commands.activate.execute.content') + '\n\n' + i18n.__('commands.activate.execute.confirm'));
 
-        await botMsg.react('✅');
-        await botMsg.react('❌');
+        try {
+            await botMsg.react('✅');
+            await botMsg.react('❌');
+        } catch (error) {
+            msg.channel.send("The Bot does not have `React Message` permission, so the bot could not add reaction."); // translate required
+        }
 
         // Message Collector
         this.author = msg.author.id;

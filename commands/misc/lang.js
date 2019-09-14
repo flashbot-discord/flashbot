@@ -6,6 +6,7 @@
 const i18n = require('i18n');
 
 const { Command } = require('discord.js-commando');
+const serverActivated = require('../../utils/serverActivated');
 
 module.exports = class LangCommand extends Command {
     constructor(client) {
@@ -19,7 +20,7 @@ module.exports = class LangCommand extends Command {
             args: [
                 {
                     key: 'language',
-                    prompt: i18n.__('commands.lang.execute.get', i18n.getLocale()),
+                    prompt: /*i18n.__('commands.lang.execute.get', i18n.getLocale())*/'test',
                     type: 'string',
                     default: ""
                 }
@@ -32,6 +33,8 @@ module.exports = class LangCommand extends Command {
     }
 
     run(msg, {language}) {
+        if(!serverActivated(msg)) return;
+
         if(language.length < 1) {
             return msg.say(i18n.__('commands.lang.execute.get', i18n.getLocale()));
         }

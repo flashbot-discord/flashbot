@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const i18n = require('i18n');
+const serverActivated = require('../../utils/serverActivated');
 
 module.exports = class DeactivateCommand extends Command {
     constructor(client) {
@@ -15,7 +16,7 @@ module.exports = class DeactivateCommand extends Command {
     }
 
     async run(msg) {
-        // msg.client.provider.set(msg.guild, 'activate', false);
+        if(!serverActivated(msg)) return;
 
         const mcFilter = (msg) => {
             if(this.author === msg.author.id) {
@@ -37,8 +38,12 @@ module.exports = class DeactivateCommand extends Command {
 
         const botMsg = await msg.channel.send(i18n.__('commands.deactivate.execute.title') + '\n\n' + i18n.__('commands.deactivate.execute.content') + "\n\n" + i18n.__('commands.deactivate.execute.confirm'));
 
-        await botMsg.react('✅');
-        await botMsg.react('❌');
+        try {
+            await botMsg.react('✅');
+            await botMsg.react('❌');
+        } catch (error) {
+            msg.channel.send("The Bot does not have `React Message` permission, so the bot could not add reaction."); // translate required
+        }
 
         // Message Collector
         this.author = msg.author.id;

@@ -6,6 +6,7 @@
 const i18n = require('i18n');
 
 const { Command } = require('discord.js-commando');
+const serverActivated = require('../../utils/serverActivated');
 
 module.exports = class SayCommand extends Command {
     constructor(client) {
@@ -18,14 +19,16 @@ module.exports = class SayCommand extends Command {
             args: [
                 {
                     key: 'input',
-                    prompt: i18n.__('commands.say.execute.no_args'),
+                    prompt: 'TODO i18n',
                     type: 'string'
                 }
             ]
         });
     }
 
-    run(msg, { input }) {
+    run(msg, input) {
+        if (!serverActivated(msg)) return;
+
         return msg.channel.send(input);
     }
 };

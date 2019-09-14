@@ -6,6 +6,7 @@
 var i18n = require('i18n');
 
 const { Command } = require('discord.js-commando');
+const serverActivated = require('../../utils/serverActivated');
 
 module.exports = class BeepCommand extends Command {
     constructor(client) {
@@ -18,6 +19,8 @@ module.exports = class BeepCommand extends Command {
 	}
 
 	run(msg) {
+		if(!serverActivated(msg)) return;
+
 		return msg.channel.send(i18n.__('commands.beep.execute'));
 	}
 };

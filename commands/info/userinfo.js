@@ -6,19 +6,22 @@
 const i18n = require('i18n');
 
 const { Command } = require('discord.js-commando');
+const serverActivated = require('../../utils/serverActivated');
 
 module.exports = class UserInfoCommand extends Command {
 	constructor(client) {
 		super(client, {
             name: 'userinfo',
             aliases: ['user-info', '이용자정보', '사용자정보', '유저정보'],
-			group: 'misc',
+			group: 'info',
 			memberName: 'userinfo',
 			description: '...'
 		});
 	}
 
 	run(msg) {
+		if(!serverActivated(msg)) return;
+
 		msg.channel.send(i18n.__('commands.userinfo.result', msg.author.username, msg.author.id));
 	}
 };
