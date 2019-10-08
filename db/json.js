@@ -66,11 +66,13 @@ module.exports = class JSONProvider extends SettingProvider {
 
                 if (!this.file.endsWith('.json')) {
                     console.error('DB/JSON: Not a vaild file!');
-                    exit(1);
+                    process.exit(1);
                 }
                 if (!fs.existsSync(this.file)) {
                     console.error('DB/JSON: File not exist!');
-                    exit(1);
+
+                    fs.writeFileSync(this.file, "{}");
+                    console.log('DB/JSON: Created Database file in ' + this.file);
                 }
 
                 obj = require('../' + this.file);
