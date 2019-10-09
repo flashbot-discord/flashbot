@@ -1,20 +1,146 @@
 {
-	"boop": "붑",
-	"인수가 없습니다.": "인수가 없습니다.",
-	"ping": "ping",
-	"Pong!": "Pong!",
-	"beep": "beep",
-	"붑": "붑",
-	"serverinfo": "serverinfo",
-	"서버에 대한 정보를 보여줍니다.": "서버에 대한 정보를 보여줍니다.",
-	"userinfo": "userinfo",
-	"명령어를 입력한 이용자에 대한 정보를 보여줍니다.": "명령어를 입력한 이용자에 대한 정보를 보여줍니다.",
-	"eval": "eval",
-	"자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능": "자바스크립트 실행. 관리자 권한 가지고 있어야 사용 가능",
-	"args-info": "args-info",
-	"명령어 인자 체크용": "명령어 인자 체크용",
-	"reload": "reload",
-	"": "",
-	"**필수**": "**필수**",
-	"argsinfo": "argsinfo"
+	"commands": {
+		"help": {
+			"execute": {
+				"desc": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting upper link.\n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
+				"descNotEmbed": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting https://flashbot-discord.herokuapp.com \n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
+				"title": "FlashBot 도움말",
+				"cmdHelp": {
+					"no_cmd": "That command does not exist.",
+					"result": {
+						"title": "Help message of `%s`",
+						"title_noEmbed": "**Help message of `%s`**",
+						"args": "Arguments",
+						"aliases": "Aliases",
+						"args_noEmbed": "Arguments:",
+						"aliases_noEmbed": "Aliases:"
+					}
+				},
+				"noEmbedPerm": "```The bot doesn't have 'POST LINK'(or similar) permission to display help message as embed, so it'll show just text help message.\n(Currnetly developing for turning off this notification)```",
+				"currentVersionDev": "Version: %1$s (%2$s) - Developer Mode",
+				"currentVersion": "Version: %1$s (%2$s)"
+			},
+			"func_formatArgs": {
+				"must": "**Needed.**",
+				"no_args": "No arguments.",
+				"optional": "Optional."
+			},
+			"desc": "Show Flashbot's help message.",
+			"args": {
+				"commands": {
+					"name": "commands",
+					"desc": "commands you want to see its help message"
+				}
+			}
+		},
+		"ping": {
+			"desc": "Pong!",
+			"execute": "Pong!"
+		},
+		"beep": {
+			"desc": "boop",
+			"execute": "boop"
+		},
+		"serverinfo": {
+			"desc": "서버 정보를 보여줍니다.",
+			"result": "Server Name: **%s**\nMembers in the Server: %s",
+			"execute": {
+				"isDM": "This command cannot be used in DM."
+			}
+		},
+		"userinfo": {
+			"desc": "명령어를 사용하는 사람의 정보를 보여줍니다.",
+			"result": "이용자의 이름: %1$s\n이용자 ID: %2$s"
+		},
+		"eval": {
+			"desc": "Evaluates JS code. Needs Administrator permission to use this.",
+			"execute": {
+				"no_admin": "You do not have Administrator permission!",
+				"result": {
+					"input": "Input:",
+					"output": "and Output:"
+				}
+			},
+			"args": {
+				"JavaScript Code": {
+					"name": "JavaScript Code",
+					"desc": "JavaScript Code to execute"
+				}
+			}
+		},
+		"args-info": {
+			"desc": "명령어의 인수를 확인하는 용도",
+			"execute": {
+				"no_args": "인수가 입력되지 않았습니다.",
+				"result": {
+					"cmd_name": "명령어 이름: args-info",
+					"cmd_args": "인수: %s"
+				}
+			},
+			"args": {
+				"args": {
+					"name": "인수",
+					"desc": "테스트할 인수들"
+				}
+			}
+		},
+		"reload": {
+			"desc": "Reloads a command. (Currently not working)",
+			"args": {
+				"command": "command to reload (Currently not working)"
+			},
+			"execute": {
+				"no_args": "Enter command to reload. (Currently not working)"
+			}
+		},
+		"say": {
+			"execute": {
+				"no_args": "따라 말할 텍스트를 입력해 주세요."
+			}
+		},
+		"lang": {
+			"desc": "이 봇에 현재 설정된 언어를 보고 변경합니다. (할 일: 서버마다 언어 설정)",
+			"args": {
+				"language": {
+					"name": "언어",
+					"desc": "변경하고 싶은 언어의 코드"
+				}
+			},
+			"execute": {
+				"get": "현재 언어: %s",
+				"set": "언어 설정이 `%s`(으)로 바뀌었습니다."
+			}
+		},
+		"activate": {
+			"execute": {
+				"title": "**FlashBot** 활성화",
+				"content": "**FlashBot** stores registered user's name, discordTag, id, and many other things. \nAlso, **FlashBot** stores activated server's name, id, roles, members, owner, and more.\nIn order to activate **FlashBot** in this server, you must agree to the Privacy Policy.\nPlease read the document carefully, and agree them to activate and use **FlashBot**.\nYou can deny them if you want. If so, you can't use **FlashBot**.",
+				"confirm": "동의하려면 :white_check_mark: 반응을 추가하거나 `Yes`를 입력하고, 아니라면 :x: 반응을 추가하거나 :No:를 입력해 주세요.",
+				"deny": "개인정보 처리방침을 거부했습니다. 이 서버에 대한 봇 활성화가 취소되었습니다.",
+				"agree": "감사합니다! 개인정보 처리방침에 동의하였습니다. 이 봇은 이제 이 서버에서 활성화되었습니다. 당신(그리고 이 서버에 있는 사용자들)은 지금부터 이 봇을 사용할 수 있습니다!",
+				"reactFail": "이 봇이 `반응 추가` 권한을 가지고 있지 않아, 반응을 추가할 수 없습니다.\n답변을 직접 입력하거나, 수동으로 반응을 추가해 주세요."
+			}
+		},
+		"deactivate": {
+			"execute": {
+				"title": "FlashBot 비활성화",
+				"content": "You're now going to disable **FlashBot** on this server.\nWhen deactivated, the bot will not respond any commands except `activate`.\nThe data for this server will be stored after you deactivated the bot.",
+				"confirm": "동의하려면 :white_check_mark: 반응을 추가하거나 `Yes`를 입력하고, 아니라면 :x: 반응을 추가하거나 :No:를 입력해 주세요.",
+				"agree": "이 봇을 사용해 주셔서 감사합니다. 이 봇은 이제 비활성화되었습니다. 다시 활성화하려면, `activate` 명령어를 사용해 주세요.",
+				"deny": "봇 비활성화가 취소되었습니다.",
+				"reactFail": "이 봇이 `반응 추가` 권한을 가지고 있지 않아, 반응을 추가할 수 없습니다.\n답변을 직접 입력하거나, 수동으로 반응을 추가해 주세요."
+			}
+		}
+	},
+	"command_error": "An error occured while executing the command.",
+	"commandGroup": {
+		"etc": {
+			"embed": "기타등등",
+			"notEmbed": "**기타등등**"
+		},
+		"test": {
+			"embed": "테스트",
+			"notEmbed": "**테스트**"
+		}
+	}
 }
