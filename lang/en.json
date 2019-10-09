@@ -118,7 +118,7 @@
 				"confirm": "React with :white_check_mark: or type `Yes` to agree, otherwise react with :x: or type `No` to deny.",
 				"deny": "You denied our Privacy Policy. Bot Activation for this server cancelled.",
 				"agree": "Thank you! You agreed with our Privacy Policy. The Bot is now activated on this server. You (and this server's member) can use this bot right now!",
-				"reactFail": "The bot cannot add reaction because of no `add reaction` permission. \nPlease enter response via text, or add reaction manually."
+				"reactFail": "The Bot does not have `Add Reaction` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually."
 			}
 		},
 		"deactivate": {
@@ -128,7 +128,7 @@
 				"confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
 				"agree": "Thank you for using our bot. The bot is now disabled in this server. To reactivate, use the `activate` command.",
 				"deny": "Bot deactivation cancelled.",
-				"reactFail": "The bot cannot add reaction because of no `add reaction` permission. \nPlease enter response via text, or add reaction manually."
+				"reactFail": "The Bot does not have `Add Reaction` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually."
 			}
 		}
 	},

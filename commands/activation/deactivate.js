@@ -1,5 +1,6 @@
 const { Command } = require('discord.js-commando');
 const i18n = require('i18n');
+const serverActivated = require('../../utils/serverActivated');
 
 module.exports = class DeactivateCommand extends Command {
     constructor(client) {
@@ -15,7 +16,7 @@ module.exports = class DeactivateCommand extends Command {
     }
 
     async run(msg) {
-        // msg.client.provider.set(msg.guild, 'activate', false);
+        if(!serverActivated(msg)) return;
 
         const mcFilter = (msg) => {
             if(this.author === msg.author.id) {

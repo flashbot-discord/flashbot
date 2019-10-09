@@ -6,6 +6,7 @@
 const i18n = require('i18n');
 
 const { Command } = require('discord.js-commando');
+const serverActivated = require('../../utils/serverActivated');
 
 module.exports = class ServerInfoCommand extends Command {
     constructor(client) {
@@ -20,6 +21,8 @@ module.exports = class ServerInfoCommand extends Command {
     }
 
     run(msg) {
+        if(!serverActivated(msg)) return;
+
         msg.channel.send(i18n.__('commands.serverinfo.result', msg.guild.name, msg.guild.memberCount));
     }
 };
