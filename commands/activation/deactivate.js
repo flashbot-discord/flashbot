@@ -37,17 +37,21 @@ module.exports = class DeactivateCommand extends Command {
 
         const botMsg = await msg.channel.send(i18n.__('commands.deactivate.execute.title') + '\n\n' + i18n.__('commands.deactivate.execute.content') + "\n\n" + i18n.__('commands.deactivate.execute.confirm'));
 
-        await botMsg.react('✅');
-        await botMsg.react('❌');
+        try {
+            await botMsg.react('✅');
+            await botMsg.react('❌');
+        } catch (err) {
+            await msg.channel.send(i18n.__('commands.deactivate.execute.reactFail'));
+        }
 
         // Message Collector
         this.author = msg.author.id;
         const mc = msg.channel.createMessageCollector(mcFilter);
         mc.on('collect', () => {
             if (this.result) {
-                this.agree(msg, mc);
+                this.agree(msg, mc, rc);
             } else {
-                this.deny(msg, mc);
+                this.deny(msg, mc, rc);
             }
         });
 
@@ -55,26 +59,28 @@ module.exports = class DeactivateCommand extends Command {
         const rc = botMsg.createReactionCollector(rcFilter);
         rc.on('collect', () => {
             if (this.result) {
-                this.agree(msg, rc);
+                this.agree(msg, rc, mc);
             } else {
-                this.deny(msg, rc);
+                this.deny(msg, rc, mc);
             }
         });
     }
 
-    async agree(msg, collector) {
+    async agree(msg, collector, collector2) {
         // Activation
-        await console.log(`[Bot Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`);
+        await console.log(`[Bot Deactivation] ${msg.author.tag} (${msg.member.nickname}) deactivated the bot in ${msg.guild.name}`);
 
         await msg.client.provider.set(msg.guild, 'activate', false);
 
         // Done!
         await msg.channel.send(i18n.__('commands.deactivate.execute.agree'));
-        await collector.stop();
+        collector.stop();
+        collector2.stop();
     }
 
     async deny(msg, collector) {
         await msg.channel.send(i18n.__('commands.deactivate.execute.deny'));
-        await collector.stop();
+        collector.stop();
+        collector2.stop();
     }
 }

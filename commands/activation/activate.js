@@ -20,10 +20,10 @@ module.exports = class ActivateCommand extends Command {
     async run(msg) {
 
         const mcFilter = (msg) => {
-            if(this.author === msg.author.id) {
-                if(msg.content.toLowerCase() !== 'yes' && msg.content.toLowerCase() !== 'no') return false;
-                else if(msg.content.toLowerCase() === 'yes') this.result = true;
-                else if(msg.content.toLowerCase() === 'no') this.result = false;
+            if (this.author === msg.author.id) {
+                if (msg.content.toLowerCase() !== 'yes' && msg.content.toLowerCase() !== 'no') return false;
+                else if (msg.content.toLowerCase() === 'yes') this.result = true;
+                else if (msg.content.toLowerCase() === 'no') this.result = false;
                 return true;
             } else return false;
         };
@@ -40,17 +40,21 @@ module.exports = class ActivateCommand extends Command {
         const botMsg = await msg.channel.send(i18n.__('commands.activate.execute.title') + '\n\n'
             + i18n.__('commands.activate.execute.content') + '\n\n' + i18n.__('commands.activate.execute.confirm'));
 
-        await botMsg.react('✅');
-        await botMsg.react('❌');
+        try {
+            await botMsg.react('✅');
+            await botMsg.react('❌');
+        } catch (err) {
+            await msg.channel.send(i18n.__('commands.activate.execute.reactFail'));
+        }
 
         // Message Collector
         this.author = msg.author.id;
         const mc = msg.channel.createMessageCollector(mcFilter);
         mc.on('collect', () => {
             if (this.result) {
-                this.agree(msg, mc);
+                this.agree(msg, mc, rc);
             } else {
-                this.deny(msg, mc);
+                this.deny(msg, mc, rc);
             }
         });
 
@@ -58,14 +62,14 @@ module.exports = class ActivateCommand extends Command {
         const rc = botMsg.createReactionCollector(rcFilter);
         rc.on('collect', () => {
             if (this.result) {
-                this.agree(msg, rc);
+                this.agree(msg, rc, mc);
             } else {
-                this.deny(msg, rc);
+                this.deny(msg, rc, mc);
             }
         });
     }
 
-    async agree(msg, collector) {
+    async agree(msg, collector, collector2) {
         // Activation
         await console.log(`[Bot Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`);
 
@@ -73,11 +77,13 @@ module.exports = class ActivateCommand extends Command {
 
         // Done!
         await msg.channel.send(i18n.__('commands.activate.execute.agree'));
-        await collector.stop();
+        collector.stop();
+        collector2.stop();
     }
 
-    async deny(msg, collector) {
+    async deny(msg, collector, collector2) {
         await msg.channel.send(i18n.__('commands.activate.execute.deny'));
-        await collector.stop();
+        collector.stop();
+        collector2.stop();
     }
 }
