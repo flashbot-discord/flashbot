@@ -1,8 +1,7 @@
-const { Command } = require('discord.js-commando');
+const BotCommand = require('../../utils/BotCommand');
 const i18n = require('i18n');
-const serverActivated = require('../../utils/serverActivated');
 
-module.exports = class DeactivateCommand extends Command {
+module.exports = class DeactivateCommand extends BotCommand {
     constructor(client) {
         super(client, {
             name: 'deactivate',
@@ -16,7 +15,7 @@ module.exports = class DeactivateCommand extends Command {
     }
 
     async run(msg) {
-        if(!serverActivated(msg)) return;
+        if(!super.run(msg)) return;
 
         const mcFilter = (msg) => {
             if(this.author === msg.author.id) {
@@ -79,7 +78,7 @@ module.exports = class DeactivateCommand extends Command {
         collector2.stop();
     }
 
-    async deny(msg, collector) {
+    async deny(msg, collector, collector2) {
         await msg.channel.send(i18n.__('commands.deactivate.execute.deny'));
         collector.stop();
         collector2.stop();

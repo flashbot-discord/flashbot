@@ -5,9 +5,9 @@
 
 const i18n = require('i18n');
 
-const { Command } = require('discord.js-commando');
+const BotCommand = require('../../utils/BotCommand');
 
-module.exports = class SayCommand extends Command {
+module.exports = class SayCommand extends BotCommand {
     constructor(client) {
         super(client, {
             name: 'say',
@@ -18,14 +18,16 @@ module.exports = class SayCommand extends Command {
             args: [
                 {
                     key: 'input',
-                    prompt: i18n.__('commands.say.execute.no_args'),
+                    prompt: 'TODO i18n',
                     type: 'string'
                 }
             ]
         });
     }
 
-    run(msg, { input }) {
+    run(msg, input) {
+        if (!super.run(msg)) return;
+
         return msg.channel.send(input);
     }
 };

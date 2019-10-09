@@ -5,9 +5,9 @@
 
 const i18n = require('i18n');
 
-const { Command } = require('discord.js-commando');
+const BotCommand = require('../../utils/BotCommand');
 
-module.exports = class UserInfoCommand extends Command {
+module.exports = class UserInfoCommand extends BotCommand {
 	constructor(client) {
 		super(client, {
             name: 'userinfo',
@@ -19,6 +19,8 @@ module.exports = class UserInfoCommand extends Command {
 	}
 
 	run(msg) {
+		if(!super.run(msg)) return;
+
 		msg.channel.send(i18n.__('commands.userinfo.result', msg.author.username, msg.author.id));
 	}
 };

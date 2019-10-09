@@ -5,9 +5,9 @@
 
 var i18n = require('i18n');
 
-const { Command } = require('discord.js-commando');
+const BotCommand = require('../../utils/BotCommand');
 
-module.exports = class BeepCommand extends Command {
+module.exports = class BeepCommand extends BotCommand {
     constructor(client) {
 		super(client, {
 			name: 'beep',
@@ -18,6 +18,8 @@ module.exports = class BeepCommand extends Command {
 	}
 
 	run(msg) {
+		if(!super.run(msg)) return;
+
 		return msg.channel.send(i18n.__('commands.beep.execute'));
 	}
 };
