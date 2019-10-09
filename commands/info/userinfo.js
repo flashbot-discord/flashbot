@@ -12,7 +12,7 @@ module.exports = class UserInfoCommand extends Command {
 		super(client, {
             name: 'userinfo',
             aliases: ['user-info', '이용자정보', '사용자정보', '유저정보'],
-			group: 'misc',
+			group: 'info',
 			memberName: 'userinfo',
 			description: '...'
 		});
