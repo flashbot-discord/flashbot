@@ -55,6 +55,12 @@ i18n.configure({
     directory: './lang',
     objectNotation: true
 });
+i18n.__ll = (phrase, guild) => {
+    return i18n.__({
+        phrase: phrase,
+        locale: client.provider.get(guild, 'lang') || 'en'
+    });
+};
 
 /**
  * Bot token
