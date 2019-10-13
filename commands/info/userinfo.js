@@ -10,8 +10,8 @@ const BotCommand = require('../../utils/BotCommand');
 module.exports = class UserInfoCommand extends BotCommand {
 	constructor(client) {
 		super(client, {
-            name: 'userinfo',
-            aliases: ['user-info', '이용자정보', '사용자정보', '유저정보'],
+			name: 'userinfo',
+			aliases: ['user-info', '이용자정보', '사용자정보', '유저정보'],
 			group: 'info',
 			memberName: 'userinfo',
 			description: '...'
@@ -19,8 +19,11 @@ module.exports = class UserInfoCommand extends BotCommand {
 	}
 
 	run(msg) {
-		if(!super.run(msg)) return;
+		if (!super.run(msg)) return;
 
-		msg.channel.send(i18n.__('commands.userinfo.result', msg.author.username, msg.author.id));
+		msg.channel.send(i18n.__ll({
+			phrase: 'commands.userinfo.result',
+			locale: msg.client.getGuildLocale(msg.guild)
+		}, msg.guild, msg.author.username, msg.author.id));
 	}
 };

@@ -30,13 +30,13 @@ module.exports = class ArgsInfoCommand extends Command {
             /**
              * 인수가 입력되지 않았습니다.
              */
-            return msg.reply(i18n.__('commands.args-info.execute.no_args'));
+            return msg.reply(i18n.__ll('commands.args-info.execute.no_args', msg.guild));
         }
         /**
          * Command name: args-info
          * ----
          * Arguments: %s
          */
-        msg.channel.send(i18n.__('commands.args-info.execute.result.cmd_name') + '\n' + i18n.__('commands.args-info.execute.result.cmd_args', args.args + '')); // args-info hardcoded
+        msg.channel.send(i18n.__ll('commands.args-info.execute.result.cmd_name', msg.guild) + '\n' + i18n.__('commands.args-info.execute.result.cmd_args', args.args + '')); // args-info hardcoded
     }
 };

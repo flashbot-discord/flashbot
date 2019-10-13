@@ -35,16 +35,22 @@ module.exports = class LangCommand extends BotCommand {
         if(!super.run(msg)) return;
 
         if(language.length < 1) {
-            return msg.say(i18n.__('commands.lang.execute.get', i18n.getLocale()));
+            return msg.say(i18n.__({
+                phrase: 'commands.lang.execute.get',
+                locale: msg.client.getGuildLocale(msg.guild)
+            }, msg.client.getGuildLocale(msg.guild)));
         }
         else {
             if(this.hasPerm(msg)) {
 
             } else {
                 //return msg.reply('access denied. (needs translation)');
-                i18n.setLocale(language);
+                //i18n.setLocale(language);
                 msg.client.provider.set(msg.guild, 'lang', language);
-                msg.say('done');
+                msg.say(i18n.__({
+                    phrase: 'commands.lang.execute.set',
+                    locale: msg.client.getGuildLocale(msg.guild)
+                }, language));
             }
         }
     }

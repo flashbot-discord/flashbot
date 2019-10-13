@@ -6,9 +6,9 @@
 const i18n = require('i18n');
 
 const { Command } = require('discord.js-commando');
-const serverActivated = require('../../utils/serverActivated');
+const BotCommand = require('../../utils/BotCommand');
 
-module.exports = class ServerInfoCommand extends Command {
+module.exports = class ServerInfoCommand extends BotCommand {
     constructor(client) {
         super(client, {
             name: 'serverinfo',
@@ -21,8 +21,11 @@ module.exports = class ServerInfoCommand extends Command {
     }
 
     run(msg) {
-        if(!serverActivated(msg)) return;
+        if (!super.run(msg)) return;
 
-        msg.channel.send(i18n.__('commands.serverinfo.result', msg.guild.name, msg.guild.memberCount));
+        msg.channel.send(i18n.__({
+            phrase: 'commands.serverinfo.result',
+            locale: msg.client.getGuildLocale(msg.guild)
+        }, msg.guild, msg.guild.name, msg.guild.memberCount));
     }
 };

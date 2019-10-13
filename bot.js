@@ -58,8 +58,12 @@ i18n.configure({
 i18n.__ll = (phrase, guild) => {
     return i18n.__({
         phrase: phrase,
-        locale: client.provider.get(guild, 'lang') || 'en'
+        locale: client.getGuildLocale(guild)
     });
+};
+
+client.getGuildLocale = (guild) => {
+    return client.provider.get(guild, 'lang') || 'en';
 };
 
 /**

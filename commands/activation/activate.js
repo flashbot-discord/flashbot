@@ -37,14 +37,14 @@ module.exports = class ActivateCommand extends Command {
             } else return false;
         };
 
-        const botMsg = await msg.channel.send(i18n.__('commands.activate.execute.title') + '\n\n'
-            + i18n.__('commands.activate.execute.content') + '\n\n' + i18n.__('commands.activate.execute.confirm'));
+        const botMsg = await msg.channel.send(i18n.__ll('commands.activate.execute.title', msg.guild) + '\n\n'
+            + i18n.__ll('commands.activate.execute.content', msg.guild) + '\n\n' + i18n.__ll('commands.activate.execute.confirm', msg.guild));
 
         try {
             await botMsg.react('✅');
             await botMsg.react('❌');
         } catch (err) {
-            await msg.channel.send(i18n.__('commands.activate.execute.reactFail'));
+            await msg.channel.send(i18n.__ll('commands.activate.execute.reactFail', msg.guild));
         }
 
         // Message Collector
@@ -76,13 +76,13 @@ module.exports = class ActivateCommand extends Command {
         await msg.client.provider.set(msg.guild, 'activate', true);
 
         // Done!
-        await msg.channel.send(i18n.__('commands.activate.execute.agree'));
+        await msg.channel.send(i18n.__ll('commands.activate.execute.agree', msg.guild));
         collector.stop();
         collector2.stop();
     }
 
     async deny(msg, collector, collector2) {
-        await msg.channel.send(i18n.__('commands.activate.execute.deny'));
+        await msg.channel.send(i18n.__ll('commands.activate.execute.deny', msg.guild));
         collector.stop();
         collector2.stop();
     }

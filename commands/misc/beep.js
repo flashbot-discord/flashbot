@@ -20,6 +20,6 @@ module.exports = class BeepCommand extends BotCommand {
 	run(msg) {
 		if(!super.run(msg)) return;
 
-		return msg.channel.send(i18n.__('commands.beep.execute'));
+		return msg.channel.send(i18n.__ll('commands.beep.execute', msg.guild));
 	}
 };
