@@ -6,6 +6,10 @@
 /**
  * config file
  */
+
+const VERSION = "v0.6.1";
+const BUILD_DATE = "2019/7/6"
+
 let configFile;
 
 // import needed modules
