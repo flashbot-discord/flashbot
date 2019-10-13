@@ -3,3 +3,6 @@ token.json
 .vscode
 debug.log
 db/db.json
+
+# Temporary
+command_temp
