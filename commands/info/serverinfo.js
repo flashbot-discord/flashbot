@@ -6,13 +6,14 @@
 const i18n = require('i18n');
 
 const { Command } = require('discord.js-commando');
+const BotCommand = require('../../utils/BotCommand');
 
-module.exports = class ServerInfoCommand extends Command {
+module.exports = class ServerInfoCommand extends BotCommand {
     constructor(client) {
         super(client, {
             name: 'serverinfo',
             aliases: ['server-info', '서버정보'],
-            group: 'misc',
+            group: 'info',
             memberName: 'serverinfo',
             description: '...',
             guildOnly: true
@@ -20,6 +21,11 @@ module.exports = class ServerInfoCommand extends Command {
     }
 
     run(msg) {
-        msg.channel.send(i18n.__('commands.serverinfo.result', msg.guild.name, msg.guild.memberCount));
+        if (!super.run(msg)) return;
+
+        msg.channel.send(i18n.__({
+            phrase: 'commands.serverinfo.result',
+            locale: msg.client.getGuildLocale(msg.guild)
+        }, msg.guild, msg.guild.name, msg.guild.memberCount));
     }
 };

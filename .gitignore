@@ -1,3 +1,14 @@
+# node modules
 node_modules/
+
+# Settings
 token.json
+config.json
+
+# Other
 .vscode
+debug.log
+db/db.json
+
+# Temporary
+command_temp
