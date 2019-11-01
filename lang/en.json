@@ -108,7 +108,8 @@
 			},
 			"execute": {
 				"get": "The current language is: `%s`",
-				"set": "Language setting changed to `%s`."
+				"set": "Language setting changed to `%s`.",
+				"noPermission": "You don't have `ADMINISTRATOR` permission to do that."
 			}
 		},
 		"activate": {

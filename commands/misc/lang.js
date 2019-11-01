@@ -28,7 +28,8 @@ module.exports = class LangCommand extends BotCommand {
     }
 
     hasPerm(msg) {
-        return msg.guild.member(msg.author).hasPermission('ADMINISTRATOR');
+        if(msg.client.isOwner(msg.author.id)) return true;
+        else return msg.guild.member(msg.author).hasPermission('ADMINISTRATOR');
     }
 
     run(msg, {language}) {
@@ -41,8 +42,8 @@ module.exports = class LangCommand extends BotCommand {
             }, msg.client.getGuildLocale(msg.guild)));
         }
         else {
-            if(this.hasPerm(msg)) {
-
+            if(!this.hasPerm(msg)) {
+                return msg.say(i18n.__ll('commands.lang.execute.noPermission', msg.guild));
             } else {
                 //return msg.reply('access denied. (needs translation)');
                 //i18n.setLocale(language);
