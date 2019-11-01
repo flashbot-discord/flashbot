@@ -23,6 +23,7 @@ if (fs.existsSync('./config.json')) {
      */
     configFile = require('./config.json');
 } else {
+    configFile = {};
     configFile.owner = null;
     configFile.commandPrefix = null;
     configFile.db = null;
