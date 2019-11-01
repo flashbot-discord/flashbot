@@ -1,5 +1,3 @@
-const owner = require('../config.json').owner;
-
 const { Command } = require('discord.js-commando');
 
 module.exports = class BotCommand extends Command {
@@ -9,7 +7,7 @@ module.exports = class BotCommand extends Command {
 
     run(msg) {
         if (!msg.guild) return true; // DM
-        if (owner.includes(msg.author.id)) return true; // owner bypass
+        if (msg.client.isOwner(msg.author.id)) return true; // owner bypass
 
         // Server activation status check
         if (msg.client.provider.get(msg.guild.id, 'activate', false)) {
