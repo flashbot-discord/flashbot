@@ -35,6 +35,14 @@ const config = {
     db: configFile.db || process.env.db
 }
 
+// necessary config check
+
+for(let i = 0; i < Object.keys(config).length; i++) {
+    if(!config[Object.keys(config)[i]]) {
+        throw new Error(`Config ${Object.keys(config)[i]} does not exist`);
+    }
+}
+
 /**
  * Main Client
  * @type {CommandoClient}
