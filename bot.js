@@ -70,7 +70,12 @@ switch (config.db) {
 const i18n = require('i18n');
 i18n.configure({
     directory: './lang',
-    objectNotation: true
+    objectNotation: true,
+    syncFiles: true,
+    autoReload: true,
+    logDebugFn: (msg) => console.log(`[i18n/Debug] ${msg}`),
+    logWarnFn: (msg) => console.warn(`[i18n/WARN] ${msg}`),
+    logErrorFn: (msg) => console.log(`[i18n/ERROR] ${msg}`)
 });
 i18n.__ll = (phrase, guild) => {
     return i18n.__({
