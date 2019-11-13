@@ -65,18 +65,18 @@ module.exports = class JSONProvider extends SettingProvider {
                 console.log('DB/JSON: init...');
 
                 if (!this.file.endsWith('.json')) {
-                    console.error('DB/JSON: Not a vaild file!');
+                    console.error('[DB/JSON] Not a vaild file!');
                     process.exit(1);
                 }
                 if (!fs.existsSync(this.file)) {
-                    console.error('DB/JSON: File not exist!');
+                    console.error('[DB/JSON] File not exist!');
 
                     fs.writeFileSync(this.file, "{}");
-                    console.log('DB/JSON: Created Database file in ' + this.file);
+                    console.log('[DB/JSON] Created Database file in ' + this.file);
                 }
 
                 obj = require('../' + this.file);
-                console.log('DB/JSON: Database read success');
+                console.log('[DB/JSON] Database read success');
 
                 /*
         
