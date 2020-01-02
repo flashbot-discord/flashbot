@@ -56,11 +56,18 @@ const client = new Commando.Client({
 /**
  * Database
  */
-switch (config.db) {
+switch (config.db.type) {
     case 'json': {
         let req = require('./db/json');
         var db = new req('./db/db.json');
         client.setProvider(db);
+	break
+    }
+    case 'mysql': {
+        let provider = require('./db/mysql')
+	let db = new provider()
+	client.setProvider(db)
+	break
     }
 }
 
@@ -112,7 +119,8 @@ client.registry
         ['dev', 'Commands for developing'],
         ['misc', 'Misc'],
         ['info', 'Provides several informations'],
-        ['activation', 'activating/deactivating the bot on the server']
+        ['activation', 'activating/deactivating the bot on the server'],
+	['memo', 'memo']
     ])
     .registerCommandsIn(path.join(__dirname, 'commands'));
 
@@ -136,3 +144,4 @@ const PORT = process.env.PORT || 5000;
 
 app.use(express.static('public'));
 app.listen(PORT, () => console.log(`Web server on port ${PORT}`));
+
