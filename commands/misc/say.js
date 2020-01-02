@@ -25,7 +25,7 @@ module.exports = class SayCommand extends BotCommand {
         });
     }
 
-    run(msg, input) {
+    run(msg, {input}) {
         if (!super.run(msg)) return;
 
         return msg.channel.send(input);
