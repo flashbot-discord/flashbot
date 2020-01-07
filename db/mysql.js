@@ -39,7 +39,7 @@ class MySQLProvider extends DatabaseProvider {
   }
 
   async set(table, id, data) {
-    if(this.db.from(table).select('id').where('id', id).has({id: id}) {
+    if(this.db.from(table).select('id').where('id', id).has({id: id})) {
       return await this.db.from(table).where('id', id).update(data)
     } else {
       return await this.db.from(table).insert({...{id: id}, ...data})
