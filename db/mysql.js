@@ -27,7 +27,8 @@ class MySQLProvider extends DatabaseProvider {
 	}
       }
     })
-
+    
+    //TODO database check / create all table if no tables found / print 'corrupted' when some of the tables are found (not all)
   }
   
   async get(table, id, column) {
@@ -39,7 +40,8 @@ class MySQLProvider extends DatabaseProvider {
   }
 
   async set(table, id, data) {
-    if(this.db.from(table).select('id').where('id', id).has({id: id})) {
+    let check = await this.db.from(table).select('id').where('id', id)
+    if(check.length > 0 && check[0].id === id) {
       return await this.db.from(table).where('id', id).update(data)
     } else {
       return await this.db.from(table).insert({...{id: id}, ...data})

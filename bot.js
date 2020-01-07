@@ -84,15 +84,16 @@ i18n.configure({
     logWarnFn: (msg) => console.warn(`[i18n/WARN] ${msg}`),
     logErrorFn: (msg) => console.log(`[i18n/ERROR] ${msg}`)
 });
-i18n.__ll = (phrase, guild) => {
+i18n.__ll = async (phrase, guild) => {
     return i18n.__({
         phrase: phrase,
-        locale: client.getGuildLocale(guild)
+        locale: await client.getGuildLocale(guild)
     });
 };
 
-client.getGuildLocale = (guild) => {
-    return client.provider.get(guild, 'lang') || 'en';
+client.getGuildLocale = async (guild) => {
+  let locale = await client.provider.get('guilds', guild.id, 'lang') || 'en';
+  return locale.length > 0 ? locale[0].lang : 'en'
 };
 
 /**
