@@ -65,7 +65,7 @@ switch (config.db.type) {
     }
     case 'mysql': {
         let provider = require('./db/mysql')
-	let db = new provider()
+	let db = new provider(config.db.connection)
 	client.setProvider(db)
 	break
     }

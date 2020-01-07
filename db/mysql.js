@@ -29,6 +29,22 @@ class MySQLProvider extends DatabaseProvider {
     })
 
   }
+  
+  async get(table, id, column) {
+    if(id) {
+      return await this.db.from(table).column(column).where('id', id)
+    } else {
+      return await this.db.from(table).column(column)
+    }
+  }
+
+  async set(table, id, data) {
+    if(this.db.from(table).select('id').where('id', id).has({id: id}) {
+      return await this.db.from(table).where('id', id).update(data)
+    } else {
+      return await this.db.from(table).insert({...{id: id}, ...data})
+    }
+  }
 }
 
 module.exports = MySQLProvider
