@@ -10,5 +10,8 @@ config.json
 debug.log
 db/db.json
 
+# Swap file (Vim)
+*.swp
+
 # Temporary
 command_temp
