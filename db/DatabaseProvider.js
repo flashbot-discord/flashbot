@@ -15,6 +15,9 @@ class DatabaseProvider extends SettingProvider {
 
   /*
    * Set the value to the database.
+   * @param {Object} tableOrRootNode `table` if relational database (like mysql, postgres), or `rootNode` if NoSQL (like json, RethinkDB)
+   * @param {string|number} the id of user or guild
+   * @param {Object} data the data to set (except `id`)
    */
   async set(tableOrRootNode, id, data) {
     throw new Error('set() is not implemented')
