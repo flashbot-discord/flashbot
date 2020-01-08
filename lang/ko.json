@@ -109,7 +109,8 @@
 			"execute": {
 				"get": "현재 언어: %s",
 				"set": "언어 설정이 `%s`(으)로 바뀌었습니다.",
-				"noPermission": "commands.lang.execute.noPermission"
+				"noPermission": "You don't have `ADMINISTRATOR` permission to do that.",
+				"noLanguage": "입력한 언어가 존재하지 않습니다."
 			}
 		},
 		"activate": {

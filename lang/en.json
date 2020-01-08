@@ -109,7 +109,8 @@
 			"execute": {
 				"get": "The current language is: `%s`",
 				"set": "Language setting changed to `%s`.",
-				"noPermission": "You don't have `ADMINISTRATOR` permission to do that."
+				"noPermission": "You don't have `ADMINISTRATOR` permission to do that.",
+				"noLanguage": "The language you entered does not exist."
 			}
 		},
 		"activate": {

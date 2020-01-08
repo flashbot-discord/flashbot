@@ -26,7 +26,8 @@ module.exports = class LangCommand extends BotCommand {
             ]
         });
     }
-
+    
+    // independent permission checker (+ custom ertor message)
     hasPerm(msg) {
         if(msg.client.isOwner(msg.author.id)) return true;
         else return msg.guild.member(msg.author).hasPermission('ADMINISTRATOR');
@@ -47,6 +48,7 @@ module.exports = class LangCommand extends BotCommand {
             } else {
                 //return msg.reply('access denied. (needs translation)');
                 //i18n.setLocale(language);
+		if(!i18n.getLocales().includes(language)) return msg.say(await i18n.__ll('commands.lang.execute.noLanguage', msg.guild))
                 msg.client.provider.set('guilds', msg.guild.id, {lang: language})
                 msg.say(i18n.__({
                     phrase: 'commands.lang.execute.set',
