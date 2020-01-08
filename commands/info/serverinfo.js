@@ -20,12 +20,12 @@ module.exports = class ServerInfoCommand extends BotCommand {
         });
     }
 
-    run(msg) {
+    async run(msg) {
         if (!super.run(msg)) return;
 
         msg.channel.send(i18n.__({
             phrase: 'commands.serverinfo.result',
-            locale: msg.client.getGuildLocale(msg.guild)
+            locale: await msg.client.getGuildLocale(msg.guild)
         }, msg.guild, msg.guild.name, msg.guild.memberCount));
     }
 };

@@ -18,12 +18,12 @@ module.exports = class UserInfoCommand extends BotCommand {
 		});
 	}
 
-	run(msg) {
+	async run(msg) {
 		if (!super.run(msg)) return;
 
 		msg.channel.send(i18n.__({
 			phrase: 'commands.userinfo.result',
-			locale: msg.client.getGuildLocale(msg.guild)
+			locale: await msg.client.getGuildLocale(msg.guild)
 		}, msg.author.username, msg.author.id));
 	}
 };

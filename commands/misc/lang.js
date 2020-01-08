@@ -32,25 +32,25 @@ module.exports = class LangCommand extends BotCommand {
         else return msg.guild.member(msg.author).hasPermission('ADMINISTRATOR');
     }
 
-    run(msg, {language}) {
+    async run(msg, {language}) {
         if(!super.run(msg)) return;
 
         if(language.length < 1) {
             return msg.say(i18n.__({
                 phrase: 'commands.lang.execute.get',
-                locale: msg.client.getGuildLocale(msg.guild)
-            }, msg.client.getGuildLocale(msg.guild)));
+                locale: await msg.client.getGuildLocale(msg.guild)
+            }, await msg.client.getGuildLocale(msg.guild)));
         }
         else {
             if(!this.hasPerm(msg)) {
-                return msg.say(i18n.__ll('commands.lang.execute.noPermission', msg.guild));
+                return msg.say(await i18n.__ll('commands.lang.execute.noPermission', msg.guild));
             } else {
                 //return msg.reply('access denied. (needs translation)');
                 //i18n.setLocale(language);
-                msg.client.provider.set(msg.guild, 'lang', language);
+                msg.client.provider.set('guilds', msg.guild.id, {lang: language})
                 msg.say(i18n.__({
                     phrase: 'commands.lang.execute.set',
-                    locale: msg.client.getGuildLocale(msg.guild)
+                    locale: await msg.client.getGuildLocale(msg.guild)
                 }, language));
             }
         }
