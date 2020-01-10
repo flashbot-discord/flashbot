@@ -2,11 +2,13 @@ const { SettingProvider } = require('discord.js-commando')
 
 class DatabaseProvider extends SettingProvider {
   /*
-   * Removes all settings in a guild or user
-   * @param {string} type the type of id to clear the settings. Only accepts `'guild'` or `'user'`.
+   * Removes all settings of a spicific guild/user in a table or rootNode
+   * @param {Object} tableOrRootNode `table` if the database is relational (like mysql, postgres), or `rootNode` if NoSQL (like json, RethinkDB)
    * @param {string} id the id of guild or user.
+   * @returns {Promise<void>}
+   * @abstract
    */
-  async clear(type, id) {
+  async clear(tableOrRootNode, id) {
     throw new Error('clear() is not implemented')
   }
 
@@ -21,7 +23,7 @@ class DatabaseProvider extends SettingProvider {
    * @param {Object} tableOrRootNode `table` if the database is relational (like mysql, postgres), or `rootNode` if NoSQL (like json, RethinkDB)
    * @param {string|number} the id of user or guild
    * @param {Array<string>} columnsOrProperties `columns` if relational database (like mysql, postgres), or `properties` if NoSQL (like json, RethinkDB)
-   * @returns {Object} the value with the key which is the element of `columnsOrProperties`
+   * @returns {Promise<Object>} the value with the key which is the element of `columnsOrProperties`
    * @abstract
    */
   async get(tableOrRootNode, id, columnsOrProperties) {
@@ -44,6 +46,7 @@ class DatabaseProvider extends SettingProvider {
    * @param {Object} tableOrRootNode `table` if relational database (like mysql, postgres), or `rootNode` if NoSQL (like json, RethinkDB)
    * @param {string|number} the id of user or guild
    * @param {Object} data the data to set (except `id`)
+   * @returns {Promise<*>} new value
    */
   async set(tableOrRootNode, id, data) {
     throw new Error('set() is not implemented')

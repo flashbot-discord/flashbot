@@ -7,7 +7,7 @@ class MySQLProvider extends DatabaseProvider {
     this.conn = conn
   }
 
-  init() {
+  async init() {
     console.log('[DB/MySQL] Init...')
 
     //if()
@@ -46,6 +46,25 @@ class MySQLProvider extends DatabaseProvider {
     } else {
       return await this.db.from(table).insert({...{id: id}, ...data})
     }
+
+    return data
+  }
+
+  async remove(table, id, columns) {
+    let val = {}
+    for(let element of columns) {
+      Object.defineProperty(val, element, {value: null, enumerable: true})
+    }
+    console.log(val)
+    return await this.db.from(table).where('id', id).update(val)
+  }
+
+  async clear(table, id) {
+    return await this.db.from(table).where('id', id).del()
+  }
+
+  async destroy() {
+    return await this.db.destroy()
   }
 }
 
