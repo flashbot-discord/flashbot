@@ -7,8 +7,8 @@
  * config file
  */
 
-const VERSION = "v0.7.1";
-const BUILD_DATE = "2019/11/13"
+const VERSION = "v0.7.2";
+const BUILD_DATE = "2020/3/17"
 
 let configFile;
 
