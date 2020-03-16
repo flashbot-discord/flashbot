@@ -14,13 +14,10 @@
     "discord.js": "^11.5.0",
     "discord.js-commando": "^0.10.0",
     "express": "^4.17.0",
-    "firebase": "^6.0.4",
-    "fs": "0.0.1-security",
-    "http": "0.0.0",
-    "i18n": "^0.8.3",
-    "path": "^0.12.7"
+    "i18n": "^0.8.3"
   },
   "devDependencies": {},
+  "optionalDependencies": {},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/comjun04/flashbot.git"
