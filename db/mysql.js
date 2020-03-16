@@ -1,7 +1,7 @@
 const { SettingProvider, CommandoRegistry } = require('discord.js-commando');
 const DatabaseProvider = require('./DatabaseProvider')
 
-class MySQLProvider extends DatabaseProvider {
+class MySQLProvider extends SettingProvider {
   constructor(conn) {
     super()
     this.conn = conn
@@ -31,14 +31,28 @@ class MySQLProvider extends DatabaseProvider {
     //TODO database check / create all table if no tables found / print 'corrupted' when some of the tables are found (not all)
   }
   
-  async get(table, id, column) {
+  /**
+   * Get the value from the database.
+   * @param {Object} table the table of the database
+   * @param {string} id the id of user or guild
+   * @param {Array<string>} columns the columns of the table to get
+   * @returns {Promise<Object>} the value with the key which is the element of `columns`
+   */
+  async get(table, id, columns) {
     if(id) {
-      return await this.db.from(table).column(column).where('id', id)
+      return await this.db.from(table).column(columns).where('id', id)
     } else {
-      return await this.db.from(table).column(column)
+      return await this.db.from(table).column(columns)
     }
   }
 
+  /**
+   * Set the value to the database.
+   * @param {Object} table the table of the database
+   * @param {string} id the id of user or guild
+   * @param {Object} data the data to set (except `id`)
+   * @returns {Promise<*>} new value
+   */
   async set(table, id, data) {
     let check = await this.db.from(table).select('id').where('id', id)
     if(check.length > 0 && check[0].id === id) {
@@ -50,16 +64,13 @@ class MySQLProvider extends DatabaseProvider {
     return data
   }
 
-  async remove(table, id, columns) {
-    let val = {}
-    for(let element of columns) {
-      Object.defineProperty(val, element, {value: null, enumerable: true})
-    }
-    console.log(val)
-    return await this.db.from(table).where('id', id).update(val)
-  }
-
-  async clear(table, id) {
+  /**
+   * Removes one row from the database.
+   * @param {Object} table the table of the database
+   * @param {string} id the id of user or guild
+   * @returns {Promise<Object>} the Object with the previous value, mapped with their columns' name.
+   */
+  async remove(table, id) {
     return await this.db.from(table).where('id', id).del()
   }
 
