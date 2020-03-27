@@ -3,20 +3,20 @@
  * @description 저장된 메모를 보여줍니다.
  */
 
-const BotCommand = require('../../utils/BotCommand')
+const Command = require('../../classes/Command')
 
-module.exports = class MemoCommand extends BotCommand {
-  constructor(client) {
+class MemoCommand extends Command {
+  constructor (client) {
     super(client, {
       name: 'memo',
       aliases: ['메모', 'mm', 'ㅁㅁ'],
-      group: 'memo',
-      memberName: 'memo',
       description: 'memo list'
     })
   }
 
-  run() {
+  run () {
 
   }
 }
+
+module.exports = MemoCommand

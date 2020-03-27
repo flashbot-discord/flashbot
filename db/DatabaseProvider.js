@@ -8,7 +8,7 @@ class DatabaseProvider extends SettingProvider {
    * @returns {Promise<void>}
    * @abstract
    */
-  async clear(tableOrRootNode, id) {
+  async clear (tableOrRootNode, id) {
     throw new Error('clear() is not implemented')
   }
 
@@ -26,7 +26,7 @@ class DatabaseProvider extends SettingProvider {
    * @returns {Promise<Object>} the value with the key which is the element of `columnsOrProperties`
    * @abstract
    */
-  async get(tableOrRootNode, id, columnsOrProperties) {
+  async get (tableOrRootNode, id, columnsOrProperties) {
     throw new Error('get() is not implemented')
   }
 
@@ -37,7 +37,7 @@ class DatabaseProvider extends SettingProvider {
    * @param {Array<string>} columnsOrProperties `columns` if relational database (like mysql, postgres), or `properties` if NoSQL (like json, RethinkDB)
    * @returns {Promise<Object>} the Object with the previous value, mapped with their columns or properties' name.
    */
-  async remove(tableOrRootNode, id, columnsOrProperties) {
+  async remove (tableOrRootNode, id, columnsOrProperties) {
     throw new Error('remove() is not implemented')
   }
 
@@ -48,7 +48,7 @@ class DatabaseProvider extends SettingProvider {
    * @param {Object} data the data to set (except `id`)
    * @returns {Promise<*>} new value
    */
-  async set(tableOrRootNode, id, data) {
+  async set (tableOrRootNode, id, data) {
     throw new Error('set() is not implemented')
   }
 }
