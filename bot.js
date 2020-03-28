@@ -3,10 +3,6 @@
  * @description Main Bot Script
  */
 
-/**
- * config file
- */
-
 const VERSION = 'v0.8'
 const BUILD_DATE = '2020/3/27'
 
@@ -16,6 +12,7 @@ const path = require('path')
 
 const BotClient = require('./classes/BotClient')
 const CommandHandler = require('./classes/CommandHandler')
+const LocaleHandler = require('./classes/LocaleHandler')
 
 const onReadyEvent = require('./events/onReady')
 const onMessageEvent = require('./events/onMessage')
@@ -25,6 +22,8 @@ const onMessageEvent = require('./events/onMessage')
  * @type {BotClient}
  */
 const client = new BotClient()
+
+
 
 /**
  * Database
@@ -45,9 +44,10 @@ switch (config.db.type) {
     }
 }
 */
+client.setupDatabase()
 
 // Setup Locale (i18n)
-client.initLocale()
+client.registerLocaleHandler(new LocaleHandler(client))
 
 /*
 client.getGuildLocale = async (guild) => {
@@ -76,7 +76,7 @@ client.registry
     ])
     .registerCommandsIn(path.join(__dirname, 'commands'));
 */
-client.commands = new CommandHandler(client, path.resolve() + '/commands')
+client.registerCommandHandler(new CommandHandler(client, path.resolve() + '/commands'))
 
 // for debug purposes
 client.on('message', msg => {

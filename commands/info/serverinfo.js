@@ -3,7 +3,7 @@
  * @description 서버 정보 보여주는 명령어
  */
 
-const Command = require('../../utils/Command')
+const Command = require('../../classes/Command')
 
 class ServerInfoCommand extends Command {
   constructor (client) {

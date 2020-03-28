@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const uuid = require('uuid-random')
 
 class CommandHandler {
   constructor (client, cmdPath) {
@@ -41,7 +42,7 @@ class CommandHandler {
 
               const cmd = require(path.join(cmdPath, group, cmdFile))
               const c = this.register(cmd, group)
-              client.logger.debug('CommandHandler', 'Command Loaded: ' + c._name)
+              client.logger.log('CommandHandler', 'Command Loaded: ' + c._name)
             } catch (err) {
               client.logger.error('CommandHandler', "Error loading command '" + cmdFile + "'. " + err.stack)
             }
@@ -96,11 +97,12 @@ class CommandHandler {
       locale = await client.locale.getGuildLocale(msg.guild.id)
       cmd.run(client, msg, query, locale)
     } catch (err) {
-      let uuid = uuid()
-      client.logger.error('CommandHandler.run => ' + cmd._name, 'Unexpected error: ' + err.stack)
+      let uid = uuid()
+      client.logger.error('CommandHandler.run => ' + cmd._name, 'Unexpected error (' + uid +'): ' + err.stack)
       return await msg.reply(client.locale.t('unexpectedError:'
       + 'An Unexpected error occured. Please report this error message and the Error ID to the Support server.\n'
-        + 'Error message: %1$s', locale))
+        + 'Error message: %1$s\n'
+        + 'Error ID: %2$s', locale, err.message, uid))
     }
   }
 }

@@ -1,22 +1,17 @@
-const BotCommand = require('../../utils/BotCommand')
-const i18n = require('i18n')
+const Command = require('../../classes/Command')
 
-module.exports = class DeactivateCommand extends BotCommand {
+class DeactivateCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'deactivate',
       aliases: ['deact', '비활성화'],
-      group: 'activation',
-      memberName: 'deactivate',
       description: 'Deactivate this bot on the server',
       userPermissions: ['ADMINISTRATOR'],
       guildOnly: true
     })
   }
 
-  async run (msg) {
-    if (!super.run(msg)) return
-
+  async run (client, msg, args, locale) {
     const mcFilter = (msg) => {
       if (this.author === msg.author.id) {
         if (msg.content.toLowerCase() !== 'yes' && msg.content.toLowerCase() !== 'no') return false
@@ -35,13 +30,15 @@ module.exports = class DeactivateCommand extends BotCommand {
       } else return false
     }
 
-    const botMsg = await msg.channel.send(await i18n.__ll('commands.deactivate.execute.title', msg.guild) + '\n\n' + await i18n.__ll('commands.deactivate.execute.content', msg.guild) + '\n\n' + await i18n.__ll('commands.deactivate.execute.confirm', msg.guild))
+    const botMsg = await msg.channel.send(client.locale.t('commands.deactivate.title', locale) + '\n\n' 
+      + client.locale.t('commands.deactivate.content', locale) + '\n\n' 
+      + client.locale.t('commands.deactivate.confirm', locale))
 
     try {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      await msg.channel.send(await i18n.__ll('commands.deactivate.execute.reactFail', msg.guild))
+      await msg.channel.send(client.locale.t('commands.deactivate.reactFail', ocale))
     }
 
     // Message Collector
@@ -68,19 +65,21 @@ module.exports = class DeactivateCommand extends BotCommand {
 
   async agree (msg, collector, collector2) {
     // Activation
-    await console.log(`[Bot Deactivation] ${msg.author.tag} (${msg.member.nickname}) deactivated the bot in ${msg.guild.name}`)
+    this._client.logger.log('Command / Deactivate', `[Bot Deactivation] ${msg.author.tag} (${msg.member.nickname}) deactivated the bot in ${msg.guild.name}`)
 
     await msg.client.provider.set('guilds', msg.guild.id, { activated: false })
 
     // Done!
-    await msg.channel.send(await i18n.__ll('commands.deactivate.execute.agree', msg.guild))
+    await msg.channel.send(this._client.locale.t('commands.deactivate.agree', locale))
     collector.stop()
     collector2.stop()
   }
 
   async deny (msg, collector, collector2) {
-    await msg.channel.send(await i18n.__ll('commands.deactivate.execute.deny', msg.guild))
+    await msg.channel.send(this._client.locale.t('commands.deactivate.deny', locale))
     collector.stop()
     collector2.stop()
   }
 }
+
+module.exports = DeactivateCommand

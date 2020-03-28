@@ -1,13 +1,10 @@
-const { Command } = require('discord.js-commando')
-const i18n = require('i18n')
+const Command = require('../../classes/Command')
 
-module.exports = class ActivateCommand extends Command {
+class ActivateCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'activate',
       aliases: ['act', '활성화'],
-      group: 'activation',
-      memberName: 'activate',
       description: 'Activate this bot on the server',
       userPermissions: ['ADMINISTRATOR'],
       guildOnly: true
@@ -17,7 +14,7 @@ module.exports = class ActivateCommand extends Command {
     this.author = ''
   }
 
-  async run (msg) {
+  async run (client, msg, args, locale) {
     const mcFilter = (msg) => {
       if (this.author === msg.author.id) {
         if (msg.content.toLowerCase() !== 'yes' && msg.content.toLowerCase() !== 'no') return false
@@ -36,14 +33,15 @@ module.exports = class ActivateCommand extends Command {
       } else return false
     }
 
-    const botMsg = await msg.channel.send(await i18n.__ll('commands.activate.execute.title', msg.guild) + '\n\n' +
-            await i18n.__ll('commands.activate.execute.content', msg.guild) + '\n\n' + await i18n.__ll('commands.activate.execute.confirm', msg.guild))
+    const botMsg = await msg.channel.send(client.locale.t('commands.activate.title:Activate **FlashBot**', locale) + '\n\n'
+      + client.locale.t('commands.activate.content', locale) + '\n\n' 
+      + client.locale.t('commands.activate.confirm', locale))
 
     try {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      await msg.channel.send(await i18n.__ll('commands.activate.execute.reactFail', msg.guild))
+      await msg.channel.send(client.locale.t('commands.activate.reactFail', locale))
     }
 
     // Message Collector
@@ -70,19 +68,21 @@ module.exports = class ActivateCommand extends Command {
 
   async agree (msg, collector, collector2) {
     // Activation
-    await console.log(`[Bot Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
+    await this._client.logger.log(`[Bot Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
 
     await msg.client.provider.set('guilds', msg.guild.id, { activated: true })
 
     // Done!
-    await msg.channel.send(await i18n.__ll('commands.activate.execute.agree', msg.guild))
+    await msg.channel.send(this._client.locale.t('commands.activate.agree', locale))
     collector.stop()
     collector2.stop()
   }
 
   async deny (msg, collector, collector2) {
-    await msg.channel.send(await i18n.__ll('commands.activate.execute.deny', msg.guild))
+    await msg.channel.send(this._client.locale.t('commands.activate.deny', locale))
     collector.stop()
     collector2.stop()
   }
 }
+
+module.exports = ActivateCommand
