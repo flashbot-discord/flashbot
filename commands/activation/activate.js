@@ -49,9 +49,9 @@ class ActivateCommand extends Command {
     const mc = msg.channel.createMessageCollector(mcFilter)
     mc.on('collect', () => {
       if (this.result) {
-        this.agree(msg, mc, rc)
+        this.agree(msg, locale, mc, rc)
       } else {
-        this.deny(msg, mc, rc)
+        this.deny(msg, locale, mc, rc)
       }
     })
 
@@ -59,18 +59,28 @@ class ActivateCommand extends Command {
     const rc = botMsg.createReactionCollector(rcFilter)
     rc.on('collect', () => {
       if (this.result) {
-        this.agree(msg, rc, mc)
+        this.agree(msg, locale, rc, mc)
       } else {
-        this.deny(msg, rc, mc)
+        this.deny(msg, locale, rc, mc)
       }
     })
   }
 
-  async agree (msg, collector, collector2) {
+  async agree (msg, locale, collector, collector2) {
     // Activation
-    await this._client.logger.log(`[Bot Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
+    await this._client.logger.log('Command / Activate', `[Bot Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
 
-    await msg.client.provider.set('guilds', msg.guild.id, { activated: true })
+    // DB
+    const db = this._client.db
+    switch(db.type) {
+      case 'mysql':
+        await this.mysqlHandle(msg.guild.id)
+        break
+
+      case 'json':
+        if(db.obj.guild[msg.guild.id] == null) db.obj.guild[msg.guild.id] = { activated: true }
+        else db.obj.guild[msg.guild.id].activated = true
+    }
 
     // Done!
     await msg.channel.send(this._client.locale.t('commands.activate.agree', locale))
@@ -78,10 +88,21 @@ class ActivateCommand extends Command {
     collector2.stop()
   }
 
-  async deny (msg, collector, collector2) {
+  async deny (msg, locale, collector, collector2) {
     await msg.channel.send(this._client.locale.t('commands.activate.deny', locale))
     collector.stop()
     collector2.stop()
+  }
+
+  async mysqlHandle(guildID) {
+    const db = this._client.db
+    const dbData = await db.knex('guilds').select('id').where('id', guildID)
+    if(dbData.length < 1) await db.knex('guilds').insert({
+      id: guildID,
+      locale: 'en_US',
+      activated: true
+    })
+    else await db.knex('guilds').where('id', guildID).update({ activated: true })
   }
 }
 

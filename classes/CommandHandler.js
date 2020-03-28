@@ -8,7 +8,7 @@ class CommandHandler {
      * Bot Client
      * @type {BotClient} client
      */
-    this.client = client
+    this._client = client
     /**
      * The path where commands are located
      * @type {string} path
@@ -40,8 +40,9 @@ class CommandHandler {
               client.logger.debug('CommandHandler', 'Checking file for command: ' + cmdFile)
               if (!cmdFile.endsWith('.js')) return client.logger.debug('CommandHandler', 'Not a Javascript file. Skipping.')
 
-              const cmd = require(path.join(cmdPath, group, cmdFile))
-              const c = this.register(cmd, group)
+              const fullpath = path.join(cmdPath, group, cmdFile)
+              const cmd = require(fullpath)
+              const c = this.register(cmd, group, fullpath)
               client.logger.log('CommandHandler', 'Command Loaded: ' + c._name)
             } catch (err) {
               client.logger.error('CommandHandler', "Error loading command '" + cmdFile + "'. " + err.stack)
@@ -59,27 +60,47 @@ class CommandHandler {
     client.logger.log('CommandHandler', this.aliases.size + ' command aliases registered.')
   }
 
-  register (CommandFile, group) {
-    const c = new CommandFile(this.client)
+  register (CommandFile, group, fullpath) {
+    const c = new CommandFile(this._client)
 
     // Conflict check
     if (this.commands.has(c._name)) {
-      return this.client.logger.error('CommandHandler.register', "Command '" + c._name + "' already exists.")
+      return this._client.logger.error('CommandHandler.register', "Command '" + c._name + "' already exists.")
     }
 
     for (const alias of this.aliases) {
       if (c._aliases.includes(alias)) {
-        return this.client.logger.error('CommandHandler.register', "Command Alias '" + alias + "' already exists.")
+        return this._client.logger.error('CommandHandler.register', "Command Alias '" + alias + "' already exists.")
       }
     }
 
     c._group = group
+    c._path = fullpath
 
     this.commands.set(c._name, c)
+    this._client.logger.debug('CommandHandler', "Registered command object '" + c._name + "'")
+
     this.aliases.set(c._name, c._name)
     if (c._aliases.length > 0) c._aliases.forEach((alias) => { this.aliases.set(alias, c._name) })
+    this._client.logger.debug('CommandHandler', "Registered all command aliases for '" + c._name + "'")
 
     return c
+  }
+
+  reregister(oldCmd, newCmd) {
+    this.unregister(oldCmd)
+    this.register(newCmd)
+  }
+
+  unregister (cmd) {
+    // remove all aliases
+    this._client.logger.debug('CommandHandler', "Unregistering all command aliases for '" + cmd._name +"'")
+    cmd._aliases.forEach((alias) => { if (this.aliases.has(alias)) this.aliases.delete(alias) })
+    this.commands.delete(cmd._name)
+
+    // remove command name itself
+    this._client.logger.debug('CommandHandler', "Unregistering command '" + cmd._name + "'")
+    this.commands.delete(cmd._name)
   }
 
   get(name) {
@@ -88,13 +109,13 @@ class CommandHandler {
   }
 
   async run(cmd, client, msg, query) {
+    const locale = await client.locale.getGuildLocale(msg.guild.id)
+
     // Perms Check
-    
+    if(cmd.owner && !client.owner.includes(msg.author.id)) return await msg.reply(client.locale.t('ownerOnly:Only the owners of the bot can run this command.', locale))
     
     // Run
-    let locale
     try {
-      locale = await client.locale.getGuildLocale(msg.guild.id)
       cmd.run(client, msg, query, locale)
     } catch (err) {
       let uid = uuid()

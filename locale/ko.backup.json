@@ -92,7 +92,9 @@
 			},
 			"execute": {
 				"no_args": "Enter command to reload. (Currently not working)"
-			}
+			},
+			"usage": "Usage:```\n%1$sreload <command>\n```",
+			"reloaded": "Reloaded `%1$s` command."
 		},
 		"say": {
 			"execute": {
@@ -126,7 +128,8 @@
 			"title": "Activate **FlashBot**",
 			"content": "commands.activate.content",
 			"confirm": "commands.activate.confirm",
-			"reactFail": "commands.activate.reactFail"
+			"reactFail": "commands.activate.reactFail",
+			"agree": "commands.activate.agree"
 		},
 		"deactivate": {
 			"execute": {
@@ -137,6 +140,13 @@
 				"deny": "봇 비활성화가 취소되었습니다.",
 				"reactFail": "이 봇이 `반응 추가` 권한을 가지고 있지 않아, 반응을 추가할 수 없습니다.\n답변을 직접 입력하거나, 수동으로 반응을 추가해 주세요."
 			}
+		},
+		"load": {
+			"error": "An Error occured when loading the command: ```\n%1$s\n```",
+			"usage": "Usage: ```\n%1$sload <command>\n```"
+		},
+		"unload": {
+			"usage": "Usage: ```\n%1$sunload <command>\n```"
 		}
 	},
 	"command_error": "An error occured while executing the command.",

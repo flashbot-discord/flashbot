@@ -92,7 +92,9 @@
 			},
 			"execute": {
 				"no_args": "Enter command to reload. (Currently not working)"
-			}
+			},
+			"usage": "Usage:```\n%1$sreload <command>\n```",
+			"reloaded": "Reloaded `%1$s` command."
 		},
 		"say": {
 			"execute": {
@@ -126,7 +128,8 @@
 			"title": "Activate **FlashBot**",
 			"content": "commands.activate.content",
 			"confirm": "commands.activate.confirm",
-			"reactFail": "commands.activate.reactFail"
+			"reactFail": "commands.activate.reactFail",
+			"agree": "commands.activate.agree"
 		},
 		"deactivate": {
 			"execute": {
@@ -137,6 +140,13 @@
 				"deny": "Bot deactivation cancelled.",
 				"reactFail": "The Bot does not have `Add Reaction` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually."
 			}
+		},
+		"load": {
+			"error": "An Error occured when loading the command: ```\n%1$s\n```",
+			"usage": "Usage: ```\n%1$sload <command>\n```"
+		},
+		"unload": {
+			"usage": "Usage: ```\n%1$sunload <command>\n```"
 		}
 	},
 	"command_error": "An error occured while executing the command.",

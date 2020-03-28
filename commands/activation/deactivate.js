@@ -38,7 +38,7 @@ class DeactivateCommand extends Command {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      await msg.channel.send(client.locale.t('commands.deactivate.reactFail', ocale))
+      await msg.channel.send(client.locale.t('commands.deactivate.reactFail', locale))
     }
 
     // Message Collector
@@ -46,9 +46,9 @@ class DeactivateCommand extends Command {
     const mc = msg.channel.createMessageCollector(mcFilter)
     mc.on('collect', () => {
       if (this.result) {
-        this.agree(msg, mc, rc)
+        this.agree(msg, locale, mc, rc)
       } else {
-        this.deny(msg, mc, rc)
+        this.deny(msg, locale, mc, rc)
       }
     })
 
@@ -56,18 +56,27 @@ class DeactivateCommand extends Command {
     const rc = botMsg.createReactionCollector(rcFilter)
     rc.on('collect', () => {
       if (this.result) {
-        this.agree(msg, rc, mc)
+        this.agree(msg, locale, rc, mc)
       } else {
-        this.deny(msg, rc, mc)
+        this.deny(msg, locale, rc, mc)
       }
     })
   }
 
-  async agree (msg, collector, collector2) {
+  async agree (msg, locale, collector, collector2) {
     // Activation
     this._client.logger.log('Command / Deactivate', `[Bot Deactivation] ${msg.author.tag} (${msg.member.nickname}) deactivated the bot in ${msg.guild.name}`)
 
-    await msg.client.provider.set('guilds', msg.guild.id, { activated: false })
+    // DB
+    const db = this._client.db
+    switch(db.type) {
+      case 'mysql':
+        await this.mysqlHandle(msg.guild.id)
+        break
+      case 'json':
+        if(db.obj.guild[msg.guild.id] == null) db.obj.guild[msg.guild.id] = { activated: false }
+        else db.obj.guild[msg.guild.id].activated = false
+    }
 
     // Done!
     await msg.channel.send(this._client.locale.t('commands.deactivate.agree', locale))
@@ -75,10 +84,19 @@ class DeactivateCommand extends Command {
     collector2.stop()
   }
 
-  async deny (msg, collector, collector2) {
+  async deny (msg, locale, collector, collector2) {
     await msg.channel.send(this._client.locale.t('commands.deactivate.deny', locale))
     collector.stop()
     collector2.stop()
+  }
+
+  async mysqlHandle(guildID) {
+    const db = this._client.db
+    const dbData = await db.knex('guilds').select('id').where('id', guildID)
+    if(dbData.length < 1) await db.knex('guilds').insert({       id: guildID,
+      locale: 'en_US',                                           activated: false
+    })
+    else await db.knex('guilds').where('id', guildID).update({ activated: false })
   }
 }
 

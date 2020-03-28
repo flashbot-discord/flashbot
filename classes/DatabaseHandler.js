@@ -26,7 +26,7 @@ class DatabaseHandler {
       case 'json': {
         // JSON db uses two files:
         // guild.json, user.json
-        const folder = connection.folder || path.resolve()
+        const folder = connection.folder || path.join(path.resolve(), 'db', 'json')
         const guildFile = connection.guild || 'guild.json'
         const userFile = connection.user || 'user.json'
 
