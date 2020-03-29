@@ -89,7 +89,7 @@ class CommandHandler {
 
   reregister(oldCmd, newCmd) {
     this.unregister(oldCmd)
-    this.register(newCmd)
+    this.register(newCmd, oldCmd._group, oldCmd._path)
   }
 
   unregister (cmd) {
@@ -111,18 +111,26 @@ class CommandHandler {
   async run(cmd, client, msg, query) {
     const locale = await client.locale.getGuildLocale(msg.guild.id)
 
+    // Status Check
+    if(cmd._requireDB && !this._client.db.ready) return await msg.channel.send(client.locale.t('error.DBNotReady:This feature needs the database storage to work.\n'
+    + 'Currently, the bot is not connected to the storage.\n'
+    + 'Please report this to the Support server to be fixed.', locale))
+
+    if(cmd._guildOnly && !msg.guild) return await msg.reply(client.locale.t('CommandHandler.run.guildOnly:This command can only run on server text channel.', locale))
+
     // Perms Check
-    if(cmd.owner && !client.owner.includes(msg.author.id)) return await msg.reply(client.locale.t('ownerOnly:Only the owners of the bot can run this command.', locale))
+    if(cmd._owner && !client.config.owner.includes(msg.author.id)) return await msg.reply(client.locale.t('CommandHandler.run.ownerOnly:Only the owners of the bot can run this command.', locale))
     
     // Run
     try {
-      cmd.run(client, msg, query, locale)
+      await cmd.run(client, msg, query, locale)
     } catch (err) {
       let uid = uuid()
-      client.logger.error('CommandHandler.run => ' + cmd._name, 'Unexpected error (' + uid +'): ' + err.stack)
-      return await msg.reply(client.locale.t('unexpectedError:'
-      + 'An Unexpected error occured. Please report this error message and the Error ID to the Support server.\n'
-        + 'Error message: %1$s\n'
+
+      client.logger.error('CommandHandler.run => ' + cmd._name, 'Error (' + uid +'): ' + err.stack)
+      return await msg.reply(client.locale.t('CommandHandler.error:'
+      + 'An Error occured. Please report this error message and the Error ID to the Support server.\n'
+        + 'Error message: ```\n%1$s\n```\n'
         + 'Error ID: %2$s', locale, err.message, uid))
     }
   }

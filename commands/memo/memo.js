@@ -9,7 +9,7 @@ class MemoCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'memo',
-      aliases: ['메모', 'mm', 'ㅁㅁ'],
+      aliases: ['메모', 'mm', 'ㅁㅁ', 'ㅡ드ㅐ', 'apah'],
       description: 'memo list'
     })
   }

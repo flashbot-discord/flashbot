@@ -9,14 +9,14 @@ class ServerInfoCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'serverinfo',
-      aliases: ['server-info', '서버정보'],
+      aliases: ['server-info', '서버정보', 'ㄴㄷㄱㅍㄷ갸ㅜ래', 'ㄴㄷㄱㅍㄷㄱ-ㅑㅜ래', 'tjqjwjdqh'],
       description: '...',
       guildOnly: true
     })
   }
 
-  async run (msg) {
-    return msg.channel.send(client.locale.t('commands.serverinfo.result:'
+  async run (client, msg, _query, locale) {
+    return msg.channel.send(client.locale.t('commands.serverinfo.run:'
     + 'Server Name: **%1$s**\nMembers in the Server: %2$s', locale, msg.guild.name, msg.guild.memberCount))
   }
 }

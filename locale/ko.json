@@ -40,7 +40,8 @@
 		"beep": {
 			"desc": "boop",
 			"execute": "boop",
-			"reply": "boop"
+			"reply": "boop",
+			"run": "boop"
 		},
 		"serverinfo": {
 			"desc": "서버 정보를 보여줍니다.",
@@ -67,6 +68,9 @@
 					"name": "JavaScript Code",
 					"desc": "JavaScript Code to execute"
 				}
+			},
+			"result": {
+				"output": "commands.eval.result.output"
 			}
 		},
 		"args-info": {
@@ -83,7 +87,9 @@
 					"name": "인수",
 					"desc": "테스트할 인수들"
 				}
-			}
+			},
+			"noArgs": "No arguments provided.",
+			"result": "Command name: %1$s\nArguments: %2$s"
 		},
 		"reload": {
 			"desc": "Reloads a command. (Currently not working)",
@@ -94,12 +100,15 @@
 				"no_args": "Enter command to reload. (Currently not working)"
 			},
 			"usage": "Usage:```\n%1$sreload <command>\n```",
-			"reloaded": "Reloaded `%1$s` command."
+			"reloaded": "Reloaded `%1$s` command.",
+			"error": "An error occured while reloading the command: ```\n%1$s\n```",
+			"cannotfind": "Cannot find command `%1$s`."
 		},
 		"say": {
 			"execute": {
 				"no_args": "따라 말할 텍스트를 입력해 주세요."
-			}
+			},
+			"noText": "Please enter text to respond."
 		},
 		"lang": {
 			"desc": "이 봇에 현재 설정된 언어를 보고 변경합니다. (할 일: 서버마다 언어 설정)",
@@ -129,7 +138,8 @@
 			"content": "commands.activate.content",
 			"confirm": "commands.activate.confirm",
 			"reactFail": "commands.activate.reactFail",
-			"agree": "commands.activate.agree"
+			"agree": "commands.activate.agree",
+			"deny": "commands.activate.deny"
 		},
 		"deactivate": {
 			"execute": {
@@ -139,14 +149,32 @@
 				"agree": "이 봇을 사용해 주셔서 감사합니다. 이 봇은 이제 비활성화되었습니다. 다시 활성화하려면, `activate` 명령어를 사용해 주세요.",
 				"deny": "봇 비활성화가 취소되었습니다.",
 				"reactFail": "이 봇이 `반응 추가` 권한을 가지고 있지 않아, 반응을 추가할 수 없습니다.\n답변을 직접 입력하거나, 수동으로 반응을 추가해 주세요."
-			}
+			},
+			"title": "commands.deactivate.title",
+			"content": "commands.deactivate.content",
+			"confirm": "commands.deactivate.confirm",
+			"reactFail": "commands.deactivate.reactFail",
+			"agree": "commands.deactivate.agree"
 		},
 		"load": {
 			"error": "An Error occured when loading the command: ```\n%1$s\n```",
-			"usage": "Usage: ```\n%1$sload <command>\n```"
+			"usage": "Usage: ```\n%1$sload <command>\n```",
+			"cannotfind": "Cannot find Command `%1$s`.",
+			"added": "Loaded `%1$s` command."
 		},
 		"unload": {
-			"usage": "Usage: ```\n%1$sunload <command>\n```"
+			"usage": "Usage: ```\n%1$sunload <command>\n```",
+			"error": "An Error occured while unloading the command: ```\n%1$s\n```",
+			"unloaded": "Unloaded `%1$s` command."
+		},
+		"profileimage": {
+			"usage": "Usage: %1$s%2$s (user: string|@mention)"
+		},
+		"locale": {
+			"get": "commands.locale.get",
+			"noPermission": "commands.locale.noPermission",
+			"set": "commands.locale.set",
+			"noLanguage": "commands.locale.noLanguage"
 		}
 	},
 	"command_error": "An error occured while executing the command.",
@@ -159,5 +187,16 @@
 			"embed": "테스트",
 			"notEmbed": "**테스트**"
 		}
+	},
+	"unexpectedError": "An Unexpected error occured. Please report this error message and the Error ID to the Support server.\nError message: %1$s\nError ID: %2$s",
+	"CommandHandler": {
+		"unexpectedError": "An Unexpected error occured: `%1$s`",
+		"error": "An Error occured. Please report this error message and the Error ID to the Support server.\nError message: %1$s\nError ID: %2$s",
+		"run": {
+			"ownerOnly": "Only the owners of the bot can run this command."
+		}
+	},
+	"ClientError": {
+		"footer": "Please report this error message and the Error ID to the Support server.\nError ID: `%1$s`"
 	}
 }

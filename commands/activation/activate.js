@@ -4,7 +4,7 @@ class ActivateCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'activate',
-      aliases: ['act', '활성화'],
+      aliases: ['act', '활성화', 'ㅁㅊ샾ㅁㅅㄷ', 'ㅁㅊㅅ', 'ghkftjdghk'],
       description: 'Activate this bot on the server',
       userPermissions: ['ADMINISTRATOR'],
       guildOnly: true
@@ -33,7 +33,7 @@ class ActivateCommand extends Command {
       } else return false
     }
 
-    const botMsg = await msg.channel.send(client.locale.t('commands.activate.title:Activate **FlashBot**', locale) + '\n\n'
+    const botMsg = await msg.channel.send(client.locale.t('commands.activate.title', locale) + '\n\n'
       + client.locale.t('commands.activate.content', locale) + '\n\n' 
       + client.locale.t('commands.activate.confirm', locale))
 
@@ -96,13 +96,13 @@ class ActivateCommand extends Command {
 
   async mysqlHandle(guildID) {
     const db = this._client.db
-    const dbData = await db.knex('guilds').select('id').where('id', guildID)
-    if(dbData.length < 1) await db.knex('guilds').insert({
+    const dbData = await db.knex('guild').select('id').where('id', guildID)
+    if(dbData.length < 1) await db.knex('guild').insert({
       id: guildID,
       locale: 'en_US',
       activated: true
     })
-    else await db.knex('guilds').where('id', guildID).update({ activated: true })
+    else await db.knex('guild').where('id', guildID).update({ activated: true })
   }
 }
 

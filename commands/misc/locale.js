@@ -1,9 +1,7 @@
 /**
- * @name lang.js
+ * @name locale.js
  * @description 설정된 언어 확인 및 변경
  */
-
-const i18n = require('i18n')
 
 const Command = require('../../classes/Command')
 
@@ -11,39 +9,38 @@ class LocaleCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'locale',
-      aliases: ['언어'],
+      aliases: ['언어', 'ㅣㅐㅊ믿', 'djsdj'],
       description: '',
-      guildOnly: true
+      guildOnly: true,
+      requireDB: true
     })
   }
 
-  // independent permission checker (+ custom ertor message)
-  hasPerm (msg) {
-    if (msg.client.isOwner(msg.author.id)) return true
-    else return msg.guild.member(msg.author).hasPermission('ADMINISTRATOR')
+  async run (client, msg, query, locale) {
+    if(!await client.db.isRegisteredGuild(msg.guild.id)) return Command.pleaseRegisterGuild(msg, locale)
+
+    if (query.args.length < 1) {
+      return await msg.channel.send(client.locale.t('commands.locale.get:The current language is: `%1$s`', locale, locale))
+    } else {
+      if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.has('ADMINISTRATOR')) return await msg.channel.send(client.locale.t("commands.locale.noPermission:You don't have `ADMINISTRATOR` permission to do that.", locale))
+      else {
+        const language = query.args[0]
+        if (!client.locale.i18n.getLocales().includes(language)) return await msg.channel.send(client.locale.t('commands.locale.noLanguage:The language you entered does not exist.', locale))
+        this.dbHandle(msg.guild, language)
+        await msg.channel.send(client.locale.t('commands.locale.set:Language setting changed to `%1$s`.', locale, language))
+      }
+    }
   }
 
-  async run (msg, { language }) {
-    if (!super.run(msg)) return
+  async dbHandle(guild, locale) {
+    switch(this._client.db.type) {
+      case 'mysql':
+        await this._client.db.knex('guild').update({ locale }).where('id', guild.id)
+        break
 
-    if (language.length < 1) {
-      return msg.say(i18n.__({
-        phrase: 'commands.lang.execute.get',
-        locale: await msg.client.getGuildLocale(msg.guild)
-      }, await msg.client.getGuildLocale(msg.guild)))
-    } else {
-      if (!this.hasPerm(msg)) {
-        return msg.say(await i18n.__ll('commands.lang.execute.noPermission', msg.guild))
-      } else {
-        // return msg.reply('access denied. (needs translation)');
-        // i18n.setLocale(language);
-        if (!i18n.getLocales().includes(language)) return msg.say(await i18n.__ll('commands.lang.execute.noLanguage', msg.guild))
-        msg.client.provider.set('guilds', msg.guild.id, { lang: language })
-        msg.say(i18n.__({
-          phrase: 'commands.lang.execute.set',
-          locale: await msg.client.getGuildLocale(msg.guild)
-        }, language))
-      }
+      case 'json':
+        this._client.db.obj.guild[guild.id].locale = locale
+        break
     }
   }
 }

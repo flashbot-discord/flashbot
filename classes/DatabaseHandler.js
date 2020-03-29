@@ -5,6 +5,7 @@ class DatabaseHandler {
   constructor(client, type, connection) {
     this._client = client
     this.type = type
+    this.ready = false
 
     client.logger.log('DatabaseHandler', 'Database Handler Initializing...')
     client.logger.log('DatabaseHandler', 'Database Type: ' + type)
@@ -17,7 +18,8 @@ class DatabaseHandler {
         })
 
         this.knex = knex
-        this.test().catch((err) => {
+        this.test().then(() => this.ready = true)
+        .catch((err) => {
           client.logger.error('DatabaseHandler', 'Failed to connect the database: ' + err.stack)
         })
         break
@@ -26,6 +28,7 @@ class DatabaseHandler {
       case 'json': {
         // JSON db uses two files:
         // guild.json, user.json
+        try {
         const folder = connection.folder || path.join(path.resolve(), 'db', 'json')
         const guildFile = connection.guild || 'guild.json'
         const userFile = connection.user || 'user.json'
@@ -39,6 +42,11 @@ class DatabaseHandler {
 
         this.path = { folder, guildFile, userFile }
         client.logger.debug('DatabaseHandler', '[JSON] 2 database files loaded')
+
+          this.ready = true
+        } catch(err) {
+          client.logger.error('DatabaseHandler', '[JSON] Error when setting up json storage: ' + err.stack)
+        }
         break
       }
 
@@ -46,7 +54,8 @@ class DatabaseHandler {
         return client.logger.error('DatabaseHandler', 'Invalid database type: ' + type)
     }
 
-    client.logger.log('DatabaseHandler', 'Database Ready')
+    if(this.ready) client.logger.log('DatabaseHandler', 'Database Ready')
+    else client.logger.warn('DatabaseHandler', "Database not ready; Some bot features won't be able to work properly")
   }
 
   async test() {
@@ -55,13 +64,39 @@ class DatabaseHandler {
       case 'mysql':
         try {
           await this.knex.raw('select 1+1 as test')
+          this.ready = true
           return true
         } catch(err) {
+          this.ready = false
           throw err
         }
       case 'json':
         // TODO
         return true
+    }
+  }
+
+  async isRegisteredUser(id) {
+    switch(this.type) {
+      case 'mysql':
+        if(await this.knex('user').select('id').where('id', id).length < 1) return false
+        else return true
+
+      case 'json':
+        if(typeof this.obj.user[id] === 'object') return true
+        else return false
+    }
+  }
+
+  async isRegisteredGuild(id) {
+    switch(this.type) {
+      case 'mysql':
+        if(await this.knex('guild').select('id').where('id', id).length < 1) return false
+        else return true
+
+      case 'json':
+        if(typeof this.obj.guild[id] === 'object') return true
+        else return false
     }
   }
 

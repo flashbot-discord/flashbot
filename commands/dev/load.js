@@ -1,10 +1,12 @@
 const Command = require('../../classes/Command')
+const ClientError = require('../../classes/ClientError')
 const path = require('path')
 
 class LoadCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'load',
+      aliases: ['ㅣㅐㅁㅇ'],
       description: 'Loads a command.',
       owner: true
     })
@@ -20,9 +22,7 @@ class LoadCommand extends Command {
       input = query.args[0]
 
       let cmd, fullpath = path.join(client.commands.cmdPath, input + '.js')
-      try {
-        cmd = require(fullpath)
-      } catch (err) { return await msg.reply(client.locale.t('commands.load.cannotfind:Cannot find Command `%1$s`.', locale, input)) }
+      cmd = require(fullpath)
 
       const group = input.split('/')[0]
       client.commands.register(cmd, group, fullpath)
@@ -30,7 +30,7 @@ class LoadCommand extends Command {
       return await msg.reply(client.locale.t('commands.load.added:Loaded `%1$s` command.', locale, input))
     } catch (err) {
       this._client.logger.error('Command / Load', "Error when loading command '" + input + "': " + err.stack)
-      return await msg.reply(client.locale.t('commands.load.error:An Error occured when loading the command: ```\n%1$s\n```', locale, err.message))
+      throw new ClientError(client.locale.t('commands.load.error:An Error occured when loading the command: %1$s', locale, err.message))
     }
   }
 }

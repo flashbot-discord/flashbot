@@ -1,9 +1,11 @@
 const Command = require('../../classes/Command')
+const ClientError = require('../../classes/ClientError')
 
 class UnloadCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'unload',
+      aliases: ['ㅕㅟㅐㅁㅇ'],
       description: 'Unloads a command.',
       owner: true
     })
@@ -23,8 +25,8 @@ class UnloadCommand extends Command {
       cmd.unload()
       return await msg.reply(client.locale.t('commands.unload.unloaded:Unloaded `%1$s` command.', locale, cmd._name))
     } catch (err) {
-      this._client.logger.error('Command / Unload', 'Error when unloading command: ' + input)
-      return await msg.reply(client.locale.t('commands.unload.error:An Error occured while unloading the command: ```\n%1$s\n```', locale, err.message))
+      this._client.logger.error('Command / Unload', 'Error when unloading command ' + input + ': ' + err.stack)
+      throw new ClientError(client.locale.t('commands.unload.error:An Error occured while unloading the command: ```\n%1$s\n```', locale, err.message))
     }
   }
 }

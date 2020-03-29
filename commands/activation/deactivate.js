@@ -4,7 +4,7 @@ class DeactivateCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'deactivate',
-      aliases: ['deact', '비활성화'],
+      aliases: ['deact', '비활성화', 'ㅇㄷㅁㅊ샾ㅁㅅㄷ', 'ㅇㄷㅁㅊㅅ', 'qlghkftjdghk'],
       description: 'Deactivate this bot on the server',
       userPermissions: ['ADMINISTRATOR'],
       guildOnly: true
@@ -92,11 +92,11 @@ class DeactivateCommand extends Command {
 
   async mysqlHandle(guildID) {
     const db = this._client.db
-    const dbData = await db.knex('guilds').select('id').where('id', guildID)
-    if(dbData.length < 1) await db.knex('guilds').insert({       id: guildID,
+    const dbData = await db.knex('guild').select('id').where('id', guildID)
+    if(dbData.length < 1) await db.knex('guild').insert({       id: guildID,
       locale: 'en_US',                                           activated: false
     })
-    else await db.knex('guilds').where('id', guildID).update({ activated: false })
+    else await db.knex('guild').where('id', guildID).update({ activated: false })
   }
 }
 

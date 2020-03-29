@@ -34,13 +34,16 @@ class BotClient extends Client {
 
     config.token = process.env.flashbotToken || token
     config.prefix = process.env.flashBotPrefix || config.prefix
-    this.config = config
 
-    if (config.owner.length < 1) logger.warn('BotClient', 'No owner in the environment variable or config file; You cannot use owner-only commands.')
+    if (!Array.isArray(config.owner) || config.owner.length < 1) {
+      logger.warn('BotClient', 'No owner in the environment variable or config file; You cannot use owner-only commands.')
+      config.owner = []
+    }
 
     if (typeof config.prefix !== 'string') logger.fatal('BotClient', "Invalid type for 'config.prefix'. Accepts String.")
     if (config.prefix.length < 1) logger.warn('BotClient', 'Command prefix configuration not found. You can only enter commands by pinging the bot.')
 
+    this.config = config
     logger.log('BotClient', 'Loaded bot configuration')
   }
 

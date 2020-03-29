@@ -20,8 +20,16 @@ class LocaleHandler {
   }
 
   async getGuildLocale(id) {
-    // TODO Database
-    return 'en_US'
+    switch(this._client.db.type) {
+      case 'mysql': {
+        const d = await this._client.db.knex('guild').select('locale').where('id', id)
+        if(d.length < 1) return 'en_US' // Default
+        else return d[0].locale
+      }
+
+      case 'json':
+        break
+    }
   }
 }
 

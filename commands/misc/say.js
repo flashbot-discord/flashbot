@@ -3,23 +3,20 @@
  * @description 사용자가 입력한 말을 따라 말하는 명령어입니다.
  */
 
-const i18n = require('i18n')
-
 const Command = require('../../classes/Command')
 
 class SayCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'say',
-      aliases: ['말하기'],
+      aliases: ['말하기', 'ㄴ묘', 'akfgkrl'],
       description: 'Replies with a meow, kitty cat.'
     })
   }
 
-  run (msg, { input }) {
-    if (!super.run(msg)) return
-
-    return msg.channel.send(input)
+  async run (client, msg, query, locale) {
+    if(query.args.length < 1) return await msg.reply(client.locale.t('commands.say.noText:Please enter text to respond.',locale))
+    return await msg.channel.send(query.args.join(' '))
   }
 }
 
