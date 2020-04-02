@@ -27,33 +27,10 @@ const client = new BotClient()
 /**
  * Database
  */
-/*
-switch (config.db.type) {
-  case 'json': {
-    let req = require('./db/json');
-    var db = new req('./db/db.json');
-    client.setProvider(db);
-    break
-  }
-  case 'mysql': {
-    let provider = require('./db/mysql')
-    let db = new provider(config.db.connection)
-    client.setProvider(db)
-    break
-  }
-}
-*/
 client.setupDatabase()
 
 // Setup Locale (i18n)
 client.registerLocaleHandler(new LocaleHandler(client))
-
-/*
-client.getGuildLocale = async (guild) => {
-  let locale = await client.provider.get('guilds', guild.id, 'lang') || 'en';
-  return locale.length > 0 ? locale[0].lang : 'en'
-};
-*/
 
 // event
 client.registerEvent('ready', onReadyEvent)
@@ -96,4 +73,4 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 app.use(express.static('public'))
-app.listen(PORT, () => console.log(`Web server on port ${PORT}`))
+app.listen(PORT, () => client.logger.log('BOT MAIN', `Web server on port ${PORT}`))
