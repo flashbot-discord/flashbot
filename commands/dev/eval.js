@@ -2,7 +2,7 @@ const Command = require('../../classes/Command')
 const util = require('util')
 
 class EvalCommand extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'eval',
       aliases: ['evaluate', 'ㄷㅍ미', 'ㄷㅍ미ㅕㅁㅅㄷ'],
@@ -18,9 +18,9 @@ class EvalCommand extends Command {
     })
   }
 
-  async run(client, msg, query, locale) {
+  async run (client, msg, query, locale) {
     const str = query.args.join(' ')
-    if(!str) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
+    if (!str) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
     client.logger.log('Command / Eval', '[EVAL] ' + msg.author.tag + ' evaluated the code: ' + str)
 
     let result
@@ -31,10 +31,11 @@ class EvalCommand extends Command {
       value: client.config.token
     })
     client.config.token = '403 Forbidden'
-    
+
     try {
-      result = util.inspect(eval(str), {depth: 0})
-    } catch(err) {
+      // eslint-disable-next-line no-eval
+      result = util.inspect(eval(str), { depth: 0 })
+    } catch (err) {
       result = err.message
     }
 
@@ -43,10 +44,10 @@ class EvalCommand extends Command {
     __BACKUP__DATA__ = null
 
     client.logger.debug('Command / Eval', '[EVAL] Result: ' + result)
-    return await msg.reply(client.locale.t('commands.eval.input:Input:', locale) + '```\n'
-      + str + '\n```\n' 
-      + client.locale.t('commands.eval.output:and Output:', locale) + '```\n'
-      + result + '\n```')
+    return await msg.reply(client.locale.t('commands.eval.input:Input:', locale) + '```\n' +
+      str + '\n```\n' +
+      client.locale.t('commands.eval.output:and Output:', locale) + '```\n' +
+      result + '\n```')
   }
 }
 

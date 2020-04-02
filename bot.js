@@ -3,11 +3,12 @@
  * @description Main Bot Script
  */
 
+/* eslint-disable no-unused-vars */
 const VERSION = 'v0.8'
 const BUILD_DATE = '2020/3/27'
+/* eslint-enable no-unused-vars */
 
 // import needed modules
-const fs = require('fs')
 const path = require('path')
 
 const BotClient = require('./classes/BotClient')
@@ -23,25 +24,23 @@ const onMessageEvent = require('./events/onMessage')
  */
 const client = new BotClient()
 
-
-
 /**
  * Database
  */
 /*
 switch (config.db.type) {
-    case 'json': {
-        let req = require('./db/json');
-        var db = new req('./db/db.json');
-        client.setProvider(db);
-	break
-    }
-    case 'mysql': {
-        let provider = require('./db/mysql')
-	let db = new provider(config.db.connection)
-	client.setProvider(db)
-	break
-    }
+  case 'json': {
+    let req = require('./db/json');
+    var db = new req('./db/db.json');
+    client.setProvider(db);
+    break
+  }
+  case 'mysql': {
+    let provider = require('./db/mysql')
+    let db = new provider(config.db.connection)
+    client.setProvider(db)
+    break
+  }
 }
 */
 client.setupDatabase()
@@ -66,15 +65,15 @@ client.start()
 // Commando: Register Defaults
 /*
 client.registry
-    .registerDefaults()
-    .registerGroups([
-        ['dev', 'Commands for developing'],
-        ['misc', 'Misc'],
-        ['info', 'Provides several informations'],
-        ['activation', 'activating/deactivating the bot on the server'],
-	['memo', 'memo']
-    ])
-    .registerCommandsIn(path.join(__dirname, 'commands'));
+  .registerDefaults()
+  .registerGroups([
+    ['dev', 'Commands for developing'],
+    ['misc', 'Misc'],
+    ['info', 'Provides several informations'],
+    ['activation', 'activating/deactivating the bot on the server'],
+    ['memo', 'memo']
+  ])
+  .registerCommandsIn(path.join(__dirname, 'commands'));
 */
 client.registerCommandHandler(new CommandHandler(client, path.resolve() + '/commands'))
 

@@ -1,6 +1,5 @@
 const { Client } = require('discord.js')
 const fs = require('fs')
-const i18n = require('i18n')
 const path = require('path').resolve()
 
 const Logger = require('./Logger')
@@ -52,13 +51,13 @@ class BotClient extends Client {
     this.login(this.config.token)
   }
 
-  async setupDatabase() {
+  async setupDatabase () {
     this.db = new DatabaseHandler(this, this.config.db.type, this.config.db.connection)
     await this.db.test()
     this.logger.debug('BotClient.setupDatabase', 'Database Handler has been set up')
   }
 
-  registerLocaleHandler(localeHandler) {
+  registerLocaleHandler (localeHandler) {
     this.locale = localeHandler
     this.logger.debug('BotClient.registerLocaleHandler', 'Locale Handler registered to Bot Client')
   }

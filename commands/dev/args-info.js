@@ -23,8 +23,8 @@ class ArgsInfoCommand extends Command {
   async run (client, msg, query, locale) {
     if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
 
-    return await msg.channel.send(client.locale.t('commands.args-info.run:'
-      + 'Command name: %1$s\nArguments: %2$s', locale, query.cmd, query.args.join(', ')))
+    return await msg.channel.send(client.locale.t('commands.args-info.run:' +
+      'Command name: %1$s\nArguments: %2$s', locale, query.cmd, query.args.join(', ')))
   }
 }
 

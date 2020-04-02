@@ -16,8 +16,8 @@ class ServerInfoCommand extends Command {
   }
 
   async run (client, msg, _query, locale) {
-    return msg.channel.send(client.locale.t('commands.serverinfo.run:'
-    + 'Server Name: **%1$s**\nMembers in the Server: %2$s', locale, msg.guild.name, msg.guild.memberCount))
+    return msg.channel.send(client.locale.t('commands.serverinfo.run:' +
+    'Server Name: **%1$s**\nMembers in the Server: %2$s', locale, msg.guild.name, msg.guild.memberCount))
   }
 }
 

@@ -24,7 +24,7 @@ class LocaleCommand extends Command {
   }
 
   async run (client, msg, query, locale) {
-    if(!await client.db.isRegisteredGuild(msg.guild.id)) return Command.pleaseRegisterGuild(msg, locale)
+    if (!await client.db.isRegisteredGuild(msg.guild.id)) return Command.pleaseRegisterGuild(this, msg, locale)
 
     if (query.args.length < 1) {
       return await msg.channel.send(client.locale.t('commands.locale.get:The current language is: `%1$s`', locale, locale))
@@ -39,8 +39,8 @@ class LocaleCommand extends Command {
     }
   }
 
-  async dbHandle(guild, locale) {
-    switch(this._client.db.type) {
+  async dbHandle (guild, locale) {
+    switch (this._client.db.type) {
       case 'mysql':
         await this._client.db.knex('guild').update({ locale }).where('id', guild.id)
         break

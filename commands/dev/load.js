@@ -20,22 +20,24 @@ class LoadCommand extends Command {
   }
 
   async run (client, msg, query, locale) {
+    const t = client.locale.t
     let input
     try {
       if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
 
       input = query.args[0]
 
-      let cmd, fullpath = path.join(client.commands.cmdPath, input + '.js')
-      cmd = require(fullpath)
+      const fullpath = path.join(client.commands.cmdPath, input + '.js')
+      const cmd = require(fullpath)
 
       const group = input.split('/')[0]
-      client.commands.register(cmd, group, fullpath)
+      const r = client.commands.register(cmd, group, fullpath)
 
-      return await msg.reply(client.locale.t('commands.load.added:Loaded `%1$s` command.', locale, input))
+      if (!r) return await msg.reply(t('commands.load.alreadyExists:That command (or aliases in it) already exists.', locale))
+      return await msg.reply(t('commands.load.added:Loaded `%1$s` command.', locale, input))
     } catch (err) {
       this._client.logger.error('Command / Load', "Error when loading command '" + input + "': " + err.stack)
-      throw new ClientError(client.locale.t('commands.load.error:An Error occured when loading the command: %1$s', locale, err.message))
+      new ClientError('An Error occured when loading the command: ' + err.message).report(msg, locale)
     }
   }
 }

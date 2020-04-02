@@ -3,8 +3,6 @@
  * @description beep - boop
  */
 
-var i18n = require('i18n')
-
 const Command = require('../../classes/Command')
 
 class BeepCommand extends Command {

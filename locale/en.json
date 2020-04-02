@@ -184,7 +184,8 @@
           "NAME": "command",
           "DESC": "Command to load"
         }
-      }
+      },
+      "alreadyExists": "That command (or aliases in it) already exists."
     },
     "unload": {
       "usage": "Usage: ```\n%1$sunload <command>\n```",
@@ -195,7 +196,8 @@
           "NAME": "command",
           "DESC": "Command to unload"
         }
-      }
+      },
+      "cannotfind": "Cannot find command `%1$s`."
     },
     "profileimage": {
       "usage": "Usage: %1$s%2$s (user: string|@mention)",
@@ -216,6 +218,14 @@
       "args": {
         "text": {
           "DESC": "Text to say."
+        }
+      }
+    },
+    "purge": {
+      "args": {
+        "name": {
+          "NAME": "name",
+          "DESC": "The name of the data to purge cache. (guild / user)"
         }
       }
     }
@@ -247,6 +257,9 @@
     "makeUsage": {
       "str": "Usage: ```\n%1$s%2$s %3$s\n(Required) [Optional]\n```",
       "required": "Required."
+    },
+    "pleaseRegister": {
+      "guild": "This feature requires server registration, but this server is not registered. Please register this server to use this feature."
     }
   },
   "error": {

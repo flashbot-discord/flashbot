@@ -15,8 +15,8 @@ class UserInfoCommand extends Command {
   }
 
   async run (client, msg, _args, locale) {
-    return msg.channel.send(client.locale.t('commands.userinfo.result:'
-    + 'Username: %1$s\nUser ID: %2$s', locale, msg.author.username, msg.author.id))
+    return msg.channel.send(client.locale.t('commands.userinfo.result:' +
+    'Username: %1$s\nUser ID: %2$s', locale, msg.author.username, msg.author.id))
   }
 }
 

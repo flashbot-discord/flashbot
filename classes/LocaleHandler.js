@@ -1,9 +1,10 @@
 const i18n = require('i18n')
 
 class LocaleHandler {
-  constructor(client) {
+  constructor (client) {
     client.logger.log('LocaleHandler', 'Setting up i18n')
-    i18n.configure({                                             directory: './locale',
+    i18n.configure({
+      directory: './locale',
       defaultLocale: 'en_US',
       objectNotation: true,
       syncFiles: true,
@@ -15,29 +16,34 @@ class LocaleHandler {
     })
 
     this.i18n = i18n
-    this.t = (phrase, locale, ...args) => i18n.__({phrase, locale }, ...args)
+    this.t = (phrase, locale, ...args) => i18n.__({ phrase, locale }, ...args)
 
     this._client = client
     client.logger.log('LocaleHandler', 'i18n has been set up')
   }
 
-  async getGuildLocale(guild) {
-    switch(this._client.db.type) {
+  async getGuildLocale (guild) {
+    switch (this._client.db.type) {
       case 'mysql': {
         let d
         try {
-        d = await this._client.db.knex('guild').select('locale').where('id', guild.id)
-        } catch(err) {
+          d = await this._client.db.knex('guild').select('locale').where('id', guild.id)
+        } catch (err) {
           this._client.logger.warn('LocaleHandler', 'Cannot load locale information of guild ' + guild.name + ' (' + guild.id + "). Falling back to 'en_US': " + err.stack)
           return 'en_US'
         }
 
-        if(d.length < 1) return 'en_US' // Default
+        if (d.length < 1) return 'en_US' // Default
         else return d[0].locale
       }
 
-      case 'json':
-        break
+      case 'json': {
+        const db = this._client.db.obj
+        if (!db.guild[guild.id]) return 'en_US'
+        const l = db.guild[guild.id].locale
+        if (!l) return 'en_US'
+        else return l
+      }
     }
   }
 }

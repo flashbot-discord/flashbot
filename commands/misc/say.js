@@ -22,7 +22,7 @@ class SayCommand extends Command {
   }
 
   async run (client, msg, query, locale) {
-    if(query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
+    if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
     return await msg.channel.send(query.args.join(' '))
   }
 }
