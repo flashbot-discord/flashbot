@@ -35,7 +35,10 @@
     },
     "ping": {
       "desc": "Pong!",
-      "execute": "Pong!"
+      "execute": "Pong!",
+      "pinging": "Pinging...",
+      "websocketPing": "WebSocket: %1$sms",
+      "msgPing": "Message: %1$sms"
     },
     "beep": {
       "desc": "boop",
