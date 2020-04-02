@@ -111,6 +111,8 @@ class DatabaseHandler {
 
     this._save(this.obj.guild, this.path.guildFile)
     this._save(this.obj.user, this.path.userFile)
+
+    this._client.logger.log('DatabaseHandler.save', '[JSON] All data were saved')
   }
 
   _save (obj, filename) {

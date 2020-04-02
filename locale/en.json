@@ -228,6 +228,9 @@
           "DESC": "The name of the data to purge cache. (guild / user)"
         }
       }
+    },
+    "savenow": {
+      "saved": "All JSON data were saved."
     }
   },
   "command_error": "An error occured while executing the command.",
