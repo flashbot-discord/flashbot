@@ -43,7 +43,6 @@ class CommandHandler {
               const fullpath = path.join(cmdPath, group, cmdFile)
               const cmd = require(fullpath)
               const c = this.register(cmd, group, fullpath)
-              client.logger.log('CommandHandler', 'Command Loaded: ' + c._name)
             } catch (err) {
               client.logger.error('CommandHandler', "Error loading command '" + cmdFile + "'. " + err.stack)
             }
@@ -78,12 +77,13 @@ class CommandHandler {
     c._path = fullpath
 
     this.commands.set(c._name, c)
-    this._client.logger.debug('CommandHandler', "Registered command object '" + c._name + "'")
+    this._client.logger.debug('CommandHandler.register', "Registered command object '" + c._name + "'")
 
     this.aliases.set(c._name, c._name)
     if (c._aliases.length > 0) c._aliases.forEach((alias) => { this.aliases.set(alias, c._name) })
-    this._client.logger.debug('CommandHandler', "Registered all command aliases for '" + c._name + "'")
+    this._client.logger.debug('CommandHandler.register', "Registered all command aliases for '" + c._name + "'")
 
+    this._client.logger.log('CommandHandler.register', 'Command Loaded: ' + c._name)
     return c
   }
 
@@ -94,13 +94,15 @@ class CommandHandler {
 
   unregister (cmd) {
     // remove all aliases
-    this._client.logger.debug('CommandHandler', "Unregistering all command aliases for '" + cmd._name +"'")
+    this._client.logger.debug('CommandHandler.unregister', "Unregistering all command aliases for '" + cmd._name +"'")
     cmd._aliases.forEach((alias) => { if (this.aliases.has(alias)) this.aliases.delete(alias) })
     this.commands.delete(cmd._name)
 
     // remove command name itself
-    this._client.logger.debug('CommandHandler', "Unregistering command '" + cmd._name + "'")
+    this._client.logger.debug('CommandHandler.unregister', "Unregistering command '" + cmd._name + "'")
     this.commands.delete(cmd._name)
+
+    this._client.logger.log('CommandHandler.unregister', 'Command Unloaded: ' + cmd._name)
   }
 
   get(name) {
@@ -109,7 +111,7 @@ class CommandHandler {
   }
 
   async run(cmd, client, msg, query) {
-    const locale = await client.locale.getGuildLocale(msg.guild.id)
+    const locale = await client.locale.getGuildLocale(msg.guild)
 
     // Status Check
     if(cmd._requireDB && !this._client.db.ready) return await msg.channel.send(client.locale.t('error.DBNotReady:This feature needs the database storage to work.\n'
@@ -128,10 +130,10 @@ class CommandHandler {
       let uid = uuid()
 
       client.logger.error('CommandHandler.run => ' + cmd._name, 'Error (' + uid +'): ' + err.stack)
-      return await msg.reply(client.locale.t('CommandHandler.error:'
-      + 'An Error occured. Please report this error message and the Error ID to the Support server.\n'
+      return await msg.reply(client.locale.t('CommandHandler.unexpectedError:'
+      + 'An unexpected error occured. Please report this error message and the Error ID to the Support server.\n'
         + 'Error message: ```\n%1$s\n```\n'
-        + 'Error ID: %2$s', locale, err.message, uid))
+        + 'Error ID: `%2$s`', locale, err.message, uid))
     }
   }
 }

@@ -5,13 +5,22 @@ class EvalCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'eval',
-      owner: true
+      aliases: ['evaluate', 'ㄷㅍ미', 'ㄷㅍ미ㅕㅁㅅㄷ'],
+      description: 'commands.eval.DESC:Evaluates a code.',
+      owner: true,
+      args: [
+        {
+          name: 'commands.eval.args.code.NAME:code',
+          type: 'common.string:string',
+          description: 'commands.eval.args.code.DESC:The code to evaluate.'
+        }
+      ]
     })
   }
 
   async run(client, msg, query, locale) {
-    console.log(query)
     const str = query.args.join(' ')
+    if(!str) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
     client.logger.log('Command / Eval', '[EVAL] ' + msg.author.tag + ' evaluated the code: ' + str)
 
     let result
@@ -34,7 +43,10 @@ class EvalCommand extends Command {
     __BACKUP__DATA__ = null
 
     client.logger.debug('Command / Eval', '[EVAL] Result: ' + result)
-    return await msg.reply(client.locale.t('commands.eval.result.output', locale) + ': ```\n' + result + '\n```')
+    return await msg.reply(client.locale.t('commands.eval.input:Input:', locale) + '```\n'
+      + str + '\n```\n' 
+      + client.locale.t('commands.eval.output:and Output:', locale) + '```\n'
+      + result + '\n```')
   }
 }
 

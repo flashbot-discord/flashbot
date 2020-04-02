@@ -10,9 +10,16 @@ class LocaleCommand extends Command {
     super(client, {
       name: 'locale',
       aliases: ['언어', 'ㅣㅐㅊ믿', 'djsdj'],
-      description: '',
+      description: 'commands.locale.DESC:See or change the bot locale on the server.',
       guildOnly: true,
-      requireDB: true
+      requireDB: true,
+      args: [
+        {
+          name: 'commands.locale.args.locale.NAME:locale',
+          description: 'commands.locale.args.locale.DESC: When present, change the locale of the server to this value.',
+          type: 'common.string:string'
+        }
+      ]
     })
   }
 

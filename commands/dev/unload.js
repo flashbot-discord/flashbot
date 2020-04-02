@@ -6,8 +6,15 @@ class UnloadCommand extends Command {
     super(client, {
       name: 'unload',
       aliases: ['ㅕㅟㅐㅁㅇ'],
-      description: 'Unloads a command.',
-      owner: true
+      description: 'commands.unload.DESC:Unloads a command.',
+      owner: true,
+      args: [
+        {
+          name: 'commands.unload.args.command.NAME:command',
+          type: 'common.string:string',
+          description: 'commands.unload.args.command.DESC:Command to unload'
+        }
+      ]
     })
   }
 
@@ -15,7 +22,7 @@ class UnloadCommand extends Command {
     let input
     try {
       if (query.args.length < 1) {
-        return await msg.reply(client.locale.t('commands.unload.usage:Usage: ```\n%1$sunload <command>\n```', locale, client.config.prefix))
+        return await msg.reply(Command.makeUsage(this, query.msg, locale))
       }
 
       input = query.args[0]

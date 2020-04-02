@@ -10,12 +10,19 @@ class SayCommand extends Command {
     super(client, {
       name: 'say',
       aliases: ['말하기', 'ㄴ묘', 'akfgkrl'],
-      description: 'Replies with a meow, kitty cat.'
+      description: 'commands.say.DESC:Says back!',
+      args: [
+        {
+          name: 'commands.say.args.text.NAME:text',
+          description: 'commands.say.args.text.DESC:Text to say.',
+          type: 'common.string:string'
+        }
+      ]
     })
   }
 
   async run (client, msg, query, locale) {
-    if(query.args.length < 1) return await msg.reply(client.locale.t('commands.say.noText:Please enter text to respond.',locale))
+    if(query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
     return await msg.channel.send(query.args.join(' '))
   }
 }

@@ -10,7 +10,7 @@ class UserInfoCommand extends Command {
     super(client, {
       name: 'userinfo',
       aliases: ['user-info', '이용자정보', '사용자정보', '유저정보', 'ㅕㄴㄷ갸ㅜ래', 'ㅕㄴㄷㄱ-ㅑㅜ래', 'dldydwkwjdqh', 'tkdydwkwjdqh', 'dbwjwjdqh'],
-      description: '...'
+      description: 'commands.userinfo.DESC:Shows user information.'
     })
   }
 

@@ -5,8 +5,8 @@ class TestCommand extends Command {
     super(client, {
       name: 'test',
       aliases: ['테스트', 'ㅅㄷㄴㅅ', 'xptmxm'],
-      description: 'Command Testing',
-      ownerOnly: true
+      description: 'commands.test.DESC:Command Testing',
+      owner: true
     })
   }
 

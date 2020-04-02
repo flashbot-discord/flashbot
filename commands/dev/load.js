@@ -7,17 +7,22 @@ class LoadCommand extends Command {
     super(client, {
       name: 'load',
       aliases: ['ㅣㅐㅁㅇ'],
-      description: 'Loads a command.',
-      owner: true
+      description: 'commands.load.DESC:Loads a command.',
+      owner: true,
+      args: [
+        {
+          name: 'commands.load.args.command.NAME:command',
+          type: 'common.string:string',
+          description: 'commands.load.args.command.DESC:Command to load'
+        }
+      ]
     })
   }
 
   async run (client, msg, query, locale) {
     let input
     try {
-      if (query.args.length < 1) {
-        return await msg.reply(client.locale.t('commands.load.usage:Usage: ```\n%1$sload <command>\n```', locale, client.config.prefix))
-      }
+      if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
 
       input = query.args[0]
 

@@ -10,6 +10,7 @@ class Command {
     this._owner = infos.owner || false
     this._guildOnly = infos.guildOnly || false
     this._requireDB = infos.requireDB || false
+    this._args = infos.args || []
     this._group = ''
     this._path = ''
   }
@@ -39,7 +40,29 @@ class Command {
   }
 
   static async pleaseRegisterGuild(msg, locale) {
-    return await msg.reply(this._client.locale.t('Command.pleaseRegister.guild:This feature requires server registration, but this server is not registered. Olease register this server to use this feature.', locale))
+    return await msg.reply(this._client.locale.t('Command.pleaseRegister.guild:This feature requires server registration, but this server is not registered. Please register this server to use this feature.', locale))
+  }
+
+  static makeUsage(cmd, called, locale) {
+    const t = cmd._client.locale.t
+    let str = ''
+    cmd._args.forEach((arg) => {
+      const name = t(arg.name, locale)
+      const type = t(arg.type, locale)
+
+      str = str + (arg.optional ? '[' : '(') + name + ': ' + type + (arg.optional ? ']' : ')') + ' '
+    })
+    str += '\n\n'
+    cmd._args.forEach((arg) => {
+      const name = t(arg.name, locale)
+      const desc = t(arg.description, locale)
+      str = str + (arg.optional ? '[' : '(') + name + (arg.optional ? ']' : ')') +' - ' + desc + ' ' + '\n'
+    })
+
+    return t('Command.makeUsage.str:Usage: ```\n'
+     + '%1$s%2$s %3$s\n'
+      + '(Required) [Optional]\n'
+    + '```', locale, cmd._client.config.prefix, called, str)
   }
 }
 

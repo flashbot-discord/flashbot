@@ -18,10 +18,6 @@ class DatabaseHandler {
         })
 
         this.knex = knex
-        this.test().then(() => this.ready = true)
-        .catch((err) => {
-          client.logger.error('DatabaseHandler', 'Failed to connect the database: ' + err.stack)
-        })
         break
       }
 
@@ -68,7 +64,8 @@ class DatabaseHandler {
           return true
         } catch(err) {
           this.ready = false
-          throw err
+          this._client.logger.error('DatabaseHandler', 'Failed to connect the database: ' + err.stack)
+          return false
         }
       case 'json':
         // TODO

@@ -52,8 +52,9 @@ class BotClient extends Client {
     this.login(this.config.token)
   }
 
-  setupDatabase() {
+  async setupDatabase() {
     this.db = new DatabaseHandler(this, this.config.db.type, this.config.db.connection)
+    await this.db.test()
     this.logger.debug('BotClient.setupDatabase', 'Database Handler has been set up')
   }
 

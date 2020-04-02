@@ -10,7 +10,7 @@ class ServerInfoCommand extends Command {
     super(client, {
       name: 'serverinfo',
       aliases: ['server-info', '서버정보', 'ㄴㄷㄱㅍㄷ갸ㅜ래', 'ㄴㄷㄱㅍㄷㄱ-ㅑㅜ래', 'tjqjwjdqh'],
-      description: '...',
+      description: 'commands.serverinfo.DESC:Shows current server infomation.',
       guildOnly: true
     })
   }

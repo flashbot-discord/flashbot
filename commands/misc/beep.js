@@ -11,7 +11,7 @@ class BeepCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'beep',
-      description: 'boop'
+      description: 'commands.beep.DESC:boop'
     })
   }
 
