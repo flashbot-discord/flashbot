@@ -87,7 +87,6 @@
     },
     "locale": {
       "get": "The current language is: `%1$s`",
-      "noPermission": "You don't have `ADMINISTRATOR` permission to do that.",
       "set": "Language setting changed to `%1$s`.",
       "noLanguage": "The language you entered does not exist."
     },
@@ -164,7 +163,8 @@
     "unexpectedError": "An unexpected error occured. Please report this error message and the Error ID to the Support server.\nError message: ```\n%1$s\n```\nError ID: `%2$s`",
     "run": {
       "ownerOnly": "Only the owners of the bot can run this command."
-    }
+    },
+    "noUserPermission": "You need to have `%1$s` permissions to use this command."
   },
   "ClientError": {
     "error": "An Error occured. Please report this error message and the Error ID to the Support server.\nError message: ```\n%1$s\n```\nError ID: `%2$s`"

@@ -250,7 +250,8 @@
     "error": "An Error occured. Please report this error message and the Error ID to the Support server.\nError message: %1$s\nError ID: %2$s",
     "run": {
       "ownerOnly": "Only the owners of the bot can run this command."
-    }
+    },
+    "noUserPermission": "You need to have `ADMINISTRATOR` to use this command."
   },
   "ClientError": {
     "footer": "Please report this error message and the Error ID to the Support server.\nError ID: `%1$s`",

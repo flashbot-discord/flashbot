@@ -113,6 +113,8 @@ class CommandHandler {
   async run (cmd, client, msg, query) {
     const locale = await client.locale.getGuildLocale(msg.guild)
 
+    if (!msg.guild.me.permissions.has(cmd._clientPerms)) return await msg.reply(client.locale.t('CommandHandler.noClientPermission:I need to have `%1$s` permissions to run this command.', locale, cmd._clientPerms.join('`, `')))
+
     // Status Check
     if (cmd._requireDB && !this._client.db.ready) {
       return await msg.channel.send(client.locale.t('error.DBNotReady:This feature needs the database storage to work.\n' +
@@ -124,6 +126,8 @@ class CommandHandler {
 
     // Perms Check
     if (cmd._owner && !client.config.owner.includes(msg.author.id)) return await msg.reply(client.locale.t('CommandHandler.run.ownerOnly:Only the owners of the bot can run this command.', locale))
+
+    if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.has(cmd._userPerms)) return await msg.reply(client.locale.t('CommandHandler.noUserPermission:You need to have `%1$s` permissions to use this command.', locale, cmd._userPerms.join('`, `')))
 
     // Run
     try {
