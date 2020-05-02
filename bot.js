@@ -52,7 +52,15 @@ client.registry
   ])
   .registerCommandsIn(path.join(__dirname, 'commands'));
 */
-client.registerCommandHandler(new CommandHandler(client, path.resolve() + '/commands'))
+client.registerCommandHandler(new CommandHandler(client))
+client.commands.registerGroups([
+  ['activation', 'Activating and Deactivating Server'],
+  ['dev', 'For Development'],
+  ['info', 'Various Informations'],
+  ['memo', 'memo'],
+  ['misc', 'Other things']
+])
+client.commands.registerCommandsIn(path.join(path.resolve(), 'commands'))
 
 // for debug purposes
 client.on('message', msg => {

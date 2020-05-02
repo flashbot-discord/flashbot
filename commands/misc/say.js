@@ -11,6 +11,7 @@ class SayCommand extends Command {
       name: 'say',
       aliases: ['말하기', 'ㄴ묘', 'akfgkrl'],
       description: 'commands.say.DESC:Says back!',
+      group: 'misc',
       args: [
         {
           name: 'commands.say.args.text.NAME:text',

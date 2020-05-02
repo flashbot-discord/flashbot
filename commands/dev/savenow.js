@@ -6,6 +6,7 @@ class SaveNowCommand extends Command {
       name: 'savenow',
       description: 'commands.savenow.DESC:Saves the json database file now.',
       aliases: ['ㄴㅁㅍ두ㅐㅈ'],
+      group: 'dev',
       owner: true
     })
   }

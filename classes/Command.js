@@ -11,12 +11,12 @@ class Command {
     this._guildOnly = infos.guildOnly || false
     this._requireDB = infos.requireDB || false
     this._args = infos.args || []
-    this._group = ''
+    this._group = infos.group || ''
     this._path = ''
   }
 
   async run (_client, _msg, _args, _locale) {
-    throw new Error('run() function not provided')
+    throw new Error('run() method not provided')
   }
 
   reload () {

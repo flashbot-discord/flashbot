@@ -7,6 +7,7 @@ class UnloadCommand extends Command {
       name: 'unload',
       aliases: ['ㅕㅟㅐㅁㅇ'],
       description: 'commands.unload.DESC:Unloads a command.',
+      group: 'dev',
       owner: true,
       args: [
         {

@@ -6,6 +6,7 @@ class ProfileImageCommand extends Command {
       name: 'profileimage',
       aliases: ['프사', '프로필사진', 'proimg', 'ㅔ개랴ㅣ댜ㅡㅁㅎㄷ', 'vmtk', 'vmfhvmftkwls', 'ㅔ개ㅑㅡㅎ'],
       description: 'commands.profileimage.DESC:Shows a profile image',
+      group: 'misc',
       args: [
         {
           name: 'commands.profileimage.args.member.NAME:member',

@@ -7,6 +7,7 @@ class EvalCommand extends Command {
       name: 'eval',
       aliases: ['evaluate', 'ㄷㅍ미', 'ㄷㅍ미ㅕㅁㅅㄷ'],
       description: 'commands.eval.DESC:Evaluates a code.',
+      group: 'dev',
       owner: true,
       args: [
         {

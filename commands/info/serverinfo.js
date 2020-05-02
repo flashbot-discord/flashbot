@@ -11,6 +11,7 @@ class ServerInfoCommand extends Command {
       name: 'serverinfo',
       aliases: ['server-info', '서버정보', 'ㄴㄷㄱㅍㄷ갸ㅜ래', 'ㄴㄷㄱㅍㄷㄱ-ㅑㅜ래', 'tjqjwjdqh'],
       description: 'commands.serverinfo.DESC:Shows current server infomation.',
+      group: 'info',
       guildOnly: true
     })
   }

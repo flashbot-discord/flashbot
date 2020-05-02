@@ -6,6 +6,7 @@ class PurgeCommand extends Command {
       name: 'purge',
       description: 'commands.purge.DESC:Purges database cache.',
       aliases: ['ㅔㅕㄱㅎㄷ'],
+      group: 'dev',
       owner: true,
       args: [
         {

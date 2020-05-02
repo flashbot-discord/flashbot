@@ -7,6 +7,7 @@ class ReloadCommand extends Command {
       name: 'reload',
       aliases: ['ㄱ디ㅐㅁㅇ'],
       description: 'commands.reload.DESC:reloads a command',
+      group: 'dev',
       owner: true,
       args: [
         {

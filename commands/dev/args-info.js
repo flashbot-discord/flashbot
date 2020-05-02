@@ -10,6 +10,7 @@ class ArgsInfoCommand extends Command {
       name: 'args-info',
       aliases: ['argsinfo', 'ㅁㄱㅎㄴ-ㅑㅜ래', 'ㅁㄱㅎ냐ㅜ래'],
       description: 'commands.args-info.DESC:Testing with arguments',
+      group: 'dev',
       args: [
         {
           name: 'commands.args-info.args.args.NAME:args',

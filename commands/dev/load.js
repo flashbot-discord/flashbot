@@ -8,6 +8,7 @@ class LoadCommand extends Command {
       name: 'load',
       aliases: ['ㅣㅐㅁㅇ'],
       description: 'commands.load.DESC:Loads a command.',
+      group: 'dev',
       owner: true,
       args: [
         {

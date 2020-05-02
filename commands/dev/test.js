@@ -6,6 +6,7 @@ class TestCommand extends Command {
       name: 'test',
       aliases: ['테스트', 'ㅅㄷㄴㅅ', 'xptmxm'],
       description: 'commands.test.DESC:Command Testing',
+      group: 'dev',
       owner: true
     })
   }

@@ -7,6 +7,7 @@ class HelpCommand extends Command {
       name: 'help',
       description: 'commands.help.DESC:Shows help message.',
       aliases: ['도움', '도움말', 'ㅗ디ㅔ', 'ehdna', 'ehdnaakf'],
+      group: 'info',
       args: [
         {
           name: 'commands.help.args.command.NAME:command',

@@ -3,18 +3,13 @@ const path = require('path')
 const uuid = require('uuid-random')
 
 class CommandHandler {
-  constructor (client, cmdPath) {
+  constructor (client) {
     /**
      * Bot Client
      * @type {BotClient} client
      */
     this._client = client
-    /**
-     * The path where commands are located
-     * @type {string} path
-     */
-    this.cmdPath = cmdPath
-
+    
     /**
      * Commands registry
      * @type {Map<string, Command>} Registered commands, mapped with their name
@@ -25,41 +20,62 @@ class CommandHandler {
      * @type {Map<string, string>} Map of Aliases => Command name
      */
     this.aliases = new Map()
-    try {
-      const groups = fs.readdirSync(cmdPath)
+    /**
+     * Command Groups registry
+     * @type {Map<string, string>} Map of group name => group description
+     */
+    this.groups = new Map()
+    /**
+     * Command Groups to Commands registry
+     * @type {Map<string, Array<string>>} Map of group name => Array of Commands
+     */
+    this.groupCmds = new Map()
+  }
 
-      groups.forEach((group) => {
-        if (!fs.lstatSync(path.join(cmdPath, group)).isDirectory()) return
-        client.logger.debug('CommandHandler', 'Loading commands in group ' + group)
+  registerGroups(groups) {
+    this.groups = new Map(groups)
+    this.groups.forEach((_, group) => {
+      this.groupCmds.set(group, [])
+      this._client.logger.log('CommandHandler.registerGroups', "Registered command group '" + group + "'")
+    })
+  }
+
+  registerCommandsIn(cmdPath) {
+    try {
+      const folders = fs.readdirSync(cmdPath)
+
+      folders.forEach((folder) => {
+        if (!fs.lstatSync(path.join(cmdPath, folder)).isDirectory()) return
+        this._client.logger.debug('CommandHandler', "Loading commands in folder '" + folder + "'")
 
         try {
-          const cmdFiles = fs.readdirSync(path.join(cmdPath, group))
+          const cmdFiles = fs.readdirSync(path.join(cmdPath, folder))
 
           cmdFiles.forEach((cmdFile) => {
             try {
-              client.logger.debug('CommandHandler', 'Checking file for command: ' + cmdFile)
-              if (!cmdFile.endsWith('.js')) return client.logger.debug('CommandHandler', 'Not a Javascript file. Skipping.')
+              this._client.logger.debug('CommandHandler', 'Checking file for command: ' + cmdFile)
+              if (!cmdFile.endsWith('.js')) return this._client.logger.debug('CommandHandler', 'Not a Javascript file. Skipping.')
 
-              const fullpath = path.join(cmdPath, group, cmdFile)
+              const fullpath = path.join(cmdPath, folder, cmdFile)
               const cmd = require(fullpath)
-              this.register(cmd, group, fullpath)
+              this.register(cmd, fullpath)
             } catch (err) {
-              client.logger.error('CommandHandler', "Error loading command '" + cmdFile + "'. " + err.stack)
+              this._client.logger.error('CommandHandler', "Error loading command '" + cmdFile + "'. " + err.stack)
             }
           })
         } catch (err) {
-          client.logger.error('CommandHandler', "Error fetching file list in group '" + group + "'. " + err.stack)
+          this._client.logger.error('CommandHandler', "Error fetching file list in folder '" + folder + "'. " + err.stack)
         }
       })
     } catch (err) {
-      client.logger.error('CommandHandler', 'Error loading command groups. ' + err.stack)
+      this._client.logger.error('CommandHandler', 'Error loading folders that the commands located. ' + err.stack)
     }
 
-    client.logger.log('CommandHandler', this.commands.size + ' commands registered.')
-    client.logger.log('CommandHandler', this.aliases.size + ' command aliases registered.')
+    this._client.logger.log('CommandHandler', this.commands.size + ' commands registered.')
+    this._client.logger.log('CommandHandler', this.aliases.size + ' command aliases registered.')
   }
 
-  register (CommandFile, group, fullpath) {
+  register (CommandFile, fullpath) {
     const c = new CommandFile(this._client)
 
     // Conflict check
@@ -73,7 +89,6 @@ class CommandHandler {
       }
     }
 
-    c._group = group
     c._path = fullpath
 
     this.commands.set(c._name, c)
@@ -81,7 +96,9 @@ class CommandHandler {
 
     this.aliases.set(c._name, c._name)
     if (c._aliases.length > 0) c._aliases.forEach((alias) => { this.aliases.set(alias, c._name) })
-    this._client.logger.debug('CommandHandler.register', "Registered all command aliases for '" + c._name + "'")
+    this._client.logger.debug('CommandHandler.register', "Registered all command aliases for '" + c._name + "': " + c._aliases.join(', '))
+    if(this.groupCmds.has(c._group)) this.groupCmds.set(this.groupCmds.get(c._group).push(c._name))
+    else this._client.logger.error('CommandHandler.register', "Cannot register command '" + c._name + "' to group '" + c._group + "'")
 
     this._client.logger.log('CommandHandler.register', 'Command Loaded: ' + c._name)
     return c
