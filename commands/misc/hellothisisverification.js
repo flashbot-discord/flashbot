@@ -13,3 +13,5 @@ class DBKRVerifyCommand extends Command {
     msg.reply(client.user.tag)
   }
 }
+
+module.exports = DBKRVerifyCommand
