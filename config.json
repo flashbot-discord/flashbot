@@ -1,0 +1,10 @@
+{
+    "prefix": "///",
+    "owner": ["393674169243402240"],
+    "db": {
+      "type": "json",
+      "connection": {
+        "folder": "db/json"
+      }
+    }
+}
