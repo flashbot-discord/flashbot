@@ -1,3 +1,20 @@
+# node modules
 node_modules/
+
+# Settings
 token.json
+config.json
+
+# JSON Database
+db
+
+# Other
 .vscode
+debug.log
+db/db.json
+
+# Swap file (Vim)
+*.swp
+
+# Temporary
+command_temp

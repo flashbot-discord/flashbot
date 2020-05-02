@@ -1,0 +1,190 @@
+{
+  "commands": {
+    "help": {
+      "execute": {
+        "desc": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting upper link.\n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
+        "descNotEmbed": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting https://flashbot-discord.herokuapp.com \n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
+        "title": "FlashBot Help",
+        "cmdHelp": {
+          "no_cmd": "That command does not exist.",
+          "result": {
+            "title": "Help message of `%s`",
+            "title_noEmbed": "**Help message of `%s`**",
+            "args": "Arguments",
+            "aliases": "Aliases",
+            "args_noEmbed": "Arguments:",
+            "aliases_noEmbed": "Aliases:"
+          }
+        },
+        "noEmbedPerm": "```The bot doesn't have 'POST LINK'(or similar) permission to display help message as embed, so it'll show just text help message.\n(Currnetly developing for turning off this notification)```",
+        "currentVersionDev": "Version: %1$s (%2$s) - Developer Mode",
+        "currentVersion": "Version: %1$s (%2$s)"
+      },
+      "func_formatArgs": {
+        "must": "**Needed.**",
+        "no_args": "No arguments.",
+        "optional": "Optional."
+      },
+      "desc": "Show Flashbot's help message.",
+      "args": {
+        "commands": {
+          "name": "commands",
+          "desc": "commands you want to see its help message"
+        }
+      }
+    },
+    "ping": {
+      "desc": "Pong!",
+      "run": "Pong!",
+      "pinging": "Pinging...",
+      "websocketPing": "WebSocket: %1$sms",
+      "msgPing": "Message: %1$sms"
+    },
+    "beep": {
+      "desc": "boop",
+      "run": "boop"
+    },
+    "serverinfo": {
+      "desc": "Shows some server informations.",
+      "run": "Server Name: **%s**\nMembers in the Server: %s"
+    },
+    "userinfo": {
+      "desc": "Shows some informations of the user who execute the command.",
+      "result": "Username: %1$s\nUser ID: %2$s"
+    },
+    "eval": {
+      "desc": "Evaluates JS code. Needs Administrator permission to use this.",
+      "input": "Input:",
+      "output": "and Output:",
+      "args": {
+        "code": {
+          "NAME": "code",
+          "DESC": "The code to evaluate."
+        }
+      }
+    },
+    "args-info": {
+      "desc": "for checking command arguments",
+      "noArgs": "No arguments provided.",
+      "run": "Command name: %1$s\nArguments: %2$s"
+    },
+    "reload": {
+      "desc": "Reloads a command. (Currently not working)",
+      "reloaded": "Reloaded `%1$s` command.",
+      "error": "An error occured while reloading the command: %1$s",
+      "cannotfind": "Cannot find command `%1$s`.",
+      "args": {
+        "command": {
+          "NAME": "command",
+          "DESC": "Command to reload"
+        }
+      }
+    },
+    "say": {
+      "args": {
+        "text": {
+          "DESC": "Text to say.",
+          "NAME": "text"
+        }
+      }
+    },
+    "locale": {
+      "get": "The current language is: `%1$s`",
+      "set": "Language setting changed to `%1$s`.",
+      "noLanguage": "The language you entered does not exist."
+    },
+    "activate": {
+      "title": "Activate **FlashBot**",
+      "confirm": "React with :white_check_mark: or type `Yes` to agree, otherwise react with :x: or type `No` to deny.",
+      "deny": "Bot Activation cancelled.",
+      "agree": "Thank you! You agreed with our Terms of Service and Privacy Policy. The Bot is now activated on this server. You (and this server's member) can use this bot right now!",
+      "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
+      "content": "You need to agree to the FlashBot's **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy"
+    },
+    "deactivate": {
+      "title": "Deactivate **FlashBot**",
+      "content": "You're now going to disable **FlashBot** on this server.\nWhen deactivated, the bot will not respond any commands except `activate`.\nThe data for this server will be stored after you deactivated the bot.",
+      "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
+      "agree": "Thank you for using our bot. The bot is now disabled in this server. To reactivate, use the `activate` command.",
+      "deny": "Bot deactivation cancelled.",
+      "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually."
+    },
+    "load": {
+      "error": "An Error occured when loading the command: %1$s",
+      "cannotfind": "Cannot find Command `%1$s`.",
+      "added": "Loaded `%1$s` command.",
+      "args": {
+        "command": {
+          "NAME": "command",
+          "DESC": "Command to load"
+        }
+      },
+      "alreadyExists": "That command (or aliases in it) already exists."
+    },
+    "unload": {
+      "error": "An Error occured while unloading the command: %1$s",
+      "unloaded": "Unloaded `%1$s` command.",
+      "args": {
+        "command": {
+          "NAME": "command",
+          "DESC": "Command to unload"
+        }
+      },
+      "cannotfind": "Cannot find command `%1$s`."
+    },
+    "profileimage": {
+      "args": {
+        "member": {
+          "NAME": "member",
+          "DESC": "The member to see the profile image. Currently, only mentions are accepted."
+        }
+      }
+    },
+    "purge": {
+      "args": {
+        "name": {
+          "NAME": "name",
+          "DESC": "The name of the data to purge cache. (guild / user)"
+        }
+      }
+    },
+    "savenow": {
+      "saved": "All JSON data were saved."
+    }
+  },
+  "commandGroup": {
+    "etc": {
+      "embed": "etc",
+      "notEmbed": "**etc**"
+    },
+    "test": {
+      "embed": "test",
+      "notEmbed": "**test**"
+    }
+  },
+  "CommandHandler": {
+    "unexpectedError": "An unexpected error occured. Please report this error message and the Error ID to the Support server.\nError message: ```\n%1$s\n```\nError ID: `%2$s`",
+    "run": {
+      "ownerOnly": "Only the owners of the bot can run this command."
+    },
+    "noUserPermission": "You need to have `%1$s` permissions to use this command."
+  },
+  "ClientError": {
+    "error": "An Error occured. Please report this error message and the Error ID to the Support server.\nError message: ```\n%1$s\n```\nError ID: `%2$s`"
+  },
+  "Command": {
+    "makeUsage": {
+      "str": "Usage: ```\n%1$s%2$s %3$s\n(Required) [Optional]\n```"
+    },
+    "pleaseRegister": {
+      "guild": "This feature requires server registration, but this server is not registered. Please register this server to use this feature."
+    }
+  },
+  "error": {
+    "DBNotReady": "This feature needs the database storage to work.\nCurrently, the bot is not connected to the storage.\nPlease report this to the Support server to be fixed."
+  },
+  "common": {
+    "mention": "mention",
+    "string": "string"
+  }
+}
