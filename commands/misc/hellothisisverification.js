@@ -10,7 +10,7 @@ class DBKRVerifyCommand extends Command {
   }
 
   run(client, msg, _query, _locale) {
-    msg.reply(client.user.tag)
+    msg.reply('comjun04#5963 (393674169243402240)')
   }
 }
 
