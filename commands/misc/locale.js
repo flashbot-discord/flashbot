@@ -17,7 +17,8 @@ class LocaleCommand extends Command {
         {
           name: 'commands.locale.args.locale.NAME:locale',
           description: 'commands.locale.args.locale.DESC: When present, change the locale of the server to this value.',
-          type: 'common.string:string'
+          type: 'common.string:string',
+          optional: true
         }
       ]
     })
