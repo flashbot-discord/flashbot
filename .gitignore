@@ -3,7 +3,7 @@ node_modules/
 
 # Settings
 token.json
-config.json
+#config.json
 
 # JSON Database
 db
