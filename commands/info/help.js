@@ -27,7 +27,7 @@ class HelpCommand extends Command {
     if (msg.guild && (query.args.includes('--here') || query.args.includes('-h'))) dm = false
 
     let page = true
-    if (dm || query.args.includes('--no-page')) page = false
+    if (dm || query.args.includes('--no-page' || query.args.includes('-n'))) page = false
 
     const embeds = []
     const createEmbed = (group, currentPage, totalPage, isFirst) => {
@@ -42,7 +42,7 @@ class HelpCommand extends Command {
         embed.setDescription(t('commands.help.descNoPage', locale, t('commandGroup.' + group, locale)))
       }
 
-      if (page) embed.setFooter(t('commands.help.footer', locale))
+      if (page) embed.setFooter(t('commands.help.footer', locale, client.VERSION))
       else embed.setFooter(t('commands.help.footerNoPage', locale, client.VERSION))
 
       client.commands.groups.get(group).forEach((c) => {
