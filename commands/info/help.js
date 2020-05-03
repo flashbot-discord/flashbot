@@ -42,7 +42,7 @@ class HelpCommand extends Command {
         embed.setDescription(t('commands.help.descNoPage', locale, t('commandGroup.' + group, locale)))
       }
 
-      if (page) embed.setFooter(t('commands.help.footer', locale))
+      if (page) embed.setFooter(t('commands.help.footer', locale, client.VERSION))
       else embed.setFooter(t('commands.help.footerNoPage', locale, client.VERSION))
 
       client.commands.groups.get(group).forEach((c) => {
