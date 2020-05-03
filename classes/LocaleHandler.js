@@ -29,8 +29,8 @@ class LocaleHandler {
         try {
           d = await this._client.db.knex('guild').select('locale').where('id', guild.id)
         } catch (err) {
-          this._client.logger.warn('LocaleHandler', 'Cannot load locale information of guild ' + guild.name + ' (' + guild.id + "). Falling back to 'en_US': " + err.stack)
-          return 'en_US'
+          this._client.logger.warn('LocaleHandler', 'Cannot load locale information of guild ' + guild.name + ' (' + guild.id + "). Falling back to default locale '" + this._client.config.defaultLocale + "': " + err.stack)
+          return this._client.config.defaultLocale
         }
 
         if (d.length < 1) return 'en_US' // Default
@@ -39,9 +39,9 @@ class LocaleHandler {
 
       case 'json': {
         const db = this._client.db.obj
-        if (!db.guild[guild.id]) return 'en_US'
+        if (!db.guild[guild.id]) return this._client.config.defaultLocale
         const l = db.guild[guild.id].locale
-        if (!l) return 'en_US'
+        if (!l) return this._client.config.defaultLocale
         else return l
       }
     }

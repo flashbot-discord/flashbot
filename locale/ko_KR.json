@@ -1,0 +1,203 @@
+{
+  "commands": {
+    "help": {
+      "desc": "Flashbot의 도움말을 보여줍니다.\n**%1$s** (페이지 %2$s/%3$s)",
+      "descNoPage": "**%1$s**",
+      "descNotEmbed": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting https://flashbot-discord.herokuapp.com \n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
+      "title": "FlashBot 도움말 페이지",
+      "cmdHelp": {
+        "no_cmd": "That command does not exist.",
+        "result": {
+          "title": "Help message of `%s`",
+          "title_noEmbed": "**Help message of `%s`**",
+          "args": "Arguments",
+          "aliases": "Aliases",
+          "args_noEmbed": "Arguments:",
+          "aliases_noEmbed": "Aliases:"
+        }
+      },
+      "noEmbedPerm": "```The bot doesn't have 'POST LINK'(or similar) permission to display help message as embed, so it'll show just text help message.\n(Currnetly developing for turning off this notification)```",
+      "func_formatArgs": {
+        "must": "**Needed.**",
+        "no_args": "No arguments.",
+        "optional": "Optional."
+      },
+      "args": {
+        "commands": {
+          "name": "명령어",
+          "desc": "도움말을 보고 싶은 명령어"
+        }
+      },
+      "DESC": "도움말을 보여줍니다.",
+      "sentToDM": "DM으로 도움말을 보냈습니다.",
+      "footer": "이모지를 이용하여 페이지를 넘기세요. / 제한 시간 30초 / 버전: %1$s",
+      "footerNoPage": "버전: %1$s"
+    },
+    "ping": {
+      "desc": "퐁!",
+      "run": "퐁!",
+      "pinging": "핑 측정중...",
+      "websocketPing": "웹소켓 핑: %1$sms",
+      "msgPing": "메세지 핑: %1$sms",
+      "DESC": "퐁!"
+    },
+    "beep": {
+      "desc": "붑",
+      "run": "붑",
+      "DESC": "붑"
+    },
+    "serverinfo": {
+      "desc": "서버 정보를 보여줍니다.",
+      "run": "서버 이름: **%s**\n서버에 있는 멤버 수: %s",
+      "DESC": "서버 정보를 보여줍니다."
+    },
+    "userinfo": {
+      "result": "사용자 이름: %1$s\n사용자 ID: %2$s",
+      "DESC": "사용자 정보를 보여줍니다."
+    },
+    "eval": {
+      "input": "입력값:",
+      "output": "그리고 출력값:",
+      "args": {
+        "code": {
+          "NAME": "코드",
+          "DESC": "실행할 코드"
+        }
+      },
+      "DESC": "코드를 실행합니다."
+    },
+    "args-info": {
+      "noArgs": "인수가 입력되지 않았습니다.",
+      "run": "명령어 이름: %1$s\n인수: %2$s",
+      "DESC": "인수를 가지고 테스트하는 중"
+    },
+    "reload": {
+      "reloaded": "`%1$s` 명령어를 다시 불러왔습니다.",
+      "error": "`%1$s` 명령어를 불러오던 중 오류가 발생했습니다.",
+      "cannotfind": "`%1$s` 명령어를 찾을 수 없습니다.",
+      "args": {
+        "command": {
+          "NAME": "명령어",
+          "DESC": "다시 불러올 명령어"
+        }
+      },
+      "DESC": "명령어를 다시 불러옵니다."
+    },
+    "say": {
+      "args": {
+        "text": {
+          "DESC": "말할 텍스트",
+          "NAME": "텍스트"
+        }
+      },
+      "DESC": "따라 말합니다!"
+    },
+    "locale": {
+      "get": "현재 언어: `%1$s`",
+      "set": "언어가 `%1$s`(으)로 변경되었습니다.",
+      "noLanguage": "입력한 언어가 존재하지 않습니다.",
+      "DESC": "이 서버에서 사용되는 언어를 보거나 바꿉니다."
+    },
+    "activate": {
+      "title": "**FlashBot** 활성화",
+      "confirm": ":white_check_mark:으로 반응하거나 `Yes`를 입력하여 동의하고, 아니면 :x:로 반응하거나 `No`를 입력하여 거부할 수 있습니다.",
+      "deny": "봇 활성화가 취소되었습니다.",
+      "agree": "Thank you! You agreed with our Terms of Service and Privacy Policy. The Bot is now activated on this server. You (and this server's member) can use this bot right now!",
+      "reactFail": "봇이 `%1$s` 권한을 가지고 있지 않아, 봇이 반응을 추가할 수 없습니다.\n텍스트로 답변을 입력하거나, 수동으로 반응을 추가해 주세요.",
+      "content": "You need to agree to the FlashBot's **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy",
+      "DESC": "이 서버에서 봇을 활성화합니다."
+    },
+    "deactivate": {
+      "title": "**FlashBot** 비활성화",
+      "content": "이제 **FlashBot**을 이 서버에서 비활성화하려고 합니다.\n봇이 비활성화되면, 봇은 `activate`를 제외한 다른 명령어에 응답하지 않습니다.\n이 서버에 대한 데이터는  봇을 비활성화한 이후에도 남아 있을 것입니다.",
+      "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
+      "agree": "Thank you for using our bot. The bot is now disabled in this server. To reactivate, use the `activate` command.",
+      "deny": "봇 비활성화가 취소되었습니다.",
+      "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
+      "DESC": "이 서버에서 봇을 비활성화"
+    },
+    "load": {
+      "error": "`%1$s` 명령어를 불러오는 대 오류가 발생했습니다.",
+      "cannotfind": "`%1$s` 명령어를 찾을 수 없습니다.",
+      "added": "`%1$s` 명령어를 불러왔습니다..",
+      "args": {
+        "command": {
+          "NAME": "명령어",
+          "DESC": "불러올 명령어"
+        }
+      },
+      "alreadyExists": "그 명령어 (혹은 그 명령어에 있는 별칭)이 이미 등록되어 있습니다.",
+      "DESC": "명령어를 불러옵니다."
+    },
+    "unload": {
+      "error": "`%1$s` 명령어를 언로드하는 데 오류가 발생했습니다.",
+      "unloaded": "`%1$s` 명령어를 언로드했습니다.",
+      "args": {
+        "command": {
+          "NAME": "명령어",
+          "DESC": "언로드할 명령어"
+        }
+      },
+      "cannotfind": "`%1$s` 명령어를 찾을 수 없습니다.",
+      "DESC": "명령어를 언로드합니다."
+    },
+    "profileimage": {
+      "args": {
+        "member": {
+          "NAME": "멤버",
+          "DESC": "프로필 사진을 볼 멤버. 현재 멘션만 사용할 수 있습니다."
+        }
+      },
+      "DESC": "프로필 사진을 보여줍니다."
+    },
+    "purge": {
+      "args": {
+        "name": {
+          "NAME": "이름",
+          "DESC": "The name of the data to purge cache. (guild / user)"
+        }
+      },
+      "DESC": "데이터베이스 캐시를 정리합니다."
+    },
+    "savenow": {
+      "saved": "모든 JSON 데이터가 저장되었습니다.",
+      "DESC": "모든 json 데이터베이스 파일을 저장합니다."
+    },
+    "test": {
+      "DESC": "명령어 테스트"
+    },
+    "hellothisisverification": {
+      "DESC": "commands.hellothisisverification.DESC"
+    }
+  },
+  "CommandHandler": {
+    "unexpectedError": "예상치 못한 오류가 발생하였습니다. Please report this error message and the Error ID to the Support server.\n오류 메세지: ```\n%1$s\n```\n오류 ID: `%2$s`",
+    "run": {
+      "ownerOnly": "봇 소유자만 이 명령어를 실행할 수 있습니다."
+    },
+    "noUserPermission": "이 명령어를 실행하려면 `%1$s` 권한이 필요합니다."
+  },
+  "ClientError": {
+    "error": "오류가 발생하였습니다. Please report this error message and the Error ID to the Support server.\n오류 메세지: ```\n%1$s\n```\n오류 ID: `%2$s`"
+  },
+  "Command": {
+    "makeUsage": {
+      "str": "사용법: ```\n%1$s%2$s %3$s\n(필수) [선택]\n```"
+    },
+    "pleaseRegister": {
+      "guild": "This feature requires server registration, but this server is not registered. Please register this server to use this feature."
+    }
+  },
+  "error": {
+    "DBNotReady": "This feature needs the database storage to work.\nCurrently, the bot is not connected to the storage.\nPlease report this to the Support server to be fixed."
+  },
+  "common": {
+    "mention": "멘션",
+    "string": "문자열"
+  },
+  "commandGroup": {
+    "info": "정보",
+    "activation": "활성화",
+    "misc": "기타"
+  }
+}
