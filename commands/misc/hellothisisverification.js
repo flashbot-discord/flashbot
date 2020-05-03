@@ -4,7 +4,7 @@ class DBKRVerifyCommand extends Command {
   constructor(client) {
     super(client, {
       name: 'hellothisisverification',
-      desc: 'commands.hellothisisverification.DESC',
+      description: 'commands.hellothisisverification.DESC',
       group: 'misc'
     })
   }
