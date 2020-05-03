@@ -31,20 +31,27 @@
           "name": "commands",
           "desc": "commands you want to see its help message"
         }
-      }
+      },
+      "title": "commands.help.title",
+      "DESC": "Shows help message.",
+      "sentToDM": "Sent the help messages to your DM.",
+      "group1": "Information commands",
+      "footer": "Use the emojis to flip the page. / Time limit: 30 seconds"
     },
     "ping": {
       "desc": "Pong!",
       "execute": "Pong!",
       "pinging": "Pinging...",
       "websocketPing": "WebSocket: %1$sms",
-      "msgPing": "Message: %1$sms"
+      "msgPing": "Message: %1$sms",
+      "DESC": "Pong!"
     },
     "beep": {
       "desc": "boop",
       "execute": "boop",
       "reply": "boop",
-      "run": "boop"
+      "run": "boop",
+      "DESC": "boop"
     },
     "serverinfo": {
       "desc": "서버 정보를 보여줍니다.",
@@ -52,11 +59,13 @@
       "execute": {
         "isDM": "This command cannot be used in DM."
       },
-      "run": "Server Name: **%1$s**\nMembers in the Server: %2$s"
+      "run": "Server Name: **%1$s**\nMembers in the Server: %2$s",
+      "DESC": "Shows current server infomation."
     },
     "userinfo": {
       "desc": "명령어를 사용하는 사람의 정보를 보여줍니다.",
-      "result": "이용자의 이름: %1$s\n이용자 ID: %2$s"
+      "result": "이용자의 이름: %1$s\n이용자 ID: %2$s",
+      "DESC": "Shows user information."
     },
     "eval": {
       "desc": "Evaluates JS code. Needs Administrator permission to use this.",
@@ -81,7 +90,8 @@
         "output": "commands.eval.result.output"
       },
       "input": "Input:",
-      "output": "and Output:"
+      "output": "and Output:",
+      "DESC": "Evaluates a code."
     },
     "args-info": {
       "desc": "명령어의 인수를 확인하는 용도",
@@ -100,7 +110,8 @@
       },
       "noArgs": "No arguments provided.",
       "result": "Command name: %1$s\nArguments: %2$s",
-      "run": "Command name: %1$s\nArguments: %2$s"
+      "run": "Command name: %1$s\nArguments: %2$s",
+      "DESC": "Testing with arguments"
     },
     "reload": {
       "desc": "Reloads a command. (Currently not working)",
@@ -116,7 +127,8 @@
       "usage": "Usage:```\n%1$sreload <command>\n```",
       "reloaded": "Reloaded `%1$s` command.",
       "error": "An error occured while reloading the command: ```\n%1$s\n```",
-      "cannotfind": "Cannot find command `%1$s`."
+      "cannotfind": "Cannot find command `%1$s`.",
+      "DESC": "reloads a command"
     },
     "say": {
       "execute": {
@@ -128,7 +140,8 @@
           "NAME": "text",
           "DESC": "Text to say."
         }
-      }
+      },
+      "DESC": "Says back!"
     },
     "lang": {
       "desc": "이 봇에 현재 설정된 언어를 보고 변경합니다. (할 일: 서버마다 언어 설정)",
@@ -159,7 +172,8 @@
       "confirm": "commands.activate.confirm",
       "reactFail": "commands.activate.reactFail",
       "agree": "commands.activate.agree",
-      "deny": "commands.activate.deny"
+      "deny": "commands.activate.deny",
+      "DESC": "Activate this bot on the server"
     },
     "deactivate": {
       "execute": {
@@ -175,7 +189,8 @@
       "confirm": "commands.deactivate.confirm",
       "reactFail": "commands.deactivate.reactFail",
       "agree": "commands.deactivate.agree",
-      "deny": "Bot deactivation cancelled."
+      "deny": "Bot deactivation cancelled.",
+      "DESC": "Deactivate this bot on the server"
     },
     "load": {
       "error": "An Error occured when loading the command: ```\n%1$s\n```",
@@ -188,7 +203,8 @@
           "DESC": "Command to load"
         }
       },
-      "alreadyExists": "That command (or aliases in it) already exists."
+      "alreadyExists": "That command (or aliases in it) already exists.",
+      "DESC": "Loads a command."
     },
     "unload": {
       "usage": "Usage: ```\n%1$sunload <command>\n```",
@@ -200,7 +216,8 @@
           "DESC": "Command to unload"
         }
       },
-      "cannotfind": "Cannot find command `%1$s`."
+      "cannotfind": "Cannot find command `%1$s`.",
+      "DESC": "Unloads a command."
     },
     "profileimage": {
       "usage": "Usage: %1$s%2$s (user: string|@mention)",
@@ -209,13 +226,15 @@
           "NAME": "member",
           "DESC": "The member to see the profile image. Currently, only mentions are accepted."
         }
-      }
+      },
+      "DESC": "Shows a profile image"
     },
     "locale": {
       "get": "commands.locale.get",
       "noPermission": "commands.locale.noPermission",
       "set": "commands.locale.set",
-      "noLanguage": "commands.locale.noLanguage"
+      "noLanguage": "commands.locale.noLanguage",
+      "DESC": "See or change the bot locale on the server."
     },
     "sat": {
       "args": {
@@ -230,10 +249,18 @@
           "NAME": "name",
           "DESC": "The name of the data to purge cache. (guild / user)"
         }
-      }
+      },
+      "DESC": "Purges database cache."
     },
     "savenow": {
-      "saved": "All JSON data were saved."
+      "saved": "All JSON data were saved.",
+      "DESC": "Saves the json database file now."
+    },
+    "test": {
+      "DESC": "Command Testing"
+    },
+    "hellothisisverification": {
+      "DESC": "commands.hellothisisverification.DESC"
     }
   },
   "command_error": "An error occured while executing the command.",
@@ -245,7 +272,10 @@
     "test": {
       "embed": "테스트",
       "notEmbed": "**테스트**"
-    }
+    },
+    "info": "commandGroup.info",
+    "activation": "commandGroup.activation",
+    "misc": "commandGroup.misc"
   },
   "unexpectedError": "An Unexpected error occured. Please report this error message and the Error ID to the Support server.\nError message: %1$s\nError ID: %2$s",
   "CommandHandler": {
@@ -275,5 +305,7 @@
   "common": {
     "mention": "mention",
     "string": "string"
-  }
+  },
+  "memo list": "memo list",
+  "": ""
 }

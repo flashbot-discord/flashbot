@@ -25,17 +25,11 @@ class CommandHandler {
      * @type {Map<string, string>} Map of group name => group description
      */
     this.groups = new Map()
-    /**
-     * Command Groups to Commands registry
-     * @type {Map<string, Array<string>>} Map of group name => Array of Commands
-     */
-    this.groupCmds = new Map()
-  }
+    }
 
   registerGroups(groups) {
-    this.groups = new Map(groups)
-    this.groups.forEach((_, group) => {
-      this.groupCmds.set(group, [])
+    groups.forEach((group) => {
+      this.groups.set(group, [])
       this._client.logger.log('CommandHandler.registerGroups', "Registered command group '" + group + "'")
     })
   }
@@ -97,7 +91,7 @@ class CommandHandler {
     this.aliases.set(c._name, c._name)
     if (c._aliases.length > 0) c._aliases.forEach((alias) => { this.aliases.set(alias, c._name) })
     this._client.logger.debug('CommandHandler.register', "Registered all command aliases for '" + c._name + "': " + c._aliases.join(', '))
-    if(this.groupCmds.has(c._group)) this.groupCmds.set(this.groupCmds.get(c._group).push(c._name))
+    if(this.groups.has(c._group)) this.groups.set(this.groups.get(c._group).push(c._name))
     else this._client.logger.error('CommandHandler.register', "Cannot register command '" + c._name + "' to group '" + c._group + "'")
 
     this._client.logger.log('CommandHandler.register', 'Command Loaded: ' + c._name)
@@ -106,10 +100,13 @@ class CommandHandler {
 
   reregister (oldCmd, newCmd) {
     this.unregister(oldCmd)
-    this.register(newCmd, oldCmd._group, oldCmd._path)
+    this.register(newCmd, oldCmd._path)
   }
 
   unregister (cmd) {
+    // remove command name in group
+    const group = this.groups.get(cmd._group)
+    group.splice(group.indexOf(cmd._name), 1)
     // remove all aliases
     this._client.logger.debug('CommandHandler.unregister', "Unregistering all command aliases for '" + cmd._name + "'")
     cmd._aliases.forEach((alias) => { if (this.aliases.has(alias)) this.aliases.delete(alias) })

@@ -54,11 +54,14 @@ client.registry
 */
 client.registerCommandHandler(new CommandHandler(client))
 client.commands.registerGroups([
+  /*
   ['activation', 'Activating and Deactivating Server'],
   ['dev', 'For Development'],
   ['info', 'Various Informations'],
   ['memo', 'memo'],
   ['misc', 'Other things']
+  */
+  'activation', 'dev', 'info', 'memo', 'misc'
 ])
 client.commands.registerCommandsIn(path.join(path.resolve(), 'commands'))
 

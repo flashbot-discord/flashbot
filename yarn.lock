@@ -879,6 +879,11 @@ extglob@^2.0.4:
     snapdragon "^0.8.1"
     to-regex "^3.0.1"
 
+ez-paginator@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/ez-paginator/-/ez-paginator-0.1.0.tgz#49fcec6518503296314db111e671befa4e8213b5"
+  integrity sha512-cyke4KPsKq1bD+VFyDYf6BcxHnBLCdrMXhG+Z4ggo2O9U8YfEMLdQ0eyMOLGgO+G4ug1wkqrhG8RCRuQHCfVqQ==
+
 fast-deep-equal@^3.1.1:
   version "3.1.1"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-3.1.1.tgz#545145077c501491e33b15ec408c294376e94ae4"

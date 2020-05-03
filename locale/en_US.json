@@ -1,56 +1,61 @@
 {
   "commands": {
     "help": {
-      "execute": {
-        "desc": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting upper link.\n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
-        "descNotEmbed": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting https://flashbot-discord.herokuapp.com \n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
-        "title": "FlashBot Help",
-        "cmdHelp": {
-          "no_cmd": "That command does not exist.",
-          "result": {
-            "title": "Help message of `%s`",
-            "title_noEmbed": "**Help message of `%s`**",
-            "args": "Arguments",
-            "aliases": "Aliases",
-            "args_noEmbed": "Arguments:",
-            "aliases_noEmbed": "Aliases:"
-          }
-        },
-        "noEmbedPerm": "```The bot doesn't have 'POST LINK'(or similar) permission to display help message as embed, so it'll show just text help message.\n(Currnetly developing for turning off this notification)```",
-        "currentVersionDev": "Version: %1$s (%2$s) - Developer Mode",
-        "currentVersion": "Version: %1$s (%2$s)"
+      "desc": "Show Flashbot's help message.\n**%1$s** (Page %2$s of %3$s)",
+      "descNotEmbed": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting https://flashbot-discord.herokuapp.com \n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
+      "title": "FlashBot Help Page",
+      "cmdHelp": {
+        "no_cmd": "That command does not exist.",
+        "result": {
+          "title": "Help message of `%s`",
+          "title_noEmbed": "**Help message of `%s`**",
+          "args": "Arguments",
+          "aliases": "Aliases",
+          "args_noEmbed": "Arguments:",
+          "aliases_noEmbed": "Aliases:"
+        }
       },
+      "noEmbedPerm": "```The bot doesn't have 'POST LINK'(or similar) permission to display help message as embed, so it'll show just text help message.\n(Currnetly developing for turning off this notification)```",
+      "currentVersionDev": "Version: %1$s (%2$s) - Developer Mode",
+      "currentVersion": "Version: %1$s (%2$s)",
       "func_formatArgs": {
         "must": "**Needed.**",
         "no_args": "No arguments.",
         "optional": "Optional."
       },
-      "desc": "Show Flashbot's help message.",
       "args": {
         "commands": {
           "name": "commands",
           "desc": "commands you want to see its help message"
         }
-      }
+      },
+      "DESC": "Shows help message.",
+      "sentToDM": "Sent the help messages to your DM.",
+      "group1": "**Information** commands (Page 1 of 1)",
+      "footer": "Use the emojis to flip the page. / Time limit: 30 seconds"
     },
     "ping": {
       "desc": "Pong!",
       "run": "Pong!",
       "pinging": "Pinging...",
       "websocketPing": "WebSocket: %1$sms",
-      "msgPing": "Message: %1$sms"
+      "msgPing": "Message: %1$sms",
+      "DESC": "Pong!"
     },
     "beep": {
       "desc": "boop",
-      "run": "boop"
+      "run": "boop",
+      "DESC": "boop"
     },
     "serverinfo": {
       "desc": "Shows some server informations.",
-      "run": "Server Name: **%s**\nMembers in the Server: %s"
+      "run": "Server Name: **%s**\nMembers in the Server: %s",
+      "DESC": "Shows current server infomation."
     },
     "userinfo": {
       "desc": "Shows some informations of the user who execute the command.",
-      "result": "Username: %1$s\nUser ID: %2$s"
+      "result": "Username: %1$s\nUser ID: %2$s",
+      "DESC": "Shows user information."
     },
     "eval": {
       "desc": "Evaluates JS code. Needs Administrator permission to use this.",
@@ -61,12 +66,14 @@
           "NAME": "code",
           "DESC": "The code to evaluate."
         }
-      }
+      },
+      "DESC": "Evaluates a code."
     },
     "args-info": {
       "desc": "for checking command arguments",
       "noArgs": "No arguments provided.",
-      "run": "Command name: %1$s\nArguments: %2$s"
+      "run": "Command name: %1$s\nArguments: %2$s",
+      "DESC": "Testing with arguments"
     },
     "reload": {
       "desc": "Reloads a command. (Currently not working)",
@@ -78,7 +85,8 @@
           "NAME": "command",
           "DESC": "Command to reload"
         }
-      }
+      },
+      "DESC": "reloads a command"
     },
     "say": {
       "args": {
@@ -86,12 +94,14 @@
           "DESC": "Text to say.",
           "NAME": "text"
         }
-      }
+      },
+      "DESC": "Says back!"
     },
     "locale": {
       "get": "The current language is: `%1$s`",
       "set": "Language setting changed to `%1$s`.",
-      "noLanguage": "The language you entered does not exist."
+      "noLanguage": "The language you entered does not exist.",
+      "DESC": "See or change the bot locale on the server."
     },
     "activate": {
       "title": "Activate **FlashBot**",
@@ -99,7 +109,8 @@
       "deny": "Bot Activation cancelled.",
       "agree": "Thank you! You agreed with our Terms of Service and Privacy Policy. The Bot is now activated on this server. You (and this server's member) can use this bot right now!",
       "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
-      "content": "You need to agree to the FlashBot's **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy"
+      "content": "You need to agree to the FlashBot's **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy",
+      "DESC": "Activate this bot on the server"
     },
     "deactivate": {
       "title": "Deactivate **FlashBot**",
@@ -107,7 +118,8 @@
       "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
       "agree": "Thank you for using our bot. The bot is now disabled in this server. To reactivate, use the `activate` command.",
       "deny": "Bot deactivation cancelled.",
-      "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually."
+      "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
+      "DESC": "Deactivate this bot on the server"
     },
     "load": {
       "error": "An Error occured when loading the command: %1$s",
@@ -119,7 +131,8 @@
           "DESC": "Command to load"
         }
       },
-      "alreadyExists": "That command (or aliases in it) already exists."
+      "alreadyExists": "That command (or aliases in it) already exists.",
+      "DESC": "Loads a command."
     },
     "unload": {
       "error": "An Error occured while unloading the command: %1$s",
@@ -130,7 +143,8 @@
           "DESC": "Command to unload"
         }
       },
-      "cannotfind": "Cannot find command `%1$s`."
+      "cannotfind": "Cannot find command `%1$s`.",
+      "DESC": "Unloads a command."
     },
     "profileimage": {
       "args": {
@@ -138,7 +152,8 @@
           "NAME": "member",
           "DESC": "The member to see the profile image. Currently, only mentions are accepted."
         }
-      }
+      },
+      "DESC": "Shows a profile image"
     },
     "purge": {
       "args": {
@@ -146,20 +161,18 @@
           "NAME": "name",
           "DESC": "The name of the data to purge cache. (guild / user)"
         }
-      }
+      },
+      "DESC": "Purges database cache."
     },
     "savenow": {
-      "saved": "All JSON data were saved."
-    }
-  },
-  "commandGroup": {
-    "etc": {
-      "embed": "etc",
-      "notEmbed": "**etc**"
+      "saved": "All JSON data were saved.",
+      "DESC": "Saves the json database file now."
     },
     "test": {
-      "embed": "test",
-      "notEmbed": "**test**"
+      "DESC": "Command Testing"
+    },
+    "hellothisisverification": {
+      "DESC": "commands.hellothisisverification.DESC"
     }
   },
   "CommandHandler": {
@@ -186,5 +199,10 @@
   "common": {
     "mention": "mention",
     "string": "string"
+  },
+  "commandGroup": {
+    "info": "Informations",
+    "activation": "Activations",
+    "misc": "Others"
   }
 }
