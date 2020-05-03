@@ -27,7 +27,7 @@ class HelpCommand extends Command {
     if (msg.guild && (query.args.includes('--here') || query.args.includes('-h'))) dm = false
 
     let page = true
-    if (dm || query.args.includes('--no-page')) page = false
+    if (dm || query.args.includes('--no-page' || query.args.includes('-n'))) page = false
 
     const embeds = []
     const createEmbed = (group, currentPage, totalPage, isFirst) => {
