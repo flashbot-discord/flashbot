@@ -5,7 +5,7 @@
 
 /* eslint-disable no-unused-vars */
 const VERSION = 'v0.8'
-const BUILD_DATE = '2020/3/27'
+const BUILD_DATE = '2020/5/3'
 /* eslint-enable no-unused-vars */
 
 // import needed modules
@@ -23,6 +23,8 @@ const onMessageEvent = require('./events/onMessage')
  * @type {BotClient}
  */
 const client = new BotClient()
+client.VERSION = VERSION
+client.BUILD_DATE = BUILD_DATE
 
 /**
  * Database

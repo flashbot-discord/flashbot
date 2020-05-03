@@ -2,6 +2,7 @@
   "commands": {
     "help": {
       "desc": "Show Flashbot's help message.\n**%1$s** (Page %2$s of %3$s)",
+      "descNoPage": "**%1$s**",
       "descNotEmbed": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting https://flashbot-discord.herokuapp.com \n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
       "title": "FlashBot Help Page",
       "cmdHelp": {
@@ -16,8 +17,6 @@
         }
       },
       "noEmbedPerm": "```The bot doesn't have 'POST LINK'(or similar) permission to display help message as embed, so it'll show just text help message.\n(Currnetly developing for turning off this notification)```",
-      "currentVersionDev": "Version: %1$s (%2$s) - Developer Mode",
-      "currentVersion": "Version: %1$s (%2$s)",
       "func_formatArgs": {
         "must": "**Needed.**",
         "no_args": "No arguments.",
@@ -31,8 +30,8 @@
       },
       "DESC": "Shows help message.",
       "sentToDM": "Sent the help messages to your DM.",
-      "group1": "**Information** commands (Page 1 of 1)",
-      "footer": "Use the emojis to flip the page. / Time limit: 30 seconds"
+      "footer": "Use the emojis to flip the page. / Time limit: 30 seconds / Version: %1$s",
+      "footerNoPage": "Version: %1$s"
     },
     "ping": {
       "desc": "Pong!",

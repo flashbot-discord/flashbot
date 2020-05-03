@@ -9,7 +9,7 @@ class CommandHandler {
      * @type {BotClient} client
      */
     this._client = client
-    
+
     /**
      * Commands registry
      * @type {Map<string, Command>} Registered commands, mapped with their name
@@ -25,16 +25,16 @@ class CommandHandler {
      * @type {Map<string, string>} Map of group name => group description
      */
     this.groups = new Map()
-    }
+  }
 
-  registerGroups(groups) {
+  registerGroups (groups) {
     groups.forEach((group) => {
       this.groups.set(group, [])
       this._client.logger.log('CommandHandler.registerGroups', "Registered command group '" + group + "'")
     })
   }
 
-  registerCommandsIn(cmdPath) {
+  registerCommandsIn (cmdPath) {
     try {
       const folders = fs.readdirSync(cmdPath)
 
@@ -91,7 +91,7 @@ class CommandHandler {
     this.aliases.set(c._name, c._name)
     if (c._aliases.length > 0) c._aliases.forEach((alias) => { this.aliases.set(alias, c._name) })
     this._client.logger.debug('CommandHandler.register', "Registered all command aliases for '" + c._name + "': " + c._aliases.join(', '))
-    if(this.groups.has(c._group)) this.groups.set(this.groups.get(c._group).push(c._name))
+    if (this.groups.has(c._group)) this.groups.set(this.groups.get(c._group).push(c._name))
     else this._client.logger.error('CommandHandler.register', "Cannot register command '" + c._name + "' to group '" + c._group + "'")
 
     this._client.logger.log('CommandHandler.register', 'Command Loaded: ' + c._name)

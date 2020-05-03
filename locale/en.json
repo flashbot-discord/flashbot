@@ -36,7 +36,9 @@
       "DESC": "Shows help message.",
       "sentToDM": "Sent the help messages to your DM.",
       "group1": "Information commands",
-      "footer": "Use the emojis to flip the page. / Time limit: 30 seconds"
+      "footer": "Use the emojis to flip the page. / Time limit: 30 seconds",
+      "descNoPage": "commands.help.descNoPage",
+      "footerNoPage": "commands.help.footerNoPage"
     },
     "ping": {
       "desc": "Pong!",
