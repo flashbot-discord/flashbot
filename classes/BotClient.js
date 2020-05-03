@@ -23,7 +23,7 @@ class BotClient extends Client {
 
     // Load token seperately
     let token = ''
-    if(process.env.flashbotToken) token = process.env.flashbotToken
+    if (process.env.flashbotToken) token = process.env.flashbotToken
     else if (fs.existsSync(path + '/token.json')) token = require(path + '/token.json').token
     if (typeof token !== 'string' || token.length < 1) logger.fatal('BotClient', 'Invalid bot TOKEN provided.')
     logger.log('BotClient', 'Loaded bot TOKEN')

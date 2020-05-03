@@ -1,8 +1,9 @@
 const { MessageEmbed } = require('discord.js')
+const EZPaginator = require('ez-paginator')
 const Command = require('../../classes/Command')
 
 class HelpCommand extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'help',
       description: 'commands.help.DESC:Shows help message.',
@@ -19,27 +20,65 @@ class HelpCommand extends Command {
     })
   }
 
-  async run(client, msg, query, locale) {
+  async run (client, msg, query, locale) {
     const t = client.locale.t
 
     let dm = true
-    if(msg.guild && query.args.includes('--here')) dm = false
+    if (msg.guild && (query.args.includes('--here') || query.args.includes('-h'))) dm = false
 
-    // TODO Embed
-    const embed = new MessageEmbed()
-      .setTitle(t('commands.help.title', locale))
-      .setDescription(t('commands.help.desc', locale))
+    let page = true
+    if (dm || query.args.includes('--no-page')) page = false
 
-    client.commands.commands.forEach((command) => {
-      embed.addField(client.config.prefix + command._name, t(command._desc, locale))
-    })
+    const embeds = []
+    const createEmbed = (group, currentPage, totalPage, isFirst) => {
+      const embed = new MessageEmbed()
+      if (isFirst) {
+        embed.setTitle(t('commands.help.title', locale))
 
-    //const str = t('commands.help.titleNoEmbed', locale)
+        const groupT = t('commandGroup.' + group, locale)
+        if (page) embed.setDescription(t('commands.help.desc', locale, groupT, currentPage, totalPage))
+        else embed.setDescription(t('commands.help.descNoPage', locale, groupT))
+      } else {
+        embed.setDescription(t('commands.help.descNoPage', locale, t('commandGroup.' + group, locale)))
+      }
 
-    if(dm) {
-      msg.author.send(embed)
-      if(msg.guild) await msg.reply(t('commands.help.sentToDM:Sent the help messages to your DM.', locale))
-    } else await msg.channel.send(embed)
+      if (page) embed.setFooter(t('commands.help.footer', locale))
+      else embed.setFooter(t('commands.help.footerNoPage', locale, client.VERSION))
+
+      client.commands.groups.get(group).forEach((c) => {
+        const cmd = client.commands.get(c)
+        embed.addField(client.config.prefix + cmd._name, t(cmd._desc, locale))
+      })
+
+      return embed
+    }
+
+    embeds.push(createEmbed('info', 1, 3, true))
+    embeds.push(createEmbed('activation', 2, 3, page))
+    embeds.push(createEmbed('misc', 3, 3, page))
+
+    if (page) {
+      let message
+      if (dm) message = await msg.author.send(embeds[0])
+      else message = await msg.channel.send(embeds[0])
+
+      const paginator = new EZPaginator({
+        client,
+        msg: message,
+        embeds,
+        moreReactions: true
+      })
+
+      paginator.start()
+    } else {
+      embeds.forEach(async (embed) => {
+        if (dm) await msg.author.send(embed)
+        else await msg.channel.send(embed)
+      })
+    }
+    if (dm) {
+      if (msg.guild) await msg.reply(t('commands.help.sentToDM:Sent the help messages to your DM.', locale))
+    }
   }
 }
 

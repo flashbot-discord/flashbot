@@ -4,8 +4,8 @@
  */
 
 /* eslint-disable no-unused-vars */
-const VERSION = 'v0.8'
-const BUILD_DATE = '2020/3/27'
+const VERSION = 'v0.8-dev.1'
+const BUILD_DATE = '2020/5/3'
 /* eslint-enable no-unused-vars */
 
 // import needed modules
@@ -23,6 +23,8 @@ const onMessageEvent = require('./events/onMessage')
  * @type {BotClient}
  */
 const client = new BotClient()
+client.VERSION = VERSION
+client.BUILD_DATE = BUILD_DATE
 
 /**
  * Database
@@ -54,11 +56,14 @@ client.registry
 */
 client.registerCommandHandler(new CommandHandler(client))
 client.commands.registerGroups([
+  /*
   ['activation', 'Activating and Deactivating Server'],
   ['dev', 'For Development'],
   ['info', 'Various Informations'],
   ['memo', 'memo'],
   ['misc', 'Other things']
+  */
+  'activation', 'dev', 'info', 'memo', 'misc'
 ])
 client.commands.registerCommandsIn(path.join(path.resolve(), 'commands'))
 
