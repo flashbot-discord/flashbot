@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node .",
-    "install": "yarn; node install.js"
+    "install": "git submodule foreach yarn; node install.js"
   },
   "keywords": [],
   "author": "comjun04",
