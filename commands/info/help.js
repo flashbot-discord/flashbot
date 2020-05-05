@@ -23,12 +23,15 @@ class HelpCommand extends Command {
   async run (client, msg, query, locale) {
     const t = client.locale.t
 
+    // is DM
     let dm = true
     if (msg.guild && (query.args.includes('--here') || query.args.includes('-h'))) dm = false
 
+    // Enable/Disable Page
     let page = true
     if (dm || query.args.includes('--no-page' || query.args.includes('-n'))) page = false
 
+    // Embed Maker
     const embeds = []
     const createEmbed = (group, currentPage, totalPage, isFirst) => {
       const embed = new MessageEmbed()
@@ -57,6 +60,7 @@ class HelpCommand extends Command {
     embeds.push(createEmbed('activation', 2, 3, page))
     embeds.push(createEmbed('misc', 3, 3, page))
 
+    // Start Paginator
     if (page) {
       let message
       if (dm) message = await msg.author.send(embeds[0])

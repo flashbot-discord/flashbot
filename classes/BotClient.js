@@ -30,7 +30,7 @@ class BotClient extends Client {
 
     // Load Config
     if (fs.existsSync(path + '/config.json')) config = require(path + '/config.json')
-    else config = { owner: [], prefix: '//' }
+    else config = { owner: [], prefix: '//', extensions: {} }
 
     config.token = token
     config.prefix = process.env.flashBotPrefix || config.prefix
@@ -51,6 +51,11 @@ class BotClient extends Client {
       config.defaultLocale = 'ko_KR'
       logger.warn('BotClient', "Default Locale configuration not found. Defaults to 'ko_KR' (한국어).")
     }
+
+    if(config.extensions != null && typeof config.extensions !== 'object') {
+      logger.warn('BotClient', 'Invalid type for extension configuration. Accepts object.')
+      config.extensions = {}
+    } else if(config.extensions == null) config.extensions = {}
 
     this.config = config
     logger.log('BotClient', 'Loaded bot configuration')
@@ -75,6 +80,11 @@ class BotClient extends Client {
   registerCommandHandler (cmdHandler) {
     this.commands = cmdHandler
     this.logger.debug('BotClient.registerCommandHandler', 'Command Handler registered to Bot Client')
+  }
+
+  registerExtensionHandler(extHandler) {
+    this.extensions = extHandler
+    this.logger.debug('BotClient.registerExtensionHandler', 'Extension Handler registered to Bot Client')
   }
 
   /**
