@@ -1,10 +1,16 @@
 {
-    "prefix": "//",
+    "prefix": "///",
     "owner": ["393674169243402240"],
     "db": {
       "type": "json",
       "connection": {
         "folder": "db/json"
+      }
+    },
+    "extensions": {
+      "koreanbots": {
+        "token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjU4MDA0Nzg1NzM0NDcwODYxOSIsImlhdCI6MTU4ODU2NzA3OSwiZXhwIjoxNjIwMTI0Njc5fQ.CKXzmsTFXBY5bigm-w7AgS3-JCV_W4tWtmhozf4KJN4YL2JW-8lM0UTAXfT7AyyfWRmPpzyFEHunXyuVX-IEgC_zK6M_KL96teiWbBo2z1A7d2GGagjRScCKCX1eYOyUJwjQinMz0X9yd3F0mC9xXb1A_7Y4j0IsZvsonzFAi60",
+        "saveInterval": 60000
       }
     }
 }
