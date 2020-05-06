@@ -2,6 +2,7 @@ const { Client } = require('discord.js')
 const fs = require('fs')
 const path = require('path').resolve()
 
+const globalElements = require('./globalElements')
 const Logger = require('./Logger')
 const DatabaseHandler = require('./DatabaseHandler')
 
@@ -18,6 +19,10 @@ class BotClient extends Client {
     this.logger = logger
 
     logger.log('BotClient', 'FlashBot Startup')
+
+    // Load Global Properties and Functions
+    globalElements()
+    logger.log('BotClient', 'Loaded Global Properties and Functions')
 
     let config
 
