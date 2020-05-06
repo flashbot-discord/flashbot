@@ -49,6 +49,7 @@ extensions.asyncForEach(async (extension) => {
 
 function inst(extension, fullpath) {
   return new Promise((resolve, reject) => {
+    console.log('Working Directory: ' + fullpath)
     const out = ch.exec('yarn --prod', { cwd: fullpath }, (err, stdout, stderr) => {
       if(err) {
       console.error('[ERROR] Failed to install modules for ' + extension)
