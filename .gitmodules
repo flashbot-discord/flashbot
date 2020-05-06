@@ -1,0 +1,3 @@
+[submodule "extensions/koreanbots"]
+	path = extensions/koreanbots
+	url = https://github.com/comjun04/koreanbots-flashbot-extension.git
