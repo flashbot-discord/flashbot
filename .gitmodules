@@ -1,3 +1,6 @@
 [submodule "extensions/koreanbots"]
 	path = extensions/koreanbots
 	url = https://github.com/comjun04/koreanbots-flashbot-extension.git
+[submodule "extensions/dbkr"]
+	path = extensions/dbkr
+	url = https://github.com/comjun04/dbkr-flashbot-extension
