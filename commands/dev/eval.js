@@ -29,9 +29,9 @@ class EvalCommand extends Command {
     // Temporaily remove token from visible area
     let __BACKUP__DATA__ = {}
     Object.defineProperty(__BACKUP__DATA__, '__SECRET__DATA__', {
-      value: client.config.token
+      value: client.token
     })
-    client.config.token = '403 Forbidden'
+    client.token = client.config.token = '403 Forbidden'
 
     try {
       // eslint-disable-next-line no-eval
@@ -41,7 +41,7 @@ class EvalCommand extends Command {
     }
 
     // Restore token
-    client.config.token = __BACKUP__DATA__.__SECRET__DATA__
+    client.token = client.config.token = __BACKUP__DATA__.__SECRET__DATA__
     __BACKUP__DATA__ = null
 
     client.logger.debug('Command / Eval', '[EVAL] Result: ' + result)
