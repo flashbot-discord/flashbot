@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-const VERSION = 'v0.8-dev.4'
+const VERSION = 'v0.8-dev.5'
 const BUILD_DATE = '2020/5/3'
 /* eslint-enable no-unused-vars */
 

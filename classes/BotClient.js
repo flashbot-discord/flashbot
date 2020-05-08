@@ -74,7 +74,7 @@ class BotClient extends Client {
   async setupDatabase () {
     if(typeof this.config.db !== 'object') return this.logger.warn('BotClient.setupDatabase', 'Database type not found: Database related features will be disabled.')
 
-    this.db = new DatabaseHandler(this, this.config.db.type, this.config.db.connection)
+    this.db = await new DatabaseHandler(this, this.config.db.type, this.config.db.connection)
     await this.db.test()
     this.logger.debug('BotClient.setupDatabase', 'Database Handler has been set up')
   }
