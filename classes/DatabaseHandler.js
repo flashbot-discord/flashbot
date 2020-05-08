@@ -47,8 +47,6 @@ class DatabaseHandler {
             client.logger.log('DatabaseHandler', '[JSON] Auto-saving...')
             this.save()
           }, connection.autosave || 60000)
-
-          this.ready = true
         } catch (err) {
           client.logger.error('DatabaseHandler', '[JSON] Error when setting up json storage: ' + err.stack)
         }
@@ -59,8 +57,10 @@ class DatabaseHandler {
         return client.logger.error('DatabaseHandler', 'Invalid database type: ' + type)
     }
 
-    if (this.ready) client.logger.log('DatabaseHandler', 'Database Ready')
+    this.test().then(() => {
+      if (this.ready) client.logger.log('DatabaseHandler', 'Database Ready')
     else client.logger.warn('DatabaseHandler', "Database not ready; Some bot features won't be able to work properly")
+    })
   }
 
   async test () {
