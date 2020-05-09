@@ -4,6 +4,8 @@ const uuid = require('uuid-random')
 
 class CommandHandler {
   constructor (client) {
+    this.logPos = 'CommandHandler'
+
     /**
      * Bot Client
      * @type {BotClient} client
@@ -30,71 +32,74 @@ class CommandHandler {
   registerGroups (groups) {
     groups.forEach((group) => {
       this.groups.set(group, [])
-      this._client.logger.log('CommandHandler.registerGroups', "Registered command group '" + group + "'")
+      this._client.logger.log(this.logPos + '.registerGroups', "Registered command group '" + group + "'")
     })
   }
 
   registerCommandsIn (cmdPath) {
+    const logPos = this.logPos + '.registerCommandsIn'
+
     try {
       const folders = fs.readdirSync(cmdPath)
 
       folders.forEach((folder) => {
         if (!fs.lstatSync(path.join(cmdPath, folder)).isDirectory()) return
-        this._client.logger.debug('CommandHandler', "Loading commands in folder '" + folder + "'")
+        this._client.logger.debug(logPos, "Loading commands in folder '" + folder + "'")
 
         try {
           const cmdFiles = fs.readdirSync(path.join(cmdPath, folder))
 
           cmdFiles.forEach((cmdFile) => {
             try {
-              this._client.logger.debug('CommandHandler', 'Checking file for command: ' + cmdFile)
-              if (!cmdFile.endsWith('.js')) return this._client.logger.debug('CommandHandler', 'Not a Javascript file. Skipping.')
+              this._client.logger.debug(logPos, 'Checking file for command: ' + cmdFile)
+              if (!cmdFile.endsWith('.js')) return this._client.logger.debug(logPos, 'Not a Javascript file. Skipping.')
 
               const fullpath = path.join(cmdPath, folder, cmdFile)
               const cmd = require(fullpath)
               this.register(cmd, fullpath)
             } catch (err) {
-              this._client.logger.error('CommandHandler', "Error loading command '" + cmdFile + "'. " + err.stack)
+              this._client.logger.error(logPos, "Error loading command '" + cmdFile + "'. " + err.stack)
             }
           })
         } catch (err) {
-          this._client.logger.error('CommandHandler', "Error fetching file list in folder '" + folder + "'. " + err.stack)
+          this._client.logger.error(logPos, "Error fetching file list in folder '" + folder + "'. " + err.stack)
         }
       })
     } catch (err) {
-      this._client.logger.error('CommandHandler', 'Error loading folders that the commands located. ' + err.stack)
+      this._client.logger.error(logPos, 'Error loading folders that the commands located. ' + err.stack)
     }
 
-    this._client.logger.log('CommandHandler', this.commands.size + ' commands registered.')
-    this._client.logger.log('CommandHandler', this.aliases.size + ' command aliases registered.')
+    this._client.logger.log(logPos, this.commands.size + ' commands registered.')
+    this._client.logger.log(logPos, this.aliases.size + ' command aliases registered.')
   }
 
   register (CommandFile, fullpath) {
+    const logPos = this.logPos + '.register'
     const c = new CommandFile(this._client)
 
     // Conflict check
     if (this.commands.has(c._name)) {
-      return this._client.logger.error('CommandHandler.register', "Command '" + c._name + "' already exists.")
+      return this._client.logger.error(logPos, "Command '" + c._name + "' already exists.")
     }
 
     for (const alias of this.aliases) {
       if (c._aliases.includes(alias)) {
-        return this._client.logger.error('CommandHandler.register', "Command Alias '" + alias + "' already exists.")
+        return this._client.logger.error(logPos, "Command Alias '" + alias + "' already exists.")
       }
     }
 
     c._path = fullpath
 
     this.commands.set(c._name, c)
-    this._client.logger.debug('CommandHandler.register', "Registered command object '" + c._name + "'")
+    this._client.logger.debug(logPos, "Registered command object '" + c._name + "'")
 
     this.aliases.set(c._name, c._name)
     if (c._aliases.length > 0) c._aliases.forEach((alias) => { this.aliases.set(alias, c._name) })
-    this._client.logger.debug('CommandHandler.register', "Registered all command aliases for '" + c._name + "': " + c._aliases.join(', '))
+    this._client.logger.debug(logPos, "Registered all command aliases for '" + c._name + "': " + c._aliases.join(', '))
     if (this.groups.has(c._group)) this.groups.set(this.groups.get(c._group).push(c._name))
-    else this._client.logger.error('CommandHandler.register', "Cannot register command '" + c._name + "' to group '" + c._group + "'")
+    else this._client.logger.error(logPos, "Cannot register command '" + c._name + "' to group '" + c._group + "'")
 
-    this._client.logger.log('CommandHandler.register', 'Command Loaded: ' + c._name)
+    this._client.logger.log(logPos, 'Command Loaded: ' + c._name)
     return c
   }
 
@@ -104,19 +109,21 @@ class CommandHandler {
   }
 
   unregister (cmd) {
+    const logPos = this.logPos + '.unregister'
+
     // remove command name in group
     const group = this.groups.get(cmd._group)
     group.splice(group.indexOf(cmd._name), 1)
     // remove all aliases
-    this._client.logger.debug('CommandHandler.unregister', "Unregistering all command aliases for '" + cmd._name + "'")
+    this._client.logger.debug(logPos, "Unregistering all command aliases for '" + cmd._name + "'")
     cmd._aliases.forEach((alias) => { if (this.aliases.has(alias)) this.aliases.delete(alias) })
     this.commands.delete(cmd._name)
 
     // remove command name itself
-    this._client.logger.debug('CommandHandler.unregister', "Unregistering command '" + cmd._name + "'")
+    this._client.logger.debug(logPos, "Unregistering command '" + cmd._name + "'")
     this.commands.delete(cmd._name)
 
-    this._client.logger.log('CommandHandler.unregister', 'Command Unloaded: ' + cmd._name)
+    this._client.logger.log(logPos, 'Command Unloaded: ' + cmd._name)
   }
 
   get (name) {
@@ -139,9 +146,11 @@ class CommandHandler {
     if (cmd._guildOnly && !msg.guild) return await msg.reply(client.locale.t('CommandHandler.run.guildOnly:This command can only run on server text channel.', locale))
 
     // Perms Check
-    if (cmd._owner && !client.config.owner.includes(msg.author.id)) return await msg.reply(client.locale.t('CommandHandler.run.ownerOnly:Only the owners of the bot can run this command.', locale))
+    let owner = false
+    if(client.config.owner.includes(msg.author.id)) owner = true
+    if (cmd._owner && !owner) return await msg.reply(client.locale.t('CommandHandler.run.ownerOnly:Only the owners of the bot can run this command.', locale))
 
-    if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.has(cmd._userPerms)) return await msg.reply(client.locale.t('CommandHandler.noUserPermission:You need to have `%1$s` permissions to use this command.', locale, cmd._userPerms.join('`, `')))
+    if (!owner && !msg.member.permissions.has(cmd._userPerms)) return await msg.reply(client.locale.t('CommandHandler.noUserPermission:You need to have `%1$s` permissions to use this command.', locale, cmd._userPerms.join('`, `')))
 
     // Run
     try {
@@ -149,7 +158,7 @@ class CommandHandler {
     } catch (err) {
       const uid = uuid()
 
-      client.logger.error('CommandHandler.run => ' + cmd._name, 'Error (' + uid + '): ' + err.stack)
+      client.logger.error(this.logPos + '.run => ' + cmd._name, 'Error (' + uid + '): ' + err.stack)
       return await msg.reply(client.locale.t('CommandHandler.unexpectedError:' +
       'An unexpected error occured. Please report this error message and the Error ID to the Support server.\n' +
         'Error message: ```\n%1$s\n```\n' +

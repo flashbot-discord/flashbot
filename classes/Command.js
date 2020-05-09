@@ -1,5 +1,6 @@
 class Command {
   constructor (client, infos) {
+    this._logPos = 'Command'
     this._client = client
 
     this._name = infos.name
@@ -20,14 +21,16 @@ class Command {
   }
 
   reload () {
-    this._client.logger.log('Command', "Reloading command '" + this._name + "'")
+    const logPos = this._logPos + '.reload'
+
+    this._client.logger.log(logPos, "Reloading command '" + this._name + "'")
     const cmdPath = this._path
     delete require.cache[cmdPath]
     const newCmd = require(cmdPath)
-    this._client.logger.debug('Command', "Deleted command cache for '" + this._name + "'")
+    this._client.logger.debug(logPos, "Deleted command cache for '" + this._name + "'")
 
     this._client.commands.reregister(this, newCmd)
-    this._client.logger.log('Command', "Reloaded command '" + this._name + "'")
+    this._client.logger.log(logPos, "Reloaded command '" + this._name + "'")
   }
 
   unload () {
@@ -36,7 +39,7 @@ class Command {
   }
 
   static async pleaseRegisterUser (cmd, msg, locale) {
-
+    // TODO
   }
 
   static async pleaseRegisterGuild (cmd, msg, locale) {
