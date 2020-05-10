@@ -28,7 +28,7 @@ class LoadCommand extends Command {
 
       input = query.args[0]
 
-      const fullpath = path.join(client.commands.cmdPath, input + '.js')
+      const fullpath = path.join(client.commands.baseCmdPath, input + '.js')
       const cmd = require(fullpath)
 
       const group = input.split('/')[0]

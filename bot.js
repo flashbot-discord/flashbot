@@ -65,7 +65,7 @@ client.commands.registerGroups([
   */
   'activation', 'dev', 'info', 'memo', 'misc'
 ])
-client.commands.registerCommandsIn(path.join(path.resolve(), 'commands'))
+client.commands.registerBaseCommands(path.join(path.resolve(), 'commands'))
 
 // for debug purposes
 client.on('message', msg => {

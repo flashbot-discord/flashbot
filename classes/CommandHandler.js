@@ -11,6 +11,11 @@ class CommandHandler {
      * @type {BotClient} client
      */
     this._client = client
+    /**
+     * The path where base commands are located
+     * @type {string} path
+     */
+    this.baseCmdPath = ''
 
     /**
      * Commands registry
@@ -34,6 +39,15 @@ class CommandHandler {
       this.groups.set(group, [])
       this._client.logger.log(this.logPos + '.registerGroups', "Registered command group '" + group + "'")
     })
+  }
+
+  registerBaseCommands(cmdPath) {
+    const logPos = this.logPos + '.registerBaseCommands'
+    if(this.baseCmdPath.length > 0) this._client.logger.error(logPos, 'Base Command path already registered')
+    this.baseCmdPath = cmdPath
+    this._client.logger.log(logPos, 'Base Command path registered: ' + cmdPath)
+
+    this.registerCommandsIn(cmdPath)
   }
 
   registerCommandsIn (cmdPath) {
