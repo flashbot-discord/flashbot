@@ -15,10 +15,12 @@ class DatabaseHandler {
         client.logger.debug(logPos, 'Preparing knex Query Builder...')
         const knex = require('knex')({
           client: type,
-          connection
+          connection,
+          asyncStackTraces: true
         })
 
         this.knex = knex
+        this.ready = true
         break
       }
 
@@ -58,10 +60,8 @@ class DatabaseHandler {
         return client.logger.error(logPos, 'Invalid database type: ' + type)
     }
 
-    this.test().then(() => {
-      if (this.ready) client.logger.log(logPos, 'Database Ready')
-    else client.logger.warn(logPos, "Database not ready; Some bot features won't be able to work properly")
-    })
+    if (this.ready) client.logger.log(logPos, 'Database Handler initialized')
+    else client.logger.warn(logPos, "Database Handler not initialized; Some bot features won't be able to work properly")
   }
 
   async test () {
@@ -73,10 +73,12 @@ class DatabaseHandler {
         try {
           await this.knex.raw('select 1+1 as test')
           this.ready = true
+          this._client.logger.log(logPos + ':MySQL', 'Test Passed')
           return true
         } catch (err) {
           this.ready = false
-          this._client.logger.error(logPos, 'Failed to connect the database: ' + err.stack)
+          this._client.logger.error(logPos + ':MySQL', 'Failed to connect the database: ' + err.stack)
+          this._client.logger.warn(logPos + ':MySQL', 'Test Failed; Database feature disabled.')
           return false
         }
       case 'json':
