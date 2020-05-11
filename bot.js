@@ -4,7 +4,7 @@
  */
 
 /* eslint-disable no-unused-vars */
-const VERSION = 'v0.8-dev.5'
+const VERSION = 'v0.8-dev.6'
 const BUILD_DATE = '2020/5/3'
 /* eslint-enable no-unused-vars */
 
@@ -65,7 +65,7 @@ client.commands.registerGroups([
   */
   'activation', 'dev', 'info', 'memo', 'misc'
 ])
-client.commands.registerCommandsIn(path.join(path.resolve(), 'commands'))
+client.commands.registerBaseCommands(path.join(path.resolve(), 'commands'))
 
 // for debug purposes
 client.on('message', msg => {

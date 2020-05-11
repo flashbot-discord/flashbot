@@ -25,11 +25,20 @@ class HelpCommand extends Command {
 
     // is DM
     let dm = true
-    if (msg.guild && (query.args.includes('--here') || query.args.includes('-h'))) dm = false
+    if (msg.guild && (
+      query.args.includes('--here')
+      || query.args.includes('--ㅗㄷㄱㄷ')
+      || query.args.includes('-h')
+      || query.args.includes('-ㅗ'))
+    ) dm = false
 
     // Enable/Disable Page
     let page = true
-    if (dm || query.args.includes('--no-page' || query.args.includes('-n'))) page = false
+    if (dm || query.args.includes('--no-page')
+      || query.args.includes('--ㅜㅐ-ㅔㅁㅎㄷ')
+      || query.args.includes('-n')
+      || query.args.includes('-ㅜ')
+    ) page = false
 
     // Embed Maker
     const embeds = []
