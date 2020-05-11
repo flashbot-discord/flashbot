@@ -13,7 +13,7 @@ const DatabaseHandler = require('./DatabaseHandler')
 class BotClient extends Client {
   constructor () {
     super()
-    const logPos = this._logPos = 'BotClient'
+    const logPos = this.logPos = 'BotClient'
 
     // Setup Logger
     const logger = new Logger()
