@@ -94,7 +94,8 @@
           "NAME": "text"
         }
       },
-      "DESC": "Says back!"
+      "DESC": "Says back!",
+      "noEveryone": "The bot cannot say to `@everyone` or `@here`."
     },
     "locale": {
       "get": "The current language is: `%1$s`",

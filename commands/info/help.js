@@ -1,5 +1,5 @@
 const { MessageEmbed } = require('discord.js')
-const EZPaginator = require('ez-paginator')
+const Paginator = require('../../classes/Paginator')
 const Command = require('../../classes/Command')
 
 class HelpCommand extends Command {
@@ -38,6 +38,7 @@ class HelpCommand extends Command {
       || query.args.includes('--ㅜㅐ-ㅔㅁㅎㄷ')
       || query.args.includes('-n')
       || query.args.includes('-ㅜ')
+      || (!dm && !msg.channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS'))
     ) page = false
 
     // Embed Maker
@@ -75,11 +76,9 @@ class HelpCommand extends Command {
       if (dm) message = await msg.author.send(embeds[0])
       else message = await msg.channel.send(embeds[0])
 
-      const paginator = new EZPaginator({
-        client,
-        msg: message,
-        embeds,
-        moreReactions: true
+      const paginator = new Paginator(client, message, {
+        contents: embeds,
+        userID: msg.author.id
       })
 
       paginator.start()
@@ -90,7 +89,7 @@ class HelpCommand extends Command {
       })
     }
     if (dm) {
-      if (msg.guild) await msg.reply(t('commands.help.sentToDM:Sent the help messages to your DM.', locale))
+      if (msg.guild) await msg.reply(t('commands.help.sentToDM', locale))
     }
   }
 }

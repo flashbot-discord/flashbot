@@ -13,7 +13,7 @@ const DatabaseHandler = require('./DatabaseHandler')
 class BotClient extends Client {
   constructor () {
     super()
-    const logPos = this._logPos = 'BotClient'
+    const logPos = this.logPos = 'BotClient'
 
     // Setup Logger
     const logger = new Logger()
@@ -24,10 +24,6 @@ class BotClient extends Client {
     // Load Global Properties and Functions
     globalElements()
     logger.log(logPos, 'Loaded Global Properties and Functions')
-
-    // Load Global Properties and Functions
-    globalElements()
-    logger.log('BotClient', 'Loaded Global Properties and Functions')
 
     let config
 
@@ -67,20 +63,6 @@ class BotClient extends Client {
       config.extensions = {}
     } else if(config.extensions == null) config.extensions = {}
 
-    if(typeof config.defaultLocale !== 'string') {
-      logger.warn('BotClient', "Invalid type for 'config.defaultLocale'. Accepts String.")
-      config.defaultLocale = ''
-    }
-    if(config.defaultLocale.length < 1) {
-      config.defaultLocale = 'ko_KR'
-      logger.warn('BotClient', "Default Locale configuration not found. Defaults to 'ko_KR' (한국어).")
-    }
-
-    if(config.extensions != null && typeof config.extensions !== 'object') {
-      logger.warn('BotClient', 'Invalid type for extension configuration. Accepts object.')
-      config.extensions = {}
-    } else if(config.extensions == null) config.extensions = {}
-
     this.config = config
     logger.log(logPos, 'Loaded bot configuration')
   }
@@ -115,11 +97,6 @@ class BotClient extends Client {
   registerExtensionHandler(extHandler) {
     this.extensions = extHandler
     this.logger.debug(this.logPos + '.registerExtensionHandler', 'Extension Handler registered to Bot Client')
-  }
-
-  registerExtensionHandler(extHandler) {
-    this.extensions = extHandler
-    this.logger.debug('BotClient.registerExtensionHandler', 'Extension Handler registered to Bot Client')
   }
 
   /**
