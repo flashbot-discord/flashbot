@@ -22,7 +22,7 @@ class EvalCommand extends Command {
   async run (client, msg, query, locale) {
     // Unsafe mode check
     let isUnsafe = false
-    if(['-u', '--unsafe'].includes(query.args[0])) {
+    if (['-u', '--unsafe'].includes(query.args[0])) {
       isUnsafe = true
       query.args = query.args.slice(1)
     }
@@ -34,7 +34,7 @@ class EvalCommand extends Command {
     const m = await msg.reply('Evaling...')
 
     let bd, result
-    if(!isUnsafe) bd = this.hideToken()
+    if (!isUnsafe) bd = this.hideToken()
 
     try {
       const evaluated = await this.evaluate(msg, str, bd)
@@ -43,27 +43,32 @@ class EvalCommand extends Command {
       result = err.message
     }
 
-    if(!isUnsafe) this.restoreToken(bd)
+    if (!isUnsafe) this.restoreToken(bd)
     bd = null
-    
+
     client.logger.debug('Command / Eval', '[EVAL] Result: ' + result)
-    return await m.edit(client.locale.t('commands.eval.input:Input:', locale) + '```\n'
-      + str + '\n```\n'
-      + client.locale.t('commands.eval.output:and Output:', locale) + '```\n'
-      + result + '\n```')
+    return await m.edit(client.locale.t('commands.eval.input:Input:', locale) + '```\n' +
+      str + '\n```\n' +
+      client.locale.t('commands.eval.output:and Output:', locale) + '```\n' +
+      result + '\n```')
   }
 
-  async evaluate(msg, code) {
+  async evaluate (msg, code) {
     // Helpers
-    // eslint-disable no-unused-vars
+    /* eslint-disable no-unused-vars */
     const client = msg.client
     const Discord = require('discord.js')
-    // eslint-enable no-unused-vars
-    
+    const childProcess = require('child_process')
+    const fs = require('fs')
+    const jsondb = msg.client.db.obj
+    const knex = msg.client.db.knex
+    /* eslint-enable no-unused-vars */
+
+    // eslint-disable-next-line no-eval
     return new Promise((resolve) => resolve(eval(code)))
   }
 
-  hideToken() {
+  hideToken () {
     // Temporaily remove token from visible area
     const d = {}
     Object.defineProperty(d, '__SECRET__DATA__', {
@@ -74,7 +79,7 @@ class EvalCommand extends Command {
     return d
   }
 
-  restoreToken(d) {
+  restoreToken (d) {
     // Restore token
     this._client.token = this._client.config.token = d.__SECRET__DATA__
   }

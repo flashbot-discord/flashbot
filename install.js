@@ -24,17 +24,17 @@ async function run () {
 
       // 'guilds' table
       const exists = await knex.schema.hasTable('guilds')
-        if (!exists) {
-          console.log("'guilds' table not found. Creating...")
-          await knex.schema.createTable('guilds', function (t) {
-            t.string('id', 20).primary().notNullable().collate('utf8_unicode_ci')
-            t.boolean('activated').notNullable().defaultTo(false)
-            t.string('prefix', 11).nullable().collate('utf8_unicode_ci')
-            t.string('locale', 5).notNullable().defaultTo(config.defaultLocale || 'ko_KR').collate('utf8_unicode_ci')
-            t.charset('utf8')
-          })
-          console.log("Created table 'guilds'.")
-        } else console.log("'guilds' table already exists. Skipping.")
+      if (!exists) {
+        console.log("'guilds' table not found. Creating...")
+        await knex.schema.createTable('guilds', function (t) {
+          t.string('id', 20).primary().notNullable().collate('utf8_unicode_ci')
+          t.boolean('activated').notNullable().defaultTo(false)
+          t.string('prefix', 11).nullable().collate('utf8_unicode_ci')
+          t.string('locale', 5).notNullable().defaultTo(config.defaultLocale || 'ko_KR').collate('utf8_unicode_ci')
+          t.charset('utf8')
+        })
+        console.log("Created table 'guilds'.")
+      } else console.log("'guilds' table already exists. Skipping.")
 
       break
     }

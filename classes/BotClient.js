@@ -49,19 +49,19 @@ class BotClient extends Client {
     if (typeof config.prefix !== 'string') logger.fatal(logPos, "Invalid type for 'config.prefix'. Accepts String.")
     if (config.prefix.length < 1) logger.warn(logPos, 'Command prefix configuration not found. You can only enter commands by pinging the bot.')
 
-    if(typeof config.defaultLocale !== 'string') {
+    if (typeof config.defaultLocale !== 'string') {
       logger.warn(logPos, "Invalid type for 'config.defaultLocale'. Accepts String.")
       config.defaultLocale = ''
     }
-    if(config.defaultLocale.length < 1) {
+    if (config.defaultLocale.length < 1) {
       config.defaultLocale = 'ko_KR'
       logger.warn(logPos, "Default Locale configuration not found. Defaults to 'ko_KR' (한국어).")
     }
 
-    if(config.extensions != null && typeof config.extensions !== 'object') {
+    if (config.extensions != null && typeof config.extensions !== 'object') {
       logger.warn(logPos, 'Invalid type for extension configuration. Accepts object.')
       config.extensions = {}
-    } else if(config.extensions == null) config.extensions = {}
+    } else if (config.extensions == null) config.extensions = {}
 
     this.config = config
     logger.log(logPos, 'Loaded bot configuration')
@@ -77,7 +77,7 @@ class BotClient extends Client {
   async setupDatabase () {
     const logPos = this.logPos + '.setupDatabase'
 
-    if(typeof this.config.db !== 'object') return this.logger.warn(logPos, 'Database type not found: Database related features will be disabled.')
+    if (typeof this.config.db !== 'object') return this.logger.warn(logPos, 'Database type not found: Database related features will be disabled.')
 
     this.db = await new DatabaseHandler(this, this.config.db.type, this.config.db.connection)
     await this.db.test()
@@ -94,7 +94,7 @@ class BotClient extends Client {
     this.logger.debug(this.logPos + '.registerCommandHandler', 'Command Handler registered to Bot Client')
   }
 
-  registerExtensionHandler(extHandler) {
+  registerExtensionHandler (extHandler) {
     this.extensions = extHandler
     this.logger.debug(this.logPos + '.registerExtensionHandler', 'Extension Handler registered to Bot Client')
   }
