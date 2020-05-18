@@ -52,8 +52,27 @@
       "DESC": "서버 정보를 보여줍니다."
     },
     "userinfo": {
-      "result": "사용자 이름: %1$s\n사용자 ID: %2$s",
-      "DESC": "사용자 정보를 보여줍니다."
+      "DESC": "사용자 정보를 보여줍니다.",
+      "title": "%1$s의 유저 정보",
+      "requestedBy": "%1$s이(가) 요청함",
+      "name": "유저 이름",
+      "usertag": "유저 태그 (뒤 4자리 숫자)",
+      "clientStatus": {
+        "desktop": ":desktop: 컴퓨터",
+        "mobile": ":iphone: 모바일"
+      },
+      "id": "유저 아이디",
+      "createdAt": "계정 생성일",
+      "status": "현재 상태",
+      "clients": "접속한 클라이언트",
+      "createdDate": "%1$s년 %2$s월 %3$s일 %4$s시 %5$s분 %6$s초에 생성됨",
+      "statusList": {
+        "online": ":green_circle: 온라인",
+        "idle": ":crescent_moon: 자리 비움",
+        "dnd": ":no_entry: 다른 용무 중",
+        "offline": ":black_circle: 오프라인"
+      },
+      "clientOffline": "오프라인"
     },
     "eval": {
       "input": "입력값:",

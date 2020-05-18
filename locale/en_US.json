@@ -52,9 +52,27 @@
       "DESC": "Shows current server infomation."
     },
     "userinfo": {
-      "desc": "Shows some informations of the user who execute the command.",
-      "result": "Username: %1$s\nUser ID: %2$s",
-      "DESC": "Shows user information."
+      "DESC": "Shows user information.",
+      "title": "User information of %1$s",
+      "requestedBy": "Requested by %1$s",
+      "name": "User Name",
+      "usertag": "User Tag (last 4 digits)",
+      "clientStatus": {
+        "mobile": ":iphone: mobile",
+        "desktop": ":desktop: desktop"
+      },
+      "id": "User ID",
+      "createdAt": "Account Creation Date",
+      "status": "Current Status",
+      "clients": "Clients Logged on",
+      "createdDate": "Created on %2$s/%3$s/%1$s %4$s:%5$s:%6$s",
+      "statusList": {
+        "online": ":green_circle: online",
+        "idle": ":crescent_moon: idle",
+        "dnd": ":no_entry: dnd (Do Not Disturb)",
+        "offline": ":black_circle: offline"
+      },
+      "clientOffline": "Offline"
     },
     "eval": {
       "desc": "Evaluates JS code. Needs Administrator permission to use this.",
