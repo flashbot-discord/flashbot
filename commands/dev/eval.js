@@ -57,9 +57,14 @@ class EvalCommand extends Command {
     // Helpers
     /* eslint-disable no-unused-vars */
     const client = msg.client
+    const guild = msg.guild
+    const channel = msg.channel
+    const author = msg.author
+    const member = msg.member
     const Discord = require('discord.js')
     const childProcess = require('child_process')
     const fs = require('fs')
+    const os = require('os')
     const jsondb = msg.client.db.obj
     const knex = msg.client.db.knex
     /* eslint-enable no-unused-vars */
