@@ -49,7 +49,40 @@
     "serverinfo": {
       "desc": "Shows some server informations.",
       "run": "Server Name: **%s**\nMembers in the Server: %s",
-      "DESC": "Shows current server infomation."
+      "DESC": "Shows current server infomation.",
+      "title": "Server Information of %1$s",
+      "name": "Server name",
+      "owner": "Server owner",
+      "id": "Server ID",
+      "region": "Server region",
+      "memberCount": {
+        "title": "Member count (user + bot)",
+        "value": "%1$s member(s)"
+      },
+      "channelCount": {
+        "title": "Channel count",
+        "value": "%1$s channel(s)"
+      },
+      "userCount": {
+        "title": "User count",
+        "value": "%1$s user(s)"
+      },
+      "botCount": {
+        "title": "Bot count",
+        "value": "%1$s bot(s)"
+      },
+      "textChannelCount": {
+        "title": "Text Channel count",
+        "value": "%1$s text channel(s)"
+      },
+      "voiceChannelCount": {
+        "title": "Voice Channel count",
+        "value": "%1$s voice channel(s)"
+      },
+      "createdAt": {
+        "title": "This server is created at",
+        "value": "LLLL"
+      }
     },
     "userinfo": {
       "DESC": "Shows user information.",
@@ -65,14 +98,18 @@
       "createdAt": "Account Creation Date",
       "status": "Current Status",
       "clients": "Clients Logged on",
-      "createdDate": "Created on %2$s/%3$s/%1$s %4$s:%5$s:%6$s",
+      "createdDate": "LLLL",
       "statusList": {
         "online": ":green_circle: online",
         "idle": ":crescent_moon: idle",
         "dnd": ":no_entry: dnd (Do Not Disturb)",
         "offline": ":black_circle: offline"
       },
-      "clientOffline": "Offline"
+      "clientOffline": "Offline",
+      "page": {
+        "1": "Basic Information (Page 1 of 2)",
+        "2": "Informations related to this server (Page 2 of 2)"
+      }
     },
     "eval": {
       "desc": "Evaluates JS code. Needs Administrator permission to use this.",
@@ -222,5 +259,9 @@
     "info": "Informations",
     "activation": "Activations",
     "misc": "Others"
+  },
+  "regions": {
+    "south-korea": ":flag_kr: South Korea (south-korea)",
+    "japan": "regions.japan"
   }
 }

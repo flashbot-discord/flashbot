@@ -19,11 +19,11 @@ class Extension {
     }
   }
 
-  init() {
+  init () {
     throw new Error('init() method not implemented')
   }
 
-  destroy() {
+  destroy () {
     throw new Error('destroy() method not implemented')
   }
 }

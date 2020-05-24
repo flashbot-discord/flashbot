@@ -42,14 +42,44 @@
       "DESC": "퐁!"
     },
     "beep": {
-      "desc": "붑",
       "run": "붑",
       "DESC": "붑"
     },
     "serverinfo": {
-      "desc": "서버 정보를 보여줍니다.",
-      "run": "서버 이름: **%s**\n서버에 있는 멤버 수: %s",
-      "DESC": "서버 정보를 보여줍니다."
+      "DESC": "서버 정보를 보여줍니다.",
+      "title": "%1$s의 서버 정보",
+      "name": "서버 이름",
+      "owner": "서버 소유자",
+      "id": "서버 ID",
+      "region": "서버 위치",
+      "memberCount": {
+        "title": "서버 멤버 수 (유저 + 봇)",
+        "value": "%1$s명"
+      },
+      "channelCount": {
+        "title": "서버 채널 개수 (모든 종류)",
+        "value": "%1$s개"
+      },
+      "userCount": {
+        "title": "유저 수",
+        "value": "%1$s명"
+      },
+      "botCount": {
+        "title": "봇 개수",
+        "value": "%1$s개"
+      },
+      "textChannelCount": {
+        "title": "채팅 채널 개수",
+        "value": "%1$s개"
+      },
+      "voiceChannelCount": {
+        "title": "음성 채널 개수",
+        "value": "%1$s개"
+      },
+      "createdAt": {
+        "value": "YYYY년 MM월 DD일 HH시 mm분 ss초 (zz)에 생성됨",
+        "title": "서버가 생성된 날짜"
+      }
     },
     "userinfo": {
       "DESC": "사용자 정보를 보여줍니다.",
@@ -65,14 +95,18 @@
       "createdAt": "계정 생성일",
       "status": "현재 상태",
       "clients": "접속한 클라이언트",
-      "createdDate": "%1$s년 %2$s월 %3$s일 %4$s시 %5$s분 %6$s초에 생성됨",
+      "createdDate": "YYYY년 MM월 DD일 HH시 mm분 ss초에 생성됨",
       "statusList": {
         "online": ":green_circle: 온라인",
         "idle": ":crescent_moon: 자리 비움",
         "dnd": ":no_entry: 다른 용무 중",
         "offline": ":black_circle: 오프라인"
       },
-      "clientOffline": "오프라인"
+      "clientOffline": "오프라인",
+      "page": {
+        "1": "기본 정보 (페이지 1/2)",
+        "2": "이 서버에 관련된 정보 (페이지 2/2)"
+      }
     },
     "eval": {
       "input": "입력값:",
@@ -218,5 +252,9 @@
     "info": "정보",
     "activation": "활성화",
     "misc": "기타"
+  },
+  "regions": {
+    "south-korea": ":flag_kr: 대한민국 (south-korea)",
+    "japan": "regions.japan"
   }
 }
