@@ -29,7 +29,7 @@ class Paginator {
   }
 
   async start () {
-    await this.msg.edit(this.contents[0])
+    this.update()
 
     this.reactions.forEach(async (r) => await this.msg.react(r))
 
@@ -90,8 +90,8 @@ class Paginator {
   }
 
   update () {
-    if (this.contents[this.page] instanceof MessageEmbed) this.msg.edit({ embed: this.contents[this.page] })
-    else this.msg.edit({ content: this.contents[this.page] })
+    if (this.contents[this.page] instanceof MessageEmbed) this.msg.edit({content: '', embed: this.contents[this.page]})
+    else this.msg.edit(this.contents[this.page])
   }
 
   stop () {

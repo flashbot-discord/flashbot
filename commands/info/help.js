@@ -73,8 +73,8 @@ class HelpCommand extends Command {
     // Start Paginator
     if (page) {
       let message
-      if (dm) message = await msg.author.send(embeds[0])
-      else message = await msg.channel.send(embeds[0])
+      if (dm) message = await msg.author.send('Loading...')
+      else message = await msg.channel.send('Loading...')
 
       const paginator = new Paginator(client, message, {
         contents: embeds,
