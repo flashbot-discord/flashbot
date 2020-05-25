@@ -31,7 +31,7 @@ class SayCommand extends Command {
 
     // Reset the pattern count
     MessageMentions.EVERYONE_PATTERN.lastIndex = 0
-    if(MessageMentions.EVERYONE_PATTERN.test(str)) return await msg.reply(t('commands.say.noEveryone', locale))
+    if (MessageMentions.EVERYONE_PATTERN.test(str)) return await msg.reply(t('commands.say.noEveryone', locale))
     return await msg.channel.send(query.args.join(' '))
   }
 }

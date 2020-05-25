@@ -41,9 +41,9 @@ class CommandHandler {
     })
   }
 
-  registerBaseCommands(cmdPath) {
+  registerBaseCommands (cmdPath) {
     const logPos = this.logPos + '.registerBaseCommands'
-    if(this.baseCmdPath.length > 0) this._client.logger.error(logPos, 'Base Command path already registered')
+    if (this.baseCmdPath.length > 0) this._client.logger.error(logPos, 'Base Command path already registered')
     this.baseCmdPath = cmdPath
     this._client.logger.log(logPos, 'Base Command path registered: ' + cmdPath)
 
@@ -161,7 +161,7 @@ class CommandHandler {
 
     // Perms Check
     let owner = false
-    if(client.config.owner.includes(msg.author.id)) owner = true
+    if (client.config.owner.includes(msg.author.id)) owner = true
     if (cmd._owner && !owner) return await msg.reply(client.locale.t('CommandHandler.run.ownerOnly:Only the owners of the bot can run this command.', locale))
 
     if (!owner && !msg.member.permissions.has(cmd._userPerms)) return await msg.reply(client.locale.t('CommandHandler.noUserPermission:You need to have `%1$s` permissions to use this command.', locale, cmd._userPerms.join('`, `')))

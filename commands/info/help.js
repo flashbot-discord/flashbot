@@ -26,19 +26,19 @@ class HelpCommand extends Command {
     // is DM
     let dm = true
     if (msg.guild && (
-      query.args.includes('--here')
-      || query.args.includes('--ㅗㄷㄱㄷ')
-      || query.args.includes('-h')
-      || query.args.includes('-ㅗ'))
+      query.args.includes('--here') ||
+      query.args.includes('--ㅗㄷㄱㄷ') ||
+      query.args.includes('-h') ||
+      query.args.includes('-ㅗ'))
     ) dm = false
 
     // Enable/Disable Page
     let page = true
-    if (dm || query.args.includes('--no-page')
-      || query.args.includes('--ㅜㅐ-ㅔㅁㅎㄷ')
-      || query.args.includes('-n')
-      || query.args.includes('-ㅜ')
-      || (!dm && !msg.channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS'))
+    if (dm || query.args.includes('--no-page') ||
+      query.args.includes('--ㅜㅐ-ㅔㅁㅎㄷ') ||
+      query.args.includes('-n') ||
+      query.args.includes('-ㅜ') ||
+      (!dm && !msg.channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS'))
     ) page = false
 
     // Embed Maker
@@ -73,8 +73,8 @@ class HelpCommand extends Command {
     // Start Paginator
     if (page) {
       let message
-      if (dm) message = await msg.author.send(embeds[0])
-      else message = await msg.channel.send(embeds[0])
+      if (dm) message = await msg.author.send('Loading...')
+      else message = await msg.channel.send('Loading...')
 
       const paginator = new Paginator(client, message, {
         contents: embeds,
