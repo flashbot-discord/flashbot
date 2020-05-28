@@ -43,9 +43,7 @@ class ActivateCommand extends Command {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      await msg.channel.send(t('commands.activate.reactFail:' +
-      'The Bot does not have `%1$s` permission, so the bot could not add reaction.\n' +
-      'Please enter response via text, or add reaction manually.', locale, client.locale.t('perms.ADD_REACTION:Add Reaction')))
+      await msg.channel.send(t('commands.activate.reactFail', locale, client.locale.t('perms.ADD_REACTION', locale)))
     }
 
     const pend = (c) => {

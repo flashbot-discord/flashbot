@@ -263,5 +263,8 @@
   "regions": {
     "south-korea": ":flag_kr: South Korea (south-korea)",
     "japan": "regions.japan"
+  },
+  "perms": {
+    "ADD_REACTION": "Add Reaction"
   }
 }

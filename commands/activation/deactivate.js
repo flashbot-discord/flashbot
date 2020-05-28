@@ -9,14 +9,16 @@ class DeactivateCommand extends Command {
       description: 'commands.deactivate.DESC:Deactivate this bot on the server',
       group: 'activation',
       userPerms: ['ADMINISTRATOR'],
-      guildOnly: true
+      guildOnly: true,
+      requireDB: true
     })
   }
 
   async run (client, msg, args, locale) {
     if (!await client.db.isRegisteredGuild(msg.guild.id)) return Command.pleaseRegisterGuild(this, msg, locale)
 
-    let result
+    const t = client.locale.t
+    let result, done = false
 
     const mcFilter = (msg, author) => {
       if (author === msg.author.id) {
@@ -36,43 +38,39 @@ class DeactivateCommand extends Command {
       } else return false
     }
 
-    const botMsg = await msg.channel.send(client.locale.t('commands.deactivate.title:Deactivate **FlashBot**', locale) + '\n\n' +
-      client.locale.t('commands.deactivate.content:' +
-        "You're now going to disable **FlashBot** on this server.\n" +
-        'When deactivated, the bot will not respond any commands except `activate`.\n' +
-        'The data for this server will be stored after you deactivated the bot.', locale) + '\n\n' +
-      client.locale.t('commands.deactivate.confirm:' +
-    'React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.', locale))
+    const botMsg = await msg.channel.send(t('commands.deactivate.title', locale) + '\n\n' +
+      t('commands.deactivate.content', locale) + '\n\n' +
+      t('commands.deactivate.confirm', locale)
+    )
 
     try {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      await msg.channel.send(client.locale.t('commands.deactivate.reactFail:' +
-        'The Bot does not have `%1$s` permission, so the bot could not add reaction.\n' +
-        'Please enter response via text, or add reaction manually', locale, client.locale.t('perms.ADD_REACTION:Add Reaction')))
+      await msg.channel.send(t('commands.deactivate.reactFail', locale, t('perms.ADD_REACTION', locale))
+      )
     }
 
-    const pend = () => {
-      if (result) {
-        this.agree(msg, locale, mc, rc)
+    const pend = (c) => {
+      if(done) return
+
+      if (c.size > 0 && result) {
+        this.agree(msg, locale)
       } else {
-        this.deny(msg, locale, mc, rc)
+        this.deny(msg, locale)
       }
+
+      done = true
     }
-    const end = () => { if (result == null) pend() }
 
     // Message Collector
-    const mc = msg.channel.createMessageCollector((m) => mcFilter(m, msg.author.id), { time: 15000 })
-    mc.on('collect', pend)
-    mc.on('end', end)
+    const mc = msg.channel.awaitMessages((m) => mcFilter(m, msg.author.id), { time: 15000, max: 1 }).then(pend)
 
     // Reaction Collector
-    const rc = botMsg.createReactionCollector(rcFilter, { time: 15000 })
-    rc.on('collect', pend)
+    const rc = botMsg.awaitReactions(rcFilter, { time: 15000, max: 1 }).then(pend)
   }
 
-  async agree (msg, locale, collector, collector2) {
+  async agree (msg, locale) {
     // Deactivation
 
     // DB
@@ -89,16 +87,11 @@ class DeactivateCommand extends Command {
 
     // Done!
     this._client.logger.log('Command / Deactivate', `[Bot Deactivation] ${msg.author.tag} (${msg.member.nickname}) deactivated the bot in ${msg.guild.name}`)
-    await msg.channel.send(this._client.locale.t('commands.deactivate.agree:' +
-    'Thank you for using our bot. The bot is now disabled in this server. To reactivate, use the `activate` command.', locale))
-    collector.stop()
-    collector2.stop()
+    await msg.channel.send(this._client.locale.t('commands.deactivate.agree', locale))
   }
 
-  async deny (msg, locale, collector, collector2) {
-    await msg.channel.send(this._client.locale.t('commands.deactivate.deny:Bot deactivation cancelled.', locale))
-    collector.stop()
-    collector2.stop()
+  async deny (msg, locale) {
+    await msg.channel.send(this._client.locale.t('commands.deactivate.deny', locale))
   }
 
   async dbHandle (msg, locale) {
@@ -106,14 +99,14 @@ class DeactivateCommand extends Command {
     const guildID = msg.guild.id
 
     try {
-      const dbData = await db.knex('guild').select('id').where('id', guildID)
+      const dbData = await db.knex('guilds').select('id').where('id', guildID)
       if (dbData.length < 1) {
-        await db.knex('guild').insert({
+        await db.knex('guilds').insert({
           id: guildID,
           locale: 'en_US',
           activated: false
         })
-      } else await db.knex('guild').where('id', guildID).update({ activated: false })
+      } else await db.knex('guilds').where('id', guildID).update({ activated: false })
     } catch (err) {
       throw new ClientError('Cannot connect to the database. Please wait a few minutes and try again.').report(msg, locale)
     }

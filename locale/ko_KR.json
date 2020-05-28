@@ -16,12 +16,6 @@
           "aliases_noEmbed": "Aliases:"
         }
       },
-      "noEmbedPerm": "```The bot doesn't have 'POST LINK'(or similar) permission to display help message as embed, so it'll show just text help message.\n(Currnetly developing for turning off this notification)```",
-      "func_formatArgs": {
-        "must": "**Needed.**",
-        "no_args": "No arguments.",
-        "optional": "Optional."
-      },
       "args": {
         "commands": {
           "name": "명령어",
@@ -167,7 +161,7 @@
       "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
       "agree": "Thank you for using our bot. The bot is now disabled in this server. To reactivate, use the `activate` command.",
       "deny": "봇 비활성화가 취소되었습니다.",
-      "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
+      "reactFail": "봇이 `%1$s` 권한을 가지고 있지 않아, 반응을 추가할 수 없습니다.\n텍스트로 답변을 입력하거나, 수동으로 반응을 추가해 주세요.",
       "DESC": "이 서버에서 봇을 비활성화"
     },
     "load": {
@@ -231,7 +225,7 @@
     "noUserPermission": "이 명령어를 실행하려면 `%1$s` 권한이 필요합니다."
   },
   "ClientError": {
-    "error": "오류가 발생하였습니다. Please report this error message and the Error ID to the Support server.\n오류 메세지: ```\n%1$s\n```\n오류 ID: `%2$s`"
+    "error": "오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\n오류 메세지: ```\n%1$s\n```\n오류 ID: `%2$s`"
   },
   "Command": {
     "makeUsage": {
@@ -256,5 +250,8 @@
   "regions": {
     "south-korea": ":flag_kr: 대한민국 (south-korea)",
     "japan": "regions.japan"
+  },
+  "perms": {
+    "ADD_REACTION": "반응 추가하기"
   }
 }
