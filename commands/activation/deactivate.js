@@ -79,7 +79,8 @@ class DeactivateCommand extends Command {
     const db = this._client.db
     switch (db.type) {
       case 'mysql':
-        await this.mysqlHandle(msg, locale)
+      case 'pg':
+        await this.dbHandle(msg, locale)
         break
       case 'json':
         if (db.obj.guild[msg.guild.id] == null) db.obj.guild[msg.guild.id] = { activated: false }
@@ -100,7 +101,7 @@ class DeactivateCommand extends Command {
     collector2.stop()
   }
 
-  async mysqlHandle (msg, locale) {
+  async dbHandle (msg, locale) {
     const db = msg.client.db
     const guildID = msg.guild.id
 

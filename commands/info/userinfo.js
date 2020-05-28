@@ -50,6 +50,7 @@ class UserInfoCommand extends Command {
 
       data.push(this.generateEmbed(msg, user, locale)
         .setDescription(t('commands.userinfo.page.2', locale))
+        .addField('Coming soon', 'Stay tuned!') // TODO WIP
       )
     } else {
       data.push('**' + t('commands.userinfo.title', locale, user.tag) + '**\n'

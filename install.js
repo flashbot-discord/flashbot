@@ -16,7 +16,8 @@ async function run () {
 
   console.log('Initializing Database...')
   switch (config.db.type) {
-    case 'mysql': {
+    case 'mysql':
+    case 'pg': {
       const knex = require('knex')({
         client: config.db.type,
         connection: config.db.connection
@@ -31,7 +32,8 @@ async function run () {
           t.boolean('activated').notNullable().defaultTo(false)
           t.string('prefix', 11).nullable().collate('utf8_unicode_ci')
           t.string('locale', 5).notNullable().defaultTo(config.defaultLocale || 'ko_KR').collate('utf8_unicode_ci')
-          t.charset('utf8')
+
+          if(config.db.type === 'mysql') t.charset('utf8')
         })
         console.log("Created table 'guilds'.")
       } else console.log("'guilds' table already exists. Skipping.")

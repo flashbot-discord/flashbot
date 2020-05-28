@@ -44,6 +44,7 @@ class LocaleCommand extends Command {
   async dbHandle (guild, locale) {
     switch (this._client.db.type) {
       case 'mysql':
+      case 'pg':
         await this._client.db.knex('guild').update({ locale }).where('id', guild.id)
         break
 

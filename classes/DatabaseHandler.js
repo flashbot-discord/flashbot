@@ -11,12 +11,14 @@ class DatabaseHandler {
     client.logger.log(logPos, 'Database Handler Initializing...')
     client.logger.log(logPos, 'Database Type: ' + type)
     switch (type) {
-      case 'mysql': {
+      case 'mysql':
+      case 'pg': {
         client.logger.debug(logPos, 'Preparing knex Query Builder...')
         const knex = require('knex')({
           client: type,
           connection,
-          asyncStackTraces: true
+          asyncStackTraces: true,
+          debug: true
         })
 
         this.knex = knex
@@ -70,15 +72,16 @@ class DatabaseHandler {
     this._client.logger.debug(logPos, 'Testing database status')
     switch (this.type) {
       case 'mysql':
+      case 'pg':
         try {
           await this.knex.raw('select 1+1 as test')
           this.ready = true
-          this._client.logger.log(logPos + ':MySQL', 'Test Passed')
+          this._client.logger.log(logPos + ':' + this.type, 'Test Passed')
           return true
         } catch (err) {
           this.ready = false
-          this._client.logger.error(logPos + ':MySQL', 'Failed to connect the database: ' + err.stack)
-          this._client.logger.warn(logPos + ':MySQL', 'Test Failed; Database feature disabled.')
+          this._client.logger.error(logPos + ':' + this.type, 'Failed to connect the database: ' + err.stack)
+          this._client.logger.warn(logPos + ':' + this.type, 'Test Failed; Database feature disabled.')
           return false
         }
       case 'json':
@@ -90,6 +93,7 @@ class DatabaseHandler {
   async isRegisteredUser (id) {
     switch (this.type) {
       case 'mysql':
+      case 'pg':
         if (await this.knex('user').select('id').where('id', id).length < 1) return false
         else return true
 
@@ -102,6 +106,7 @@ class DatabaseHandler {
   async isRegisteredGuild (id) {
     switch (this.type) {
       case 'mysql':
+      case 'pg':
         if (await this.knex('guild').select('id').where('id', id).length < 1) return false
         else return true
 

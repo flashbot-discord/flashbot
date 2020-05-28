@@ -28,7 +28,8 @@ class LocaleHandler {
     const logPos = this.logPos + '.getGuildLocale'
 
     switch (this._client.db.type) {
-      case 'mysql': {
+      case 'mysql':
+      case 'pg': {
         let d
         try {
           d = await this._client.db.knex('guild').select('locale').where('id', guild.id)
