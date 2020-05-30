@@ -228,6 +228,9 @@
     },
     "hellothisisverification": {
       "DESC": "commands.hellothisisverification.DESC"
+    },
+    "support": {
+      "text": "Enter the Support server and chat, ask, or get support."
     }
   },
   "CommandHandler": {

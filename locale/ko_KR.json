@@ -215,6 +215,9 @@
     },
     "hellothisisverification": {
       "DESC": "commands.hellothisisverification.DESC"
+    },
+    "support": {
+      "text": "지원 서버에 입장하여 다른 유저들과 채팅하고, 질문하고, 봇 사용에 관한 지원을 받으세요."
     }
   },
   "CommandHandler": {
