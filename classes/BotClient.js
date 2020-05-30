@@ -35,7 +35,7 @@ class BotClient extends Client {
     logger.log(logPos, 'Loaded bot TOKEN')
 
     // Load Config
-    if (fs.existsSync(path + '/config.json')) config = require(path + '/config.json')
+    if (fs.existsSync(path + '/config.js')) config = require(path + '/config.js')
     else config = { owner: [], prefix: '//', extensions: {} }
 
     config.token = token
