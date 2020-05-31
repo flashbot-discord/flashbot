@@ -35,7 +35,7 @@ class LocaleCommand extends Command {
       else {
         const language = query.args[0]
         if (!client.locale.i18n.getLocales().includes(language)) return await msg.channel.send(client.locale.t('commands.locale.noLanguage:The language you entered does not exist.', locale))
-        this.dbHandle(msg.guild, language)
+        await this.dbHandle(msg.guild, language)
         await msg.channel.send(client.locale.t('commands.locale.set:Language setting changed to `%1$s`.', locale, language))
       }
     }
@@ -45,7 +45,7 @@ class LocaleCommand extends Command {
     switch (this._client.db.type) {
       case 'mysql':
       case 'pg':
-        await this._client.db.knex('guild').update({ locale }).where('id', guild.id)
+        await this._client.db.knex('guilds').update({ locale }).where('id', guild.id)
         break
 
       case 'json':
