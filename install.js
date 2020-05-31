@@ -12,7 +12,7 @@ run().then(() => {
 })
 
 async function run () {
-  const config = require('./config.json')
+  const config = require('./config.js')
 
   console.log('Initializing Database...')
   switch (config.db.type) {
