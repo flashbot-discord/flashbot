@@ -32,7 +32,7 @@ class LocaleHandler {
       case 'pg': {
         let d
         try {
-          d = await this._client.db.knex('guild').select('locale').where('id', guild.id)
+          d = await this._client.db.knex('guilds').select('locale').where('id', guild.id)
         } catch (err) {
           this._client.logger.warn(logPos, 'Cannot load locale information of guild ' + guild.name + ' (' + guild.id + "). Falling back to default locale '" + this._client.config.defaultLocale + "': " + err.stack)
           return this._client.config.defaultLocale

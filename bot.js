@@ -8,7 +8,7 @@ const VERSION = 'v0.8-beta.2'
 const BUILD_DATE = '2020/5/29'
 /* eslint-enable no-unused-vars */
 
-// import needed modules
+// import necessary modules
 const path = require('path')
 
 const BotClient = require('./classes/BotClient')
