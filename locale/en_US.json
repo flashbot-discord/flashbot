@@ -156,7 +156,8 @@
       "get": "The current language is: `%1$s`",
       "set": "Language setting changed to `%1$s`.",
       "noLanguage": "The language you entered does not exist.",
-      "DESC": "See or change the bot locale on the server."
+      "DESC": "See or change the bot locale on the server.",
+      "noPermission": "You don't have `%1$s` permission to do that."
     },
     "activate": {
       "title": "Activate **FlashBot**",
@@ -268,6 +269,7 @@
     "japan": "regions.japan"
   },
   "perms": {
-    "ADD_REACTION": "Add Reaction"
+    "ADD_REACTION": "Add Reaction",
+    "ADMINISTRATOR": "Administrator"
   }
 }
