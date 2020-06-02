@@ -79,7 +79,7 @@ class UserInfoCommand extends Command {
     const t = this._client.locale.t
     return new MessageEmbed()
       .setTitle(t('commands.userinfo.title', locale, user.tag))
-      .setThumbnail(user.displayAvatarURL({ size: 1024 }))
+      .setThumbnail(user.displayAvatarURL({ size: 1024, dynamic: true }))
       .setFooter(t('commands.userinfo.requestedBy', locale, msg.author.tag), msg.author.displayAvatarURL())
   }
 }

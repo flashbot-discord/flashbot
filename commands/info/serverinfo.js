@@ -35,7 +35,7 @@ class ServerInfoCommand extends Command {
     if (useEmbed) {
       data = new MessageEmbed()
         .setTitle(t('commands.serverinfo.title', locale, guild.name))
-        .setThumbnail(guild.iconURL())
+        .setThumbnail(guild.iconURL({ dynamic: true, size: 1024 }))
         .addField(':desktop: ' + t('commands.serverinfo.name', locale), guild.name, true)
         .addField(':id: ' + t('commands.serverinfo.id', locale), guild.id, true)
         .addField(':bust_in_silhouette: ' + t('commands.serverinfo.owner', locale), '<@' + guild.owner.id + '> ' + guild.owner.user.tag + ' (' + guild.owner.id + ')', true)
