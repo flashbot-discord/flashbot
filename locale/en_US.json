@@ -114,14 +114,15 @@
     "eval": {
       "desc": "Evaluates JS code. Needs Administrator permission to use this.",
       "input": "Input:",
-      "output": "and Output:",
+      "output": "Output:",
       "args": {
         "code": {
           "NAME": "code",
           "DESC": "The code to evaluate."
         }
       },
-      "DESC": "Evaluates a code."
+      "DESC": "Evaluates a code.",
+      "title": "Eval"
     },
     "args-info": {
       "desc": "for checking command arguments",
@@ -232,6 +233,17 @@
     },
     "support": {
       "text": "Enter the Support server and chat, ask, or get support."
+    },
+    "exec": {
+      "title": "commands.exec.title",
+      "input": "commands.exec.input",
+      "output": "commands.exec.output",
+      "args": {
+        "cmd": {
+          "NAME": "command",
+          "DESC": "The command to run on the shell."
+        }
+      }
     }
   },
   "CommandHandler": {

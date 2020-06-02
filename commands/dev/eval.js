@@ -1,3 +1,4 @@
+const { MessageEmbed } = require('discord.js')
 const Command = require('../../classes/Command')
 const util = require('util')
 
@@ -20,6 +21,8 @@ class EvalCommand extends Command {
   }
 
   async run (client, msg, query, locale) {
+    const t = client.locale.t
+
     // Unsafe mode check
     let isUnsafe = false
     if (['-u', '--unsafe'].includes(query.args[0])) {
@@ -33,7 +36,7 @@ class EvalCommand extends Command {
 
     const m = await msg.reply('Evaling...')
 
-    let bd, result
+    let bd, result, error = false
     if (!isUnsafe) bd = this.hideToken()
 
     try {
@@ -41,16 +44,27 @@ class EvalCommand extends Command {
       result = util.inspect(evaluated, { depth: 0 })
     } catch (err) {
       result = err.message
+      error = true
     }
 
     if (!isUnsafe) this.restoreToken(bd)
     bd = null
 
     client.logger.debug('Command / Eval', '[EVAL] Result: ' + result)
-    return await m.edit(client.locale.t('commands.eval.input:Input:', locale) + '```\n' +
-      str + '\n```\n' +
-      client.locale.t('commands.eval.output:and Output:', locale) + '```\n' +
-      result + '\n```')
+
+    if(msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+      const embed = new MessageEmbed()
+        .setTitle(t('commands.eval.title', locale))
+        .addField(t('commands.eval.input', locale), str)
+        .addField(t('commands.eval.output', locale), '```\n' + result + '\n```')
+      error ? embed.setColor(0xff0000) : embed.setColor(0x00ff00)
+
+      return m.edit({ content: '', embed })
+    } else return m.edit(t('commands.eval.input', locale) + '```\n'
+        + str + '\n```\n'
+        + t('commands.eval.output', locale) + '```\n'
+        + result + '\n```'
+    )
   }
 
   async evaluate (msg, code) {
@@ -70,7 +84,13 @@ class EvalCommand extends Command {
     /* eslint-enable no-unused-vars */
 
     // eslint-disable-next-line no-eval
-    return new Promise((resolve) => resolve(eval(code)))
+    return new Promise((resolve, reject) => {
+      let result
+      try {
+        result = eval(code)
+        resolve(result)
+      } catch(err) { reject(err) }
+    })
   }
 
   hideToken () {

@@ -103,15 +103,16 @@
       }
     },
     "eval": {
-      "input": "입력값:",
-      "output": "그리고 출력값:",
+      "input": "입력:",
+      "output": "출력:",
       "args": {
         "code": {
           "NAME": "코드",
           "DESC": "실행할 코드"
         }
       },
-      "DESC": "코드를 실행합니다."
+      "DESC": "코드를 실행합니다.",
+      "title": "코드 실행"
     },
     "args-info": {
       "noArgs": "인수가 입력되지 않았습니다.",
@@ -219,10 +220,21 @@
     },
     "support": {
       "text": "지원 서버에 입장하여 다른 유저들과 채팅하고, 질문하고, 봇 사용에 관한 지원을 받으세요."
+    },
+    "exec": {
+      "title": "명령어 실행",
+      "input": "입력:",
+      "output": "출력:",
+      "args": {
+        "cmd": {
+          "NAME": "명령어",
+          "DESC": "쉘에서 실행할 명령어"
+        }
+      }
     }
   },
   "CommandHandler": {
-    "unexpectedError": "예상치 못한 오류가 발생하였습니다. Please report this error message and the Error ID to the Support server.\n오류 메세지: ```\n%1$s\n```\n오류 ID: `%2$s`",
+    "unexpectedError": "예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지와 오류 ID를 제보해 주세요.\n오류 메세지: ```\n%1$s\n```\n오류 ID: `%2$s`",
     "run": {
       "ownerOnly": "봇 소유자만 이 명령어를 실행할 수 있습니다."
     },
