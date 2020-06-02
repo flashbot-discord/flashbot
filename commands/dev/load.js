@@ -31,8 +31,7 @@ class LoadCommand extends Command {
       const fullpath = path.join(client.commands.baseCmdPath, input + '.js')
       const cmd = require(fullpath)
 
-      const group = input.split('/')[0]
-      const r = client.commands.register(cmd, group, fullpath)
+      const r = client.commands.register(cmd, fullpath)
 
       if (!r) return await msg.reply(t('commands.load.alreadyExists:That command (or aliases in it) already exists.', locale))
       return await msg.reply(t('commands.load.added:Loaded `%1$s` command.', locale, input))
