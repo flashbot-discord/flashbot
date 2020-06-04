@@ -25,7 +25,8 @@ class ServerInfoCommand extends Command {
     const guild = msg.guild
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
-    const userCount = guild.members.cache.filter((m) => !m.user.bot).size
+    const users = await guild.members.fetch()
+    const userCount = users.filter((m) => !m.user.bot).size
     const botCount = guild.memberCount - userCount
     const textChannelCount = guild.channels.cache.filter((c) => c.type === 'text').size
     const voiceChannelCount = guild.channels.cache.filter((c) => c.type === 'voice').size
