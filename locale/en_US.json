@@ -2,8 +2,6 @@
   "commands": {
     "help": {
       "desc": "Show Flashbot's help message.\n**%1$s** (Page %2$s of %3$s)",
-      "descNoPage": "**%1$s**",
-      "descNotEmbed": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting https://flashbot-discord.herokuapp.com \n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
       "title": "FlashBot Help Page",
       "cmdHelp": {
         "no_cmd": "That command does not exist.",
@@ -15,12 +13,6 @@
           "args_noEmbed": "Arguments:",
           "aliases_noEmbed": "Aliases:"
         }
-      },
-      "noEmbedPerm": "```The bot doesn't have 'POST LINK'(or similar) permission to display help message as embed, so it'll show just text help message.\n(Currnetly developing for turning off this notification)```",
-      "func_formatArgs": {
-        "must": "**Needed.**",
-        "no_args": "No arguments.",
-        "optional": "Optional."
       },
       "args": {
         "commands": {
@@ -164,7 +156,7 @@
       "title": "Activate **FlashBot**",
       "confirm": "React with :white_check_mark: or type `Yes` to agree, otherwise react with :x: or type `No` to deny.",
       "deny": "Bot Activation cancelled.",
-      "agree": "Thank you! You agreed with our Terms of Service and Privacy Policy. The Bot is now activated on this server. You (and this server's member) can use this bot right now!",
+      "agree": "Thank you! You agreed with our Terms of Service and Privacy Policy. The Bot is now activated on this server.",
       "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
       "content": "You need to agree to the FlashBot's **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy",
       "DESC": "Activate this bot on the server"
@@ -261,11 +253,11 @@
       "str": "Usage: ```\n%1$s%2$s %3$s\n(Required) [Optional]\n```"
     },
     "pleaseRegister": {
-      "guild": "This feature requires server registration, but this server is not registered. Please register this server to use this feature."
+      "guild": "You need to register this server in order to use this feature. Please register using the `//activate` command."
     }
   },
   "error": {
-    "DBNotReady": "This feature needs the database storage to work.\nCurrently, the bot is not connected to the storage.\nPlease report this to the Support server to be fixed."
+    "DBNotReady": "This feature needs the database storage, but the bot is not connected to the storage.\nPlease report this to the Support server to be fixed."
   },
   "common": {
     "mention": "mention",

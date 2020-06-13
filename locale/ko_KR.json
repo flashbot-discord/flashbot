@@ -2,8 +2,6 @@
   "commands": {
     "help": {
       "desc": "Flashbot의 도움말을 보여줍니다.\n**%1$s** (페이지 %2$s/%3$s)",
-      "descNoPage": "**%1$s**",
-      "descNotEmbed": "This bot may stop suddenly.\nIf the bot is offline, You can turn the bot online by visiting https://flashbot-discord.herokuapp.com \n\nBelow you can see all commands.\nFor more information about spicific command, type `%scommand`.\n(e.g. `%shelp ping`)",
       "title": "FlashBot 도움말 페이지",
       "cmdHelp": {
         "no_cmd": "That command does not exist.",
@@ -152,16 +150,16 @@
       "title": "**FlashBot** 활성화",
       "confirm": ":white_check_mark:으로 반응하거나 `Yes`를 입력하여 동의하고, 아니면 :x:로 반응하거나 `No`를 입력하여 거부할 수 있습니다.",
       "deny": "봇 활성화가 취소되었습니다.",
-      "agree": "Thank you! You agreed with our Terms of Service and Privacy Policy. The Bot is now activated on this server. You (and this server's member) can use this bot right now!",
+      "agree": "약관에 동의하였습니다. 이 서버에서 봇이 활성화되었습니다.",
       "reactFail": "봇이 `%1$s` 권한을 가지고 있지 않아, 봇이 반응을 추가할 수 없습니다.\n텍스트로 답변을 입력하거나, 수동으로 반응을 추가해 주세요.",
-      "content": "You need to agree to the FlashBot's **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy",
+      "content": "FlashBot **이용 약관**과 **개인정보 취급 방침**에 동의해야 랍니다.\n아래 링크에서 해당 문서들을 볼 수 있습니다.\n이용약관: https://flashbot.ga/tos\n개인정보 취급방침: https://flashbot.ga/privacy",
       "DESC": "이 서버에서 봇을 활성화합니다."
     },
     "deactivate": {
       "title": "**FlashBot** 비활성화",
-      "content": "이제 **FlashBot**을 이 서버에서 비활성화하려고 합니다.\n봇이 비활성화되면, 봇은 `activate`를 제외한 다른 명령어에 응답하지 않습니다.\n이 서버에 대한 데이터는  봇을 비활성화한 이후에도 남아 있을 것입니다.",
-      "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
-      "agree": "Thank you for using our bot. The bot is now disabled in this server. To reactivate, use the `activate` command.",
+      "content": "이제 **FlashBot**을 이 서버에서 비활성화하려고 합니다.\n봇이 비활성화되면, 봇은 `activate`를 제외한 다른 명령어에 응답하지 않습니다.\n이 서버에 대한 데이터는  봇을 비활성화한 이후에도 유지됩니다.",
+      "confirm": ":white_check_mark:으로 반응하거나 `Yes`를 입력하여 동의하고, 아니면 :x:로 반응하거나 `No`를 입력하여 거부할 수 있습니다.",
+      "agree": "이 봇을 이용해 주셔서 감사합니다. 에 서버에서 봇이 비활성화되었습니다. 다시 활성화하려면, `activate` 명령어를 사용해 주세요.",
       "deny": "봇 비활성화가 취소되었습니다.",
       "reactFail": "봇이 `%1$s` 권한을 가지고 있지 않아, 반응을 추가할 수 없습니다.\n텍스트로 답변을 입력하거나, 수동으로 반응을 추가해 주세요.",
       "DESC": "이 서버에서 봇을 비활성화"
@@ -248,11 +246,11 @@
       "str": "사용법: ```\n%1$s%2$s %3$s\n(필수) [선택]\n```"
     },
     "pleaseRegister": {
-      "guild": "This feature requires server registration, but this server is not registered. Please register this server to use this feature."
+      "guild": "이 기능을 사용하기 위해서는 서버 등록이 필요합니다. `//activate` 명령어를 사용하여 등록하세요."
     }
   },
   "error": {
-    "DBNotReady": "This feature needs the database storage to work.\nCurrently, the bot is not connected to the storage.\nPlease report this to the Support server to be fixed."
+    "DBNotReady": "이 기능은 데이터베이스가 필요하지만, 현재 봇이 데이터베이스에 접근할 수 없습니다. 지원 서버에 문의를 남겨주세요."
   },
   "common": {
     "mention": "멘션",
