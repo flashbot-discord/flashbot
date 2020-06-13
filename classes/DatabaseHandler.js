@@ -107,7 +107,7 @@ class DatabaseHandler {
     switch (this.type) {
       case 'mysql':
       case 'pg':
-        if (await this.knex('guilds').select('id').where('id', id).length < 1) return false
+        if ((await this.knex('guilds').select('id').where('id', id)).length < 1) return false
         else return true
 
       case 'json':
