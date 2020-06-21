@@ -10,12 +10,13 @@ class DeactivateCommand extends Command {
       group: 'activation',
       userPerms: ['ADMINISTRATOR'],
       guildOnly: true,
+      guildAct: true,
       requireDB: true
     })
   }
 
   async run (client, msg, args, locale) {
-    if (!await client.db.isRegisteredGuild(msg.guild.id)) return Command.pleaseRegisterGuild(this, msg, locale)
+    //if (!await client.db.isRegisteredGuild(msg.guild.id)) return Command.pleaseRegisterGuild(this, msg, locale)
 
     const t = client.locale.t
     let result, done = false

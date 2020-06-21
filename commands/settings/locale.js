@@ -13,6 +13,7 @@ class LocaleCommand extends Command {
       description: 'commands.locale.DESC:See or change the bot locale on the server.',
       group: 'misc',
       guildOnly: true,
+      guildAct: true,
       requireDB: true,
       args: [
         {
@@ -28,8 +29,6 @@ class LocaleCommand extends Command {
   async run (client, msg, query, locale) {
     const t = client.locale.t
     const editPerms = ['ADMINISTRATOR']
-
-    if (!await client.db.isRegisteredGuild(msg.guild.id)) return Command.pleaseRegisterGuild(this, msg, locale)
 
     if (query.args.length < 1) return await msg.channel.send(t('commands.locale.get', locale, locale))
 

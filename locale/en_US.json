@@ -23,7 +23,8 @@
       "DESC": "Shows help message.",
       "sentToDM": "Sent the help messages to your DM.",
       "footer": "Use the emojis to flip the page. / Time limit: 30 seconds / Version: %1$s",
-      "footerNoPage": "Version: %1$s"
+      "footerNoPage": "Version: %1$s",
+      "descNoPage": "commands.help.descNoPage"
     },
     "ping": {
       "desc": "Pong!",
@@ -224,18 +225,29 @@
       "DESC": "commands.hellothisisverification.DESC"
     },
     "support": {
-      "text": "Enter the Support server and chat, ask, or get support."
+      "text": "Enter the Support server and chat, ask, or get support.",
+      "DESC": "Gives the link to the support server."
     },
     "exec": {
-      "title": "commands.exec.title",
-      "input": "commands.exec.input",
-      "output": "commands.exec.output",
+      "title": "Command Execution",
+      "input": "Input:",
+      "output": "Output:",
       "args": {
         "cmd": {
           "NAME": "command",
           "DESC": "The command to run on the shell."
         }
       }
+    },
+    "typing": {
+      "noDataFile": "Any typing data file does not exist. Please post an issue at the Support Server.",
+      "noDataFolder": "Typing data folder does not exist. Please post an issue at the Support Server.",
+      "start": "Type below sentence **correctly**! (Time limit: 1 minute)```\n%1$s\n```",
+      "loading": "Loading typing data... (This job will run only first time, so please wait a bit)",
+      "loaded": "Typing data loaded!",
+      "finish": "Finished!",
+      "notMatch": "The sentence you entered does not match.",
+      "doNotCopyPaste": "Do not copy/paste."
     }
   },
   "CommandHandler": {
@@ -253,7 +265,7 @@
       "str": "Usage: ```\n%1$s%2$s %3$s\n(Required) [Optional]\n```"
     },
     "pleaseRegister": {
-      "guild": "You need to register this server in order to use this feature. Please register using the `//activate` command."
+      "guild": "You need to register this server in order to use this feature. Please register using the `%1$sactivate` command."
     }
   },
   "error": {

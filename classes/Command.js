@@ -10,6 +10,7 @@ class Command {
     this._userPerms = infos.userPerms || []
     this._owner = infos.owner || false
     this._guildOnly = infos.guildOnly || false
+    this._guildAct = infos.guildAct || false
     this._requireDB = infos.requireDB || false
     this._args = infos.args || []
     this._group = infos.group || ''
@@ -42,8 +43,8 @@ class Command {
     // TODO
   }
 
-  static async pleaseRegisterGuild (cmd, msg, locale) {
-    return await msg.reply(cmd._client.locale.t('Command.pleaseRegister.guild:This feature requires server registration, but this server is not registered. Please register this server to use this feature.', locale))
+  static async pleaseActivateGuild (cmd, msg, locale) {
+    return await msg.reply(cmd._client.locale.t('Command.pleaseRegister.guild', locale, cmd._client.config.prefix))
   }
 
   static makeUsage (cmd, called, locale) {
