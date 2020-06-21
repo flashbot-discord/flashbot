@@ -107,7 +107,7 @@ class DatabaseHandler {
     switch (this.type) {
       case 'mysql':
       case 'pg':{
-        const data = await this.knex('guilds').select('id').where('id', id)
+        const data = await this.knex('guilds').select().where('id', id)
         if(data.length < 1 || !data[0].activated) return false
         else return true
       }

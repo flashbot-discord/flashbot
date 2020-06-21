@@ -159,7 +159,6 @@ class CommandHandler {
 
     if (cmd._guildOnly && !msg.guild) return await msg.reply(client.locale.t('CommandHandler.run.guildOnly:This command can only run on server text channel.', locale))
 
-    const actCmd = client.commands.get('activate')
     if (cmd._guildAct && !(await client.db.isActivatedGuild(msg.guild.id))) return msg.channel.send(client.locale.t('Command.pleaseRegister.guild', locale, client.config.prefix))
 
     // Perms Check
