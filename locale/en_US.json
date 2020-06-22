@@ -239,15 +239,11 @@
         }
       }
     },
-    "typing": {
-      "noDataFile": "Any typing data file does not exist. Please post an issue at the Support Server.",
-      "noDataFolder": "Typing data folder does not exist. Please post an issue at the Support Server.",
-      "start": "Type below sentence **correctly**! (Time limit: 1 minute)```\n%1$s\n```",
-      "loading": "Loading typing data... (This job will run only first time, so please wait a bit)",
-      "loaded": "Typing data loaded!",
-      "finish": "Finished!",
-      "notMatch": "The sentence you entered does not match.",
-      "doNotCopyPaste": "Do not copy/paste."
+    "register": {
+      "title": "commands.register.title",
+      "content": "commands.register.content",
+      "confirm": "commands.register.confirm",
+      "deny": "commands.register.deny"
     }
   },
   "CommandHandler": {
