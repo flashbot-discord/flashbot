@@ -9,7 +9,8 @@ class ActivateCommand extends Command {
       description: 'commands.activate.DESC:Activate this bot on the server',
       group: 'activation',
       userPerms: ['ADMINISTRATOR'],
-      guildOnly: true
+      guildOnly: true,
+      requireDB: true
     })
   }
 
@@ -17,11 +18,11 @@ class ActivateCommand extends Command {
     const t = client.locale.t
     let result, done = false
 
-    const mcFilter = (msg, author) => {
-      if (author === msg.author.id) {
-        if (msg.content.toLowerCase() !== 'yes' && msg.content.toLowerCase() !== 'no') return false
-        else if (msg.content.toLowerCase() === 'yes') result = true
-        else if (msg.content.toLowerCase() === 'no') result = false
+    const mcFilter = (m) => {
+      if (m.author.id === msg.author.id) {
+        if (m.content.toLowerCase() !== 'yes' && m.content.toLowerCase() !== 'no') return false
+        else if (m.content.toLowerCase() === 'yes') result = true
+        else if (m.content.toLowerCase() === 'no') result = false
         return true
       } else return false
     }
@@ -59,7 +60,7 @@ class ActivateCommand extends Command {
     }
 
     // Message Collector
-    msg.channel.awaitMessages((m) => mcFilter(m, msg.author.id), { time: 15000, max: 1 }).then(pend)
+    msg.channel.awaitMessages(mcFilter, { time: 15000, max: 1 }).then(pend)
 
     // Reaction Collector
     botMsg.awaitReactions(rcFilter, { time: 15000, max: 1 }).then(pend)
@@ -98,7 +99,7 @@ class ActivateCommand extends Command {
       if (dbData.length < 1) {
         await db.knex('guilds').insert({
           id: guildID,
-          locale: 'en_US',
+          locale: 'ko_KR',
           activated: true
         })
       } else await db.knex('guilds').where('id', guildID).update({ activated: true })
