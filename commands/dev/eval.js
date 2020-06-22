@@ -83,10 +83,10 @@ class EvalCommand extends Command {
     const knex = msg.client.db.knex
     /* eslint-enable no-unused-vars */
 
-    // eslint-disable-next-line no-eval
     return new Promise((resolve, reject) => {
       let result
       try {
+        // eslint-disable-next-line no-eval
         result = eval(code)
         resolve(result)
       } catch(err) { reject(err) }
