@@ -94,19 +94,17 @@ class DatabaseHandler {
     switch (this.type) {
       case 'mysql':
       case 'pg':
-        if (await this.knex('users').select('id').where('id', id).length < 1) return false
-        else return true
+        return (await this.knex('users').select('id').where('id', id)).length < 1
 
       case 'json':
-        if (typeof this.obj.user[id] === 'object') return true
-        else return false
+        return typeof this.obj.user[id] === 'object'
     }
   }
 
   async isActivatedGuild (id) {
     switch (this.type) {
       case 'mysql':
-      case 'pg':{
+      case 'pg': {
         const data = await this.knex('guilds').select().where('id', id)
         if(data.length < 1 || !data[0].activated) return false
         else return true
