@@ -16,7 +16,7 @@ class ActivateCommand extends Command {
 
   async run (client, msg, args, locale) {
     const t = client.locale.t
-    let result, done = false
+    let result; let done = false
 
     const mcFilter = (m) => {
       if (m.author.id === msg.author.id) {
@@ -38,7 +38,8 @@ class ActivateCommand extends Command {
 
     const botMsg = await msg.channel.send(t('commands.activate.title', locale) + '\n\n' +
       t('commands.activate.content', locale) + '\n\n' +
-      t('commands.activate.confirm', locale))
+      t('commands.activate.confirm', locale)
+    )
 
     try {
       await botMsg.react('✅')
@@ -48,7 +49,7 @@ class ActivateCommand extends Command {
     }
 
     const pend = (c) => {
-      if(done) return
+      if (done) return
 
       if (c.size > 0 && result) {
         this.agree(msg, locale)
@@ -104,7 +105,9 @@ class ActivateCommand extends Command {
         })
       } else await db.knex('guilds').where('id', guildID).update({ activated: true })
     } catch (err) {
-      throw new ClientError('Cannot connect to the database. Please wait a few minutes and try again.').report(msg, locale)
+      const e = new ClientError(e)
+      e.report(msg, locale)
+      throw e
     }
   }
 }

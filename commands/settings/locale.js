@@ -33,9 +33,9 @@ class LocaleCommand extends Command {
     if (query.args.length < 1) return await msg.channel.send(t('commands.locale.get', locale, locale))
 
     if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.any(editPerms)) {
-      let translatedPerms = []
+      const translatedPerms = []
       editPerms.forEach((p) => translatedPerms.push(t('perms.' + p, locale)))
-      return await msg.channel.send(t("commands.locale.noPermission", locale, translatedPerms.join('`, `')))
+      return await msg.channel.send(t('commands.locale.noPermission', locale, translatedPerms.join('`, `')))
     }
 
     const language = query.args[0]

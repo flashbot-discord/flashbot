@@ -26,18 +26,17 @@ class UserInfoCommand extends Command {
     const user = msg.author
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
-      const statusTxt = new Map([
-        ['online', t('commands.userinfo.statusList.online', locale)],
-        ['idle', t('commands.userinfo.statusList.idle', locale)],
-        ['dnd', t('commands.userinfo.statusList.dnd', locale)],
-        ['offline', t('commands.userinfo.statusList.offline', locale)]
-      ])
-      const status = statusTxt.get(user.presence.status)
+    const statusTxt = new Map([
+      ['online', t('commands.userinfo.statusList.online', locale)],
+      ['idle', t('commands.userinfo.statusList.idle', locale)],
+      ['dnd', t('commands.userinfo.statusList.dnd', locale)],
+      ['offline', t('commands.userinfo.statusList.offline', locale)]
+    ])
+    const status = statusTxt.get(user.presence.status)
 
-      
-      const createdAt = moment(user.createdAt).tz('Asia/Seoul').format(t('commands.userinfo.createdDate', locale))
+    const createdAt = moment(user.createdAt).tz('Asia/Seoul').format(t('commands.userinfo.createdDate', locale))
 
-    if(useEmbed) {
+    if (useEmbed) {
       data.push(this.generateEmbed(msg, user, locale)
         .setDescription(t('commands.userinfo.page.1', locale))
         .addField(':bust_in_silhouette: ' + t('commands.userinfo.name', locale), user.username, true)
@@ -53,10 +52,10 @@ class UserInfoCommand extends Command {
         .addField('Coming soon', 'Stay tuned!') // TODO WIP
       )
     } else {
-      data.push('**' + t('commands.userinfo.title', locale, user.tag) + '**\n'
-        + '<@' + msg.author.id + '> ' + t('commands.userinfo.requestedBy', locale, msg.author.tag) + '\n'
-        + t('commands.userinfo.page.1', locale) + '\n\n'
-        + '**:bust_in_silhouette: ' + t('commands.userinfo.name', locale) + '**: ' + user.username + '\n'
+      data.push('**' + t('commands.userinfo.title', locale, user.tag) + '**\n' +
+        '<@' + msg.author.id + '> ' + t('commands.userinfo.requestedBy', locale, msg.author.tag) + '\n' +
+        t('commands.userinfo.page.1', locale) + '\n\n' +
+        '**:bust_in_silhouette: ' + t('commands.userinfo.name', locale) + '**: ' + user.username + '\n'
       )
     }
 
@@ -75,7 +74,7 @@ class UserInfoCommand extends Command {
     return text
   }
 
-  generateEmbed(msg, user, locale) {
+  generateEmbed (msg, user, locale) {
     const t = this._client.locale.t
     return new MessageEmbed()
       .setTitle(t('commands.userinfo.title', locale, user.tag))

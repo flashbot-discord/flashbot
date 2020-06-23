@@ -148,29 +148,29 @@ class CommandHandler {
   async run (cmd, client, msg, query) {
     let locale
     try {
-    locale = await client.locale.getGuildLocale(msg.guild)
+      locale = await client.locale.getGuildLocale(msg.guild)
 
-    if (!msg.guild.me.permissions.has(cmd._clientPerms)) return await msg.reply(client.locale.t('CommandHandler.noClientPermission:I need to have `%1$s` permissions to run this command.', locale, cmd._clientPerms.join('`, `')))
+      if (!msg.guild.me.permissions.has(cmd._clientPerms)) return await msg.reply(client.locale.t('CommandHandler.noClientPermission:I need to have `%1$s` permissions to run this command.', locale, cmd._clientPerms.join('`, `')))
 
-    // Status Check
-    if (cmd._requireDB && !this._client.db.ready) {
-      return await msg.channel.send(client.locale.t('error.DBNotReady:This feature needs the database storage to work.\n' +
+      // Status Check
+      if (cmd._requireDB && !this._client.db.ready) {
+        return await msg.channel.send(client.locale.t('error.DBNotReady:This feature needs the database storage to work.\n' +
     'Currently, the bot is not connected to the storage.\n' +
     'Please report this to the Support server to be fixed.', locale))
-    }
+      }
 
-    if (cmd._guildOnly && !msg.guild) return await msg.reply(client.locale.t('CommandHandler.run.guildOnly:This command can only run on server text channel.', locale))
+      if (cmd._guildOnly && !msg.guild) return await msg.reply(client.locale.t('CommandHandler.run.guildOnly:This command can only run on server text channel.', locale))
 
-    if (cmd._guildAct && !(await client.db.isActivatedGuild(msg.guild.id))) return msg.channel.send(client.locale.t('Command.pleaseRegister.guild', locale, client.config.prefix))
+      if (cmd._guildAct && !(await client.db.isActivatedGuild(msg.guild.id))) return msg.channel.send(client.locale.t('Command.pleaseRegister.guild', locale, client.config.prefix))
 
-    // Perms Check
-    let owner = false
-    if (client.config.owner.includes(msg.author.id)) owner = true
-    if (cmd._owner && !owner) return await msg.reply(client.locale.t('CommandHandler.run.ownerOnly:Only the owners of the bot can run this command.', locale))
+      // Perms Check
+      let owner = false
+      if (client.config.owner.includes(msg.author.id)) owner = true
+      if (cmd._owner && !owner) return await msg.reply(client.locale.t('CommandHandler.run.ownerOnly:Only the owners of the bot can run this command.', locale))
 
-    if (!owner && !msg.member.permissions.has(cmd._userPerms)) return await msg.reply(client.locale.t('CommandHandler.noUserPermission:You need to have `%1$s` permissions to use this command.', locale, cmd._userPerms.join('`, `')))
+      if (!owner && !msg.member.permissions.has(cmd._userPerms)) return await msg.reply(client.locale.t('CommandHandler.noUserPermission:You need to have `%1$s` permissions to use this command.', locale, cmd._userPerms.join('`, `')))
 
-    // Run
+      // Run
       await cmd.run(client, msg, query, locale)
     } catch (err) {
       const uid = uuid()

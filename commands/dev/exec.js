@@ -29,7 +29,7 @@ class ExecuteCommand extends Command {
 
     const m = await msg.reply('Executing...')
 
-    let result, error = false
+    let result; let error = false
 
     try {
       result = await this.execute(str)
@@ -40,7 +40,7 @@ class ExecuteCommand extends Command {
 
     client.logger.debug('Command / Exec', '[EXEC] Result: ' + result)
 
-    if(msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+    if (msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
       const embed = new MessageEmbed()
         .setTitle(t('commands.exec.title', locale))
         .addField(t('commands.exec.input', locale), str)
@@ -48,17 +48,19 @@ class ExecuteCommand extends Command {
       error ? embed.setColor(0xff0000) : embed.setColor(0x00ff00)
 
       return m.edit({ content: '', embed })
-    } else return m.edit(t('commands.exec.input', locale) + '```\n'
-        + str + '\n```\n'
-        + t('commands.exec.output', locale) + '```\n'
-        + result + '\n```'
-    )
+    } else {
+      return m.edit(t('commands.exec.input', locale) + '```\n' +
+        str + '\n```\n' +
+        t('commands.exec.output', locale) + '```\n' +
+        result + '\n```'
+      )
+    }
   }
 
-  async execute (cmd) { 
+  async execute (cmd) {
     return new Promise((resolve, reject) => {
       ch.exec(cmd, (err, stdout, stderr) => {
-        if(err) reject(err)
+        if (err) reject(err)
         else resolve(stdout)
       })
     })

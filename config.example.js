@@ -16,7 +16,7 @@ module.exports = {
   },
   extensions: {
     extensionName: {
-      your: "config"
+      your: 'config'
     }
   }
 }

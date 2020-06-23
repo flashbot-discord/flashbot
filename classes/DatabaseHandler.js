@@ -106,7 +106,7 @@ class DatabaseHandler {
       case 'mysql':
       case 'pg': {
         const data = await this.knex('guilds').select().where('id', id)
-        if(data.length < 1 || !data[0].activated) return false
+        if (data.length < 1 || !data[0].activated) return false
         else return true
       }
 

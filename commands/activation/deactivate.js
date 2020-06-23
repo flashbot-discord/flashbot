@@ -16,10 +16,10 @@ class DeactivateCommand extends Command {
   }
 
   async run (client, msg, args, locale) {
-    //if (!await client.db.isRegisteredGuild(msg.guild.id)) return Command.pleaseRegisterGuild(this, msg, locale)
+    // if (!await client.db.isRegisteredGuild(msg.guild.id)) return Command.pleaseRegisterGuild(this, msg, locale)
 
     const t = client.locale.t
-    let result, done = false
+    let result; let done = false
 
     const mcFilter = (msg, author) => {
       if (author === msg.author.id) {
@@ -53,7 +53,7 @@ class DeactivateCommand extends Command {
     }
 
     const pend = (c) => {
-      if(done) return
+      if (done) return
 
       if (c.size > 0 && result) {
         this.agree(msg, locale)
@@ -65,10 +65,10 @@ class DeactivateCommand extends Command {
     }
 
     // Message Collector
-    const mc = msg.channel.awaitMessages((m) => mcFilter(m, msg.author.id), { time: 15000, max: 1 }).then(pend)
+    msg.channel.awaitMessages((m) => mcFilter(m, msg.author.id), { time: 15000, max: 1 }).then(pend)
 
     // Reaction Collector
-    const rc = botMsg.awaitReactions(rcFilter, { time: 15000, max: 1 }).then(pend)
+    botMsg.awaitReactions(rcFilter, { time: 15000, max: 1 }).then(pend)
   }
 
   async agree (msg, locale) {
@@ -82,8 +82,7 @@ class DeactivateCommand extends Command {
         await this.dbHandle(msg, locale)
         break
       case 'json':
-        if (db.obj.guild[msg.guild.id] == null) db.obj.guild[msg.guild.id] = { activated: false }
-        else db.obj.guild[msg.guild.id].activated = false
+        db.obj.guild[msg.guild.id].activated = false
     }
 
     // Done!
@@ -100,16 +99,11 @@ class DeactivateCommand extends Command {
     const guildID = msg.guild.id
 
     try {
-      const dbData = await db.knex('guilds').select('id').where('id', guildID)
-      if (dbData.length < 1) {
-        await db.knex('guilds').insert({
-          id: guildID,
-          locale: 'en_US',
-          activated: false
-        })
-      } else await db.knex('guilds').where('id', guildID).update({ activated: false })
+      await db.knex('guilds').where('id', guildID).update({ activated: false })
     } catch (err) {
-      throw new ClientError('Cannot connect to the database. Please wait a few minutes and try again.').report(msg, locale)
+      const e = new ClientError(err)
+      e.report(msg, locale)
+      throw e
     }
   }
 }

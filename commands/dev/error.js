@@ -1,7 +1,7 @@
 const Command = require('../../classes/Command')
 
 class ErrorCommand extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'error',
       aliases: ['에러', 'ㄷㄱㄱ객', 'dpfj'],
@@ -11,7 +11,7 @@ class ErrorCommand extends Command {
     })
   }
 
-  run(_client, _msg, _query, _locale) {
+  run (_client, _msg, _query, _locale) {
     throw new Error('예상한 오류가 발생했습니다\n```~~계획대로야~~```')
   }
 }

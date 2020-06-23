@@ -1,7 +1,7 @@
 const Command = require('../../classes/Command')
 
 class DBKRVerifyCommand extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'hellothisisverification',
       description: 'commands.hellothisisverification.DESC',
@@ -9,7 +9,7 @@ class DBKRVerifyCommand extends Command {
     })
   }
 
-  run(client, msg, _query, _locale) {
+  run (client, msg, _query, _locale) {
     msg.reply('comjun04#5963 (393674169243402240)')
   }
 }

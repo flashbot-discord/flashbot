@@ -14,7 +14,7 @@ class RegisterCommand extends Command {
 
   async run (client, msg, args, locale) {
     const t = client.locale.t
-    let result, done = false
+    let result; let done = false
 
     const mcFilter = (m) => {
       if (m.author.id === msg.author.id) {
@@ -46,7 +46,7 @@ class RegisterCommand extends Command {
     }
 
     const pend = (c) => {
-      if(done) return
+      if (done) return
 
       if (c.size > 0 && result) {
         this.agree(msg, locale)

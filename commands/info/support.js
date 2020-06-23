@@ -1,7 +1,7 @@
 const Command = require('../../classes/Command')
 
 class SupportCommand extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'support',
       aliases: ['지원', '서포트', '녀ㅔㅔㅐㄱㅅ', 'wlfnjs', 'tjvhxm'],
@@ -12,7 +12,7 @@ class SupportCommand extends Command {
     this.inviteLink = 'https://discord.gg/epY3waF'
   }
 
-  run(client, msg, _query, locale) {
+  run (client, msg, _query, locale) {
     return msg.reply(client.locale.t('commands.support.text', locale) + '\n' + this.inviteLink)
   }
 }
