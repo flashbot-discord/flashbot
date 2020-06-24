@@ -94,7 +94,7 @@ class DatabaseHandler {
     switch (this.type) {
       case 'mysql':
       case 'pg':
-        return (await this.knex('users').select('id').where('id', id)).length < 1
+        return (await this.knex('users').select('id').where('id', id)).length > 0
 
       case 'json':
         return typeof this.obj.user[id] === 'object'

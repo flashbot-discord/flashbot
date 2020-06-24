@@ -146,29 +146,34 @@ class CommandHandler {
   }
 
   async run (cmd, client, msg, query) {
+    const t = client.locale.t
+    const owner = client.config.owner.includes(msg.author.id)
     let locale
     try {
       locale = await client.locale.getGuildLocale(msg.guild)
 
-      if (!msg.guild.me.permissions.has(cmd._clientPerms)) return await msg.reply(client.locale.t('CommandHandler.noClientPermission:I need to have `%1$s` permissions to run this command.', locale, cmd._clientPerms.join('`, `')))
+      // Registration Check
+      if (
+        !owner && 
+        cmd._name !== 'register' && 
+        !(await client.db.isRegisteredUser(msg.author.id))
+      ) return msg.reply(t('Command.pleaseRegister.user', locale, client.config.prefix))
 
       // Status Check
       if (cmd._requireDB && !this._client.db.ready) {
-        return await msg.channel.send(client.locale.t('error.DBNotReady:This feature needs the database storage to work.\n' +
-    'Currently, the bot is not connected to the storage.\n' +
-    'Please report this to the Support server to be fixed.', locale))
+        return await msg.channel.send(t('error.DBNotReady', locale))
       }
 
-      if (cmd._guildOnly && !msg.guild) return await msg.reply(client.locale.t('CommandHandler.run.guildOnly:This command can only run on server text channel.', locale))
+      if (cmd._guildOnly && !msg.guild) return await msg.reply(t('CommandHandler.run.guildOnly', locale))
 
       if (cmd._guildAct && !(await client.db.isActivatedGuild(msg.guild.id))) return msg.channel.send(client.locale.t('Command.pleaseRegister.guild', locale, client.config.prefix))
 
       // Perms Check
-      let owner = false
-      if (client.config.owner.includes(msg.author.id)) owner = true
-      if (cmd._owner && !owner) return await msg.reply(client.locale.t('CommandHandler.run.ownerOnly:Only the owners of the bot can run this command.', locale))
+      if (cmd._owner && !owner) return await msg.reply(t('CommandHandler.run.ownerOnly', locale))
 
-      if (!owner && !msg.member.permissions.has(cmd._userPerms)) return await msg.reply(client.locale.t('CommandHandler.noUserPermission:You need to have `%1$s` permissions to use this command.', locale, cmd._userPerms.join('`, `')))
+      if (!msg.guild.me.permissions.has(cmd._clientPerms)) return await msg.reply(t('CommandHandler.noClientPermission', locale, cmd._clientPerms.join('`, `')))
+
+      if (!owner && !msg.member.permissions.has(cmd._userPerms)) return await msg.reply(t('CommandHandler.noUserPermission', locale, cmd._userPerms.join('`, `')))
 
       // Run
       await cmd.run(client, msg, query, locale)
@@ -176,10 +181,7 @@ class CommandHandler {
       const uid = uuid()
 
       client.logger.error(this.logPos + '.run => ' + cmd._name, 'Error (' + uid + '): ' + err.stack)
-      return await msg.reply(client.locale.t('CommandHandler.unexpectedError:' +
-      'An unexpected error occured. Please report this error message and the Error ID to the Support server.\n' +
-        'Error message: ```\n%1$s\n```\n' +
-        'Error ID: `%2$s`', locale, err.message, uid))
+      return await msg.reply(t('CommandHandler.unexpectedError', locale, err.message, uid))
     }
   }
 }

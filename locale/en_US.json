@@ -243,7 +243,9 @@
       "title": "commands.register.title",
       "content": "commands.register.content",
       "confirm": "commands.register.confirm",
-      "deny": "commands.register.deny"
+      "deny": "commands.register.deny",
+      "DESC": "commands.register.DESC",
+      "agree": "commands.register.agree"
     }
   },
   "CommandHandler": {
@@ -261,7 +263,8 @@
       "str": "Usage: ```\n%1$s%2$s %3$s\n(Required) [Optional]\n```"
     },
     "pleaseRegister": {
-      "guild": "You need to register this server in order to use this feature. Please register using the `%1$sactivate` command."
+      "guild": "You need to register this server in order to use this feature. Please register using the `%1$sactivate` command.",
+      "user": "Command.pleaseRegister.user"
     }
   },
   "error": {
