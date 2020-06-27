@@ -151,7 +151,8 @@
       "set": "Language setting changed to `%1$s`.",
       "noLanguage": "The language you entered does not exist.",
       "DESC": "See or change the bot locale on the server.",
-      "noPermission": "You don't have `%1$s` permission to do that."
+      "noPermission": "You don't have `%1$s` permission to do that.",
+      "list": "Locale list:\n`%1$s`"
     },
     "activate": {
       "title": "Activate **FlashBot**",
