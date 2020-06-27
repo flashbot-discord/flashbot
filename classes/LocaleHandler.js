@@ -7,7 +7,7 @@ class LocaleHandler {
     client.logger.log(logPos, 'Setting up i18n')
     i18n.configure({
       directory: './locale',
-      defaultLocale: 'en_US',
+      defaultLocale: 'ko_KR',
       objectNotation: true,
       syncFiles: true,
       autoReload: true,
