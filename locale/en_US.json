@@ -147,7 +147,7 @@
       "noEveryone": "The bot cannot say to `@everyone` or `@here`."
     },
     "locale": {
-      "get": "The current language is: `%1$s`",
+      "get": "Current language:\nUser: `%1$s`\nServer: `%2$s`",
       "set": {
         "user": "Set your language to `%1$s`.",
         "guild": "Set this server's language to `%1$s`."
