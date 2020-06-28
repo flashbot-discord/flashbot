@@ -24,21 +24,29 @@ class LocaleHandler {
     client.logger.log(logPos, 'i18n has been set up')
   }
 
-  async getGuildLocale (guild) {
-    const logPos = this.logPos + '.getGuildLocale'
+  async getLocale (isGuild, id) {
+    const logPos = this.logPos + '.getLocale'
 
     switch (this._client.db.type) {
       case 'mysql':
       case 'pg': {
         let d
+        const type = isGuild ? 'guilds' : 'users'
         try {
-          d = await this._client.db.knex('guilds').select('locale').where('id', guild.id)
+          d = await this._client.db.knex(type).select('locale').where('id', id)
         } catch (err) {
-          this._client.logger.warn(logPos, 'Cannot load locale information of guild ' + guild.name + ' (' + guild.id + "). Falling back to default locale '" + this._client.config.defaultLocale + "': " + err.stack)
+          this._client.logger.warn(logPos,
+            'Cannot load ' + 
+            (isGuild ? 'guild' : 'user') + 
+            ' locale information of ' + 
+            (isGuild ? obj.name : obj.tag) + 
+            ' (' + obj.id + "). Falling back to default locale '" + 
+            this._client.config.defaultLocale + "': " + err.stack
+          )
           return this._client.config.defaultLocale
         }
 
-        if (d.length < 1) return 'en_US' // Default
+        if (d.length < 1) return 'ko_KR' // Default
         else return d[0].locale
       }
 

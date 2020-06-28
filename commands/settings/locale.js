@@ -9,7 +9,10 @@ class LocaleCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'locale',
-      aliases: ['언어', 'ㅣㅐㅊ믿', 'djsdj'],
+      aliases: [
+        'language', 'lang', '언어',
+        'ㅣㅐㅊ믿', 'ㅣ무혐ㅎㄷ', 'ㅣ뭏', 'djsdj'
+      ],
       description: 'commands.locale.DESC:See or change the bot locale on the server.',
       group: 'misc',
       requireDB: true,
@@ -31,34 +34,44 @@ class LocaleCommand extends Command {
     if (query.args.length < 1) return await msg.channel.send(t('commands.locale.get', locale, locale))
 
     const subcommand = query.args[0]
-    switch(subcommand) {
+    switch (subcommand) {
       case 'list':
         return msg.channel.send(t('commands.locale.list', locale, client.locale.i18n.getLocales().join('`\n`')))
 
-      case 'set':
-        if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.any(editPerms)) {
-          const translatedPerms = []
-          editPerms.forEach((p) => translatedPerms.push(t('perms.' + p, locale)))
-          return msg.channel.send(t('commands.locale.noPermission', locale, translatedPerms.join('`, `')))
-        }
-
+      case 'set': {
         const language = query.args[1]
         if (!client.locale.i18n.getLocales().includes(language)) return msg.channel.send(t('commands.locale.noLanguage', locale))
 
-        await this.dbHandle(msg.guild, language)
-        msg.channel.send(t('commands.locale.set', language, language))
+        let id = msg.author.id
+        let guildMode = false
+        if (['--guild', '-g'].includes(query.args[2])) {
+          if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.any(editPerms)) {
+            const translatedPerms = []
+            editPerms.forEach((p) => translatedPerms.push(t('perms.' + p, locale)))
+            return msg.channel.send(t('commands.locale.noPermission', locale, translatedPerms.join('`, `')))
+          }
+
+          guildMode = true
+          id = msg.guild.id
+        }
+
+        await this.dbHandle(guildMode, id, language)
+        msg.channel.send(t(guildMode ? 'commands.locale.set.guild' : 'commands.locale.set.user', language, language))
+      }
     }
   }
 
-  async dbHandle (guild, locale) {
+  async dbHandle (guildMode, id, locale) {
     switch (this._client.db.type) {
       case 'mysql':
-      case 'pg':
-        await this._client.db.knex('guilds').update({ locale }).where('id', guild.id)
+      case 'pg': {
+        const table = guildMode ? 'guilds' : 'users'
+        await this._client.db.knex(table).update({ locale }).where('id', id)
         break
+      }
 
       case 'json':
-        this._client.db.obj.guild[guild.id].locale = locale
+        this._client.db.obj[guildMode ? 'guild' : 'user'][id].locale = locale
         break
     }
   }
