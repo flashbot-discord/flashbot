@@ -41,19 +41,6 @@ client.registerEvent('message', onMessageEvent)
 // Login to Discord
 client.start()
 
-// Commando: Register Defaults
-/*
-client.registry
-  .registerDefaults()
-  .registerGroups([
-    ['dev', 'Commands for developing'],
-    ['misc', 'Misc'],
-    ['info', 'Provides several informations'],
-    ['activation', 'activating/deactivating the bot on the server'],
-    ['memo', 'memo']
-  ])
-  .registerCommandsIn(path.join(__dirname, 'commands'));
-*/
 client.registerCommandHandler(new CommandHandler(client))
 client.commands.registerGroups([
   /*
