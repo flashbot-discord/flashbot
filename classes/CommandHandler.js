@@ -150,7 +150,7 @@ class CommandHandler {
     const owner = client.config.owner.includes(msg.author.id)
     let locale
     try {
-      locale = await client.locale.getLocale(false, msg.author.id)
+      locale = await client.locale.getLocale(false, msg.author)
 
       // Registration Check
       if (

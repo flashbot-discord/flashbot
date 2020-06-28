@@ -32,7 +32,7 @@ class LocaleCommand extends Command {
     const editPerms = ['ADMINISTRATOR']
 
     if (query.args.length < 1) {
-      const guildLocale = await client.locale.getLocale(true, msg.guild.id)
+      const guildLocale = await client.locale.getLocale(true, msg.guild)
       return msg.channel.send(t('commands.locale.get', locale, locale, guildLocale))
     }
 

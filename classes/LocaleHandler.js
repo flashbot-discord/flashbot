@@ -24,7 +24,7 @@ class LocaleHandler {
     client.logger.log(logPos, 'i18n has been set up')
   }
 
-  async getLocale (isGuild, id) {
+  async getLocale (isGuild, obj) {
     const logPos = this.logPos + '.getLocale'
 
     switch (this._client.db.type) {
@@ -33,14 +33,14 @@ class LocaleHandler {
         let d
         const type = isGuild ? 'guilds' : 'users'
         try {
-          d = await this._client.db.knex(type).select('locale').where('id', id)
+          d = await this._client.db.knex(type).select('locale').where('id', obj.id)
         } catch (err) {
           this._client.logger.warn(logPos,
-            'Cannot load ' + 
-            (isGuild ? 'guild' : 'user') + 
-            ' locale information of ' + 
-            (isGuild ? obj.name : obj.tag) + 
-            ' (' + obj.id + "). Falling back to default locale '" + 
+            'Cannot load ' +
+            (isGuild ? 'guild' : 'user') +
+            ' locale information of ' +
+            (isGuild ? obj.name : obj.tag) +
+            ' (' + obj.id + "). Falling back to default locale '" +
             this._client.config.defaultLocale + "': " + err.stack
           )
           return this._client.config.defaultLocale
@@ -52,8 +52,9 @@ class LocaleHandler {
 
       case 'json': {
         const db = this._client.db.obj
-        if (!db.guild[guild.id]) return this._client.config.defaultLocale
-        const l = db.guild[guild.id].locale
+        const type = isGuild ? 'guild' : 'user'
+        if (!db[type][obj.id]) return this._client.config.defaultLocale
+        const l = db[type][obj.id].locale
         if (!l) return this._client.config.defaultLocale
         else return l
       }

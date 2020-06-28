@@ -62,8 +62,7 @@ class DatabaseHandler {
         return client.logger.error(logPos, 'Invalid database type: ' + type)
     }
 
-    if (this.ready) client.logger.log(logPos, 'Database Handler initialized')
-    else client.logger.warn(logPos, "Database Handler not initialized; Some bot features won't be able to work properly")
+    client.logger.log(logPos, 'Database Handler initialized')
   }
 
   async test () {
@@ -86,6 +85,7 @@ class DatabaseHandler {
         }
       case 'json':
         // TODO
+        this.ready = true
         return true
     }
   }
