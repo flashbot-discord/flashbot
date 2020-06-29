@@ -4,8 +4,8 @@
  */
 
 /* eslint-disable no-unused-vars */
-const VERSION = 'v0.8-beta.3'
-const BUILD_DATE = '2020/6/5'
+const VERSION = 'v0.8-beta.4'
+const BUILD_DATE = '2020/6/29'
 /* eslint-enable no-unused-vars */
 
 // import necessary modules
