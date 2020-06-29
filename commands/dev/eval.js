@@ -36,7 +36,11 @@ class EvalCommand extends Command {
 
     const m = await msg.reply('Evaling...')
 
-    let bd; let result; let error = false
+    let bd
+    let result
+    let error = false
+    let useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+
     if (!isUnsafe) bd = this.hideToken()
 
     try {
@@ -52,10 +56,12 @@ class EvalCommand extends Command {
 
     client.logger.debug('Command / Eval', '[EVAL] Result: ' + result)
 
-    if (msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+    if(result.length > 1000) useEmbed = false
+
+    if (useEmbed) {
       const embed = new MessageEmbed()
         .setTitle(t('commands.eval.title', locale))
-        .addField(t('commands.eval.input', locale), str)
+        .addField(t('commands.eval.input', locale), '```\n' + str + '\n```')
         .addField(t('commands.eval.output', locale), '```\n' + result + '\n```')
       error ? embed.setColor(0xff0000) : embed.setColor(0x00ff00)
 

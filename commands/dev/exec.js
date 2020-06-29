@@ -29,21 +29,25 @@ class ExecuteCommand extends Command {
 
     const m = await msg.reply('Executing...')
 
-    let result; let error = false
+    let result
+    let useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    let error = false
 
     try {
       result = await this.execute(str)
     } catch (err) {
-      result = err.message
+      result = err
       error = true
     }
 
     client.logger.debug('Command / Exec', '[EXEC] Result: ' + result)
 
-    if (msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+    if(result.length > 1000) useEmbed = false
+
+    if (useEmbed) {
       const embed = new MessageEmbed()
         .setTitle(t('commands.exec.title', locale))
-        .addField(t('commands.exec.input', locale), str)
+        .addField(t('commands.exec.input', locale), '```\n' + str + '\n```')
         .addField(t('commands.exec.output', locale), '```\n' + result + '\n```')
       error ? embed.setColor(0xff0000) : embed.setColor(0x00ff00)
 
@@ -60,7 +64,8 @@ class ExecuteCommand extends Command {
   async execute (cmd) {
     return new Promise((resolve, reject) => {
       ch.exec(cmd, (err, stdout, stderr) => {
-        if (err) reject(err)
+        console.log(stdout, stderr)
+        if (err) reject(err + '\n' + stdout)
         else resolve(stdout)
       })
     })
