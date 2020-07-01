@@ -31,7 +31,7 @@ class Paginator {
   async start () {
     this.update()
 
-    this.reactions.forEach(async (r) => await this.msg.react(r))
+    this.reactions.forEach(async (r) => this.msg.react(r))
 
     while (this.keepRun) {
       const result = await this.msg.awaitReactions(this.emojiChecker.bind(this), {
@@ -81,12 +81,14 @@ class Paginator {
         this.update()
     }
 
-    const users = await sel.users.fetch()
-    Array.from(users.keys())
-      .filter((id) => id !== this._client.user.id)
-      .forEach((userid) => {
-        sel.users.remove(userid)
-      })
+    if (this.msg.channel.permissionsFor(this._client.user).has('MANAGE_MESSAGES')) {
+      const users = await sel.users.fetch()
+      Array.from(users.keys())
+        .filter((id) => id !== this._client.user.id)
+        .forEach((userid) => {
+          sel.users.remove(userid)
+        })
+    }
   }
 
   update () {
