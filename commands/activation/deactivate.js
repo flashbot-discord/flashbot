@@ -40,7 +40,7 @@ class DeactivateCommand extends Command {
     }
 
     const botMsg = await msg.channel.send(t('commands.deactivate.title', locale) + '\n\n' +
-      t('commands.deactivate.content', locale) + '\n\n' +
+      t('commands.deactivate.content', locale, client.config.prefix) + '\n\n' +
       t('commands.deactivate.confirm', locale)
     )
 
@@ -87,7 +87,7 @@ class DeactivateCommand extends Command {
 
     // Done!
     this._client.logger.log('Command / Deactivate', `[Bot Deactivation] ${msg.author.tag} (${msg.member.nickname}) deactivated the bot in ${msg.guild.name}`)
-    await msg.channel.send(this._client.locale.t('commands.deactivate.agree', locale))
+    await msg.channel.send(this._client.locale.t('commands.deactivate.agree', locale, this._client.config.prefix))
   }
 
   async deny (msg, locale) {
