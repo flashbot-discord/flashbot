@@ -85,7 +85,8 @@
       "usertag": "User Tag (last 4 digits)",
       "clientStatus": {
         "mobile": ":iphone: mobile",
-        "desktop": ":desktop: desktop"
+        "desktop": ":desktop: desktop",
+        "web": ":earth_americas: web"
       },
       "id": "User ID",
       "createdAt": "Account Creation Date",
@@ -168,9 +169,9 @@
     },
     "deactivate": {
       "title": "Deactivate **FlashBot**",
-      "content": "You're now going to disable **FlashBot** on this server.\nWhen deactivated, the bot will not respond any commands except `activate`.\nThe data for this server will be stored after you deactivated the bot.",
+      "content": "You're now going to deactivate FlashBot on this server. You can re-activate using the `%1$sactivate` command.",
       "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
-      "agree": "Thank you for using our bot. The bot is now disabled in this server. To reactivate, use the `activate` command.",
+      "agree": "The bot is now deactivated in this server. To reactivate, use the `%1$sactivate` command.",
       "deny": "Bot deactivation cancelled.",
       "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
       "DESC": "Deactivate this bot on the server"
@@ -244,10 +245,10 @@
       }
     },
     "register": {
-      "title": "commands.register.title",
+      "title": "Flashbot user registration",
       "content": "commands.register.content",
-      "confirm": "commands.register.confirm",
-      "deny": "commands.register.deny",
+      "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
+      "deny": "User registration cancelled.",
       "DESC": "commands.register.DESC",
       "agree": "commands.register.agree"
     }

@@ -82,7 +82,8 @@
       "usertag": "유저 태그 (뒤 4자리 숫자)",
       "clientStatus": {
         "desktop": ":desktop: 컴퓨터",
-        "mobile": ":iphone: 모바일"
+        "mobile": ":iphone: 모바일",
+        "web": ":earth_asia: 웹"
       },
       "id": "유저 아이디",
       "createdAt": "계정 생성일",
@@ -162,9 +163,9 @@
     },
     "deactivate": {
       "title": "**FlashBot** 비활성화",
-      "content": "이제 **FlashBot**을 이 서버에서 비활성화하려고 합니다.\n봇이 비활성화되면, 봇은 `activate`를 제외한 다른 명령어에 응답하지 않습니다.\n이 서버에 대한 데이터는  봇을 비활성화한 이후에도 유지됩니다.",
+      "content": "**FlashBot**을 이 서버에서 비활성화하려고 합니다. 언제든지 `%1$sactivate` 명령어를 사용해 다시 활성화할 수 있습니다.",
       "confirm": ":white_check_mark:으로 반응하거나 `Yes`를 입력하여 동의하고, 아니면 :x:로 반응하거나 `No`를 입력하여 거부할 수 있습니다.",
-      "agree": "이 봇을 이용해 주셔서 감사합니다. 이 서버에서 봇이 비활성화되었습니다. 다시 활성화하려면, `activate` 명령어를 사용해 주세요.",
+      "agree": "이 서버에서 봇이 비활성화되었습니다. 다시 활성화하려면, `%1$sactivate` 명령어를 사용해 주세요.",
       "deny": "봇 비활성화가 취소되었습니다.",
       "reactFail": "봇이 `%1$s` 권한을 가지고 있지 않아, 반응을 추가할 수 없습니다.\n텍스트로 답변을 입력하거나, 수동으로 반응을 추가해 주세요.",
       "DESC": "이 서버에서 봇을 비활성화"
@@ -241,8 +242,8 @@
       "content": "FlashBot을 이용하려면 **이용 약관**과 **개인정보 취급방침**에 동의해야 합니다. 아래 링크로 들어가면 해당 문서들을 보실 수 있습니다.\nhttps://flashbot.ga/tos\nhttps://flashbot.ga/privacy",
       "confirm": ":white_check_mark:으로 반응하거나 `Yes`를 입력하여 동의하고, 아니면 :x:로 반응하거나 `No`를 입력하여 거부할 수 있습니다.",
       "deny": "가입이 취소되었습니다.",
-      "DESC": "commands.register.DESC",
-      "agree": "commands.register.agree"
+      "DESC": "이용자로 가입합니다.",
+      "agree": "FlashBot 이용자 가입이 완료되었습니다. 다양한 기능을 즐겨보세요! (도움말은 `%1$shelp` 명령어로 볼 수 있습니다)"
     }
   },
   "CommandHandler": {

@@ -41,10 +41,10 @@ class UserInfoCommand extends Command {
         .setDescription(t('commands.userinfo.page.1', locale))
         .addField(':bust_in_silhouette: ' + t('commands.userinfo.name', locale), user.username, true)
         .addField(':hash: ' + t('commands.userinfo.usertag', locale), user.discriminator, true)
-        .addField(':id: ' + t('commands.userinfo.id', locale), user.id, true)
+        .addField(':id: ' + t('commands.userinfo.id', locale), user.id)
         .addField(t('commands.userinfo.status', locale), status, true)
-        .addField(t('commands.userinfo.clients', locale), this.getClientStat(user.presence.clientStatus, locale), true)
-        .addField(':inbox_tray: ' + t('commands.userinfo.createdAt', locale), createdAt, true)
+        .addField(t('commands.userinfo.clients', locale), this.getClientStat(user.presence.clientStatus, locale))
+        .addField(':inbox_tray: ' + t('commands.userinfo.createdAt', locale), createdAt)
       )
 
       data.push(this.generateEmbed(msg, user, locale)
@@ -70,7 +70,7 @@ class UserInfoCommand extends Command {
     if (clientStat == null) return null
 
     const t = this._client.locale.t
-    const text = Object.keys(clientStat).map((el) => this._client.locale.t('commands.userinfo.clientStatus.' + el, locale)).join(', ') || t('commands.userinfo.clientOffline', locale)
+    const text = Object.keys(clientStat).map((el) => this._client.locale.t('commands.userinfo.clientStatus.' + el, locale)).join('\n') || t('commands.userinfo.clientOffline', locale)
     return text
   }
 
