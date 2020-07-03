@@ -139,7 +139,8 @@
         }
       },
       "DESC": "입력한 말을 따라 말해요!",
-      "noEveryone": "이 봇은 `@everyone`이나 `@here`를 말할 수 없어요!"
+      "noEveryone": "이 봇은 `@everyone`이나 `@here`를 말할 수 없어요!",
+      "say": "commands.say.say"
     },
     "locale": {
       "get": "현재 언어:\n이용자: `%1$s`\n서버: `%2$s`",
@@ -278,8 +279,20 @@
     "misc": "기타"
   },
   "regions": {
-    "south-korea": ":flag_kr: 대한민국 (south-korea)",
-    "japan": "regions.japan"
+    "south-korea": ":flag_kr: 대한민국",
+    "japan": ":flag_jp: 일본 (japan)",
+    "us-west": ":flag_us: :arrow_left: 미국 서부",
+    "us-east": ":flag_us: :arrow_right: 미국 동부",
+    "us-central": ":flag_us: :record_button: 미국 중부",
+    "us-south": ":flag_us: :arrow_down: 미국 남부",
+    "singapore": ":flag_sg: 싱가포르",
+    "southafrica": ":flag_za: 남아프리카 공화국",
+    "sydney": ":flag_au: 호주 시드니",
+    "europe": ":flag_eu: 유럽",
+    "brazil": ":flag_br: 브라질",
+    "hongkong": ":flag_hk: 홍콩",
+    "russia": ":flag_ru: 러시아",
+    "india": ":flag_in: 인도"
   },
   "perms": {
     "ADD_REACTION": "반응 추가하기",

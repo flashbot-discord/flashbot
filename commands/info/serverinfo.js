@@ -40,7 +40,7 @@ class ServerInfoCommand extends Command {
         .addField(':desktop: ' + t('commands.serverinfo.name', locale), guild.name, true)
         .addField(':id: ' + t('commands.serverinfo.id', locale), guild.id, true)
         .addField(':bust_in_silhouette: ' + t('commands.serverinfo.owner', locale), '<@' + guild.owner.id + '> ' + guild.owner.user.tag + ' (' + guild.owner.id + ')')
-        .addField(':map: ' + t('commands.serverinfo.region', locale), t('regions.' + guild.region, locale))
+        .addField(':map: ' + t('commands.serverinfo.region', locale), t('regions.' + guild.region, locale) + ' (' + guild.region + ')')
         .addField(':busts_in_silhouette: ' + t('commands.serverinfo.memberCount.title', locale), t('commands.serverinfo.memberCount.value', locale, guild.memberCount))
         .addField(':adult: ' + t('commands.serverinfo.userCount.title', locale), t('commands.serverinfo.userCount.value', locale, userCount), true)
         .addField(':robot: ' + t('commands.serverinfo.botCount.title', locale), t('commands.serverinfo.botCount.value', locale, botCount), true)
