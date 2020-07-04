@@ -145,8 +145,9 @@
         }
       },
       "DESC": "Says back!",
-      "noEveryone": "The bot cannot say to `@everyone` or `@here`.",
-      "say": "commands.say.say"
+      "noEveryone": "The bot cannot say `@everyone` or `@here`.",
+      "say": "%1$s```\n%2$s made me say it!\n```",
+      "embedFooter": "To prevent abusing, the member who runs the command is displayed. (Except Bot Owner, Server Administrator and DM)"
     },
     "locale": {
       "get": "Current language:\nUser: `%1$s`\nServer: `%2$s`",

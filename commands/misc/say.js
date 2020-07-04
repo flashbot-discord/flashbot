@@ -3,7 +3,7 @@
  * @description 사용자가 입력한 말을 따라 말하는 명령어입니다.
  */
 
-const { MessageMentions } = require('discord.js')
+const { MessageMentions, MessageEmbed } = require('discord.js')
 const Command = require('../../classes/Command')
 
 class SayCommand extends Command {
@@ -32,7 +32,21 @@ class SayCommand extends Command {
     // Reset the pattern count
     MessageMentions.EVERYONE_PATTERN.lastIndex = 0
     if (MessageMentions.EVERYONE_PATTERN.test(str)) return await msg.reply(t('commands.say.noEveryone', locale))
-    return await msg.channel.send(query.args.join(' '))
+
+    const say = query.args.join(' ')
+    if (
+      client.config.owner.includes(msg.author.id) ||
+      msg.member.permissions.has('ADMINISTRATOR')
+    ) msg.channel.send(say)
+    else {
+      if (msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+        const embed = new MessageEmbed()
+          .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
+          .setFooter(t('commands.say.embedFooter', locale))
+          .setDescription(say)
+        msg.channel.send(embed)
+      } else msg.channel.send(t('commands.say.say', locale, say, msg.author.tag))
+    }
   }
 }
 
