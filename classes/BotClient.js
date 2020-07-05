@@ -41,14 +41,17 @@ class BotClient extends Client {
     config.token = token
     config.prefix = process.env.flashBotPrefix || config.prefix
 
+    // Owner
     if (!Array.isArray(config.owner) || config.owner.length < 1) {
       logger.warn(logPos, 'No owner in the environment variable or config file; You cannot use owner-only commands.')
       config.owner = []
     }
 
+    // Prefix
     if (typeof config.prefix !== 'string') logger.fatal(logPos, "Invalid type for 'config.prefix'. Accepts String.")
     if (config.prefix.length < 1) logger.warn(logPos, 'Command prefix configuration not found. You can only enter commands by pinging the bot.')
 
+    // Locale
     if (typeof config.defaultLocale !== 'string') {
       logger.warn(logPos, "Invalid type for 'config.defaultLocale'. Accepts String.")
       config.defaultLocale = ''
@@ -58,6 +61,13 @@ class BotClient extends Client {
       logger.warn(logPos, "Default Locale configuration not found. Defaults to 'ko_KR' (한국어).")
     }
 
+    // Debug mode
+    if (config.debug) {
+      this.debugMode = logger.debugMode = true
+      logger.debug(logPos, 'Debug mode enabled.')
+    } else this.debugMode = logger.debugMode = false
+
+    // Extensions
     if (config.extensions != null && typeof config.extensions !== 'object') {
       logger.warn(logPos, 'Invalid type for extension configuration. Accepts object.')
       config.extensions = {}

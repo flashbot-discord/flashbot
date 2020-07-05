@@ -1,12 +1,16 @@
 const chalk = require('chalk')
 
 class Logger {
+  constructor(debug) {
+    this.debugMode = debug
+  }
+
   log (from, msg) {
-    console.log(this._genDatetime() + chalk.cyan(' [Log / ' + from + '] ' + msg))
+    console.log(this._genDatetime() + chalk.green(' [Log / ' + from + '] ' + msg))
   }
 
   debug (from, msg) {
-    console.log(this._genDatetime() + chalk.blueBright(' [Debug / ' + from + '] ' + msg))
+    if (this.debugMode) console.log(this._genDatetime() + chalk.blueBright(' [Debug / ' + from + '] ' + msg))
   }
 
   warn (from, msg) {

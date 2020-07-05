@@ -17,8 +17,8 @@ class DatabaseHandler {
         const knex = require('knex')({
           client: type,
           connection,
-          asyncStackTraces: true,
-          debug: true
+          asyncStackTraces: client.debugMode,
+          debug: client.debugMode
         })
 
         this.knex = knex
