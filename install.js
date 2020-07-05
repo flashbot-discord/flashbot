@@ -52,9 +52,7 @@ async function run () {
         console.log('Database structure version: ' + dbver)
         if (compVer.compare(dbver, DB_VER, '=')) {
           console.log('Database structure already at latest version. No need to upgrade.')
-          return
-        }
-        else if (compVer.compare(dbver, MIN_DB_VER, '>=')) {
+        } else if (compVer.compare(dbver, MIN_DB_VER, '>=')) {
           // Run upgrade
           await dbUpgrade(config.db.type, knex)
         } else {

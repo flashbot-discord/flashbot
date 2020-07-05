@@ -154,8 +154,8 @@ class CommandHandler {
 
       // Registration Check
       if (
-        !owner && 
-        cmd._name !== 'register' && 
+        !owner &&
+        cmd._name !== 'register' &&
         !(await client.db.isRegisteredUser(msg.author.id))
       ) return msg.reply(t('Command.pleaseRegister.user', locale, client.config.prefix))
 

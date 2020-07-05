@@ -42,7 +42,7 @@ class ExecuteCommand extends Command {
 
     client.logger.debug('Command / Exec', '[EXEC] Result: ' + result)
 
-    if(result.length > 1000) useEmbed = false
+    if (result.length > 1000) useEmbed = false
 
     if (useEmbed) {
       const embed = new MessageEmbed()
@@ -65,7 +65,7 @@ class ExecuteCommand extends Command {
     return new Promise((resolve, reject) => {
       ch.exec(cmd, (err, stdout, stderr) => {
         console.log(stdout, stderr)
-        if (err) reject(err + '\n' + stdout)
+        if (err) reject(new Error(err + '\n' + stdout))
         else resolve(stdout)
       })
     })

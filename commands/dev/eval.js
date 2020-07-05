@@ -56,7 +56,7 @@ class EvalCommand extends Command {
 
     client.logger.debug('Command / Eval', '[EVAL] Result: ' + result)
 
-    if(result.length > 1000) useEmbed = false
+    if (result.length > 1000) useEmbed = false
 
     if (useEmbed) {
       const embed = new MessageEmbed()

@@ -105,7 +105,7 @@ class ActivateCommand extends Command {
         })
       } else await db.knex('guilds').where('id', guildID).update({ activated: true })
     } catch (err) {
-      const e = new ClientError(e)
+      const e = new ClientError(err)
       e.report(msg, locale)
       throw e
     }
