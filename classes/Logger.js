@@ -1,7 +1,7 @@
 const chalk = require('chalk')
 
 class Logger {
-  constructor(debug) {
+  constructor (debug) {
     this.debugMode = debug
   }
 

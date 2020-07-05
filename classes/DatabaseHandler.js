@@ -6,7 +6,6 @@ class DatabaseHandler {
     const logPos = this.logPos = 'DatabaseHandler'
     this._client = client
     this.type = type
-    this.ready = false
 
     client.logger.log(logPos, 'Database Handler Initializing...')
     client.logger.log(logPos, 'Database Type: ' + type)
@@ -22,7 +21,6 @@ class DatabaseHandler {
         })
 
         this.knex = knex
-        this.ready = true
         break
       }
 
@@ -46,12 +44,6 @@ class DatabaseHandler {
 
           this.path = { folder, guildFile, userFile }
           client.logger.debug(logPos, '[JSON] 2 database files loaded')
-
-          // Autosave (defaults to 1 minute)
-          setInterval(() => {
-            client.logger.log(logPos, '[JSON] Auto-saving...')
-            this.save()
-          }, connection.autosave || 60000)
         } catch (err) {
           client.logger.error(logPos, '[JSON] Error when setting up json storage: ' + err.stack)
         }
@@ -62,7 +54,26 @@ class DatabaseHandler {
         return client.logger.error(logPos, 'Invalid database type: ' + type)
     }
 
+    setInterval(() => this.test(), 60000) // DB Test period
+
     client.logger.log(logPos, 'Database Handler initialized')
+  }
+
+  // ready value
+  get ready () {
+    return this._ready
+  }
+
+  set ready (v) {
+    if (v !== this._ready) {
+      if (v) {
+        this._client.logger.log(this.logPos + ':' + this.type, 'Test Passed')
+        this._ready = true
+      } else {
+        this._client.logger.warn(this.logPos + ':' + this.type, 'Test Failed; Database feature disabled.')
+        this._ready = false
+      }
+    }
   }
 
   async test () {
@@ -75,18 +86,23 @@ class DatabaseHandler {
         try {
           await this.knex.raw('select 1+1 as test')
           this.ready = true
-          this._client.logger.log(logPos + ':' + this.type, 'Test Passed')
           return true
         } catch (err) {
-          this.ready = false
           this._client.logger.error(logPos + ':' + this.type, 'Failed to connect the database: ' + err.stack)
-          this._client.logger.warn(logPos + ':' + this.type, 'Test Failed; Database feature disabled.')
+          this.ready = false
           return false
         }
       case 'json':
-        // TODO
-        this.ready = true
-        return true
+        // Autosave (defaults to 1 minute)
+        this._client.logger.log(logPos, '[JSON] Auto-saving...')
+        try {
+          this.save()
+          this.ready = true
+          return true
+        } catch (e) {
+          this.ready = false
+          return false
+        }
     }
   }
 
