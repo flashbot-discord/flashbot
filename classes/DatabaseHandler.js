@@ -33,17 +33,16 @@ class DatabaseHandler {
           this._client.logger.debug(logPos, '[JSON] Root stroage folder: ' + folder)
           const guildFile = 'guild.json'
           const userFile = 'user.json'
+          const blacklistFile = 'blacklist.json'
 
           client.logger.debug(logPos, '[JSON] Loading database files...')
           const guild = require(path.join(folder, guildFile))
           const user = require(path.join(folder, userFile))
-
-          this.obj = {}
-          this.obj.guild = guild
-          this.obj.user = user
-
+          const blacklist = require(path.join(folder, blacklistFile))
+          this.obj = { guild, user, blacklist }
           this.path = { folder, guildFile, userFile }
-          client.logger.debug(logPos, '[JSON] 2 database files loaded')
+
+          client.logger.debug(logPos, '[JSON] 3 database files loaded')
         } catch (err) {
           client.logger.error(logPos, '[JSON] Error when setting up json storage: ' + err.stack)
         }
