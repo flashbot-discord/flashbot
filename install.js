@@ -4,7 +4,7 @@ const ch = require('child_process')
 
 const compVer = require('compare-versions')
 
-const DB_VER = 'v0.1.0' // current db version
+const DB_VER = 'v0.2.0' // current db version
 const MIN_DB_VER = 'v0.1.0' // minimum checkpoint db version
 
 const globalElements = require('./classes/globalElements')
@@ -91,6 +91,12 @@ async function run () {
       if (!fs.existsSync(userjson)) {
         fs.writeFileSync(userjson, '{}')
         console.log('Created user.json file.')
+      }
+
+      const blacklistjson = path.join(jsonDBPath, 'blacklist.json')
+      if (!fs.existsSync(blacklistjson)) {
+        fs.writeFileSync(blacklistjson, '[]')
+        console.log('Created blacklist.json file.')
       }
 
       console.log('JSON DB Init complete.')
