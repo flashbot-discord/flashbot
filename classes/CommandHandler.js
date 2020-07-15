@@ -171,9 +171,11 @@ class CommandHandler {
       // Perms Check
       if (cmd._owner && !owner) return await msg.reply(t('CommandHandler.run.ownerOnly', locale))
 
-      if (!msg.guild.me.permissions.has(cmd._clientPerms)) return await msg.reply(t('CommandHandler.noClientPermission', locale, cmd._clientPerms.join('`, `')))
+      if (msg.guild) {
+        if (!msg.guild.me.permissions.has(cmd._clientPerms)) return msg.reply(t('CommandHandler.noClientPermission', locale, cmd._clientPerms.join('`, `')))
 
-      if (!owner && !msg.member.permissions.has(cmd._userPerms)) return await msg.reply(t('CommandHandler.noUserPermission', locale, cmd._userPerms.join('`, `')))
+        if (!owner && !msg.member.permissions.has(cmd._userPerms)) return msg.reply(t('CommandHandler.noUserPermission', locale, cmd._userPerms.join('`, `')))
+      }
 
       // Run
       await cmd.run(client, msg, query, locale)
