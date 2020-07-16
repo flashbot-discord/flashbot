@@ -11,7 +11,7 @@ class TestCommand extends Command {
     })
   }
 
-  async run (msg) {
+  async run (_client, msg, _query, _locale) {
     // Enter your code to test
     return msg.channel.send('testing the command')
   }
