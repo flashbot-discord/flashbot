@@ -11,7 +11,8 @@ class DeactivateCommand extends Command {
       userPerms: ['ADMINISTRATOR'],
       guildOnly: true,
       guildAct: true,
-      requireDB: true
+      requireDB: true,
+      userReg: true
     })
   }
 

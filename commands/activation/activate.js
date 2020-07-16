@@ -10,7 +10,8 @@ class ActivateCommand extends Command {
       group: 'activation',
       userPerms: ['ADMINISTRATOR'],
       guildOnly: true,
-      requireDB: true
+      requireDB: true,
+      userReg: true
     })
   }
 

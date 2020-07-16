@@ -16,6 +16,7 @@ class LocaleCommand extends Command {
       description: 'commands.locale.DESC:See or change the bot locale on the server.',
       group: 'misc',
       requireDB: true,
+      userReg: true,
       args: [
         {
           name: 'commands.locale.args.locale.NAME:locale',

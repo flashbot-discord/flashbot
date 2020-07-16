@@ -3,17 +3,95 @@ class Command {
     this._logPos = 'Command'
     this._client = client
 
+    /**
+     * the name of a command
+     * 명령어 이름
+     * @type {string}
+     */
     this._name = infos.name
+
+    /**
+     * the description of a command
+     * 명령어 설명
+     * @type {string}
+     */
     this._desc = infos.description || ''
+
+    /**
+     * the aliases of a command
+     * 명령어 별칭
+     * @type {Array<string>}
+     */
     this._aliases = infos.aliases || []
+
+    /**
+     * required client(bot) permissions to run this command
+     * 봇이 이 명령어를 실행하는 데 필요한 권한
+     * @type {Array<string>}
+     */
     this._clientPerms = infos.clientPerms || []
+
+    /**
+     * required user permissions(command executor) to run this command
+     * 사용자가 이 명령어를 실행할 때 필요한 유저 권한
+     * @type {Array<string>}
+     */
     this._userPerms = infos.userPerms || []
+
+    /**
+     * whether the command can only be used by bot owner
+     * 봇 소유자 전용 명령어 여부
+     * @type {boolean}
+     */
     this._owner = infos.owner || false
+
+    /**
+     * whether the command can only be used in a server text channel
+     * 서버 전용 명령어 여부
+     * @type {boolean}
+     */
     this._guildOnly = infos.guildOnly || false
+
+    /**
+     * whether the command can only be used in activated server
+     * 봇을 활성화한 서버에서만 이 명령어 사용 가능 여부
+     * @type {boolean}
+     */
     this._guildAct = infos.guildAct || false
+
+    /**
+     * whether the command can only be used by registered user
+     * 등록한 이용자만 이 명령어 사용 가능 여부
+     * @type {boolean}
+     */
+    this._userReg = infos.userReg || false
+
+    /**
+     * whether the command can be used when DB enabled
+     * DB가 활성화되었을 때만 명령어 사용 가능 여부
+     * @type {boolean}
+     */
     this._requireDB = infos.requireDB || false
+
+    /**
+     * the command arguments
+     * 명령어에서 사용하는 인수들
+     * @type {Array}
+     */
     this._args = infos.args || []
+
+    /**
+     * command group which includes this command
+     * 이 명령어가 속해 있는 명령어 그룹
+     * @type {string}
+     */
     this._group = infos.group || ''
+
+    /**
+     * absolute path of command file
+     * 명령어 파일의 절대경로
+     * @type {string}
+     */
     this._path = ''
   }
 
