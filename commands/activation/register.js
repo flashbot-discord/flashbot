@@ -17,7 +17,6 @@ class RegisterCommand extends Command {
 
     // TODO check regisetered status
 
-
     let result
     let done = false
 
