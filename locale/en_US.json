@@ -1,0 +1,310 @@
+{
+  "commands": {
+    "help": {
+      "desc": "Show Flashbot's help message.\n**%1$s** (Page %2$s of %3$s)",
+      "title": "FlashBot Help Page",
+      "cmdHelp": {
+        "no_cmd": "That command does not exist.",
+        "result": {
+          "title": "Help message of `%s`",
+          "title_noEmbed": "**Help message of `%s`**",
+          "args": "Arguments",
+          "aliases": "Aliases",
+          "args_noEmbed": "Arguments:",
+          "aliases_noEmbed": "Aliases:"
+        }
+      },
+      "args": {
+        "commands": {
+          "name": "commands",
+          "desc": "commands you want to see its help message"
+        }
+      },
+      "DESC": "Shows help message.",
+      "sentToDM": "Sent the help messages to your DM.",
+      "footer": "Use the emojis to flip the page. / Time limit: 30 seconds / Version: %1$s",
+      "footerNoPage": "Version: %1$s",
+      "descNoPage": "commands.help.descNoPage"
+    },
+    "ping": {
+      "desc": "Pong!",
+      "run": "Pong!",
+      "pinging": "Pinging...",
+      "websocketPing": "WebSocket: %1$sms",
+      "msgPing": "Message: %1$sms",
+      "DESC": "Pong!"
+    },
+    "beep": {
+      "desc": "boop",
+      "run": "boop",
+      "DESC": "boop"
+    },
+    "serverinfo": {
+      "desc": "Shows some server informations.",
+      "run": "Server Name: **%s**\nMembers in the Server: %s",
+      "DESC": "Shows current server infomation.",
+      "title": "Server Information of %1$s",
+      "name": "Server name",
+      "owner": "Server owner",
+      "id": "Server ID",
+      "region": "Server region",
+      "memberCount": {
+        "title": "Member count (user + bot)",
+        "value": "%1$s member(s)"
+      },
+      "channelCount": {
+        "title": "Channel count",
+        "value": "%1$s channel(s)"
+      },
+      "userCount": {
+        "title": "User count",
+        "value": "%1$s user(s)"
+      },
+      "botCount": {
+        "title": "Bot count",
+        "value": "%1$s bot(s)"
+      },
+      "textChannelCount": {
+        "title": "Text Channel count",
+        "value": "%1$s text channel(s)"
+      },
+      "voiceChannelCount": {
+        "title": "Voice Channel count",
+        "value": "%1$s voice channel(s)"
+      },
+      "createdAt": {
+        "title": "This server is created at",
+        "value": "LLLL"
+      }
+    },
+    "userinfo": {
+      "DESC": "Shows user information.",
+      "title": "User information of %1$s",
+      "requestedBy": "Requested by %1$s",
+      "name": "User Name",
+      "usertag": "User Tag (last 4 digits)",
+      "clientStatus": {
+        "mobile": ":iphone: mobile",
+        "desktop": ":desktop: desktop",
+        "web": ":earth_americas: web"
+      },
+      "id": "User ID",
+      "createdAt": "Account Creation Date",
+      "status": "Current Status",
+      "clients": "Clients Logged on",
+      "createdDate": "LLLL",
+      "statusList": {
+        "online": ":green_circle: online",
+        "idle": ":crescent_moon: idle",
+        "dnd": ":no_entry: dnd (Do Not Disturb)",
+        "offline": ":black_circle: offline"
+      },
+      "clientOffline": "Offline",
+      "page": {
+        "1": "Basic Information (Page 1 of 2)",
+        "2": "Informations related to this server (Page 2 of 2)"
+      }
+    },
+    "eval": {
+      "desc": "Evaluates JS code. Needs Administrator permission to use this.",
+      "input": "Input:",
+      "output": "Output:",
+      "args": {
+        "code": {
+          "NAME": "code",
+          "DESC": "The code to evaluate."
+        }
+      },
+      "DESC": "Evaluates a code.",
+      "title": "Eval"
+    },
+    "args-info": {
+      "desc": "for checking command arguments",
+      "noArgs": "No arguments provided.",
+      "run": "Command name: %1$s\nArguments: %2$s",
+      "DESC": "Testing with arguments"
+    },
+    "reload": {
+      "desc": "Reloads a command. (Currently not working)",
+      "reloaded": "Reloaded `%1$s` command.",
+      "error": "An error occured while reloading the command: %1$s",
+      "cannotfind": "Cannot find command `%1$s`.",
+      "args": {
+        "command": {
+          "NAME": "command",
+          "DESC": "Command to reload"
+        }
+      },
+      "DESC": "reloads a command"
+    },
+    "say": {
+      "args": {
+        "text": {
+          "DESC": "Text to say.",
+          "NAME": "text"
+        }
+      },
+      "DESC": "Says back!",
+      "noEveryone": "The bot cannot say `@everyone` or `@here`.",
+      "say": "%1$s```\n%2$s made me say it!\n```",
+      "embedFooter": "To prevent abusing, the member who runs the command is displayed. (Except Bot Owner, Server Administrator and DM)"
+    },
+    "locale": {
+      "get": "Current language:\nUser: `%1$s`\nServer: `%2$s`",
+      "set": {
+        "user": "Set your language to `%1$s`.",
+        "guild": "Set this server's language to `%1$s`."
+      },
+      "noLanguage": "The language you entered does not exist.",
+      "DESC": "See or change the bot locale on the server.",
+      "noPermission": "You don't have `%1$s` permission to do that.",
+      "list": "Locale list:\n`%1$s`"
+    },
+    "activate": {
+      "title": "Activate **FlashBot**",
+      "confirm": "React with :white_check_mark: or type `Yes` to agree, otherwise react with :x: or type `No` to deny.",
+      "deny": "Bot Activation cancelled.",
+      "agree": "Thank you! You agreed with our Terms of Service and Privacy Policy. The Bot is now activated on this server.",
+      "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
+      "content": "You need to agree to the FlashBot's **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy",
+      "DESC": "Activate this bot on the server"
+    },
+    "deactivate": {
+      "title": "Deactivate **FlashBot**",
+      "content": "You're now going to deactivate FlashBot on this server. You can re-activate using the `%1$sactivate` command.",
+      "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
+      "agree": "The bot is now deactivated in this server. To reactivate, use the `%1$sactivate` command.",
+      "deny": "Bot deactivation cancelled.",
+      "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
+      "DESC": "Deactivate this bot on the server"
+    },
+    "load": {
+      "error": "An Error occured when loading the command: %1$s",
+      "cannotfind": "Cannot find Command `%1$s`.",
+      "added": "Loaded `%1$s` command.",
+      "args": {
+        "command": {
+          "NAME": "command",
+          "DESC": "Command to load"
+        }
+      },
+      "alreadyExists": "That command (or aliases in it) already exists.",
+      "DESC": "Loads a command."
+    },
+    "unload": {
+      "error": "An Error occured while unloading the command: %1$s",
+      "unloaded": "Unloaded `%1$s` command.",
+      "args": {
+        "command": {
+          "NAME": "command",
+          "DESC": "Command to unload"
+        }
+      },
+      "cannotfind": "Cannot find command `%1$s`.",
+      "DESC": "Unloads a command."
+    },
+    "profileimage": {
+      "args": {
+        "member": {
+          "NAME": "member",
+          "DESC": "The member to see the profile image. Currently, only mentions are accepted."
+        }
+      },
+      "DESC": "Shows a profile image"
+    },
+    "purge": {
+      "args": {
+        "name": {
+          "NAME": "name",
+          "DESC": "The name of the data to purge cache. (guild / user)"
+        }
+      },
+      "DESC": "Purges database cache."
+    },
+    "savenow": {
+      "saved": "All JSON data were saved.",
+      "DESC": "Saves the json database file now."
+    },
+    "test": {
+      "DESC": "Command Testing"
+    },
+    "hellothisisverification": {
+      "DESC": "commands.hellothisisverification.DESC"
+    },
+    "support": {
+      "text": "Enter the Support server and chat, ask, or get support.",
+      "DESC": "Gives the link to the support server."
+    },
+    "exec": {
+      "title": "Command Execution",
+      "input": "Input:",
+      "output": "Output:",
+      "args": {
+        "cmd": {
+          "NAME": "command",
+          "DESC": "The command to run on the shell."
+        }
+      }
+    },
+    "register": {
+      "title": "Flashbot user registration",
+      "content": "commands.register.content",
+      "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
+      "deny": "User registration cancelled.",
+      "DESC": "commands.register.DESC",
+      "agree": "commands.register.agree"
+    }
+  },
+  "CommandHandler": {
+    "unexpectedError": "An unexpected error occured. Please report this error message and the Error ID to the Support server.\nError message: ```\n%1$s\n```\nError ID: `%2$s`",
+    "run": {
+      "ownerOnly": "Only the owners of the bot can run this command.",
+      "guildOnly": "This command can only be used in the server text channel."
+    },
+    "noUserPermission": "You need to have `%1$s` permissions to use this command."
+  },
+  "ClientError": {
+    "error": "An Error occured. Please report this error message and the Error ID to the Support server.\nError message: ```\n%1$s\n```\nError ID: `%2$s`"
+  },
+  "Command": {
+    "makeUsage": {
+      "str": "Usage: ```\n%1$s%2$s %3$s\n(Required) [Optional]\n```"
+    },
+    "pleaseRegister": {
+      "guild": "You need to register this server in order to use this feature. Please register using the `%1$sactivate` command.",
+      "user": "Command.pleaseRegister.user"
+    }
+  },
+  "error": {
+    "DBNotReady": "This feature needs the database storage, but the bot is not connected to the storage.\nPlease report this to the Support server to be fixed."
+  },
+  "common": {
+    "mention": "mention",
+    "string": "string"
+  },
+  "commandGroup": {
+    "info": "Informations",
+    "activation": "Activations",
+    "misc": "Others"
+  },
+  "regions": {
+    "south-korea": ":flag_kr: South Korea",
+    "japan": ":flag_jp: Japan",
+    "us-west": ":flag_us: :arrow_left: United States west",
+    "us-east": ":flag_us: :arrow_right: United States east",
+    "us-central": ":flag_us: :record_button: United States central",
+    "us-south": ":flag_us: :arrow_down: United States south",
+    "singapore": ":flag_sg: Singapore",
+    "southafrica": ":flag_za: South Africa",
+    "sydney": ":flag_au: Sydney, Australia",
+    "europe": ":flag_eu: Europe",
+    "brazil": ":flag_br: Brazil",
+    "hongkong": ":flag_hk: ~~Free~~ Hong Kong",
+    "russia": ":flag_ru: Russia:",
+    "india": ":flag_in: India"
+  },
+  "perms": {
+    "ADD_REACTION": "Add Reaction",
+    "ADMINISTRATOR": "Administrator"
+  }
+}

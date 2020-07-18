@@ -1,19 +1,20 @@
-const { Command } = require('discord.js-commando');
+const Command = require('../../classes/Command')
 
-module.exports = class TestCommand extends Command {
-    constructor(client) {
-        super(client, {
-            name: 'test',
-            aliases: ['테스트'],
-            group: 'dev',
-            memberName: 'test',
-            description: 'Command Testing',
-            ownerOnly: true
-        });
-    }
+class TestCommand extends Command {
+  constructor (client) {
+    super(client, {
+      name: 'test',
+      aliases: ['테스트', 'ㅅㄷㄴㅅ', 'xptmxm'],
+      description: 'commands.test.DESC:Command Testing',
+      group: 'dev',
+      owner: true
+    })
+  }
 
-    run(msg) {
-        // Enter your code to test
-        msg.channel.send('testing the command');
-    }
+  async run (_client, msg, _query, _locale) {
+    // Enter your code to test
+    return msg.channel.send('testing the command')
+  }
 }
+
+module.exports = TestCommand

@@ -1,23 +1,24 @@
 const Command = require('../../classes/Command')
 const ClientError = require('../../classes/ClientError')
 
-class ActivateCommand extends Command {
+class RegisterCommand extends Command {
   constructor (client) {
     super(client, {
-      name: 'activate',
-      aliases: ['act', '활성화', 'ㅁㅊ샾ㅁㅅㄷ', 'ㅁㅊㅅ', 'ghkftjdghk'],
-      description: 'commands.activate.DESC:Activate this bot on the server',
+      name: 'register',
+      aliases: ['등록', 'ㄱㄷ햔ㅅㄷㄱ', 'emdfhr'],
+      description: 'commands.register.DESC',
       group: 'activation',
-      userPerms: ['ADMINISTRATOR'],
-      guildOnly: true,
-      requireDB: true,
-      userReg: true
+      requireDB: true
     })
   }
 
   async run (client, msg, args, locale) {
     const t = client.locale.t
-    let result; let done = false
+
+    // TODO check regisetered status
+
+    let result
+    let done = false
 
     const mcFilter = (m) => {
       if (m.author.id === msg.author.id) {
@@ -37,16 +38,15 @@ class ActivateCommand extends Command {
       } else return false
     }
 
-    const botMsg = await msg.channel.send(t('commands.activate.title', locale) + '\n\n' +
-      t('commands.activate.content', locale) + '\n\n' +
-      t('commands.activate.confirm', locale)
-    )
+    const botMsg = await msg.channel.send(t('commands.register.title', locale) + '\n\n' +
+      t('commands.register.content', locale) + '\n\n' +
+      t('commands.register.confirm', locale))
 
     try {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      await msg.channel.send(t('commands.activate.reactFail', locale, client.locale.t('perms.ADD_REACTION', locale)))
+      await msg.channel.send(t('commands.register.reactFail', locale, client.locale.t('perms.ADD_REACTION', locale)))
     }
 
     const pend = (c) => {
@@ -80,31 +80,28 @@ class ActivateCommand extends Command {
         break
 
       case 'json':
-        if (db.obj.guild[msg.guild.id] == null) db.obj.guild[msg.guild.id] = { activated: true }
-        else db.obj.guild[msg.guild.id].activated = true
+        db.obj.user[msg.author.id] = {}
     }
 
     // Done!
-    this._client.logger.log('Command / Activate', `[Bot Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
-    await msg.channel.send(this._client.locale.t('commands.activate.agree', locale))
+    this._client.logger.log('Command / Register', `[User Registration] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
+    await msg.channel.send(this._client.locale.t('commands.register.agree', locale, this._client.config.prefix))
   }
 
   async deny (msg, locale) {
-    await msg.channel.send(this._client.locale.t('commands.activate.deny', locale))
+    await msg.channel.send(this._client.locale.t('commands.register.deny', locale))
   }
 
   async dbHandle (msg, locale) {
     const db = msg.client.db
-    const guildID = msg.guild.id
+    const userID = msg.author.id
     try {
-      const dbData = await db.knex('guilds').select('id').where('id', guildID)
+      const dbData = await db.knex('users').select('id').where('id', userID)
       if (dbData.length < 1) {
-        await db.knex('guilds').insert({
-          id: guildID,
-          locale: 'ko_KR',
-          activated: true
+        await db.knex('users').insert({
+          id: userID
         })
-      } else await db.knex('guilds').where('id', guildID).update({ activated: true })
+      }
     } catch (err) {
       const e = new ClientError(err)
       e.report(msg, locale)
@@ -113,4 +110,4 @@ class ActivateCommand extends Command {
   }
 }
 
-module.exports = ActivateCommand
+module.exports = RegisterCommand

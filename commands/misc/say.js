@@ -3,31 +3,51 @@
  * @description 사용자가 입력한 말을 따라 말하는 명령어입니다.
  */
 
-const i18n = require('i18n');
+const { MessageMentions, MessageEmbed } = require('discord.js')
+const Command = require('../../classes/Command')
 
-const BotCommand = require('../../utils/BotCommand');
+class SayCommand extends Command {
+  constructor (client) {
+    super(client, {
+      name: 'say',
+      aliases: ['말하기', 'ㄴ묘', 'akfgkrl'],
+      description: 'commands.say.DESC:Says back!',
+      group: 'misc',
+      args: [
+        {
+          name: 'commands.say.args.text.NAME:text',
+          description: 'commands.say.args.text.DESC:Text to say.',
+          type: 'common.string:string'
+        }
+      ]
+    })
+  }
 
-module.exports = class SayCommand extends BotCommand {
-    constructor(client) {
-        super(client, {
-            name: 'say',
-            aliases: ['말하기'],
-            group: 'misc',
-            memberName: 'say',
-            description: 'Replies with a meow, kitty cat.',
-            args: [
-                {
-                    key: 'input',
-                    prompt: 'TODO i18n',
-                    type: 'string'
-                }
-            ]
-        });
+  async run (client, msg, query, locale) {
+    const t = client.locale.t
+    if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
+
+    const str = query.args.join(' ')
+
+    // Reset the pattern count
+    MessageMentions.EVERYONE_PATTERN.lastIndex = 0
+    if (MessageMentions.EVERYONE_PATTERN.test(str)) return await msg.reply(t('commands.say.noEveryone', locale))
+
+    const say = query.args.join(' ')
+    if (
+      client.config.owner.includes(msg.author.id) ||
+      msg.member.permissions.has('ADMINISTRATOR')
+    ) msg.channel.send(say)
+    else {
+      if (msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
+        const embed = new MessageEmbed()
+          .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
+          .setFooter(t('commands.say.embedFooter', locale))
+          .setDescription(say)
+        msg.channel.send(embed)
+      } else msg.channel.send(t('commands.say.say', locale, say, msg.author.tag))
     }
+  }
+}
 
-    run(msg, input) {
-        if (!super.run(msg)) return;
-
-        return msg.channel.send(input);
-    }
-};
+module.exports = SayCommand

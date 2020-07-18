@@ -2,41 +2,31 @@
  * @name args-info.js
  * @description 입력된 인수를 체크하는 명령어입니다.
  */
-const i18n = require('i18n');
+const Command = require('../../classes/Command')
 
-const { Command } = require('discord.js-commando');
-
-module.exports = class ArgsInfoCommand extends Command {
-    constructor(client) {
-        super(client, {
-            name: 'args-info',
-            aliases: ['argsinfo'],
-            group: 'dev',
-            memberName: 'args-info',
-            description: '',
-            args: [
-                {
-                    key: "args",
-                    prompt: "Enter argument to parse.",
-                    type: "string",
-                    infinite: true
-                }
-            ]
-        });
-    }
-
-    run(msg, args) {
-        if (!args.args.length) {
-            /**
-             * 인수가 입력되지 않았습니다.
-             */
-            return msg.reply(i18n.__ll('commands.args-info.execute.no_args', msg.guild));
+class ArgsInfoCommand extends Command {
+  constructor (client) {
+    super(client, {
+      name: 'args-info',
+      aliases: ['argsinfo', 'ㅁㄱㅎㄴ-ㅑㅜ래', 'ㅁㄱㅎ냐ㅜ래'],
+      description: 'commands.args-info.DESC:Testing with arguments',
+      group: 'dev',
+      args: [
+        {
+          name: 'commands.args-info.args.args.NAME:args',
+          description: 'commands.args-info.args.args.DESC:The arguments to pass. Infinite arguments are accepted.',
+          type: 'common.any:any'
         }
-        /**
-         * Command name: args-info
-         * ----
-         * Arguments: %s
-         */
-        msg.channel.send(i18n.__ll('commands.args-info.execute.result.cmd_name', msg.guild) + '\n' + i18n.__('commands.args-info.execute.result.cmd_args', args.args + '')); // args-info hardcoded
-    }
-};
+      ]
+    })
+  }
+
+  async run (client, msg, query, locale) {
+    if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
+
+    return await msg.channel.send(client.locale.t('commands.args-info.run:' +
+      'Command name: %1$s\nArguments: %2$s', locale, query.cmd, query.args.join(', ')))
+  }
+}
+
+module.exports = ArgsInfoCommand

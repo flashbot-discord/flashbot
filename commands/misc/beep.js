@@ -3,23 +3,20 @@
  * @description beep - boop
  */
 
-var i18n = require('i18n');
+const Command = require('../../classes/Command')
 
-const BotCommand = require('../../utils/BotCommand');
+class BeepCommand extends Command {
+  constructor (client) {
+    super(client, {
+      name: 'beep',
+      description: 'commands.beep.DESC:boop',
+      group: 'misc'
+    })
+  }
 
-module.exports = class BeepCommand extends BotCommand {
-    constructor(client) {
-		super(client, {
-			name: 'beep',
-			group: 'misc',
-			memberName: 'beep',
-			description: 'boop'
-		});
-	}
+  async run (client, msg, _args, locale) {
+    return await msg.channel.send(client.locale.t('commands.beep.run:boop', locale))
+  }
+}
 
-	run(msg) {
-		if(!super.run(msg)) return;
-
-		return msg.channel.send(i18n.__ll('commands.beep.execute', msg.guild));
-	}
-};
+module.exports = BeepCommand

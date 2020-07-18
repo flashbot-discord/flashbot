@@ -3,12 +3,16 @@ node_modules/
 
 # Settings
 token.json
-config.json
+config.js
+
+# JSON Database
+db
 
 # Other
 .vscode
 debug.log
 db/db.json
 
-# Temporary
-command_temp
+# Swap file (Vim)
+*.swp
+*.swo

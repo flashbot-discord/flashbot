@@ -3,136 +3,74 @@
  * @description Main Bot Script
  */
 
-/**
- * config file
- */
+/* eslint-disable no-unused-vars */
+const VERSION = 'v0.8-beta.5'
+const BUILD_DATE = '2020/7/5'
+/* eslint-enable no-unused-vars */
 
-const VERSION = "v0.7.2";
-const BUILD_DATE = "2020/3/17"
+// import necessary modules
+const path = require('path')
 
-let configFile;
+const BotClient = require('./classes/BotClient')
+const CommandHandler = require('./classes/CommandHandler')
+const LocaleHandler = require('./classes/LocaleHandler')
 
-// import needed modules
-const fs = require('fs');
-const path = require('path');
-const Commando = require('discord.js-commando');
-
-if (fs.existsSync('./config.json')) {
-    /**
-     * config file
-     */
-    configFile = require('./config.json');
-} else {
-    configFile = {};
-    configFile.owner = null;
-    configFile.commandPrefix = null;
-    configFile.db = null;
-}
-
-const config = {
-    owner: configFile.owner || process.env.owner,
-    commandPrefix: configFile.prefix || process.env.prefix,
-    db: configFile.db || process.env.db
-}
-
-// necessary config check
-
-for(let i = 0; i < Object.keys(config).length; i++) {
-    if(!config[Object.keys(config)[i]]) {
-        throw new Error(`Config ${Object.keys(config)[i]} does not exist`);
-    }
-}
+const onReadyEvent = require('./events/onReady')
+const onMessageEvent = require('./events/onMessage')
 
 /**
  * Main Client
- * @type {CommandoClient}
+ * @type {BotClient}
  */
-const client = new Commando.Client({
-    owner: config.owner,
-    commandPrefix: config.commandPrefix,
-    unknownCommandResponse: false
-});
+const client = new BotClient()
+client.VERSION = VERSION
+client.BUILD_DATE = BUILD_DATE
 
 /**
  * Database
  */
-switch (config.db) {
-    case 'json': {
-        let req = require('./db/json');
-        var db = new req('./db/db.json');
-        client.setProvider(db);
-    }
-}
+client.setupDatabase()
 
-/**
- * i18n
- */
-const i18n = require('i18n');
-i18n.configure({
-    directory: './lang',
-    objectNotation: true,
-    syncFiles: true,
-    autoReload: true,
-    logDebugFn: (msg) => console.log(`[i18n/Debug] ${msg}`),
-    logWarnFn: (msg) => console.warn(`[i18n/WARN] ${msg}`),
-    logErrorFn: (msg) => console.log(`[i18n/ERROR] ${msg}`)
-});
-i18n.__ll = (phrase, guild) => {
-    return i18n.__({
-        phrase: phrase,
-        locale: client.getGuildLocale(guild)
-    });
-};
+// Setup Locale (i18n)
+client.registerLocaleHandler(new LocaleHandler(client))
 
-client.getGuildLocale = (guild) => {
-    return client.provider.get(guild, 'lang') || 'en';
-};
-
-/**
- * Bot token
- * @type {string}
- * @private
- */
-const token = process.env.token || require('./token.json').token;
-
-// Ready event
-client.once('ready', () => {
-    console.log(`Logged in as ${client.user.tag}!`);
-
-    client.user.setPresence({ status: 'online', game: { name: `${config.commandPrefix}help` } });
-});
+// event
+client.registerEvent('ready', onReadyEvent)
+client.registerEvent('message', onMessageEvent)
 
 // Login to Discord
-client.login(token);
+client.start()
 
-// Commando: Register Defaults
-client.registry
-    .registerDefaults()
-    .registerGroups([
-        ['dev', 'Commands for developing'],
-        ['misc', 'Misc'],
-        ['info', 'Provides several informations'],
-        ['activation', 'activating/deactivating the bot on the server']
-    ])
-    .registerCommandsIn(path.join(__dirname, 'commands'));
+client.registerCommandHandler(new CommandHandler(client))
+client.commands.registerGroups([
+  /*
+  ['activation', 'Activating and Deactivating Server'],
+  ['dev', 'For Development'],
+  ['info', 'Various Informations'],
+  ['memo', 'memo'],
+  ['misc', 'Other things']
+  */
+  'activation', 'dev', 'info', 'memo', 'misc'
+])
+client.commands.registerBaseCommands(path.join(path.resolve(), 'commands'))
 
 // for debug purposes
 client.on('message', msg => {
-    if (msg.guild) {
-        console.log(`${msg.guild.name} > ${msg.channel.name} > ${msg.author.username} (${msg.webhookID ? 'null' : msg.member.nickname}) > ${msg.content}`);
-    } else {
-        console.log(`DM (${msg.channel.id}) > ${msg.author.username} > ${msg.content}`);
-    }
-});
+  if (msg.guild) {
+    console.log(`${msg.guild.name} > ${msg.channel.name} > ${msg.author.username} (${msg.webhookID ? 'null' : msg.member.nickname}) > ${msg.content}`)
+  } else {
+    console.log(`DM (${msg.channel.id}) > ${msg.author.username} > ${msg.content}`)
+  }
+})
 
 // web server (Heroku web dyno placeholder)
-const express = require('express');
-const app = express();
+const express = require('express')
+const app = express()
 /**
  * web server port
  * @type {number}
  */
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5000
 
-app.use(express.static('public'));
-app.listen(PORT, () => console.log(`Web server on port ${PORT}`));
+app.use(express.static('public'))
+app.listen(PORT, () => client.logger.log('BOT MAIN', `Web server on port ${PORT}`))
