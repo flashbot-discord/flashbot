@@ -14,7 +14,12 @@ class RegisterCommand extends Command {
 
   async run (client, msg, args, locale) {
     const t = client.locale.t
-    let result; let done = false
+
+    // TODO check regisetered status
+
+
+    let result
+    let done = false
 
     const mcFilter = (m) => {
       if (m.author.id === msg.author.id) {
