@@ -150,6 +150,11 @@ class CommandHandler {
     const owner = client.config.owner.includes(msg.author.id)
     let locale
     try {
+      // Database Check
+      if ((cmd._requireDB || cmd._userReg || cmd._guildAct) && !client.db.ready) {
+        return await msg.channel.send(t('error.DBNotReady', locale))
+      }
+
       locale = await client.locale.getLocale(false, msg.author)
 
       // Registration Check
@@ -157,11 +162,6 @@ class CommandHandler {
         !owner && cmd._userReg &&
         !(await client.db.isRegisteredUser(msg.author.id))
       ) return msg.reply(t('Command.pleaseRegister.user', locale, client.config.prefix))
-
-      // Status Check
-      if (cmd._requireDB && !this._client.db.ready) {
-        return await msg.channel.send(t('error.DBNotReady', locale))
-      }
 
       if (cmd._guildOnly && !msg.guild) return await msg.reply(t('CommandHandler.run.guildOnly', locale))
 
