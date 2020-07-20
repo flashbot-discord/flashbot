@@ -57,21 +57,26 @@ class EvalCommand extends Command {
     client.logger.debug('Command / Eval', '[EVAL] Result: ' + result)
 
     if (result.length > 1000) useEmbed = false
+    const moreText = '\nAnd much more...'
 
     if (useEmbed) {
+      const _str = str.length > 1000 ? str.slice(0, 1000) + moreText : str
       const embed = new MessageEmbed()
         .setTitle(t('commands.eval.title', locale))
-        .addField(t('commands.eval.input', locale), '```\n' + str + '\n```')
+        .addField(t('commands.eval.input', locale), '```\n' + _str + '\n```')
         .addField(t('commands.eval.output', locale), '```\n' + result + '\n```')
       error ? embed.setColor(0xff0000) : embed.setColor(0x00ff00)
 
       return m.edit({ content: '', embed })
     } else {
-      return m.edit(t('commands.eval.input', locale) + '```\n' +
-        str + '\n```\n' +
+      const _str = str.length > 150 ? str.slice(0, 150) + moreText : str
+      const _result = result.length > 1750 ? result.slice(0, 1750) + moreText : result
+      const print = t('commands.eval.input', locale) + '```\n' +
+        _str + '\n```\n' +
         t('commands.eval.output', locale) + '```\n' +
-        result + '\n```'
-      )
+        _result + '\n```'
+      
+      return m.edit(print)
     }
   }
 

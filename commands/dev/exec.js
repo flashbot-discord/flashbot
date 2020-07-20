@@ -43,20 +43,24 @@ class ExecuteCommand extends Command {
     client.logger.debug('Command / Exec', '[EXEC] Result: ' + result)
 
     if (result.length > 1000) useEmbed = false
+    const moreText = '\nAnd much more...'
 
     if (useEmbed) {
+      const _str = str.length > 1000 ? str.slice(0, 1000) + moreText : str
       const embed = new MessageEmbed()
         .setTitle(t('commands.exec.title', locale))
-        .addField(t('commands.exec.input', locale), '```\n' + str + '\n```')
-        .addField(t('commands.exec.output', locale), '```\n' + result + '\n```')
+        .addField(t('commands.exec.input', locale), '```\n' + _str + '\n```')
+        .addField(t('commands.exec.output', locale), '```\n' + _result + '\n```')
       error ? embed.setColor(0xff0000) : embed.setColor(0x00ff00)
 
       return m.edit({ content: '', embed })
     } else {
+      const _str = str.length > 150 ? str.slice(0, 150) + moreText : str
+      const _result = result.length > 1750 ? result.slice(0, 1750) + moreText : result
       return m.edit(t('commands.exec.input', locale) + '```\n' +
-        str + '\n```\n' +
+        _str + '\n```\n' +
         t('commands.exec.output', locale) + '```\n' +
-        result + '\n```'
+        _result + '\n```'
       )
     }
   }
