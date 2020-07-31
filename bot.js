@@ -50,7 +50,7 @@ client.commands.registerGroups([
   ['memo', 'memo'],
   ['misc', 'Other things']
   */
-  'activation', 'dev', 'info', 'memo', 'misc'
+  'activation', 'dev', 'info', 'memo', 'misc', 'util'
 ])
 client.commands.registerBaseCommands(path.join(path.resolve(), 'commands'))
 

@@ -253,6 +253,10 @@
       "deny": "User registration cancelled.",
       "DESC": "commands.register.DESC",
       "agree": "commands.register.agree"
+    },
+    "generate-bot-invite": {
+      "noArgs": "Enter the bot `@mention` or its ID after the command to generate bot invite link.",
+      "userProvided": "Please enter the **bot** `@mention` or its ID."
     }
   },
   "CommandHandler": {
@@ -261,7 +265,7 @@
       "ownerOnly": "Only the owners of the bot can run this command.",
       "guildOnly": "This command can only be used in the server text channel."
     },
-    "noUserPermission": "You need to have `%1$s` permissions to use this command."
+    "noUserPermission": "You need to have `%1$s` permissions to use this command.",
   },
   "ClientError": {
     "error": "An Error occured. Please report this error message and the Error ID to the Support server.\nError message: ```\n%1$s\n```\nError ID: `%2$s`"
