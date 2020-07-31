@@ -266,6 +266,7 @@
       "guildOnly": "This command can only be used in the server text channel."
     },
     "noUserPermission": "You need to have `%1$s` permissions to use this command.",
+    "unregisteredOwner": "CommandHandler.unregisteredOwner"
   },
   "ClientError": {
     "error": "An Error occured. Please report this error message and the Error ID to the Support server.\nError message: ```\n%1$s\n```\nError ID: `%2$s`"

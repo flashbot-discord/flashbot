@@ -126,8 +126,11 @@ class CommandHandler {
     const logPos = this.logPos + '.unregister'
 
     // remove command name in group
-    const group = this.groups.get(cmd._group)
-    group.splice(group.indexOf(cmd._name), 1)
+    if(cmd._group.length > 0) {
+      const group = this.groups.get(cmd._group)
+      group.splice(group.indexOf(cmd._name), 1)
+    }
+
     // remove all aliases
     this._client.logger.debug(logPos, "Unregistering all command aliases for '" + cmd._name + "'")
     cmd._aliases.forEach((alias) => { if (this.aliases.has(alias)) this.aliases.delete(alias) })
@@ -159,9 +162,12 @@ class CommandHandler {
 
       // Registration Check
       if (
-        !owner && cmd._userReg &&
+        cmd._userReg &&
         !(await client.db.isRegisteredUser(msg.author.id))
-      ) return msg.reply(t('Command.pleaseRegister.user', locale, client.config.prefix))
+      ) {
+        if (owner) msg.channel.send(t('CommandHandler.unregisteredOwner', locale))
+        else return msg.reply(t('Command.pleaseRegister.user', locale, client.config.prefix))
+      }
 
       if (cmd._guildOnly && !msg.guild) return await msg.reply(t('CommandHandler.run.guildOnly', locale))
 
