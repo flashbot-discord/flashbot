@@ -126,7 +126,7 @@ class CommandHandler {
     const logPos = this.logPos + '.unregister'
 
     // remove command name in group
-    if(cmd._group.length > 0) {
+    if (cmd._group.length > 0) {
       const group = this.groups.get(cmd._group)
       group.splice(group.indexOf(cmd._name), 1)
     }

@@ -1,7 +1,7 @@
 const Command = require('../../classes/Command')
 
 class GenerateBotInviteCommand extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'generate-bot-invite',
       aliases: [
@@ -13,15 +13,15 @@ class GenerateBotInviteCommand extends Command {
     })
   }
 
-  async run(client, msg, query, locale) {
+  async run (client, msg, query, locale) {
     const t = client.locale.t
     let id
 
-    if(query.args.length !== 1) return msg.reply(t('commands.generate-bot-invite.noArgs', locale))
+    if (query.args.length !== 1) return msg.reply(t('commands.generate-bot-invite.noArgs', locale))
 
     if (msg.mentions.users.size > 0) {
       const pending = msg.mentions.users.first()
-      if(!pending.bot) return msg.reply(t('commands.generate-bot-invite.userProvided', locale))
+      if (!pending.bot) return msg.reply(t('commands.generate-bot-invite.userProvided', locale))
       else id = pending.id
     } else if (this.validateID(query.args[0])) id = query.args[0]
 
@@ -29,7 +29,7 @@ class GenerateBotInviteCommand extends Command {
     msg.channel.send(url)
   }
 
-  validateID(id) {
+  validateID (id) {
     return typeof id === 'string' &&
       /^[0-9]{17,19}$/.test(id)
   }

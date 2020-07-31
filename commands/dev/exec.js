@@ -50,7 +50,7 @@ class ExecuteCommand extends Command {
       const embed = new MessageEmbed()
         .setTitle(t('commands.exec.title', locale))
         .addField(t('commands.exec.input', locale), '```\n' + _str + '\n```')
-        .addField(t('commands.exec.output', locale), '```\n' + _result + '\n```')
+        .addField(t('commands.exec.output', locale), '```\n' + result + '\n```')
       error ? embed.setColor(0xff0000) : embed.setColor(0x00ff00)
 
       return m.edit({ content: '', embed })

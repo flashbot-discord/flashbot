@@ -75,7 +75,7 @@ class EvalCommand extends Command {
         _str + '\n```\n' +
         t('commands.eval.output', locale) + '```\n' +
         _result + '\n```'
-      
+
       return m.edit(print)
     }
   }
