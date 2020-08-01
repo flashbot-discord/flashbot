@@ -12,7 +12,7 @@ globalElements(false)
 console.log('Loaded Global Properties and Functions.')
 
 // Run
-Promise.all([run(), installDeps()]).then((v) => {
+run().then(installDeps).then((v) => {
   console.log('Installation completed!')
   process.exit(0)
 }).catch((e) => {
@@ -55,6 +55,9 @@ async function run () {
         } else if (compVer.compare(dbver, MIN_DB_VER, '>=')) {
           // Run upgrade
           await dbUpgrade(config.db.type, knex)
+        } else if(compVer.compare(dbver, DB_VER, '>=')) {
+          // Cannot Downgrade
+          throw new Error('Newer database version detected. Cannot downgrade.\n\nInstallation terminated.')
         } else {
           // db structure outdated. exit.
           throw new Error('Error: The database structure version is outdated. Please upgrade the database structure to ' + MIN_DB_VER + ' to install.\n\nInstallation terminated.')
@@ -157,6 +160,12 @@ async function dbUpgrade (type, obj) {
 
 function runInstallDeps (extension, fullpath) {
   return new Promise((resolve, reject) => {
+    if(!fs.existsSync(path.join(fullpath, 'package.json'))) {
+      console.log(`[INFO] Cannot find package.json on ${extension}. Skipping.`)
+      resolve()
+      return
+    }
+
     const out = ch.exec('yarn --prod', { cwd: fullpath }, (err, stdout, stderr) => {
       if (err) reject(new Error('[ERROR] Failed to install modules for ' + extension + ': ' + err.stack))
 
