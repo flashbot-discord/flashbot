@@ -156,13 +156,13 @@ class CommandHandler {
     const t = client.locale.t
     const owner = client.config.owner.includes(msg.author.id)
     let locale
+    locale = await client.locale.getLocale(false, msg.author)
+
     try {
       // Database Check
       if ((cmd._requireDB || cmd._userReg || cmd._guildAct) && !client.db.ready) {
         return await msg.channel.send(t('error.DBNotReady', locale))
       }
-
-      locale = await client.locale.getLocale(false, msg.author)
 
       // Registration Check
       if (
