@@ -36,13 +36,7 @@ class LocaleHandler {
           d = await this._client.db.knex(type).select('locale').where('id', obj.id)
         } catch (err) {
           this._client.logger.warn(logPos,
-            'Cannot load ' +
-            (isGuild ? 'guild' : 'user') +
-            ' locale information of ' +
-            (isGuild ? obj.name : obj.tag) +
-            ' (' + obj.id + "). Falling back to default locale '" +
-            this._client.config.defaultLocale + "': " + err.stack
-          )
+            `Cannot load ${isGuild ? 'guild' : 'user'} locale information of ${isGuild ? obj.name : obj.tag} (${obj.id}). Falling back to default locale '${this._client.config.defaultLocale}': ${err.stack}`)
           return this._client.config.defaultLocale
         }
 
