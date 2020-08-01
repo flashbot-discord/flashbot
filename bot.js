@@ -54,15 +54,6 @@ client.commands.registerGroups([
 ])
 client.commands.registerBaseCommands(path.join(path.resolve(), 'commands'))
 
-// for debug purposes
-client.on('message', msg => {
-  if (msg.guild) {
-    console.log(`${msg.guild.name} > ${msg.channel.name} > ${msg.author.username} (${msg.webhookID ? 'null' : msg.member.nickname}) > ${msg.content}`)
-  } else {
-    console.log(`DM (${msg.channel.id}) > ${msg.author.username} > ${msg.content}`)
-  }
-})
-
 // web server (Heroku web dyno placeholder)
 const express = require('express')
 const app = express()

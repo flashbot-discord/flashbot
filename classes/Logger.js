@@ -5,6 +5,10 @@ class Logger {
     this.debugMode = debug
   }
 
+  onCmd (msg) {
+    console.log(`${this._genDatetime()} ${msg}`)
+  }
+
   log (from, msg) {
     console.log(this._genDatetime() + chalk.green(' [Log / ' + from + '] ' + msg))
   }
