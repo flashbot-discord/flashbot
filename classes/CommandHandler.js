@@ -2,6 +2,8 @@ const fs = require('fs')
 const path = require('path')
 const uuid = require('uuid-random')
 
+const StatHandler = require('./StatHandler')
+
 class CommandHandler {
   constructor (client) {
     this.logPos = 'CommandHandler'
@@ -32,6 +34,8 @@ class CommandHandler {
      * @type {Map<string, string>} Map of group name => group description
      */
     this.groups = new Map()
+
+    this.stats = new StatHandler(client)
   }
 
   registerGroups (groups) {
@@ -171,7 +175,7 @@ class CommandHandler {
 
       if (cmd._guildOnly && !msg.guild) return await msg.reply(t('CommandHandler.run.guildOnly', locale))
 
-      if (cmd._guildAct && !(await client.db.isActivatedGuild(msg.guild.id))) return msg.channel.send(client.locale.t('Command.pleaseRegister.guild', locale, client.config.prefix))
+      if (cmd._guildAct && !(await client.db.isActivatedGuild(msg.guild.id))) return msg.channel.send(t('Command.pleaseRegister.guild', locale, client.config.prefix))
 
       // Perms Check
       if (cmd._owner && !owner) return await msg.reply(t('CommandHandler.run.ownerOnly', locale))
@@ -181,6 +185,9 @@ class CommandHandler {
 
         if (!owner && !msg.member.permissions.has(cmd._userPerms)) return msg.reply(t('CommandHandler.noUserPermission', locale, cmd._userPerms.join('`, `')))
       }
+
+      // Log command usage
+      this.stats.stat(query.cmd, msg.guild ? msg.guild.id : 0)
 
       // Run
       await cmd.run(client, msg, query, locale)
