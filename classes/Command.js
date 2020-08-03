@@ -141,10 +141,7 @@ class Command {
       str = str + (arg.optional ? '[' : '(') + name + (arg.optional ? ']' : ')') + ' - ' + desc + ' ' + '\n'
     })
 
-    return t('Command.makeUsage.str:Usage: ```\n' +
-     '%1$s%2$s %3$s\n' +
-      '(Required) [Optional]\n' +
-    '```', locale, cmd._client.config.prefix, called, str)
+    return t('Command.makeUsage.str', locale, cmd._client.config.prefix, called, str)
   }
 }
 
