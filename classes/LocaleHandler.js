@@ -16,12 +16,14 @@ class LocaleHandler {
       logWarnFn: (msg) => client.logger.warn('i18n', msg),
       logErrorFn: (msg) => client.logger.error('i18n', msg)
     })
-
     this.i18n = i18n
-    this.t = (phrase, locale, ...args) => i18n.__({ phrase, locale }, ...args)
 
     this._client = client
     client.logger.log(logPos, 'i18n has been set up')
+  }
+
+  t (phrase, locale, ...args) {
+    return i18n.__({ phrase, locale }, ...args)
   }
 
   async getLocale (isGuild, obj) {
@@ -40,7 +42,7 @@ class LocaleHandler {
           return this._client.config.defaultLocale
         }
 
-        if (d.length < 1) return 'ko_KR' // Default
+        if (d.length < 1) return this._client.config.defaultLocale // Default
         else return d[0].locale
       }
 
