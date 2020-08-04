@@ -156,9 +156,10 @@ class CommandHandler {
     const t = client.locale.t
     const owner = client.config.owner.includes(msg.author.id)
     let locale = await client.locale.getLocale(false, msg.author)
-    if (msg.guild && locale === client.locale.defaultLocale) {
+    if (msg.guild && locale == null) {
       const guildLocale = await client.locale.getLocale(true, msg.guild)
-      if (guildLocale !== client.locale.defaultLocale) locale = guildLocale
+      if (guildLocale != null) locale = guildLocale
+      else locale = client.locale.defaultLocale
     }
 
     try {
