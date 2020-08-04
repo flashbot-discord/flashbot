@@ -51,16 +51,6 @@ class BotClient extends Client {
     if (typeof config.prefix !== 'string') logger.fatal(logPos, "Invalid type for 'config.prefix'. Accepts String.")
     if (config.prefix.length < 1) logger.warn(logPos, 'Command prefix configuration not found. You can only enter commands by pinging the bot.')
 
-    // Locale
-    if (typeof config.defaultLocale !== 'string') {
-      logger.warn(logPos, "Invalid type for 'config.defaultLocale'. Accepts String.")
-      config.defaultLocale = ''
-    }
-    if (config.defaultLocale.length < 1) {
-      config.defaultLocale = 'ko_KR'
-      logger.warn(logPos, "Default Locale configuration not found. Defaults to 'ko_KR' (한국어).")
-    }
-
     // Debug mode
     if (config.debug) {
       this.debugMode = logger.debugMode = true
