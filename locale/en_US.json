@@ -248,11 +248,12 @@
     },
     "register": {
       "title": "Flashbot user registration",
-      "content": "commands.register.content",
+      "content": "You need to agree to the Flashbot **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy",
       "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
       "deny": "User registration cancelled.",
       "DESC": "commands.register.DESC",
-      "agree": "commands.register.agree"
+      "agree": "commands.register.agree",
+      "reactFail": "commands.register.reactFail"
     },
     "generate-bot-invite": {
       "noArgs": "Enter the bot `@mention` or its ID after the command to generate bot invite link.",
@@ -263,7 +264,7 @@
     }
   },
   "CommandHandler": {
-    "unexpectedError": "An unexpected error occured. Please report this error message and the Error ID to the Support server.\nError message: ```\n%1$s\n```\nError ID: `%2$s`",
+    "unexpectedError": "An unexpected error occured. Please report this error message and the Error ID to the Support server.\n예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지와 오류 ID를 제보해 주세요.\n\nError message (오류 메세지): ```\n%1$s\n```\nError ID (오류 ID): `%2$s`",
     "run": {
       "ownerOnly": "Only the owners of the bot can run this command.",
       "guildOnly": "This command can only be used in the server text channel."
@@ -272,7 +273,7 @@
     "unregisteredOwner": "CommandHandler.unregisteredOwner"
   },
   "ClientError": {
-    "error": "An Error occured. Please report this error message and the Error ID to the Support server.\nError message: ```\n%1$s\n```\nError ID: `%2$s`"
+    "error": "An Error occured. Please report this error message and the Error ID to the Support server.\n오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\n\nError message (오류 메세지): ```\n%1$s\n```\nError ID (오류 ID): `%2$s`"
   },
   "Command": {
     "makeUsage": {
@@ -284,7 +285,7 @@
     }
   },
   "error": {
-    "DBNotReady": "This feature needs the database storage, but the bot is not connected to the storage.\nPlease report this to the Support server to be fixed."
+    "DBNotReady": "This feature needs the database storage, but the bot is not connected to the storage. Please report this to the Support server to be fixed.\n이 기능은 데이터베이스가 필요하지만, 현재 봇이 데이터베이스에 접근할 수 없습니다. 지원 서버에 문의를 남겨주세요."
   },
   "common": {
     "mention": "mention",

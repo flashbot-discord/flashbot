@@ -160,7 +160,7 @@
       "deny": "봇 활성화가 취소되었습니다.",
       "agree": "약관에 동의하였습니다. 이 서버에서 봇이 활성화되었습니다.",
       "reactFail": "봇이 `%1$s` 권한을 가지고 있지 않아, 봇이 반응을 추가할 수 없습니다.\n텍스트로 답변을 입력하거나, 수동으로 반응을 추가해 주세요.",
-      "content": "FlashBot **이용 약관**과 **개인정보 취급 방침**에 동의해야 랍니다.\n아래 링크에서 해당 문서들을 볼 수 있습니다.\n이용약관: https://flashbot.ga/tos\n개인정보 취급방침: https://flashbot.ga/privacy",
+      "content": "FlashBot **이용 약관**과 **개인정보 취급 방침**에 동의해야 합니다.\n아래 링크에서 해당 문서들을 볼 수 있습니다.\n이용약관: https://flashbot.ga/tos\n개인정보 취급방침: https://flashbot.ga/privacy",
       "DESC": "이 서버에서 봇을 활성화합니다."
     },
     "deactivate": {
@@ -245,7 +245,8 @@
       "confirm": ":white_check_mark:으로 반응하거나 `Yes`를 입력하여 동의하고, 아니면 :x:로 반응하거나 `No`를 입력하여 거부할 수 있습니다.",
       "deny": "가입이 취소되었습니다.",
       "DESC": "이용자로 가입합니다.",
-      "agree": "FlashBot 이용자 가입이 완료되었습니다. 다양한 기능을 즐겨보세요! (도움말은 `%1$shelp` 명령어로 볼 수 있습니다)"
+      "agree": "FlashBot 이용자 가입이 완료되었습니다. 다양한 기능을 즐겨보세요! (도움말은 `%1$shelp` 명령어로 볼 수 있습니다)",
+      "reactFail": "봇이 `%1$s` 권한을 가지고 있지 않아, 반응을 추가할 수 없습니다.\n텍스트로 답변을 입력하거나, 수동>으로 반응을 추가해 주세요."
     },
     "generate-bot-invite": {
       "noArgs": "초대 링크를 만들 봇을 명령어 뒤에 `@멘션`하거나, 해당 봇의 ID를 입력해 주세요.",
@@ -256,16 +257,16 @@
     }
   },
   "CommandHandler": {
-    "unexpectedError": "예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지와 오류 ID를 제보해 주세요.\n오류 메세지: ```\n%1$s\n```\n오류 ID: `%2$s`",
+    "unexpectedError": "예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지와 오류 ID를 제보해 주세요.\nAn unexpected error occured. Please report this error message and the Error ID to the Support server.\n\n오류 메세지 (Error message): ```\n%1$s\n```\n오류 ID (Error ID): `%2$s`",
     "run": {
       "ownerOnly": "봇 소유자만 이 명령어를 실행할 수 있습니다.",
       "guildOnly": "이 명령어는 서버 텍스트 채널에서만 실행할 수 있어요."
     },
-    "noUserPermission": "이 명령어를 실행하려면 `%1$s` 권한이 필요합니다.",
+    "noUserPermission": "이 명령어를 실행하려면 `%1$s` 권한이 필요해요.",
     "unregisteredOwner": "[경고] 이 봇의 소유자이나 가입하지 않았습니다. 일반적인 경우라면 나오지 않을 오류가 발생할 수 있습니다."
   },
   "ClientError": {
-    "error": "오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\n오류 메세지: ```\n%1$s\n```\n오류 ID: `%2$s`"
+    "error": "오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\nAn Error occured. Please report this error message and the Error ID to the Support server.\n\n오류 메세지 Error message: ```\n%1$s\n```\n오류 ID Error ID: `%2$s`"
   },
   "Command": {
     "makeUsage": {
@@ -277,7 +278,7 @@
     }
   },
   "error": {
-    "DBNotReady": "이 기능은 데이터베이스가 필요하지만, 현재 봇이 데이터베이스에 접근할 수 없습니다. 지원 서버에 문의를 남겨주세요."
+    "DBNotReady": "이 기능은 데이터베이스가 필요하지만, 현재 봇이 데이터베이스에 접근할 수 없습니다. 지원 서버에 문의를 남겨주세요.\nThis feature needs the database storage, but the bot is not connected to the storage. Please report this to the Support server to be fixed."
   },
   "common": {
     "mention": "멘션",
