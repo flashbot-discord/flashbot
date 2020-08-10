@@ -257,7 +257,8 @@
     },
     "generate-bot-invite": {
       "noArgs": "Enter the bot `@mention` or its ID after the command to generate bot invite link.",
-      "userProvided": "Please enter the **bot** `@mention` or its ID."
+      "userProvided": "Please enter the **bot** `@mention` or its ID.",
+      "invalidID": "Incorrect bot ID provided. Please enter the bot `@mention` or its ID **correctly**."
     },
     "stat": {
       "total": "Total command execution on this session: %1$s"

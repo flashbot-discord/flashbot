@@ -24,6 +24,7 @@ class GenerateBotInviteCommand extends Command {
       if (!pending.bot) return msg.reply(t('commands.generate-bot-invite.userProvided', locale))
       else id = pending.id
     } else if (this.validateID(query.args[0])) id = query.args[0]
+    else return msg.reply(t('commands.generate-bot-invite.invalidID', locale))
 
     const url = `https://discord.com/oauth2/authorize?client_id=${id}&permissions=2147483647&scope=bot`
     msg.channel.send(url)
