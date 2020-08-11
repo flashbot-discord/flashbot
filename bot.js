@@ -43,14 +43,13 @@ client.start()
 
 client.registerCommandHandler(new CommandHandler(client))
 client.commands.registerGroups([
-  /*
-  ['activation', 'Activating and Deactivating Server'],
-  ['dev', 'For Development'],
-  ['info', 'Various Informations'],
-  ['memo', 'memo'],
-  ['misc', 'Other things']
-  */
-  'activation', 'dev', 'info', 'memo', 'misc', 'util'
+  'activation', // Activating and Deactivating Server
+  'dev', // For Development
+  'info', // Various Informations
+  'memo', // memo
+  'misc', // Other things
+  'util', // Utilities
+  'settings' // Settings
 ])
 client.commands.registerBaseCommands(path.join(path.resolve(), 'commands'))
 

@@ -14,7 +14,7 @@ class LocaleCommand extends Command {
         'ㅣㅐㅊ믿', 'ㅣ무혐ㅎㄷ', 'ㅣ뭏', 'djsdj'
       ],
       description: 'commands.locale.DESC:See or change the bot locale on the server.',
-      group: 'misc',
+      group: 'settings',
       requireDB: true,
       userReg: true,
       args: [
