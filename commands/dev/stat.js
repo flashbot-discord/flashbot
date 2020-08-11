@@ -1,7 +1,7 @@
 const Command = require('../../classes/Command')
 
 class StatCommand extends Command {
-  constructor(client) {
+  constructor (client) {
     super(client, {
       name: 'stat',
       aliases: ['stats', 'statistics', '통계'],
@@ -11,7 +11,7 @@ class StatCommand extends Command {
     })
   }
 
-  run(client, msg, query, locale) {
+  run (client, msg, query, locale) {
     const t = client.locale.t
 
     const total = client.commands.stats.getTotal()

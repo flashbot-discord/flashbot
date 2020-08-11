@@ -55,7 +55,7 @@ async function run () {
         } else if (compVer.compare(dbver, MIN_DB_VER, '>=')) {
           // Run upgrade
           await dbUpgrade(config.db.type, knex)
-        } else if(compVer.compare(dbver, DB_VER, '>=')) {
+        } else if (compVer.compare(dbver, DB_VER, '>=')) {
           // Cannot Downgrade
           throw new Error('Newer database version detected. Cannot downgrade.\n\nInstallation terminated.')
         } else {
@@ -160,7 +160,7 @@ async function dbUpgrade (type, obj) {
 
 function runInstallDeps (extension, fullpath) {
   return new Promise((resolve, reject) => {
-    if(!fs.existsSync(path.join(fullpath, 'package.json'))) {
+    if (!fs.existsSync(path.join(fullpath, 'package.json'))) {
       console.log(`[INFO] Cannot find package.json on ${extension}. Skipping.`)
       resolve()
       return
