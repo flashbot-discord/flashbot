@@ -115,7 +115,10 @@ class CommandHandler {
     if (c._aliases.length > 0) c._aliases.forEach((alias) => { this.aliases.set(alias, c._name) })
     this._client.logger.debug(logPos, "Registered all command aliases for '" + c._name + "': " + c._aliases.join(', '))
     if (this.groups.has(c._group)) this.groups.set(this.groups.get(c._group).push(c._name))
-    else this._client.logger.error(logPos, "Cannot register command '" + c._name + "' to group '" + c._group + "'")
+    else {
+      this._client.logger.error(logPos, "Cannot register command '" + c._name + "' to group '" + c._group + "' which is not registered.")
+      return c.unload()
+    }
 
     this._client.logger.log(logPos, 'Command Loaded: ' + c._name)
     return c
@@ -132,7 +135,7 @@ class CommandHandler {
     // remove command name in group
     if (cmd._group.length > 0) {
       const group = this.groups.get(cmd._group)
-      group.splice(group.indexOf(cmd._name), 1)
+      if (group) group.splice(group.indexOf(cmd._name), 1)
     }
 
     // remove all aliases
