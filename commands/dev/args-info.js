@@ -22,10 +22,11 @@ class ArgsInfoCommand extends Command {
   }
 
   async run (client, msg, query, locale) {
-    if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
+    const t = client.locale.t
 
-    return await msg.channel.send(client.locale.t('commands.args-info.run:' +
-      'Command name: %1$s\nArguments: %2$s', locale, query.cmd, query.args.join(', ')))
+    if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd, locale))
+
+    return msg.channel.send(t('commands.args-info.run', locale, query.cmd, query.args.join(', ')))
   }
 }
 

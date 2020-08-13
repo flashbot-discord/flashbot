@@ -1,8 +1,7 @@
 class MsgQuery {
-  constructor (client, msg) {
+  constructor (msg, prefix) {
     this.raw = msg.content
-    if (!msg.content.startsWith(client.config.prefix)) return
-    this.content = msg.content.slice(client.config.prefix.length)
+    this.content = msg.content.slice(prefix.length)
     if (!this.content || this.content.length < 1) return
 
     this.arr = this.content.split(' ').filter((c) => c.length > 0)

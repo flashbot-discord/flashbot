@@ -1,4 +1,6 @@
 const { MessageEmbed } = require('discord.js')
+const minimist = require('minimist')
+
 const Paginator = require('../../classes/Paginator')
 const Command = require('../../classes/Command')
 
@@ -22,24 +24,23 @@ class HelpCommand extends Command {
 
   async run (client, msg, query, locale) {
     const t = client.locale.t
+    const args = minimist(query.args, {
+      boolean: ['here', 'no-page'],
+      alias: {
+        here: ['h', 'ㅗㄷㄱㄷ', 'ㅗ'],
+        'no-page': ['n', 'ㅜㅐ-ㅔㅁㅎㄷ', 'ㅜ']
+      }
+    })
 
     // is DM
     let dm = true
-    if (msg.guild && (
-      query.args.includes('--here') ||
-      query.args.includes('--ㅗㄷㄱㄷ') ||
-      query.args.includes('-h') ||
-      query.args.includes('-ㅗ'))
-    ) dm = false
+    if (msg.guild && args.here) dm = false
 
     // Enable/Disable Page
     let page = true
-    if (dm || query.args.includes('--no-page') ||
-      query.args.includes('--ㅜㅐ-ㅔㅁㅎㄷ') ||
-      query.args.includes('-n') ||
-      query.args.includes('-ㅜ') ||
-      (!dm && !msg.channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS'))
-    ) page = false
+    if (dm ||
+      args['no-page'] ||
+      (!dm && !msg.channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS'))) page = false
 
     // Embed Maker
     const embeds = []

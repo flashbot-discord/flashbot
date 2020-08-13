@@ -1,4 +1,6 @@
 const { MessageEmbed } = require('discord.js')
+const minimist = require('minimist')
+
 const Command = require('../../classes/Command')
 const util = require('util')
 
@@ -22,15 +24,18 @@ class EvalCommand extends Command {
 
   async run (client, msg, query, locale) {
     const t = client.locale.t
+    const args = minimist(query.args, {
+      stopEarly: true,
+      boolean: 'unsafe',
+      alias: {
+        unsafe: ['u', 'ㅕㅜㄴㅁㄹㄷ', 'ㅕ']
+      }
+    })
 
     // Unsafe mode check
-    let isUnsafe = false
-    if (['-u', '--unsafe'].includes(query.args[0])) {
-      isUnsafe = true
-      query.args = query.args.slice(1)
-    }
+    const isUnsafe = args.unsafe
 
-    const str = query.args.join(' ')
+    const str = args._.join(' ')
     if (!str) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
     client.logger.log('Command / Eval', '[EVAL] ' + msg.author.tag + ' evaluated the code: ' + str)
 
