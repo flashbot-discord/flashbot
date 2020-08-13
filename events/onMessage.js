@@ -10,7 +10,7 @@ async function onMessage (client, msg) {
   else logString = `DM ${msg.channel.recipient.tag} > ${msg.author.tag} > ${msg.content}`
   client.logger.onCmd(logString)
 
-  const query = new MsgQuery(msg, client.config.prefix)
+  const query = new MsgQuery(msg.content, client.config.prefix)
   const cmd = client.commands.get(query.cmd)
   if (cmd) client.commands.run(cmd, client, msg, query)
 }
