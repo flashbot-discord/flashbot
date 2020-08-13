@@ -1,6 +1,6 @@
-module.exports = (client) => {
+module.exports = (logger) => {
   const log = (msg) => {
-    if (client) client.logger.log('globalElements', msg)
+    if (logger) logger.log('globalElements', msg)
     else console.log(msg)
   }
 

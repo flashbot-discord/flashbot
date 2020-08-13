@@ -2,7 +2,7 @@ const chalk = require('chalk')
 
 class Logger {
   constructor (debug) {
-    this.debugMode = debug
+    this.debugMode = debug || false
   }
 
   onCmd (msg) {

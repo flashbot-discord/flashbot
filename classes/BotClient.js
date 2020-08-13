@@ -22,7 +22,7 @@ class BotClient extends Client {
     logger.log(logPos, 'FlashBot Startup')
 
     // Load Global Properties and Functions
-    globalElements()
+    globalElements(logger)
     logger.log(logPos, 'Loaded Global Properties and Functions')
 
     let config
