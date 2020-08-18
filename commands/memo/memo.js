@@ -10,7 +10,8 @@ class MemoCommand extends Command {
     super(client, {
       name: 'memo',
       aliases: ['메모', 'mm', 'ㅁㅁ', 'ㅡ드ㅐ', 'apah'],
-      description: 'memo list'
+      description: 'memo list',
+      group: 'memo'
     })
   }
 

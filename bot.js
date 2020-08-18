@@ -49,7 +49,8 @@ client.commands.registerGroups([
   'memo', // memo
   'misc', // Other things
   'util', // Utilities
-  'settings' // Settings
+  'settings', // Settings
+  'game' // Games
 ])
 client.commands.registerBaseCommands(path.join(path.resolve(), 'commands'))
 
