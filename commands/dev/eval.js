@@ -26,12 +26,12 @@ class EvalCommand extends Command {
     const t = client.locale.t
     const args = minimist(query.args, {
       stopEarly: true,
-      boolean: 'unsafe',
+      boolean: 'u',
       alias: {
         unsafe: ['u', 'ㅕㅜㄴㅁㄹㄷ', 'ㅕ']
       }
     })
-
+console.log(query.args, args)
     // Unsafe mode check
     const isUnsafe = args.unsafe
 
