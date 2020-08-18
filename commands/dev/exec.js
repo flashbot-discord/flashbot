@@ -36,7 +36,7 @@ class ExecuteCommand extends Command {
     try {
       result = await this.execute(str)
     } catch (err) {
-      result = err
+      result = err.message
       error = true
     }
 
