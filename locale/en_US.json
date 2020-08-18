@@ -262,6 +262,21 @@
     },
     "stat": {
       "total": "Total command execution on this session: %1$s"
+    },
+    "typing": {
+      "noDataFile": "Any typing data file does not exist. Please post an issue at the Support Server.",
+      "noDataFolder": "Typing data folder does not exist. Please post an issue at the Support Server.",
+      "start": "Type below sentence **correctly**! (Time limit: 1 minute)```\n%1$s\n```",
+      "loading": "Loading typing data... (This job will run only first time, so please wait a bit)",
+      "loaded": "Typing data loaded!",
+      "finish": "Finished!",
+      "notMatch": "The sentence you entered does not match.",
+      "doNotCopyPaste": "Do not copy/paste.",
+      "correct": "%1$s second(s), %2$s character/min",
+      "alreadyPlaying": "The typing game is already playing in this channel.",
+      "notPlaying": "The typing game is not playing in this channel.",
+      "cmdStop": "Stopped the typing game.",
+      "langDataNotExist": "commands.typing.langDataNotExist"
     }
   },
   "CommandHandler": {

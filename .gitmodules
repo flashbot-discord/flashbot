@@ -4,3 +4,6 @@
 [submodule "extensions/helloworld"]
 	path = extensions/helloworld
 	url = https://github.com/comjun04/helloworld-flashbot-extension
+[submodule "modules/typing"]
+	path = modules/typing
+	url = https://github.com/flashbot-discord/typing-data.git

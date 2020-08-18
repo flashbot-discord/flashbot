@@ -255,6 +255,21 @@
     },
     "stat": {
       "total": "이 세션에서의 총 명령어 실행 수: %1$s번"
+    },
+    "typing": {
+      "noDataFile": "타자 데이터 파일이 하나도 존재하지 않습니다. 지원 서버에 문의해주세요.",
+      "noDataFolder": "타자 데이터 폴더가 존재하지 않습니다. 지원 서버에 문의해주세요.",
+      "start": "다음 문장을 **정확하게** 입력해주세요! (제한시간 1분)```\n%1$s\n```",
+      "loading": "타자 데이터를 불러오는 중이에요. (최초 1회만 실행되니 잠시만 기다려주세요)",
+      "loaded": "타자 데이터를 불러왔어요!",
+      "finish": "아무도 입력하지 않아 타자 게임이 종료되었어요.",
+      "notMatch": "입력한 문장이 맞지 않아요.",
+      "doNotCopyPaste": "복사/붙여넣기하지 마세요.",
+      "correct": "%1$s초, %2$s타",
+      "alreadyPlaying": "이 채널에서 이미 타자 게임이 진행 중이에요. 게임이 끝난 뒤에 다시 시도해보세요.",
+      "notPlaying": "이 채널에서 타자 게임을 진행하고 있지 않아요.",
+      "cmdStop": "타자 게임을 종료했습니다.",
+      "langDataNotExist": "commands.typing.langDataNotExist"
     }
   },
   "CommandHandler": {
