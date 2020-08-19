@@ -52,7 +52,9 @@ console.log(query.args, args)
       const evaluated = await this.evaluate(msg, str, bd)
       result = util.inspect(evaluated, { depth: 0 })
     } catch (err) {
-      result = err.message
+      if (err instanceof Error) result = err.message
+      else result = err
+
       error = true
     }
 
