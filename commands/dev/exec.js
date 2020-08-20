@@ -30,7 +30,7 @@ class ExecuteCommand extends Command {
     const m = await msg.reply('Executing...')
 
     let result
-    let useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    let useEmbed = !msg.guild || msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
     let error = false
 
     try {

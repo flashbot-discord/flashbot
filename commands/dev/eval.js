@@ -31,7 +31,7 @@ class EvalCommand extends Command {
         unsafe: ['u', 'ㅕㅜㄴㅁㄹㄷ', 'ㅕ']
       }
     })
-console.log(query.args, args)
+
     // Unsafe mode check
     const isUnsafe = args.unsafe
 
@@ -44,7 +44,7 @@ console.log(query.args, args)
     let bd
     let result
     let error = false
-    let useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    let useEmbed = !msg.guild || msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
     if (!isUnsafe) bd = this.hideToken()
 
