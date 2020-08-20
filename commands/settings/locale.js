@@ -4,6 +4,7 @@
  */
 
 const Command = require('../../classes/Command')
+const database = require('../../database')
 
 class LocaleCommand extends Command {
   constructor (client) {
@@ -59,24 +60,9 @@ class LocaleCommand extends Command {
           id = msg.guild.id
         }
 
-        await this.dbHandle(guildMode, id, language)
+        await database.locale.set(this._client.db, id, guildMode, language)
         msg.channel.send(t(guildMode ? 'commands.locale.set.guild' : 'commands.locale.set.user', language, language))
       }
-    }
-  }
-
-  async dbHandle (guildMode, id, locale) {
-    switch (this._client.db.type) {
-      case 'mysql':
-      case 'pg': {
-        const table = guildMode ? 'guilds' : 'users'
-        await this._client.db.knex(table).update({ locale }).where('id', id)
-        break
-      }
-
-      case 'json':
-        this._client.db.obj[guildMode ? 'guild' : 'user'][id].locale = locale
-        break
     }
   }
 }

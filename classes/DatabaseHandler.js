@@ -29,7 +29,7 @@ class DatabaseHandler {
         // guild.json, user.json
         try {
           if (!connection) connection = {}
-          const folder = connection.folder ? path.join(path.resolve(), connection.folder) : path.join(path.resolve(), 'db', 'json')
+          const folder = path.join(path.resolve(), 'data', 'jsondb')
           this._client.logger.debug(logPos, '[JSON] Root stroage folder: ' + folder)
           const guildFile = 'guild.json'
           const userFile = 'user.json'
@@ -88,7 +88,7 @@ class DatabaseHandler {
           this.ready = true
           return true
         } catch (err) {
-          this._client.logger.error(logPos + ':' + this.type, 'Failed to connect the database: ' + err.stack)
+          this._client.logger.error(logPos + ':' + this.type, 'Failed to connect to the database: ' + err.stack)
           this.ready = false
           return false
         }
@@ -103,32 +103,6 @@ class DatabaseHandler {
           this.ready = false
           return false
         }
-    }
-  }
-
-  async isRegisteredUser (id) {
-    switch (this.type) {
-      case 'mysql':
-      case 'pg':
-        return (await this.knex('users').select('id').where('id', id)).length > 0
-
-      case 'json':
-        return typeof this.obj.user[id] === 'object'
-    }
-  }
-
-  async isActivatedGuild (id) {
-    switch (this.type) {
-      case 'mysql':
-      case 'pg': {
-        const data = await this.knex('guilds').select().where('id', id)
-        if (data.length < 1 || !data[0].activated) return false
-        else return true
-      }
-
-      case 'json':
-        if (typeof this.obj.guild[id] === 'object') return true
-        else return false
     }
   }
 

@@ -1,5 +1,6 @@
 const Command = require('../../classes/Command')
 const ClientError = require('../../classes/ClientError')
+const database = require('../../database')
 
 class RegisterCommand extends Command {
   constructor (client) {
@@ -10,6 +11,8 @@ class RegisterCommand extends Command {
       group: 'activation',
       requireDB: true
     })
+
+    this._logPos = 'RegisterCommand'
   }
 
   async run (client, msg, args, locale) {
@@ -46,14 +49,14 @@ class RegisterCommand extends Command {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      await msg.channel.send(t('commands.register.reactFail', locale, client.locale.t('perms.ADD_REACTION', locale)))
+      msg.channel.send(t('commands.register.reactFail', locale, client.locale.t('perms.ADD_REACTION', locale)))
     }
 
-    const pend = (c) => {
+    const pend = async (c) => {
       if (done) return
 
       if (c.size > 0 && result) {
-        this.agree(msg, locale)
+        await this.agree(msg, locale)
       } else {
         this.deny(msg, locale)
       }
@@ -70,17 +73,13 @@ class RegisterCommand extends Command {
 
   async agree (msg, locale) {
     // Activation
-
-    // DB
-    const db = this._client.db
-    switch (db.type) {
-      case 'mysql':
-      case 'pg':
-        await this.dbHandle(msg, locale)
-        break
-
-      case 'json':
-        db.obj.user[msg.author.id] = {}
+    try {
+      await database.users.register(this._client.db, {
+        id: msg.author.id
+      })
+    } catch (err) {
+      const e = new ClientError(err)
+      e.report(msg, locale, this._logPos + '.agree')
     }
 
     // Done!
@@ -88,25 +87,8 @@ class RegisterCommand extends Command {
     await msg.channel.send(this._client.locale.t('commands.register.agree', locale, this._client.config.prefix))
   }
 
-  async deny (msg, locale) {
-    await msg.channel.send(this._client.locale.t('commands.register.deny', locale))
-  }
-
-  async dbHandle (msg, locale) {
-    const db = msg.client.db
-    const userID = msg.author.id
-    try {
-      const dbData = await db.knex('users').select('id').where('id', userID)
-      if (dbData.length < 1) {
-        await db.knex('users').insert({
-          id: userID
-        })
-      }
-    } catch (err) {
-      const e = new ClientError(err)
-      e.report(msg, locale)
-      throw e
-    }
+  deny (msg, locale) {
+    msg.channel.send(this._client.locale.t('commands.register.deny', locale))
   }
 }
 

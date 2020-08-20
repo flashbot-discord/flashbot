@@ -1,5 +1,6 @@
 const Command = require('../../classes/Command')
 const ClientError = require('../../classes/ClientError')
+const database = require('../../database')
 
 class ActivateCommand extends Command {
   constructor (client) {
@@ -13,6 +14,8 @@ class ActivateCommand extends Command {
       requireDB: true,
       userReg: true
     })
+
+    this._logPos = 'ActivateCommand'
   }
 
   async run (client, msg, args, locale) {
@@ -46,14 +49,14 @@ class ActivateCommand extends Command {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      await msg.channel.send(t('commands.activate.reactFail', locale, client.locale.t('perms.ADD_REACTION', locale)))
+      msg.channel.send(t('commands.activate.reactFail', locale, client.locale.t('perms.ADD_REACTION', locale)))
     }
 
-    const pend = (c) => {
+    const pend = async (c) => {
       if (done) return
 
       if (c.size > 0 && result) {
-        this.agree(msg, locale)
+        await this.agree(msg, locale)
       } else {
         this.deny(msg, locale)
       }
@@ -70,45 +73,29 @@ class ActivateCommand extends Command {
 
   async agree (msg, locale) {
     // Activation
-
-    // DB
-    const db = this._client.db
-    switch (db.type) {
-      case 'mysql':
-      case 'pg':
-        await this.dbHandle(msg, locale)
-        break
-
-      case 'json':
-        if (db.obj.guild[msg.guild.id] == null) db.obj.guild[msg.guild.id] = { activated: true }
-        else db.obj.guild[msg.guild.id].activated = true
+    try {
+      await this.dbHandle(this._client.db, msg.guild.id)
+    } catch (e) {
+      const error = new ClientError(e)
+      error.report(msg, locale, this._logPos + '.agree')
     }
 
     // Done!
     this._client.logger.log('Command / Activate', `[Bot Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
-    await msg.channel.send(this._client.locale.t('commands.activate.agree', locale))
+    msg.channel.send(this._client.locale.t('commands.activate.agree', locale))
   }
 
-  async deny (msg, locale) {
-    await msg.channel.send(this._client.locale.t('commands.activate.deny', locale))
+  deny (msg, locale) {
+    msg.channel.send(this._client.locale.t('commands.activate.deny', locale))
   }
 
-  async dbHandle (msg, locale) {
-    const db = msg.client.db
-    const guildID = msg.guild.id
-    try {
-      const dbData = await db.knex('guilds').select('id').where('id', guildID)
-      if (dbData.length < 1) {
-        await db.knex('guilds').insert({
-          id: guildID,
-          locale: 'ko_KR',
-          activated: true
-        })
-      } else await db.knex('guilds').where('id', guildID).update({ activated: true })
-    } catch (err) {
-      const e = new ClientError(err)
-      e.report(msg, locale)
-      throw e
+  async dbHandle (dbHandler, guildID) {
+    if (await database.guilds.isRegistered(dbHandler, guildID)) await database.guilds.setActivation(dbHandler, guildID, true)
+    else {
+      await database.guilds.register(dbHandler, {
+        id: guildID,
+        activated: true
+      })
     }
   }
 }

@@ -10,15 +10,13 @@ class MsgQuery {
   }
 }
 
-function splitDoubleQuotes (args) {
+function splitDoubleQuotes (args = []) {
   const newArgs = []
   const queue = []
 
-  for (arg of args) {
-    if (arg.startsWith('"')) {
-      queue.push(arg)
-      continue
-    } else if (arg.endsWith('"') && !arg.endsWith('\\"')) {
+  args.forEach((arg) => {
+    if (arg.startsWith('"')) return queue.push(arg)
+    else if (arg.endsWith('"') && !arg.endsWith('\\"')) {
       queue.push(arg)
       newArgs.push(queue.join(' ').slice(1, -1))
       queue.length = 0
@@ -26,13 +24,12 @@ function splitDoubleQuotes (args) {
       if (queue.length > 0) queue.push(arg)
       else newArgs.push(arg)
     }
-  }
+  })
 
   if (queue.length > 0) {
-    for (element of queue) newArgs.push(element)
+    queue.forEach((element) => newArgs.push(element))
   }
 
-  console.log(newArgs)
   return newArgs
 }
 

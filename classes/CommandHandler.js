@@ -3,6 +3,8 @@ const path = require('path')
 const uuid = require('uuid-random')
 
 const StatHandler = require('./StatHandler')
+const database = require('../database')
+const ClientError = require('./ClientError')
 
 class CommandHandler {
   constructor (client) {
@@ -174,7 +176,7 @@ class CommandHandler {
       // Registration Check
       if (
         cmd._userReg &&
-        !(await client.db.isRegisteredUser(msg.author.id))
+        !(await database.users.isRegistered(client.db, msg.author.id))
       ) {
         if (owner) msg.channel.send(t('CommandHandler.unregisteredOwner', locale))
         else return msg.reply(t('Command.pleaseRegister.user', locale, client.config.prefix))
@@ -182,7 +184,10 @@ class CommandHandler {
 
       if (cmd._guildOnly && !msg.guild) return await msg.reply(t('CommandHandler.run.guildOnly', locale))
 
-      if (cmd._guildAct && !(await client.db.isActivatedGuild(msg.guild.id))) return msg.channel.send(t('Command.pleaseRegister.guild', locale, client.config.prefix))
+      if (
+        cmd._guildAct &&
+        !(await database.guilds.isActivated(client.db, msg.guild.id))
+      ) return msg.channel.send(t('Command.pleaseRegister.guild', locale, client.config.prefix))
 
       // Perms Check
       if (cmd._owner && !owner) return await msg.reply(t('CommandHandler.run.ownerOnly', locale))
@@ -199,10 +204,8 @@ class CommandHandler {
       // Run
       await cmd.run(client, msg, query, locale)
     } catch (err) {
-      const uid = uuid()
-
-      client.logger.error(this.logPos + '.run => ' + cmd._name, 'Error (' + uid + '): ' + err.stack)
-      return await msg.reply(t('CommandHandler.unexpectedError', locale, err.message, uid))
+      const e = new ClientError(err)
+      e.report(msg, locale, `${this.logPos}.run => ${cmd._name}`)
     }
   }
 }

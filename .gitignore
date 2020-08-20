@@ -6,12 +6,11 @@ token.json
 config.js
 
 # JSON Database
-db
+data/jsondb
 
 # Other
 .vscode
 debug.log
-db/db.json
 
 # Swap file (Vim)
 *.swp

@@ -1,5 +1,7 @@
 const i18n = require('i18n')
 
+const database = require('../database')
+
 class LocaleHandler {
   constructor (client) {
     const logPos = this.logPos = 'LocaleHandler'
@@ -29,33 +31,18 @@ class LocaleHandler {
 
   async getLocale (isGuild, obj) {
     const logPos = this.logPos + '.getLocale'
+    let locale
 
-    switch (this._client.db.type) {
-      case 'mysql':
-      case 'pg': {
-        let d
-        const type = isGuild ? 'guilds' : 'users'
-        try {
-          d = await this._client.db.knex(type).select('locale').where('id', obj.id)
-        } catch (err) {
-          this._client.logger.warn(logPos,
-            `Cannot load ${isGuild ? 'guild' : 'user'} locale information of ${isGuild ? obj.name : obj.tag} (${obj.id}). Falling back to default locale '${this.defaultLocale}': ${err.stack}`)
-          return null
-        }
-
-        if (d.length < 1) return this.defaultLocale // Default: ko_KR
-        else return d[0].locale
-      }
-
-      case 'json': {
-        const db = this._client.db.obj
-        const type = isGuild ? 'guild' : 'user'
-        if (!db[type][obj.id]) return null
-        const l = db[type][obj.id].locale
-        if (!l) return this.defaultLocale
-        else return l
-      }
+    try {
+      locale = await database.locale.get(this._client.db, obj.id, isGuild)
+    } catch (err) {
+      this._client.logger.warn(logPos,
+        `Cannot load ${isGuild ? 'guild' : 'user'} locale information of ${isGuild ? obj.name : obj.tag} (${obj.id}). Falling back to default locale '${this.defaultLocale}': ${err.stack}`)
+      return null
     }
+
+    if (locale == null) return this.defaultLocale // Default: ko_KR
+    else return locale
   }
 }
 

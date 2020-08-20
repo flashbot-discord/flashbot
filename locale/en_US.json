@@ -277,10 +277,19 @@
       "notPlaying": "The typing game is not playing in this channel.",
       "cmdStop": "Stopped the typing game.",
       "langDataNotExist": "commands.typing.langDataNotExist"
+    },
+    "prefix": {
+      "info": "This server's bot prefix is `%1$s`. If you want to change bot prefix, please type `%1$sprefix set <new prefix>`.",
+      "set": {
+        "pleaseEnterPrefix": "Please type `%1$sprefix set <new prefix>` to change this server's bot prefix.",
+        "complete": "This server's bot prefix has been changed to `%1$s`.",
+        "tooLong": "Bot prefix cannot be long than 11 characters.",
+        "everyoneNotAllowed": "commands.prefix.set.everyoneNotAllowed",
+        "noPerms": "commands.prefix.set.noPerms"
+      }
     }
   },
   "CommandHandler": {
-    "unexpectedError": "An unexpected error occured. Please report this error message and the Error ID to the Support server.\n예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지와 오류 ID를 제보해 주세요.\n\nError message (오류 메세지): ```\n%1$s\n```\nError ID (오류 ID): `%2$s`",
     "run": {
       "ownerOnly": "Only the owners of the bot can run this command.",
       "guildOnly": "This command can only be used in the server text channel."
@@ -289,7 +298,7 @@
     "unregisteredOwner": "CommandHandler.unregisteredOwner"
   },
   "ClientError": {
-    "error": "An Error occured. Please report this error message and the Error ID to the Support server.\n오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\n\nError message (오류 메세지): ```\n%1$s\n```\nError ID (오류 ID): `%2$s`"
+    "error": "An unexpected Error occured. Please report this error message and the Error ID to the Support server.\n예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\n\nError message (오류 메세지): ```\n%1$s\n```\nError ID (오류 ID): `%2$s`"
   },
   "Command": {
     "makeUsage": {

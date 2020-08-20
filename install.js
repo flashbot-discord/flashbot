@@ -69,16 +69,16 @@ async function run () {
     case 'json': {
     // JSON Database
       console.log('JSON DB Init...')
-      const dbPath = path.join(path.resolve(), 'db')
+      const dbPath = path.join(path.resolve(), 'data')
       if (!fs.existsSync(dbPath) || !fs.lstatSync(dbPath).isDirectory()) {
         fs.mkdirSync(dbPath)
-        console.log('Created db directory.')
+        console.log('Created data directory.')
       }
 
-      const jsonDBPath = path.join(dbPath, 'json')
+      const jsonDBPath = path.join(dbPath, 'jsondb')
       if (!fs.existsSync(jsonDBPath) || !fs.lstatSync(jsonDBPath).isDirectory()) {
         fs.mkdirSync(jsonDBPath)
-        console.log('Created db/json directory.')
+        console.log('Created data/jsondb directory.')
       }
 
       const guildjson = path.join(jsonDBPath, 'guild.json')

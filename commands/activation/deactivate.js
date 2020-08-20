@@ -1,5 +1,6 @@
 const Command = require('../../classes/Command')
 const ClientError = require('../../classes/ClientError')
+const database = require('../../database')
 
 class DeactivateCommand extends Command {
   constructor (client) {
@@ -14,6 +15,8 @@ class DeactivateCommand extends Command {
       requireDB: true,
       userReg: true
     })
+
+    this._logPos = 'DeactivateCommand'
   }
 
   async run (client, msg, args, locale) {
@@ -49,15 +52,15 @@ class DeactivateCommand extends Command {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      await msg.channel.send(t('commands.deactivate.reactFail', locale, t('perms.ADD_REACTION', locale))
+      msg.channel.send(t('commands.deactivate.reactFail', locale, t('perms.ADD_REACTION', locale))
       )
     }
 
-    const pend = (c) => {
+    const pend = async (c) => {
       if (done) return
 
       if (c.size > 0 && result) {
-        this.agree(msg, locale)
+        await this.agree(msg, locale)
       } else {
         this.deny(msg, locale)
       }
@@ -74,38 +77,24 @@ class DeactivateCommand extends Command {
 
   async agree (msg, locale) {
     // Deactivation
-
-    // DB
-    const db = this._client.db
-    switch (db.type) {
-      case 'mysql':
-      case 'pg':
-        await this.dbHandle(msg, locale)
-        break
-      case 'json':
-        db.obj.guild[msg.guild.id].activated = false
+    try {
+      await this.dbHandle(this._client.db, msg.guild.id)
+    } catch (e) {
+      const error = new ClientError(e)
+      error.report(msg, locale, this._logPos + '.agree')
     }
 
     // Done!
     this._client.logger.log('Command / Deactivate', `[Bot Deactivation] ${msg.author.tag} (${msg.member.nickname}) deactivated the bot in ${msg.guild.name}`)
-    await msg.channel.send(this._client.locale.t('commands.deactivate.agree', locale, this._client.config.prefix))
+    msg.channel.send(this._client.locale.t('commands.deactivate.agree', locale, this._client.config.prefix))
   }
 
-  async deny (msg, locale) {
-    await msg.channel.send(this._client.locale.t('commands.deactivate.deny', locale))
+  deny (msg, locale) {
+    msg.channel.send(this._client.locale.t('commands.deactivate.deny', locale))
   }
 
-  async dbHandle (msg, locale) {
-    const db = msg.client.db
-    const guildID = msg.guild.id
-
-    try {
-      await db.knex('guilds').where('id', guildID).update({ activated: false })
-    } catch (err) {
-      const e = new ClientError(err)
-      e.report(msg, locale)
-      throw e
-    }
+  async dbHandle (dbHandler, guildID) {
+    await database.guilds.setActivation(dbHandler, guildID, false)
   }
 }
 
