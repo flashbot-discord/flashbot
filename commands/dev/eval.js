@@ -1,8 +1,9 @@
 const { MessageEmbed } = require('discord.js')
 const minimist = require('minimist')
+const util = require('util')
 
 const Command = require('../../classes/Command')
-const util = require('util')
+const canSendEmbed = require('../../modules/canSendEmbed')
 
 class EvalCommand extends Command {
   constructor (client) {
@@ -44,7 +45,7 @@ class EvalCommand extends Command {
     let bd
     let result
     let error = false
-    let useEmbed = !msg.guild || msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    let useEmbed = canSendEmbed(client.user, msg.channel)
 
     if (!isUnsafe) bd = this.hideToken()
 

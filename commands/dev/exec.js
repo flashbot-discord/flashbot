@@ -1,6 +1,8 @@
 const { MessageEmbed } = require('discord.js')
-const Command = require('../../classes/Command')
 const ch = require('child_process')
+
+const Command = require('../../classes/Command')
+const canSendEmbed = require('../../modules/canSendEmbed')
 
 class ExecuteCommand extends Command {
   constructor (client) {
@@ -30,7 +32,7 @@ class ExecuteCommand extends Command {
     const m = await msg.reply('Executing...')
 
     let result
-    let useEmbed = !msg.guild || msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    let useEmbed = canSendEmbed(client.user, msg.channel)
     let error = false
 
     try {
