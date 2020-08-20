@@ -116,7 +116,7 @@ class CommandHandler {
     this.aliases.set(c._name, c._name)
     if (c._aliases.length > 0) c._aliases.forEach((alias) => { this.aliases.set(alias, c._name) })
     this._client.logger.debug(logPos, "Registered all command aliases for '" + c._name + "': " + c._aliases.join(', '))
-    if (this.groups.has(c._group)) this.groups.set(this.groups.get(c._group).push(c._name))
+    if (this.groups.has(c._group)) this.groups.get(c._group).push(c._name)
     else {
       this._client.logger.error(logPos, "Cannot register command '" + c._name + "' to group '" + c._group + "' which is not registered.")
       return c.unload()
