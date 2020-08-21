@@ -251,7 +251,8 @@
     "generate-bot-invite": {
       "noArgs": "초대 링크를 만들 봇을 명령어 뒤에 `@멘션`하거나, 해당 봇의 ID를 입력해 주세요.",
       "userProvided": "사용자가 아닌 봇의 `@멘션`니나 ID를 입력해 주세요.",
-      "invalidID": "잘못된 봇 아이디를 입력한 것 같아요. 봇의 `@멘션`이나 ID를 **정확하게** 입력해주세요."
+      "invalidID": "잘못된 봇 아이디를 입력한 것 같아요. 봇의 `@멘션`이나 ID를 **정확하게** 입력해주세요.",
+      "DESC": "commands.generate-bot-invite.DESC"
     },
     "stat": {
       "total": "이 세션에서의 총 명령어 실행 수: %1$s번"
@@ -279,7 +280,8 @@
         "tooLong": "접두사는 11글자를 초과할 수 없어요.",
         "everyoneNotAllowed": "접두사를 `@everyone`이나 `@here`로 설정할 수 없어요!",
         "noPerms": "이 서버에서의 봇 접두사를 설정하려면 `서버 관리` 권한이 필요해요."
-      }
+      },
+      "DESC": "commands.prefix.DESC"
     },
     "hello": {
       "title": "안녕하세요!",
@@ -321,7 +323,9 @@
   "commandGroup": {
     "info": "정보",
     "activation": "활성화",
-    "misc": "기타"
+    "misc": "기타",
+    "util": "유틸리티",
+    "settings": "설정"
   },
   "regions": {
     "south-korea": ":flag_kr: 대한민국",
