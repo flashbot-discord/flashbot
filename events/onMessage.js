@@ -1,11 +1,17 @@
 const MsgQuery = require('../classes/MsgQuery')
 const database = require('../database')
+const getPrefix = require('../modules/getPrefix')
 
 async function onMessage (client, msg) {
   if (msg.author.bot || !msg.content) return
 
+  let calledByMention = false
   const prefix = await checkPrefix(msg)
-  if (!prefix) return
+  if (typeof prefix !== 'string' && !prefix) return
+  else if (prefix === true) {
+    prefix = `<@${client.user.id}>`
+    calledByMention = true
+  }
 
   // Log
   let logString
@@ -14,6 +20,7 @@ async function onMessage (client, msg) {
   client.logger.onCmd(logString)
 
   const query = new MsgQuery(msg.content, prefix)
+  if (calledByMention && query.cmd.length < 1) query.cmd = 'hello' // HelloCommand
   const cmd = client.commands.get(query.cmd)
   if (cmd) client.commands.run(cmd, client, msg, query)
 }
@@ -22,13 +29,9 @@ async function checkPrefix (msg) {
   const client = msg.client
   if (msg.content.trim().startsWith(`<@${client.user.id}>`)) return `<@${client.user.id}>`
 
-  let prefix
-  if (msg.guild) {
-    const guildPrefix = await database.guilds.prefix.get(client.db, msg.guild.id)
-    prefix = guildPrefix == null ? client.config.prefix : guildPrefix
-  } else prefix = client.config.prefix
-
-  if (msg.content.startsWith(prefix)) return prefix
+  const prefix = await getPrefix(client, msg.guild ? msg.guild.id : null)
+  if (!msg.guild && prefix.length < 1) return prefix
+  else if (msg.content.startsWith(prefix)) return prefix
   else return false
 }
 

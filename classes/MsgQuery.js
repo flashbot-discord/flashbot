@@ -1,6 +1,7 @@
 class MsgQuery {
   constructor (content, prefix) {
     this.raw = content
+    this.prefix = prefix
     this.content = content.slice(prefix.length)
     if (!this.content || this.content.length < 1) return
 
