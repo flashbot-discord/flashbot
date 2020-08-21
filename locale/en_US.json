@@ -287,6 +287,15 @@
         "everyoneNotAllowed": "commands.prefix.set.everyoneNotAllowed",
         "noPerms": "commands.prefix.set.noPerms"
       }
+    },
+    "hello": {
+      "title": "Hello!",
+      "description": "Thank you for using **FlashBot**!\n**Flashbot** serves various features.\n\n%1$s\nYou can see help message using `%2$shelp`.",
+      "prefix": {
+        "guild": "Bot prefix on this server is `%1$s`.",
+        "dm": "You won't need prefix in DMs."
+      },
+      "DESC": "commands.hello.DESC"
     }
   },
   "CommandHandler": {

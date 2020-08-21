@@ -21,7 +21,7 @@
         }
       },
       "DESC": "도움말을 보여줍니다.",
-      "sentToDM": "DM으로 도움말을 보냈습니다.",
+      "sentToDM": "DM(개인 메세지)으로 도움말을 보냈습니다.",
       "footer": "이모지를 이용하여 페이지를 넘기세요. / 제한 시간 30초 / 버전: %1$s",
       "footerNoPage": "버전: %1$s",
       "descNoPage": "commands.help.descNoPage"
@@ -280,6 +280,15 @@
         "everyoneNotAllowed": "접두사를 `@everyone`이나 `@here`로 설정할 수 없어요!",
         "noPerms": "이 서버에서의 봇 접두사를 설정하려면 `서버 관리` 권한이 필요해요."
       }
+    },
+    "hello": {
+      "title": "안녕하세요!",
+      "description": "**FlashBot**을 사용해 주셔서 고마워요.\n**FlashBot**은 여러 기능을 제공하는 봇이에요.\n\n%1$s\n도움말은 `%2$s도움말`로 볼 수 있어요.",
+      "prefix": {
+        "guild": "이 서버에서의 봇 접두사는 `%1$s`이에요.",
+        "dm": "개인 메세지에서는 접두사를 사용하지 않아요."
+      },
+      "DESC": "commands.hello.DESC"
     }
   },
   "CommandHandler": {
