@@ -1,11 +1,13 @@
 class MsgQuery {
-  constructor (content, prefix) {
+  constructor (content, prefix, calledByMention) {
     this.raw = content
     this.prefix = prefix
     this.content = content.slice(prefix.length)
-    if (!this.content || this.content.length < 1) return
+
+    if (!calledByMention && (!this.content || this.content.length < 1)) return
 
     this.arr = this.content.split(' ').filter((c) => c.length > 0)
+    if (calledByMention && this.arr.length < 1) this.arr = ['hello']
     this.cmd = this.arr[0]
     this.args = splitDoubleQuotes(this.arr.slice(1))
   }

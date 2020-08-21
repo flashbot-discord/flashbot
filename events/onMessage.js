@@ -6,7 +6,7 @@ async function onMessage (client, msg) {
   if (msg.author.bot || !msg.content) return
 
   let calledByMention = false
-  const prefix = await checkPrefix(msg)
+  let prefix = await checkPrefix(msg)
   if (typeof prefix !== 'string' && !prefix) return
   else if (prefix === true) {
     prefix = `<@${client.user.id}>`
@@ -19,7 +19,8 @@ async function onMessage (client, msg) {
   else logString = `DM ${msg.channel.recipient.tag} > ${msg.author.tag} > ${msg.content}`
   client.logger.onCmd(logString)
 
-  const query = new MsgQuery(msg.content, prefix)
+  const query = new MsgQuery(msg.content, prefix, calledByMention)
+  query.calledByMention = calledByMention
   if (calledByMention && query.cmd.length < 1) query.cmd = 'hello' // HelloCommand
   const cmd = client.commands.get(query.cmd)
   if (cmd) client.commands.run(cmd, client, msg, query)
@@ -27,7 +28,7 @@ async function onMessage (client, msg) {
 
 async function checkPrefix (msg) {
   const client = msg.client
-  if (msg.content.trim().startsWith(`<@${client.user.id}>`)) return `<@${client.user.id}>`
+  if (msg.content.trim().startsWith(`<@${client.user.id}>`)) return true
 
   const prefix = await getPrefix(client, msg.guild ? msg.guild.id : null)
   if (!msg.guild && prefix.length < 1) return prefix
