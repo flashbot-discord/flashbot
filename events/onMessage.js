@@ -1,6 +1,7 @@
 const MsgQuery = require('../classes/MsgQuery')
 const database = require('../database')
 const getPrefix = require('../modules/getPrefix')
+const ClientError = require('../classes/ClientError')
 
 async function onMessage (client, msg) {
   if (msg.author.bot || !msg.content) return
@@ -30,7 +31,14 @@ async function checkPrefix (msg) {
   const client = msg.client
   if (msg.content.trim().startsWith(`<@${client.user.id}>`)) return true
 
-  const prefix = await getPrefix(client, msg.guild ? msg.guild.id : null)
+  let prefix
+  try {
+    prefix = await getPrefix(client, msg.guild ? msg.guild.id : null)
+  } catch (err) {
+    const e = new ClientError(err)
+    e.report()
+  }
+
   if (!msg.guild && prefix.length < 1) return prefix
   else if (msg.content.startsWith(prefix)) return prefix
   else return false
