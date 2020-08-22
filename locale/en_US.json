@@ -167,7 +167,8 @@
       "agree": "Thank you! You agreed with our Terms of Service and Privacy Policy. The Bot is now activated on this server.",
       "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
       "content": "You need to agree to the FlashBot's **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy",
-      "DESC": "Activate this bot on the server"
+      "DESC": "Activate this bot on the server",
+      "alreadyActivated": "This bot is already activated on this server."
     },
     "deactivate": {
       "title": "Deactivate **FlashBot**",

@@ -20,13 +20,19 @@ class ActivateCommand extends Command {
 
   async run (client, msg, args, locale) {
     const t = client.locale.t
-    let result; let done = false
+
+    const isActivated = await database.guilds.isActivated(client.db, msg.guild.id)
+    if (isActivated) return msg.reply(t('commands.activate.alreadyActivated', locale))
+
+    let result
+    let done = false
 
     const mcFilter = (m) => {
       if (m.author.id === msg.author.id) {
-        if (m.content.toLowerCase() !== 'yes' && m.content.toLowerCase() !== 'no') return false
-        else if (m.content.toLowerCase() === 'yes') result = true
-        else if (m.content.toLowerCase() === 'no') result = false
+        const content = m.content.toLowerCase()
+        if (content !== 'yes' && content !== 'no') return false
+        else if (content === 'yes') result = true
+        else if (content === 'no') result = false
         return true
       } else return false
     }
