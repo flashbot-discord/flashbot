@@ -300,6 +300,9 @@
         "dm": "You won't need prefix in DMs."
       },
       "DESC": "commands.hello.DESC"
+    },
+    "invite": {
+      "text": "Use below link to invite FlashBot:\n%1$s\n\nAlso, give me :heart: in koreanbots!\n%2$s"
     }
   },
   "CommandHandler": {

@@ -293,6 +293,9 @@
         "dm": "개인 메세지에서는 접두사를 사용하지 않아요."
       },
       "DESC": "안녕하세요!"
+    },
+    "invite": {
+      "text": "아래 링크로 FlashBot을 초대하세요:\n%1$s\n\n추가로, koreanbots에서 :heart:도 눌러주세요!\n%2$s"
     }
   },
   "CommandHandler": {
