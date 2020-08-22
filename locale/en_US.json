@@ -166,13 +166,13 @@
       "deny": "Bot Activation cancelled.",
       "agree": "Thank you! You agreed with our Terms of Service and Privacy Policy. The Bot is now activated on this server.",
       "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
-      "content": "You need to agree to the FlashBot's **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy",
+      "content": "Some features of **Flashbot** need to store some server information to our database. You need to agree for this to activate the bot on this server.",
       "DESC": "Activate this bot on the server",
       "alreadyActivated": "This bot is already activated on this server."
     },
     "deactivate": {
       "title": "Deactivate **FlashBot**",
-      "content": "You're now going to deactivate FlashBot on this server. You can re-activate using the `%1$sactivate` command.",
+      "content": "You're now going to deactivate FlashBot on this server. Some of the features which uses the stored information related to this server will be disabled. You can re-activate using the `%1$sactivate` command. **(Note: The actual data will not be deleted when deactivated. Please contact us in the Support Server if you want to delete the data.)**",
       "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
       "agree": "The bot is now deactivated in this server. To reactivate, use the `%1$sactivate` command.",
       "deny": "Bot deactivation cancelled.",
@@ -230,7 +230,7 @@
       "DESC": "Command Testing"
     },
     "hellothisisverification": {
-      "DESC": "commands.hellothisisverification.DESC"
+      "DESC": "koreanbots"
     },
     "support": {
       "text": "Enter the Support server and chat, ask, or get support.",
@@ -249,10 +249,10 @@
     },
     "register": {
       "title": "Flashbot user registration",
-      "content": "You need to agree to the Flashbot **Terms of Service** and **Privacy Policy**.\nYou can see them in the link below.\nTerms of Service: https://flashbot.ga/tos\nPrivacy Policy: https://flashbot.ga/privacy",
+      "content": "We need to register your information to the bot. If you agree, you can register.",
       "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
       "deny": "User registration cancelled.",
-      "DESC": "commands.register.DESC",
+      "DESC": "Register you as a Flashbot user.",
       "agree": "commands.register.agree",
       "reactFail": "commands.register.reactFail",
       "alreadyRegistered": "Already registered as a user."
@@ -261,7 +261,7 @@
       "noArgs": "Enter the bot `@mention` or its ID after the command to generate bot invite link.",
       "userProvided": "Please enter the **bot** `@mention` or its ID.",
       "invalidID": "Incorrect bot ID provided. Please enter the bot `@mention` or its ID **correctly**.",
-      "DESC": "commands.generate-bot-invite.DESC"
+      "DESC": "Generate invite link of any bot."
     },
     "stat": {
       "total": "Total command execution on this session: %1$s"
@@ -287,8 +287,8 @@
         "pleaseEnterPrefix": "Please type `%1$sprefix set <new prefix>` to change this server's bot prefix.",
         "complete": "This server's bot prefix has been changed to `%1$s`.",
         "tooLong": "Bot prefix cannot be long than 11 characters.",
-        "everyoneNotAllowed": "commands.prefix.set.everyoneNotAllowed",
-        "noPerms": "commands.prefix.set.noPerms"
+        "everyoneNotAllowed": "You cannot set prefix to `@everyone` or `@here`!",
+        "noPerms": "You need to have `Manage Server` permission to set the server prefix."
       },
       "DESC": "commands.prefix.DESC"
     },
