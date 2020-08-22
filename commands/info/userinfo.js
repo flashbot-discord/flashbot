@@ -23,7 +23,7 @@ class UserInfoCommand extends Command {
     const m = await msg.channel.send('Loading...')
 
     const data = []
-    const user = msg.author
+    const user = msg.mentions.users.size > 0 ? msg.mentions.users.first() : msg.author
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
     const statusTxt = new Map([
