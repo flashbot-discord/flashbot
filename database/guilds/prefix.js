@@ -6,9 +6,12 @@ exports.get = async (handler, guildid) => {
     const data = await handler.knex('guilds')
       .select('prefix')
       .where('id', guildid)
+    if (data.length < 1) return null
     return data[0].prefix
   } else if (dbtype === 'json') {
-    return handler.obj.guild[guildid].prefix
+    const guildData = handler.obj.guild[guildid]
+    if (typeof guildData !== 'object') return null
+    else return guildData.prefix
   }
 }
 
