@@ -18,16 +18,18 @@ class RegisterCommand extends Command {
   async run (client, msg, args, locale) {
     const t = client.locale.t
 
-    // TODO check regisetered status
+    const isRegistered = await database.users.isRegistered(client.db, msg.author.id)
+    if (isRegistered) return msg.reply(t('commands.register.alreadyRegistered', locale))
 
     let result
     let done = false
 
     const mcFilter = (m) => {
       if (m.author.id === msg.author.id) {
-        if (m.content.toLowerCase() !== 'yes' && m.content.toLowerCase() !== 'no') return false
-        else if (m.content.toLowerCase() === 'yes') result = true
-        else if (m.content.toLowerCase() === 'no') result = false
+        const content = m.content.toLowerCase()
+        if (content !== 'yes' && content !== 'no') return false
+        else if (content === 'yes') result = true
+        else if (content === 'no') result = false
         return true
       } else return false
     }
@@ -84,7 +86,7 @@ class RegisterCommand extends Command {
 
     // Done!
     this._client.logger.log('Command / Register', `[User Registration] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
-    await msg.channel.send(this._client.locale.t('commands.register.agree', locale, this._client.config.prefix))
+    msg.channel.send(this._client.locale.t('commands.register.agree', locale, this._client.config.prefix))
   }
 
   deny (msg, locale) {

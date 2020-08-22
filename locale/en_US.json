@@ -253,7 +253,8 @@
       "deny": "User registration cancelled.",
       "DESC": "commands.register.DESC",
       "agree": "commands.register.agree",
-      "reactFail": "commands.register.reactFail"
+      "reactFail": "commands.register.reactFail",
+      "alreadyRegistered": "Already registered as a user."
     },
     "generate-bot-invite": {
       "noArgs": "Enter the bot `@mention` or its ID after the command to generate bot invite link.",
