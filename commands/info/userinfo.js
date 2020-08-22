@@ -44,7 +44,7 @@ class UserInfoCommand extends Command {
         .addField(':id: ' + t('commands.userinfo.id', locale), user.id)
         .addField(t('commands.userinfo.status', locale), status, true)
         .addField(t('commands.userinfo.clients', locale), this.getClientStat(user.presence.clientStatus, locale))
-        .addField(':inbox_tray: ' + t('commands.userinfo.createdAt', locale), createdAt)
+        .addField(':birthday: ' + t('commands.userinfo.createdAt', locale), createdAt)
       )
 
       data.push(this.generateEmbed(msg, user, locale)

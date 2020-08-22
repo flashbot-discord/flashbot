@@ -47,7 +47,7 @@ class ServerInfoCommand extends Command {
         .addField(':tv: ' + t('commands.serverinfo.channelCount.title', locale), t('commands.serverinfo.channelCount.value', locale, guild.channels.cache.size))
         .addField(':keyboard: ' + t('commands.serverinfo.textChannelCount.title', locale), t('commands.serverinfo.textChannelCount.value', locale, textChannelCount), true)
         .addField(':microphone2: ' + t('commands.serverinfo.voiceChannelCount.title', locale), t('commands.serverinfo.voiceChannelCount.value', locale, voiceChannelCount), true)
-        .addField(':tada: ' + t('commands.serverinfo.createdAt.title', locale), createdAt)
+        .addField(':birthday: ' + t('commands.serverinfo.createdAt.title', locale), createdAt)
     }
 
     return msg.channel.send(data)
