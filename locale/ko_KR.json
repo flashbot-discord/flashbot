@@ -223,11 +223,11 @@
       "DESC": "명령어 테스트"
     },
     "hellothisisverification": {
-      "DESC": "commands.hellothisisverification.DESC"
+      "DESC": "koreanbots"
     },
     "support": {
       "text": "지원 서버에 입장하여 다른 유저들과 채팅하고, 질문하고, 봇 사용에 관한 지원을 받으세요.",
-      "DESC": "Gives the link to the support server."
+      "DESC": "지원 서버로 들어갈 수 있는 링크를 데공합니다."
     },
     "exec": {
       "title": "명령어 실행",
@@ -254,7 +254,7 @@
       "noArgs": "초대 링크를 만들 봇을 명령어 뒤에 `@멘션`하거나, 해당 봇의 ID를 입력해 주세요.",
       "userProvided": "사용자가 아닌 봇의 `@멘션`니나 ID를 입력해 주세요.",
       "invalidID": "잘못된 봇 아이디를 입력한 것 같아요. 봇의 `@멘션`이나 ID를 **정확하게** 입력해주세요.",
-      "DESC": "commands.generate-bot-invite.DESC"
+      "DESC": "어떤 봇 초대 코드든 만들어 줍니다."
     },
     "stat": {
       "total": "이 세션에서의 총 명령어 실행 수: %1$s번"
@@ -283,7 +283,7 @@
         "everyoneNotAllowed": "접두사를 `@everyone`이나 `@here`로 설정할 수 없어요!",
         "noPerms": "이 서버에서의 봇 접두사를 설정하려면 `서버 관리` 권한이 필요해요."
       },
-      "DESC": "commands.prefix.DESC"
+      "DESC": "이 서버에서의 봇 접두사를 보거나 설정합니다."
     },
     "hello": {
       "title": "안녕하세요!",
@@ -292,7 +292,7 @@
         "guild": "이 서버에서의 봇 접두사는 `%1$s`이에요.",
         "dm": "개인 메세지에서는 접두사를 사용하지 않아요."
       },
-      "DESC": "commands.hello.DESC"
+      "DESC": "안녕하세요!"
     }
   },
   "CommandHandler": {
