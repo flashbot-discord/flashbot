@@ -20,16 +20,15 @@ class DeactivateCommand extends Command {
   }
 
   async run (client, msg, args, locale) {
-    // if (!await client.db.isRegisteredGuild(msg.guild.id)) return Command.pleaseRegisterGuild(this, msg, locale)
-
     const t = client.locale.t
     let result; let done = false
 
-    const mcFilter = (msg, author) => {
-      if (author === msg.author.id) {
-        if (msg.content.toLowerCase() !== 'yes' && msg.content.toLowerCase() !== 'no') return false
-        else if (msg.content.toLowerCase() === 'yes') result = true
-        else if (msg.content.toLowerCase() === 'no') result = false
+    const mcFilter = (m, author) => {
+      if (author === m.author.id) {
+        const content = m.content.toLowerCase()
+        if (content !== 'yes' && content !== 'no') return false
+        else if (content === 'yes') result = true
+        else if (content === 'no') result = false
         return true
       } else return false
     }
