@@ -305,6 +305,10 @@
     "invite": {
       "text": "Use below link to invite FlashBot:\n%1$s\n\nAlso, give me :heart: in koreanbots!\n%2$s",
       "DESC": "Gives the bot invite link."
+    },
+    "dice": {
+      "result": "Rolled %1$s-sided dice and `%2$s` came out!",
+      "error": "Please enter **an integer equal or greater than 1** for number of dice faces."
     }
   },
   "CommandHandler": {
