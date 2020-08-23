@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const uuid = require('uuid-random')
 
 const StatHandler = require('./StatHandler')
 const database = require('../database')

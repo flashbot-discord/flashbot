@@ -23,7 +23,7 @@ class HelloCommand extends Command {
     let prefixStr = ''
     if (msg.guild) prefixStr = t('commands.hello.prefix.guild', locale, prefix)
     else prefixStr = t('commands.hello.prefix.dm', locale)
-    
+
     if (useEmbed) {
       const embed = new MessageEmbed()
         .setTitle(':wave: ' + t('commands.hello.title', locale))
@@ -31,8 +31,8 @@ class HelloCommand extends Command {
 
       msg.channel.send(embed)
     } else {
-      const str = `:wave: ${t('commands.hello.title', locale)}\n`
-        + t('commands.title.description', locale, prefixStr, prefix)
+      const str = `:wave: ${t('commands.hello.title', locale)}\n` +
+        t('commands.title.description', locale, prefixStr, prefix)
       msg.channel.send(str)
     }
   }

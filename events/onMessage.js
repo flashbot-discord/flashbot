@@ -1,5 +1,4 @@
 const MsgQuery = require('../classes/MsgQuery')
-const database = require('../database')
 const getPrefix = require('../modules/getPrefix')
 const ClientError = require('../classes/ClientError')
 

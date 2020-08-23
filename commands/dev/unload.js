@@ -1,5 +1,4 @@
 const Command = require('../../classes/Command')
-const ClientError = require('../../classes/ClientError')
 
 class UnloadCommand extends Command {
   constructor (client) {
