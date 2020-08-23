@@ -298,6 +298,10 @@
     "invite": {
       "text": "아래 링크로 FlashBot을 초대하세요:\n%1$s\n\n추가로, koreanbots에서 :heart:도 눌러주세요!\n%2$s",
       "DESC": "봇 초대 링크를 알려줘요."
+    },
+    "dice": {
+      "result": "(정)%1$s면체 주사위에서 `%2$s`이(가) 나왔어요!",
+      "error": "주사위 면수는 **1 이상의 정수**로 입력해 주세요."
     }
   },
   "CommandHandler": {
