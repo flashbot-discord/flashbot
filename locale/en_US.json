@@ -290,7 +290,7 @@
         "everyoneNotAllowed": "You cannot set prefix to `@everyone` or `@here`!",
         "noPerms": "You need to have `Manage Server` permission to set the server prefix."
       },
-      "DESC": "commands.prefix.DESC"
+      "DESC": "See or set the bot's prefix on the server."
     },
     "hello": {
       "title": "Hello!",
@@ -299,7 +299,7 @@
         "guild": "Bot prefix on this server is `%1$s`.",
         "dm": "You won't need prefix in DMs."
       },
-      "DESC": "commands.hello.DESC"
+      "DESC": "Hello!"
     },
     "invite": {
       "text": "Use below link to invite FlashBot:\n%1$s\n\nAlso, give me :heart: in koreanbots!\n%2$s"
@@ -311,7 +311,7 @@
       "guildOnly": "This command can only be used in the server text channel."
     },
     "noUserPermission": "You need to have `%1$s` permissions to use this command.",
-    "unregisteredOwner": "CommandHandler.unregisteredOwner"
+    "unregisteredOwner": "[Warning] You are the ot's owner, but you're not registered. Errors which doesn't exists in normal situations may occur."
   },
   "ClientError": {
     "error": "An unexpected Error occured. Please report this error message and the Error ID to the Support server.\n예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\n\nError message (오류 메세지): ```\n%1$s\n```\nError ID (오류 ID): `%2$s`"
