@@ -85,7 +85,7 @@ class RegisterCommand extends Command {
     }
 
     // Done!
-    this._client.logger.log('Command / Register', `[User Registration] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
+    this._client.logger.log('Command / Register', `[User Registration] ${msg.author.tag} (${msg.member.nickname}) has registered to the bot`)
     msg.channel.send(this._client.locale.t('commands.register.agree', locale, this._client.config.prefix))
   }
 
