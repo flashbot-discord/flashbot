@@ -23,7 +23,10 @@ async function onMessage (client, msg) {
   query.calledByMention = calledByMention
   if (calledByMention && query.cmd.length < 1) query.cmd = 'hello' // HelloCommand
   const cmd = client.commands.get(query.cmd)
-  if (cmd) client.commands.run(cmd, client, msg, query)
+  if (cmd) {
+    if (!client.onlineMode && !client.config.owner.includes(msg.author.id)) return msg.reply(client.locale.t('error.maintenance', 'ko_KR'))
+    else client.commands.run(cmd, client, msg, query)
+  }
 }
 
 async function checkPrefix (msg) {
