@@ -31,7 +31,7 @@ class Paginator {
   async start () {
     this.update()
 
-    this.reactions.forEach(async (r) => this.msg.react(r))
+    await Array.from(this.reactions.values()).asyncForEach(async (r) => await this.msg.react(r))
 
     while (this.keepRun) {
       const result = await this.msg.awaitReactions(this.emojiChecker.bind(this), {
