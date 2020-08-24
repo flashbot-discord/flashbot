@@ -67,7 +67,7 @@ class HelpCommand extends Command {
       return embed
     }
 
-    embeds.push(createEmbed('info', 1, 3, true))
+    embeds.push(createEmbed('info', 1, 5, true))
     embeds.push(createEmbed('activation', 2, 5, page))
     embeds.push(createEmbed('util', 3, 5, page))
     embeds.push(createEmbed('settings', 4, 5, page))
