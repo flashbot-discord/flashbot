@@ -302,6 +302,12 @@
     "dice": {
       "result": "(정)%1$s면체 주사위에서 `%2$s`이(가) 나왔어요!",
       "error": "주사위 면수는 **1 이상의 정수**로 입력해 주세요."
+    },
+    "maintenance": {
+      "status": "현재 점검 중 여부: `%1$s`",
+      "usage": "```\n사용법: %1$s점검 (상태설정)\n\n(상태설정) - 점검 상태를 설정\n  [start / on / 시작] - 점검모드 시작\n  [end / off / 종료] - 점검모드 종료\n```",
+      "start": "점검 모드가 시작되었습니다.",
+      "end": "점검 모드가 종료되었습니다."
     }
   },
   "CommandHandler": {
@@ -325,7 +331,8 @@
     }
   },
   "error": {
-    "DBNotReady": "이 기능은 데이터베이스가 필요하지만, 현재 봇이 데이터베이스에 접근할 수 없습니다. 지원 서버에 문의를 남겨주세요.\nThis feature needs the database storage, but the bot is not connected to the storage. Please report this to the Support server to be fixed."
+    "DBNotReady": "이 기능은 데이터베이스가 필요하지만, 현재 봇이 데이터베이스에 접근할 수 없습니다. 지원 서버에 문의를 남겨주세요.\nThis feature needs the database storage, but the bot is not connected to the storage. Please report this to the Support server to be fixed.",
+    "maintenance": "현재 봇이 점검중입니다. 점검중에는 모든 서비스를 이용할 수 없습니다. 예정된 점검을 확인하려면 지원 서버에 입장하세요.\nCurrently the bot is under maintenance. You cannot use all features while under maintenance. If you want to check scheduled maintenance, please join to our Support Server:\nhttps://discord.gg/epY3waF"
   },
   "common": {
     "mention": "멘션",

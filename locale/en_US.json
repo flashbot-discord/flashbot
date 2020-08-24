@@ -309,6 +309,12 @@
     "dice": {
       "result": "Rolled %1$s-sided dice and `%2$s` came out!",
       "error": "Please enter **an integer equal or greater than 1** for number of dice faces."
+    },
+    "maintenance": {
+      "status": "Is maintenance mode on? `%1$s`",
+      "usage": "```\nUsage: %1$smaintenance (status)\n\n(status) - Set the maintenance mode status\n  [start / on / 시작] - Start maintenance mode\n  [end / off / 종료] - End maintenance mode\n```",
+      "start": "Maintenance mode has been started.",
+      "end": "Maintenance mode has been ended."
     }
   },
   "CommandHandler": {
@@ -332,7 +338,8 @@
     }
   },
   "error": {
-    "DBNotReady": "This feature needs the database storage, but the bot is not connected to the storage. Please report this to the Support server to be fixed.\n이 기능은 데이터베이스가 필요하지만, 현재 봇이 데이터베이스에 접근할 수 없습니다. 지원 서버에 문의를 남겨주세요."
+    "DBNotReady": "This feature needs the database storage, but the bot is not connected to the storage. Please report this to the Support server to be fixed.\n이 기능은 데이터베이스가 필요하지만, 현재 봇이 데이터베이스에 접근할 수 없습니다. 지원 서버에 문의를 남겨주세요.",
+    "maintenance": "Currently the bot is under maintenance. You cannot use all features while under maintenance. If you want to check scheduled maintenance, please join to our Support Server:\n현재 봇이 점검중입니다. 점검중에는 모든 서비스를 이용할 수 없습니다. 예정된 점검을 확인하려면 지원 서버에 입장하세요.\nhttps://discord.gg/epY3waF"
   },
   "common": {
     "mention": "mention",
