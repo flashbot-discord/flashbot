@@ -33,9 +33,8 @@ class TypingGameCommand extends Command {
         if (!client.config.owner.includes(msg.author.id)) return msg.reply(t('commands.typing.noPermissionToReload', locale))
 
         this.loaded = false
-        this.data.forEach((_, lang) => {
-          delete require.cache[path.join(this.path, lang + '.json')]
-        })
+        this.data.clear()
+        this.locales.clear()
 
         return this.loadData(msg, locale)
 
@@ -95,7 +94,6 @@ class TypingGameCommand extends Command {
         })
 
         mc.on('end', (_, reason) => {
-          // if (reason === 'correct') return
           if (reason === 'stopcmd') msg.channel.send(t('commands.typing.cmdStop', locale))
           else if (reason !== 'correct') msg.channel.send(t('commands.typing.finish', locale))
 
