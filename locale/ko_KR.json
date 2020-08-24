@@ -295,7 +295,8 @@
       "DESC": "안녕하세요!"
     },
     "invite": {
-      "text": "아래 링크로 FlashBot을 초대하세요:\n%1$s\n\n추가로, koreanbots에서 :heart:도 눌러주세요!\n%2$s"
+      "text": "아래 링크로 FlashBot을 초대하세요:\n%1$s\n\n추가로, koreanbots에서 :heart:도 눌러주세요!\n%2$s",
+      "DESC": "봇 초대 링크를 알려줘요."
     }
   },
   "CommandHandler": {

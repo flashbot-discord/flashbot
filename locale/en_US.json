@@ -302,7 +302,8 @@
       "DESC": "Hello!"
     },
     "invite": {
-      "text": "Use below link to invite FlashBot:\n%1$s\n\nAlso, give me :heart: in koreanbots!\n%2$s"
+      "text": "Use below link to invite FlashBot:\n%1$s\n\nAlso, give me :heart: in koreanbots!\n%2$s",
+      "DESC": "Gives the bot invite link."
     }
   },
   "CommandHandler": {
