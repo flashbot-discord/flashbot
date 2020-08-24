@@ -67,6 +67,20 @@ class BotClient extends Client {
     logger.log(logPos, 'Loaded bot configuration')
   }
 
+  get onlineMode () {
+    return this._onlineMode
+  }
+
+  set onlineMode (mode) {
+    this.user.setPresence({
+      activity: {
+        name: mode ? `${this.config.prefix}help | ${this.VERSION}` : '점검중 Under maintenance'
+      },
+      status: mode ? 'online' : 'dnd'
+    })
+    this._onlineMode = mode
+  }
+
   start () {
     const logPos = this.logPos + '.start'
 

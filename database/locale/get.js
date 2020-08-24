@@ -11,6 +11,6 @@ module.exports = async (handler, id, isGuild) => {
     return data.length < 1 ? null : data[0].locale
   } else if (dbtype === 'json') {
     const isRegistered = isGuild ? isRegisteredGuild : isRegisteredUser
-    return isRegistered(handler, id) ? handler.obj[isGuild ? 'guild' : 'user'][id].locale : null
+    return await isRegistered(handler, id) ? handler.obj[isGuild ? 'guild' : 'user'][id].locale : null
   }
 }
