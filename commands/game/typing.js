@@ -5,11 +5,16 @@ const hangul = require('hangul-js')
 
 const Command = require('../../classes/Command')
 
+// TODO change name to 'fasttype'
+
 class TypingGameCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'typing',
-      aliases: ['타자'],
+      aliases: [
+        'speedtype', 'fasttype', '타자', '타자게임',
+        '쇼ㅔㅑㅜㅎ', '넫ㄷㅇ쇼ㅔㄷ', 'ㄹㅁㄴㅅ쇼ㅔㄷ', 'xkwk', 'xkwkrpdla'
+      ],
       description: 'commands.typing.DESC',
       group: 'game'
     })
@@ -49,30 +54,35 @@ class TypingGameCommand extends Command {
         // Stop when session is present
         if (this.session.has(msg.channel.id)) return msg.channel.send(t('commands.typing.alreadyPlaying', locale))
 
-        // Session placeholder
-        this.session.set(msg.channel.id, {})
-
         // Choose Language
         let lang = this.default
         if (query.args[1]) {
           const l = this.locales.get(query.args[1])
-          if (this.data.has(l)) lang = l
+          if (!this.data.has(l)) return msg.reply(t('commands.typing.langNotExist', locale))
         }
 
         const langData = this.data.get(lang)
-        if (!langData) {
-          msg.channel.send(t('commands.typing.langDataNotExist', locale))
-          return this.stop(msg, locale)
-        }
+        if (!langData) msg.channel.send(t('commands.typing.langDataNotExist', locale))
 
         // TODO category select
-        const category = langData.random()
+        let category
+        if (query.args[2]) {
+          const categoryInput = query.args[2]
+          if (!langData.has(categoryInput)) return msg.reply(t('commands.typing.categoryNotExist', locale))
+          else category = langData.get(categoryInput)
+        } else category = langData.filter((d) => d.data.length > 0).random()
+
+        // Session placeholder
+        this.session.set(msg.channel.id, {})
+
         const data = category.data[Math.floor(Math.random() * category.data.length)]
+        console.log(data, Math.floor(Math.random() * category.data.length))
+        const from = data.from ? data.from : category.fromDefault ? category.fromDefault : t('commands.typing.noCopyright', locale)
 
         const { text } = data
         const displayText = text.split('').join('\u200b')
 
-        await msg.channel.send(t('commands.typing.start', locale, displayText))
+        await msg.channel.send(t('commands.typing.start', locale, displayText, category.name, from))
 
         // Timer start
         const startTime = Date.now()

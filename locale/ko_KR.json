@@ -262,18 +262,21 @@
     "typing": {
       "noDataFile": "타자 데이터 파일이 하나도 존재하지 않습니다. 지원 서버에 문의해주세요.",
       "noDataFolder": "타자 데이터 폴더가 존재하지 않습니다. 지원 서버에 문의해주세요.",
-      "start": "다음 문장을 **정확하게** 입력해주세요! (제한시간 1분)```\n%1$s\n```",
+      "start": "다음 문장을 **정확하게** 입력해주세요! (제한시간 1분)```\n%1$s\n```카테고리: %2$s\n출처: %3$s",
       "loading": "타자 데이터를 불러오는 중이에요. (최초 1회만 실행되니 잠시만 기다려주세요)",
       "loaded": "타자 데이터를 불러왔어요!",
       "finish": "아무도 입력하지 않아 타자 게임이 종료되었어요.",
       "notMatch": "입력한 문장이 맞지 않아요.",
       "doNotCopyPaste": "복사/붙여넣기하지 마세요.",
-      "correct": "%1$s초, %2$s타",
+      "correct": "정확하게 입력했어요! (%1$s초, %2$s타)",
       "alreadyPlaying": "이 채널에서 이미 타자 게임이 진행 중이에요. 게임이 끝난 뒤에 다시 시도해보세요.",
       "notPlaying": "이 채널에서 타자 게임을 진행하고 있지 않아요.",
       "cmdStop": "타자 게임을 종료했습니다.",
       "langDataNotExist": "commands.typing.langDataNotExist",
-      "noPermissionToReload": "봇 소유자만 타자 데이터를 다시 불러올 수 있어요."
+      "noPermissionToReload": "봇 소유자만 타자 데이터를 다시 불러올 수 있어요.",
+      "noCopyright": "없음",
+      "langNotExist": "해당 언어는 현재 타자 게임에서 지원하지 않아요.",
+      "categoryNotExist": "해당 카테고리를 찾을 수 없어요."
     },
     "prefix": {
       "info": "이 서버의 봇 접두어는 %1$s이에요. 봇 접두사를 변경하고 싶다면 `%1$s접두사 설정 <새 접두사>`를 입력해 주세요.",
