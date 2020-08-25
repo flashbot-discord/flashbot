@@ -279,7 +279,8 @@
       "alreadyPlaying": "The typing game is already playing in this channel.",
       "notPlaying": "The typing game is not playing in this channel.",
       "cmdStop": "Stopped the typing game.",
-      "langDataNotExist": "commands.typing.langDataNotExist"
+      "langDataNotExist": "commands.typing.langDataNotExist",
+      "noPermissionToReload": "Only the owners of the bot can reload the typing data."
     },
     "prefix": {
       "info": "This server's bot prefix is `%1$s`. If you want to change bot prefix, please type `%1$sprefix set <new prefix>`.",

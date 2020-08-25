@@ -29,6 +29,8 @@ class TypingGameCommand extends Command {
     switch (query.args[0]) {
       case 'reload':
       case '리로드':
+        if (!client.config.owner.includes(msg.author.id)) return msg.reply(t('commands.typing.noPermissionToReload', locale))
+
         this.loaded = false
         this.data.forEach((_, lang) => {
           delete require.cache[path.join(this.path, lang + '.json')]
