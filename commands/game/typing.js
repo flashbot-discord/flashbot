@@ -107,10 +107,11 @@ class TypingGameCommand extends Command {
   }
 
   stop (msg, locale) {
-    if (!this.session.has(msg.channel.id)) return msg.channel.send(msg.client.locale.t('commands.typing.notPlaying', locale))
+    if (!typingModule.isPlaying(msg.channel.id)) return msg.channel.send(msg.client.locale.t('commands.typing.notPlaying', locale))
 
-    if (this.session.get(msg.channel.id) instanceof MessageCollector) {
-      typingModule.getSession(msg.channel.id).stop('stopcmd')
+    const session = typingModule.getSession(msg.channel.id)
+    if (session instanceof MessageCollector) {
+      session.stop('stopcmd')
       typingModule.endGame(msg.channel.id)
     }
   }
@@ -118,10 +119,10 @@ class TypingGameCommand extends Command {
   loadData (msg, locale) {
     const t = msg.client.locale.t
     const result = typingModule.loadData(this.path, msg.client.logger)
-
+console.log(result)
     if (!result.success) {
       // TODO Only report this to console and support server error log channel
-      switch (!result.reason) {
+      switch (result.reason) {
         case 'noDataFolder':
           msg.reply(t('commands.typing.error.noDataFolder', locale))
           break

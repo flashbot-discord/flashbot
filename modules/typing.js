@@ -67,7 +67,8 @@ exports.loadData = (basePath, logger) => {
     const manifest = JSON.parse(fs.readFileSync(path.join(loadPath, 'manifest.json')).toString())
     const data = new Collection()
     const tempDataSortedByGroup = {}
-
+console.log(manifest, manifest.groups)
+    // FIXME if (manifest.groups.length < 1) return makeResultObj(false, 'noCategoryInLocale')
     manifest.groups.forEach((group) => {
       logger.debug(logPos, `register group '${group.id}'`)
       data.set(group.id, group)
@@ -85,7 +86,7 @@ exports.loadData = (basePath, logger) => {
       textData.forEach((td) => {
         if (!data.has(td.group)) {
           logger.error(logPos, `Failed to load data which contains unregistered group: group '${td.group}' from data '${td.text}'`)
-          return makeResultObj(false, 'dataContainsUnregisteredGroup')
+          // FIXME return makeResultObj(false, 'dataContainsUnregisteredGroup')
         } else tempDataSortedByGroup[td.group].push(td)
       })
     })
