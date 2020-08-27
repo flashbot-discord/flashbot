@@ -17,6 +17,8 @@ exports.isLoaded = () => isLoaded
 exports.getData = (locale, category) => {
   const localeData = typingData.get(locale)
   const categoryData = category != null ? localeData.get(category) : localeData.filter((c) => c.data.length > 0).random()
+  if (categoryData.data.length < 1) return null
+
   const data = categoryData.data[Math.floor(Math.random() * categoryData.data.length)]
   if (!data.from && categoryData.fromDefault) data.from = categoryData.fromDefault
 
@@ -67,8 +69,6 @@ exports.loadData = (basePath, logger) => {
     const manifest = JSON.parse(fs.readFileSync(path.join(loadPath, 'manifest.json')).toString())
     const data = new Collection()
     const tempDataSortedByGroup = {}
-console.log(manifest, manifest.groups)
-    // FIXME if (manifest.groups.length < 1) return makeResultObj(false, 'noCategoryInLocale')
     manifest.groups.forEach((group) => {
       logger.debug(logPos, `register group '${group.id}'`)
       data.set(group.id, group)
