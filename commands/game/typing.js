@@ -61,6 +61,7 @@ class TypingGameCommand extends Command {
         } else category = null
 
         const data = typingModule.getData(lang, category)
+        if (data == null) return msg.reply(t('commands.typing.error.noDataInCategory', locale))
 
         const copyright = data.from ? data.from : t('commands.typing.noCopyright', locale)
 

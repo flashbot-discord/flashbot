@@ -268,11 +268,12 @@
     },
     "typing": {
       "error": {
-        "noDataFile": "Any typing data file does not exist. Please post an issue at the Support Server.",
-        "noDataFolder": "Typing data folder does not exist. Please post an issue at the Support Server.",
+        "noDataFolder": "Typing data folder does not exist. Please post an issue on the Support Server.",
+        "noLocaleFolder": "No locale folder found in typing data folder. Please post an issue on the Support Server.",
         "noPermissionToReload": "Only the owners of the bot can reload the typing data.",
         "langNotExist": "That language is unsupported in typing game.",
-        "categoryNotExist": "Cannot find that category."
+        "categoryNotExist": "Cannot find that category.",
+        "noDataInCategory": "There is no data in this category."
       },
       "start": "Type below sentence **correctly**! (Time limit: 1 minute)```\n%1$s\n```Category: %2$s\nThis data is from: %3$s",
       "loading": "Loading typing data... (This job will run only first time, so please wait a bit)",
