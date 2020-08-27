@@ -1,9 +1,9 @@
-const fs = require('fs')
 const path = require('path')
 const { Collection, MessageCollector } = require('discord.js')
 const hangul = require('hangul-js')
 
 const Command = require('../../classes/Command')
+const typingModule = require('../../modules/typing')
 
 // TODO change name to 'fasttype'
 
@@ -19,12 +19,7 @@ class TypingGameCommand extends Command {
       group: 'game'
     })
 
-    this.loaded = false
-    this.loading = false
     this.default = 'ko_KR'
-    this.session = new Collection()
-    this.data = new Collection()
-    this.locales = new Collection()
     this.path = path.join(path.resolve(), 'data', 'typing')
     this._logPos = 'Command / typing'
   }
@@ -35,62 +30,51 @@ class TypingGameCommand extends Command {
     switch (query.args[0]) {
       case 'reload':
       case '리로드':
-        if (!client.config.owner.includes(msg.author.id)) return msg.reply(t('commands.typing.noPermissionToReload', locale))
-
-        this.loaded = false
-        this.data.clear()
-        this.locales.clear()
+        if (!client.config.owner.includes(msg.author.id)) return msg.reply(t('commands.typing.error.noPermissionToReload', locale))
 
         return this.loadData(msg, locale)
 
       case 'start':
       case '시작': {
-        if (!this.loaded) {
+        if (!typingModule.isLoaded()) {
           msg.channel.send(t('commands.typing.loading', locale))
-          if (this.loading) return
+          if (typingModule.isLoading()) return
           this.loadData(msg, locale)
         }
 
         // Stop when session is present
-        if (this.session.has(msg.channel.id)) return msg.channel.send(t('commands.typing.alreadyPlaying', locale))
+        if (typingModule.isPlaying(msg.channel.id)) return msg.channel.send(t('commands.typing.alreadyPlaying', locale))
 
         // Choose Language
         let lang = this.default
         if (query.args[1]) {
-          const l = this.locales.get(query.args[1])
-          if (!this.data.has(l)) return msg.reply(t('commands.typing.langNotExist', locale))
+          if (typingModule.isLocaleExist(query.args[1])) lang = typingModule.getBaseLocale(query.args[1])
+          else return msg.reply(t('commands.typing.error.langNotExist', locale))
         }
-
-        const langData = this.data.get(lang)
-        if (!langData) msg.channel.send(t('commands.typing.langDataNotExist', locale))
 
         // TODO category select
         let category
         if (query.args[2]) {
           const categoryInput = query.args[2]
-          if (!langData.has(categoryInput)) return msg.reply(t('commands.typing.categoryNotExist', locale))
-          else category = langData.get(categoryInput)
-        } else category = langData.filter((d) => d.data.length > 0).random()
+          if (!typingModule.isCategoryExist(lang, categoryInput)) return msg.reply(t('commands.typing.error.categoryNotExist', locale))
+          else category = categoryInput
+        } else category = null
 
-        // Session placeholder
-        this.session.set(msg.channel.id, {})
+        const data = typingModule.getData(lang, category)
 
-        const data = category.data[Math.floor(Math.random() * category.data.length)]
-        console.log(data, Math.floor(Math.random() * category.data.length))
-        const from = data.from ? data.from : category.fromDefault ? category.fromDefault : t('commands.typing.noCopyright', locale)
+        const copyright = data.from ? data.from : t('commands.typing.noCopyright', locale)
 
         const { text } = data
         const displayText = text.split('').join('\u200b')
 
-        await msg.channel.send(t('commands.typing.start', locale, displayText, category.name, from))
+        // Make collector and register first to prevent multiple run
+        const mc = msg.channel.createMessageCollector((m) => !m.author.bot, { time: 60000 })
+        typingModule.startGame(msg.channel.id, mc)
+
+        await msg.channel.send(t('commands.typing.start', locale, displayText, data.category.name, copyright))
 
         // Timer start
         const startTime = Date.now()
-
-        const mc = msg.channel.createMessageCollector((m) => !m.author.bot, { time: 60000 })
-
-        // push the collector to the session storage
-        this.session.set(msg.channel.id, mc)
 
         mc.on('collect', (m) => {
           if (m.content === displayText) return msg.channel.send('<@' + m.author.id + '>, ' + t('commands.typing.doNotCopyPaste', locale))
@@ -108,7 +92,7 @@ class TypingGameCommand extends Command {
           else if (reason !== 'correct') msg.channel.send(t('commands.typing.finish', locale))
 
           // remove channel from session storage
-          this.session.delete(msg.channel.id)
+          typingModule.endGame(msg.channel.id)
         })
 
         break
@@ -125,67 +109,31 @@ class TypingGameCommand extends Command {
   stop (msg, locale) {
     if (!this.session.has(msg.channel.id)) return msg.channel.send(msg.client.locale.t('commands.typing.notPlaying', locale))
 
-    if (this.session.get(msg.channel.id) instanceof MessageCollector) this.session.get(msg.channel.id).stop('stopcmd')
-    this.session.delete(msg.channel.id)
+    if (this.session.get(msg.channel.id) instanceof MessageCollector) {
+      typingModule.getSession(msg.channel.id).stop('stopcmd')
+      typingModule.endGame(msg.channel.id)
+    }
   }
 
   loadData (msg, locale) {
-    // TODO make it async
     const t = msg.client.locale.t
-    this.loading = true
-    const logPos = this._logPos + '.loadData'
+    const result = typingModule.loadData(this.path, msg.client.logger)
 
-    msg.client.logger.log(logPos, 'Start loading typing data...')
+    if (!result.success) {
+      // TODO Only report this to console and support server error log channel
+      switch (!result.reason) {
+        case 'noDataFolder':
+          msg.reply(t('commands.typing.error.noDataFolder', locale))
+          break
 
-    if (!fs.existsSync(this.path)) return msg.channel.send(t('commands.typing.noDataFolder', locale))
+        case 'noLocaleFolder':
+          msg.reply(t('commands.typing.error.noLocaleFolder', locale))
+          break
 
-    const locales = fs.readdirSync(this.path)
-    if (locales.length < 1) return msg.channel.send(t('commands.typing.noLocaleFolder', locale))
-
-    locales.forEach((l) => {
-      msg.client.logger.log(logPos, `Loading typing data for locale '${l}'...`)
-      msg.client.logger.debug(logPos, 'load path: ' + path.join(this.path, l))
-      if (
-        !(fs.lstatSync(path.join(this.path, l)).isDirectory()) ||
-        !fs.existsSync(path.join(this.path, l, 'manifest.json')) ||
-        !(fs.lstatSync(path.join(this.path, l, 'manifest.json')).isFile())
-      ) return
-      
-      const manifest = JSON.parse(fs.readFileSync(path.join(this.path, l, 'manifest.json')).toString())
-      const data = new Collection()
-      const tempDataSortedByGroup = {}
-
-      manifest.groups.forEach((group) => {
-        msg.client.logger.debug(logPos, `register group '${group.id}'`)
-        data.set(group.id, group)
-        tempDataSortedByGroup[group.id] = []
-      })
-      manifest.locale.forEach((ll) => {
-        msg.client.logger.debug(logPos, `register locale alias '${ll}'`)
-        this.locales.set(ll, l)
-      })
-
-      manifest.files.forEach((file) => {
-        msg.client.logger.debug(logPos, `load data file '${file}'`)
-        const textData = JSON.parse(fs.readFileSync(path.join(this.path, l, file)).toString())
-        textData.forEach((td) => {
-          tempDataSortedByGroup[td.group].push(td)
-        })
-      })
-
-      manifest.groups.forEach((group) => {
-        msg.client.logger.debug(logPos, `applying data file to group '${group.id}'`)
-        const tempData = data.get(group.id)
-        tempData.data = tempDataSortedByGroup[group.id]
-        data.set(group.id, tempData)
-      })
-
-      this.data.set(l, data)
-    })
-
-    this.loaded = true
-    this.loading = false
-    msg.channel.send(t('commands.typing.loaded', locale))
+        case 'dataContainsUnregisteredGroup':
+          msg.reply(t('commands.typing.error.dataContainsUnregisteredGroup', locale))
+      }
+    } else msg.channel.send(t('commands.typing.loaded', locale))
   }
 }
 
