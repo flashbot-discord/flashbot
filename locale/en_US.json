@@ -267,8 +267,13 @@
       "total": "Total command execution on this session: %1$s"
     },
     "typing": {
-      "noDataFile": "Any typing data file does not exist. Please post an issue at the Support Server.",
-      "noDataFolder": "Typing data folder does not exist. Please post an issue at the Support Server.",
+      "error": {
+        "noDataFile": "Any typing data file does not exist. Please post an issue at the Support Server.",
+        "noDataFolder": "Typing data folder does not exist. Please post an issue at the Support Server.",
+        "noPermissionToReload": "Only the owners of the bot can reload the typing data.",
+        "langNotExist": "That language is unsupported in typing game.",
+        "categoryNotExist": "Cannot find that category."
+      },
       "start": "Type below sentence **correctly**! (Time limit: 1 minute)```\n%1$s\n```Category: %2$s\nThis data is from: %3$s",
       "loading": "Loading typing data... (This job will run only first time, so please wait a bit)",
       "loaded": "Typing data loaded!",
@@ -279,11 +284,7 @@
       "alreadyPlaying": "The typing game is already playing in this channel.",
       "notPlaying": "The typing game is not playing in this channel.",
       "cmdStop": "Stopped the typing game.",
-      "langDataNotExist": "commands.typing.langDataNotExist",
-      "noPermissionToReload": "Only the owners of the bot can reload the typing data.",
-      "noCopyright": "nowhere",
-      "langNotExist": "That language is unsupported in typing game.",
-      "categoryNotExist": "Cannot find that category."
+      "noCopyright": "nowhere"
     },
     "prefix": {
       "info": "This server's bot prefix is `%1$s`. If you want to change bot prefix, please type `%1$sprefix set <new prefix>`.",
