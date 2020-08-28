@@ -14,8 +14,8 @@ let isLoaded = false
 exports.isLoading = () => isLoading
 exports.isLoaded = () => isLoaded
 
-exports.getData = (locale, category) => {
-  const localeData = typingData.get(locale)
+exports.getData = (baseLocale, category) => {
+  const localeData = typingData.get(baseLocale)
   const categoryData = category != null ? localeData.get(category) : localeData.filter((c) => c.data.length > 0).random()
   if (categoryData.data.length < 1) return null
 
@@ -38,6 +38,13 @@ exports.isCategoryExist = (baseLocale, category) => {
   const data = typingData.get(baseLocale)
   return data.has(category)
 }
+/*
+exports.getCategory = (baseLocale, category) => {
+  const localeData = typingData.get(baseLocale)
+  const categoryData = localeData.get(category)
+  return categoryData
+}
+*/
 
 exports.clearAllData = () => {
   typingData.clear()

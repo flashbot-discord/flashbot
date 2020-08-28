@@ -36,6 +36,7 @@ class TypingGameCommand extends Command {
 
       case 'start':
       case '시작': {
+        // Check if the data is loaded
         if (!typingModule.isLoaded()) {
           msg.channel.send(t('commands.typing.loading', locale))
           if (typingModule.isLoading()) return
@@ -52,7 +53,7 @@ class TypingGameCommand extends Command {
           else return msg.reply(t('commands.typing.error.langNotExist', locale))
         }
 
-        // TODO category select
+        // Category select
         let category
         if (query.args[2]) {
           const categoryInput = query.args[2]
@@ -60,10 +61,12 @@ class TypingGameCommand extends Command {
           else category = categoryInput
         } else category = null
 
+        // Check data
         const data = typingModule.getData(lang, category)
         if (data == null) return msg.reply(t('commands.typing.error.noDataInCategory', locale))
 
-        const copyright = data.from ? data.from : t('commands.typing.noCopyright', locale)
+        const categoryData = data.category
+        const copyright = data.from ? data.from : (categoryData.fromDefault ? categoryData.fromDefault : t('commands.typing.noCopyright', locale))
 
         const { text } = data
         const displayText = text.split('').join('\u200b')
@@ -72,7 +75,7 @@ class TypingGameCommand extends Command {
         const mc = msg.channel.createMessageCollector((m) => !m.author.bot, { time: 60000 })
         typingModule.startGame(msg.channel.id, mc)
 
-        await msg.channel.send(t('commands.typing.start', locale, displayText, data.category.name, copyright))
+        await msg.channel.send(t('commands.typing.start', locale, displayText, categoryData.name, categoryData.id, copyright))
 
         // Timer start
         const startTime = Date.now()
@@ -120,7 +123,7 @@ class TypingGameCommand extends Command {
   loadData (msg, locale) {
     const t = msg.client.locale.t
     const result = typingModule.loadData(this.path, msg.client.logger)
-console.log(result)
+
     if (!result.success) {
       // TODO Only report this to console and support server error log channel
       switch (result.reason) {
