@@ -1,6 +1,7 @@
 const Command = require('../../classes/Command')
 const textFormat = require('../../modules/textFormat')
 const database = require('../../database')
+const getPrefix = require('../../modules/getPrefix')
 
 class PrefixCommand extends Command {
   constructor (client) {
@@ -20,7 +21,7 @@ class PrefixCommand extends Command {
 
     // Get mode
     if (query.args.length < 1) {
-      const prefix = await database.guilds.prefix.get(this._client.db, msg.guild.id)
+      const prefix = await getPrefix(client, msg.guild.id)
       return msg.channel.send(t('commands.prefix.info', locale, prefix))
     } else if (['set', '설정'].includes(query.args[0])) {
     // Set mode
