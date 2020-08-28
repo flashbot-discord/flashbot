@@ -285,7 +285,9 @@
       "alreadyPlaying": "The typing game is already playing in this channel.",
       "notPlaying": "The typing game is not playing in this channel.",
       "cmdStop": "Stopped the typing game.",
-      "noCopyright": "nowhere"
+      "noCopyright": "nowhere",
+      "emptySearchQuery": "commands.typing.emptySearchQuery",
+      "emptyCategorySearchQuery": "commands.typing.emptyCategorySearchQuery"
     },
     "prefix": {
       "info": "This server's bot prefix is `%1$s`. If you want to change bot prefix, please type `%1$sprefix set <new prefix>`.",
