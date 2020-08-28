@@ -275,7 +275,7 @@
         "categoryNotExist": "Cannot find that category.",
         "noDataInCategory": "There is no data in this category."
       },
-      "start": "Type below sentence **correctly**! (Time limit: 1 minute)```\n%1$s\n```Category: %2$s\nThis data is from: %3$s",
+      "start": "Type below sentence **correctly**! (Time limit: 1 minute)```\n%1$s\n```Category: %2$s (`%3$s`)\nThis data is from: %4$s",
       "loading": "Loading typing data... (This job will run only first time, so please wait a bit)",
       "loaded": "Typing data loaded!",
       "finish": "The typing game ended because no one entered the correct sentence.",
