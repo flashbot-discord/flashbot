@@ -18,7 +18,7 @@ class ActivateCommand extends Command {
     this._logPos = 'ActivateCommand'
   }
 
-  async run (client, msg, args, locale) {
+  async run (client, msg, query, locale) {
     const t = client.locale.t
 
     const isActivated = await database.guilds.isActivated(client.db, msg.guild.id)

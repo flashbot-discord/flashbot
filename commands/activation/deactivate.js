@@ -19,7 +19,7 @@ class DeactivateCommand extends Command {
     this._logPos = 'DeactivateCommand'
   }
 
-  async run (client, msg, args, locale) {
+  async run (client, msg, query, locale) {
     const t = client.locale.t
     let result; let done = false
 

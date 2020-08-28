@@ -9,6 +9,7 @@ async function onMessage (client, msg) {
   let prefix = await checkPrefix(msg)
   if (typeof prefix !== 'string' && !prefix) return
   else if (prefix === true) {
+    // TODO change this to default prefix
     prefix = `<@${client.user.id}>`
     calledByMention = true
   }
