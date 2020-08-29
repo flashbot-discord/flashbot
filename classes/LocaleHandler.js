@@ -29,6 +29,15 @@ class LocaleHandler {
     return i18n.__({ phrase, locale }, ...args)
   }
 
+  tn (phrase, locale, count) {
+    return i18n.__n({
+      singular: phrase,
+      plural: phrase,
+      locale,
+      count
+    })
+  }
+
   async getLocale (isGuild, obj) {
     const logPos = this.logPos + '.getLocale'
     let locale
