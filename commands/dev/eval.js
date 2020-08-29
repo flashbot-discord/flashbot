@@ -43,8 +43,8 @@ class EvalCommand extends Command {
     const m = await msg.reply('Evaling...')
 
     let bd
-    let result
-    let error = false
+    let result = ''
+    let error = { occured: false, obj: null }
     let useEmbed = canSendEmbed(client.user, msg.channel)
 
     if (!isUnsafe) bd = this.hideToken()
@@ -53,16 +53,18 @@ class EvalCommand extends Command {
       const evaluated = await this.evaluate(msg, str, bd)
       result = util.inspect(evaluated, { depth: 0 })
     } catch (err) {
-      if (err instanceof Error) result = err.message
-      else result = err
+      if (err instanceof Error) {
+        result = err.message
+        error.obj = err
+      } else result = err
 
-      error = true
+      error.occured = true
     }
 
     if (!isUnsafe) this.restoreToken(bd)
     bd = null
 
-    client.logger.debug('Command / Eval', '[EVAL] Result: ' + result)
+    client.logger.debug('Command / Eval', `[EVAL] Result: ${error.obj ? error.obj.stack : result}`)
 
     if (result.length > 1000) useEmbed = false
     const moreText = '\nAnd much more...'
@@ -73,7 +75,7 @@ class EvalCommand extends Command {
         .setTitle(t('commands.eval.title', locale))
         .addField(t('commands.eval.input', locale), '```\n' + _str + '\n```')
         .addField(t('commands.eval.output', locale), '```\n' + result + '\n```')
-      error ? embed.setColor(0xff0000) : embed.setColor(0x00ff00)
+      embed.setColor(error.occured ? 'RED' : 'GREEN')
 
       return m.edit({ content: '', embed })
     } else {
