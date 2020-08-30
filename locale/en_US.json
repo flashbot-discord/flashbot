@@ -49,33 +49,50 @@
       "id": "Server ID",
       "region": "Server region",
       "memberCount": {
-        "title": "Member count (user + bot)",
-        "value": "%1$s member(s)"
+        "title": {
+          "one": "`%d` member in this server",
+          "other": "`%d` members in this server"
+        },
+        "value": {
+          "userCount": {
+            "one": "`%d` user",
+            "other": "`%d` users"
+          },
+          "botCount": {
+            "one": "`%d` bot",
+            "other": "`%d` bots"
+          }
+        }
       },
       "channelCount": {
-        "title": "Channel count",
-        "value": "%1$s channel(s)"
-      },
-      "userCount": {
-        "title": "User count",
-        "value": "%1$s user(s)"
-      },
-      "botCount": {
-        "title": "Bot count",
-        "value": "%1$s bot(s)"
-      },
-      "textChannelCount": {
-        "title": "Text Channel count",
-        "value": "%1$s text channel(s)"
-      },
-      "voiceChannelCount": {
-        "title": "Voice Channel count",
-        "value": "%1$s voice channel(s)"
+        "title": {
+          "one": "`%d` channel in this server",
+          "other": "`%d` channels in this server"
+        },
+        "value": {
+          "textChannelCount": {
+            "one": "`%d` text channel",
+            "other": "`%d` text channels"
+          },
+          "voieChannelCount": {
+            "one": "`%d` voice channel",
+            "other": "`%d` voice channels"
+          },
+          "categoryCount": {
+            "one": "`%d` category",
+            "other": "`%d` categories"
+          },
+          "newsChannelCount": {
+            "one": "`%d` news channel",
+            "other": "`%d` news channels"
+          }
+        }
       },
       "createdAt": {
         "title": "This server is created at",
         "value": "LLLL"
-      }
+      },
+      "verificationLevel": "Verification Level"
     },
     "userinfo": {
       "DESC": "Shows user information.",
@@ -378,5 +395,27 @@
   "perms": {
     "ADD_REACTION": "Add Reaction",
     "ADMINISTRATOR": "Administrator"
+  },
+  "verificationLevel": {
+    "LOW": {
+      "name": "Low",
+      "description": "Must have a verified email on their Discord account."
+    },
+    "NONE": {
+      "name": "None",
+      "description": "Unrestricted"
+    },
+    "MEDIUM": {
+      "name": "Medium",
+      "description": "Must also be registered on Discord for longer than 5 minutes."
+    },
+    "HIGH": {
+      "name": "High (╯°□°）╯︵ ┻━┻",
+      "description": "Must also be a member of this server for longer than 10 minutes."
+    },
+    "VERY_HIGH": {
+      "name": "Very High ┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻",
+      "description": "Must have a verified phone on their Discord account."
+    }
   }
 }
