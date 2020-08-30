@@ -40,8 +40,6 @@
       "DESC": "boop"
     },
     "serverinfo": {
-      "desc": "Shows some server informations.",
-      "run": "Server Name: **%s**\nMembers in the Server: %s",
       "DESC": "Shows current server infomation.",
       "title": "Server Information of %1$s",
       "name": "Server name",
@@ -92,7 +90,14 @@
         "title": "This server is created at",
         "value": "LLLL"
       },
-      "verificationLevel": "Verification Level"
+      "verificationLevel": "Verification Level",
+      "2faRequireForMod": {
+        "title": "2FA Requirement For Moderation",
+        "value": {
+          "disabled": "disabled",
+          "enabled": "enabled"
+        }
+      }
     },
     "userinfo": {
       "DESC": "Shows user information.",
