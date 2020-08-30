@@ -39,12 +39,12 @@ class ServerInfoCommand extends Command {
     const newsChannelCount = channelCache.filter((c) => c.type === 'news').size
     const channelCountText = `:keyboard: ${tn('commands.serverinfo.channelCount.value.textChannelCount', locale, textChannelCount)}\n` +
       `:microphone2: ${tn('commands.serverinfo.channelCount.value.voieChannelCount', locale, voiceChannelCount)}\n` +
-      `:file_folder: ${tn('commands.serverinfo.channelCount.value.categoryCount', locale, categoryCount)}\n` + 
+      `:file_folder: ${tn('commands.serverinfo.channelCount.value.categoryCount', locale, categoryCount)}\n` +
       `:newspaper: ${tn('commands.serverinfo.channelCount.value.newsChannelCount', locale, newsChannelCount)}`
 
     const verificationLevel = guild.verificationLevel
-    const verificationLevelText = `**${t(`verificationLevel.${verificationLevel}.name`, locale)}** (\`${verificationLevel}\`)\n`
-      + t(`verificationLevel.${verificationLevel}.description`, locale)
+    const verificationLevelText = `**${t(`verificationLevel.${verificationLevel}.name`, locale)}** (\`${verificationLevel}\`)\n` +
+      t(`verificationLevel.${verificationLevel}.description`, locale)
 
     const is2FAReqOn = guild.mfaLevel === 1
     const twoFARequireForModText = `${is2FAReqOn ? ':white_check_mark:' : ':x:'} ${t(`commands.serverinfo.2faRequireForMod.value.${is2FAReqOn ? 'enabled' : 'disabled'}`, locale)} (\`${guild.mfaLevel}\`)`
