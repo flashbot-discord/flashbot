@@ -46,6 +46,9 @@ class ServerInfoCommand extends Command {
     const verificationLevelText = `**${t(`verificationLevel.${verificationLevel}.name`, locale)}** (\`${verificationLevel}\`)\n`
       + t(`verificationLevel.${verificationLevel}.description`, locale)
 
+    const is2FAReqOn = guild.mfaLevel === 1
+    const twoFARequireForModText = `${is2FAReqOn ? ':white_check_mark:' : ':x:'} ${t(`commands.serverinfo.2faRequireForMod.value.${is2FAReqOn ? 'enabled' : 'disabled'}`, locale)} (\`${guild.mfaLevel}\`)`
+
     const createdAt = moment(guild.createdAt).tz('Asia/Seoul').format(t('commands.serverinfo.createdAt.value', locale))
 
     if (useEmbed) {
@@ -58,6 +61,7 @@ class ServerInfoCommand extends Command {
         .addField(`:crown: ${t('commands.serverinfo.owner', locale)}`, `<@${guild.owner.id}> ${guild.owner.user.tag} (${guild.owner.id})`)
         .addField(`:map: ${t('commands.serverinfo.region', locale)}`, `${t('regions.' + guild.region, locale)} (\`${guild.region}\`)`)
         .addField(':shield: ' + t('commands.serverinfo.verificationLevel', locale), verificationLevelText)
+        .addField(':lock: ' + t('commands.serverinfo.2faRequireForMod.title', locale), twoFARequireForModText)
         .addField(':busts_in_silhouette: ' + tn('commands.serverinfo.memberCount.title', locale, guild.memberCount), memberCountText)
         .addField(':tv: ' + tn('commands.serverinfo.channelCount.title', locale, guild.channels.cache.size), channelCountText)
         .addField(':birthday: ' + t('commands.serverinfo.createdAt.title', locale), createdAt)

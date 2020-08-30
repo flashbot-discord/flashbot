@@ -63,8 +63,8 @@
       },
       "channelCount": {
         "title": {
-          "one": "서버 내 전체 채널 %d개",
-          "other": "서버 내 전체 채널 %d개"
+          "one": "서버 내 전체 채널 `%d`개",
+          "other": "서버 내 전체 채널 `%d`개"
         },
         "value": {
           "textChannelCount": {
@@ -86,10 +86,17 @@
         }
       },
       "createdAt": {
-        "value": "YYYY년 MM월 DD일 HH시 mm분 ss초 (zz)에 생성됨",
-        "title": "서버가 생성된 날짜"
+        "value": "YYYY년 MM월 DD일 HH시 mm분 ss초 (zz)",
+        "title": "서버가 생성된 시각"
       },
-      "verificationLevel": "보안 수준"
+      "verificationLevel": "보안 수준",
+      "2faRequireForMod": {
+        "title": "관리를 위한 2단계 인증 요구",
+        "value": {
+          "disabled": "비활성화됨",
+          "enabled": "활성화됨"
+        }
+      }
     },
     "userinfo": {
       "DESC": "사용자 정보를 보여줍니다.",
