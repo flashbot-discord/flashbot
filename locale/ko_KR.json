@@ -46,33 +46,50 @@
       "id": "서버 ID",
       "region": "서버 위치",
       "memberCount": {
-        "title": "서버 멤버 수 (유저 + 봇)",
-        "value": "%1$s명"
+        "title": {
+          "one": "서버 전체 멤버 `%d`명",
+          "other": "서버 전체 멤버 `%d`명"
+        },
+        "value": {
+          "userCount": {
+            "one": "유저 `%d`명",
+            "other": "유저 `%d`명"
+          },
+          "botCount": {
+            "one": "봇 `%d`개",
+            "other": "봇 `%d`개"
+          }
+        }
       },
       "channelCount": {
-        "title": "서버 채널 개수 (모든 종류)",
-        "value": "%1$s개"
-      },
-      "userCount": {
-        "title": "유저 수",
-        "value": "%1$s명"
-      },
-      "botCount": {
-        "title": "봇 개수",
-        "value": "%1$s개"
-      },
-      "textChannelCount": {
-        "title": "채팅 채널 개수",
-        "value": "%1$s개"
-      },
-      "voiceChannelCount": {
-        "title": "음성 채널 개수",
-        "value": "%1$s개"
+        "title": {
+          "one": "서버 내 전체 채널 %d개",
+          "other": "서버 내 전체 채널 %d개"
+        },
+        "value": {
+          "textChannelCount": {
+            "one": "채팅 채널 `%d개`",
+            "other": "채팅 채널 `%d`개"
+          },
+          "voieChannelCount": {
+            "one": "음성 채널 `%d`개",
+            "other": "음성 채널 `%d`개"
+          },
+          "categoryCount": {
+            "one": "카테고리 `%d`개",
+            "other": "카테고리 `%d`개"
+          },
+          "newsChannelCount": {
+            "one": "뉴스 채널 `%d`개",
+            "other": "뉴스 채널 `%d`개"
+          }
+        }
       },
       "createdAt": {
         "value": "YYYY년 MM월 DD일 HH시 mm분 ss초 (zz)에 생성됨",
         "title": "서버가 생성된 날짜"
-      }
+      },
+      "verificationLevel": "보안 수준"
     },
     "userinfo": {
       "DESC": "사용자 정보를 보여줍니다.",
@@ -370,5 +387,27 @@
   "perms": {
     "ADD_REACTION": "반응 추가하기",
     "ADMINISTRATOR": "관리자"
+  },
+  "verificationLevel": {
+    "LOW": {
+      "name": "낮음",
+      "description": "이메일 인증이 완료된 Discord 계정이어야 해요."
+    },
+    "NONE": {
+      "name": "없음",
+      "description": "제한 없음"
+    },
+    "MEDIUM": {
+      "name": "중간",
+      "description": "또한, Discord에 가입한 지 5분이 지나야 돼요."
+    },
+    "HIGH": {
+      "name": "높음 (╯°□°）╯︵ ┻━┻",
+      "description": "또한, 이 서버의 멤버가 된 지 10분이 지나야 돼요."
+    },
+    "VERY_HIGH": {
+      "name": "매우 높음 ┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻",
+      "description": "휴대폰 인증이 완료된 Discord 계정이어야 해요."
+    }
   }
 }

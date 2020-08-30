@@ -19,17 +19,32 @@ class ServerInfoCommand extends Command {
   }
 
   async run (client, msg, _query, locale) {
-    const t = client.locale.t
+    const { t, tn } = client.locale
 
     let data
     const guild = msg.guild
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
-    const users = await guild.members.fetch()
-    const userCount = users.filter((m) => !m.user.bot).size
-    const botCount = guild.memberCount - userCount
-    const textChannelCount = guild.channels.cache.filter((c) => c.type === 'text').size
-    const voiceChannelCount = guild.channels.cache.filter((c) => c.type === 'voice').size
+    const members = await guild.members.fetch()
+    const [bots, users] = members.partition((member) => member.user.bot)
+    const userCount = users.size
+    const botCount = bots.size
+    const memberCountText = `:adult: ${tn('commands.serverinfo.memberCount.value.userCount', locale, userCount)}\n` +
+      `:robot: ${tn('commands.serverinfo.memberCount.value.botCount', locale, botCount)}`
+
+    const channelCache = guild.channels.cache
+    const textChannelCount = channelCache.filter((c) => c.type === 'text').size
+    const voiceChannelCount = channelCache.filter((c) => c.type === 'voice').size
+    const categoryCount = channelCache.filter((c) => c.type === 'category').size
+    const newsChannelCount = channelCache.filter((c) => c.type === 'news').size
+    const channelCountText = `:keyboard: ${tn('commands.serverinfo.channelCount.value.textChannelCount', locale, textChannelCount)}\n` +
+      `:microphone2: ${tn('commands.serverinfo.channelCount.value.voieChannelCount', locale, voiceChannelCount)}\n` +
+      `:file_folder: ${tn('commands.serverinfo.channelCount.value.categoryCount', locale, categoryCount)}\n` + 
+      `:newspaper: ${tn('commands.serverinfo.channelCount.value.newsChannelCount', locale, newsChannelCount)}`
+
+    const verificationLevel = guild.verificationLevel
+    const verificationLevelText = `**${t(`verificationLevel.${verificationLevel}.name`, locale)}** (\`${verificationLevel}\`)\n`
+      + t(`verificationLevel.${verificationLevel}.description`, locale)
 
     const createdAt = moment(guild.createdAt).tz('Asia/Seoul').format(t('commands.serverinfo.createdAt.value', locale))
 
@@ -37,16 +52,14 @@ class ServerInfoCommand extends Command {
       data = new MessageEmbed()
         .setTitle(t('commands.serverinfo.title', locale, guild.name))
         .setThumbnail(guild.iconURL({ dynamic: true, size: 1024 }))
+        .setFooter(msg.author.tag, msg.author.avatarURL({ dynamic: true, size: 1024 }))
         .addField(':desktop: ' + t('commands.serverinfo.name', locale), guild.name, true)
         .addField(':id: ' + t('commands.serverinfo.id', locale), guild.id, true)
-        .addField(':bust_in_silhouette: ' + t('commands.serverinfo.owner', locale), '<@' + guild.owner.id + '> ' + guild.owner.user.tag + ' (' + guild.owner.id + ')')
-        .addField(':map: ' + t('commands.serverinfo.region', locale), t('regions.' + guild.region, locale) + ' (' + guild.region + ')')
-        .addField(':busts_in_silhouette: ' + t('commands.serverinfo.memberCount.title', locale), t('commands.serverinfo.memberCount.value', locale, guild.memberCount))
-        .addField(':adult: ' + t('commands.serverinfo.userCount.title', locale), t('commands.serverinfo.userCount.value', locale, userCount), true)
-        .addField(':robot: ' + t('commands.serverinfo.botCount.title', locale), t('commands.serverinfo.botCount.value', locale, botCount), true)
-        .addField(':tv: ' + t('commands.serverinfo.channelCount.title', locale), t('commands.serverinfo.channelCount.value', locale, guild.channels.cache.size))
-        .addField(':keyboard: ' + t('commands.serverinfo.textChannelCount.title', locale), t('commands.serverinfo.textChannelCount.value', locale, textChannelCount), true)
-        .addField(':microphone2: ' + t('commands.serverinfo.voiceChannelCount.title', locale), t('commands.serverinfo.voiceChannelCount.value', locale, voiceChannelCount), true)
+        .addField(`:crown: ${t('commands.serverinfo.owner', locale)}`, `<@${guild.owner.id}> ${guild.owner.user.tag} (${guild.owner.id})`)
+        .addField(`:map: ${t('commands.serverinfo.region', locale)}`, `${t('regions.' + guild.region, locale)} (\`${guild.region}\`)`)
+        .addField(':shield: ' + t('commands.serverinfo.verificationLevel', locale), verificationLevelText)
+        .addField(':busts_in_silhouette: ' + tn('commands.serverinfo.memberCount.title', locale, guild.memberCount), memberCountText)
+        .addField(':tv: ' + tn('commands.serverinfo.channelCount.title', locale, guild.channels.cache.size), channelCountText)
         .addField(':birthday: ' + t('commands.serverinfo.createdAt.title', locale), createdAt)
     }
 
