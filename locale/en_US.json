@@ -102,7 +102,6 @@
     "userinfo": {
       "DESC": "Shows user information.",
       "title": "User information of %1$s",
-      "requestedBy": "Requested by %1$s",
       "name": "User Name",
       "usertag": "User Tag (last 4 digits)",
       "clientStatus": {
@@ -123,9 +122,11 @@
       },
       "clientOffline": "Offline",
       "page": {
-        "1": "Basic Information (Page 1 of 2)",
-        "2": "Informations related to this server (Page 2 of 2)"
-      }
+        "1": "Basic Information",
+        "2": "Informations related to this server"
+      },
+      "pageText": "Page %1$d of %2$d",
+      "requestedBy": "(Requested by %1$s `%2$s`)"
     },
     "eval": {
       "desc": "Evaluates JS code. Needs Administrator permission to use this.",

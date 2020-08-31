@@ -101,7 +101,6 @@
     "userinfo": {
       "DESC": "사용자 정보를 보여줍니다.",
       "title": "%1$s의 유저 정보",
-      "requestedBy": "%1$s이(가) 요청함",
       "name": "유저 이름",
       "usertag": "유저 태그 (뒤 4자리 숫자)",
       "clientStatus": {
@@ -113,7 +112,7 @@
       "createdAt": "계정 생성일",
       "status": "현재 상태",
       "clients": "접속한 클라이언트",
-      "createdDate": "YYYY년 MM월 DD일 HH시 mm분 ss초에 생성됨",
+      "createdDate": "YYYY년 MM월 DD일 HH시 mm분 ss초 (zz)",
       "statusList": {
         "online": ":green_circle: 온라인",
         "idle": ":crescent_moon: 자리 비움",
@@ -122,9 +121,11 @@
       },
       "clientOffline": "오프라인",
       "page": {
-        "1": "기본 정보 (페이지 1/2)",
-        "2": "이 서버에 관련된 정보 (페이지 2/2)"
-      }
+        "1": "기본 정보",
+        "2": "이 서버에 관련된 정보"
+      },
+      "pageText": "페이지 %1$d/%2$d",
+      "requestedBy": "(%1$s `%2$s`이(가) 요청함)"
     },
     "eval": {
       "input": "입력:",
