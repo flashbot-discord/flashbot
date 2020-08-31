@@ -37,8 +37,7 @@ class UserInfoCommand extends Command {
     const createdAt = moment(user.createdAt).tz('Asia/Seoul').format(t('commands.userinfo.createdDate', locale))
 
     if (useEmbed) {
-      data.push(this.generateEmbed(msg, user, locale)
-        .setDescription(t('commands.userinfo.page.1', locale))
+      data.push(this.generateEmbed(msg.author, user, locale, 1, 2)
         .addField(':bust_in_silhouette: ' + t('commands.userinfo.name', locale), user.username, true)
         .addField(':hash: ' + t('commands.userinfo.usertag', locale), user.discriminator, true)
         .addField(':id: ' + t('commands.userinfo.id', locale), user.id)
@@ -47,15 +46,14 @@ class UserInfoCommand extends Command {
         .addField(':birthday: ' + t('commands.userinfo.createdAt', locale), createdAt)
       )
 
-      data.push(this.generateEmbed(msg, user, locale)
-        .setDescription(t('commands.userinfo.page.2', locale))
+      data.push(this.generateEmbed(msg.author, user, locale, 2, 2)
         .addField('Coming soon', 'Stay tuned!') // TODO WIP
       )
     } else {
-      data.push('**' + t('commands.userinfo.title', locale, user.tag) + '**\n' +
-        '<@' + msg.author.id + '> ' + t('commands.userinfo.requestedBy', locale, msg.author.tag) + '\n' +
-        t('commands.userinfo.page.1', locale) + '\n\n' +
-        '**:bust_in_silhouette: ' + t('commands.userinfo.name', locale) + '**: ' + user.username + '\n'
+      data.push(`**${t('commands.userinfo.title', locale, user.tag)}**\n` +
+        `${t('commands.userinfo.requestedBy', locale, `<@${msg.author.id}>`, msg.author.tag)}\n` +
+        `${t('commands.userinfo.page.1', locale)}\n\n` +
+        `**:bust_in_silhouette: ${t('commands.userinfo.name', locale)}**: ${user.username}\n`
       )
     }
 
@@ -74,12 +72,13 @@ class UserInfoCommand extends Command {
     return text
   }
 
-  generateEmbed (msg, user, locale) {
+  generateEmbed (author, user, locale, currentPage, totalPage) {
     const t = this._client.locale.t
     return new MessageEmbed()
       .setTitle(t('commands.userinfo.title', locale, user.tag))
+      .setDescription(`${t('commands.userinfo.page.' + currentPage, locale)} (${t('commands.userinfo.pageText', locale, currentPage, totalPage)})`)
       .setThumbnail(user.displayAvatarURL({ size: 1024, dynamic: true }))
-      .setFooter(t('commands.userinfo.requestedBy', locale, msg.author.tag), msg.author.displayAvatarURL())
+      .setFooter(author.tag, author.displayAvatarURL())
   }
 }
 
