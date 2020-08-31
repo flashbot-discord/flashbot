@@ -54,8 +54,10 @@ class Paginator {
 
     switch (find) {
       case 'first':
-        this.page = 0
-        this.update()
+        if (this.page > 0) {
+          this.page = 0
+          this.update()
+        }
         break
 
       case 'prev':
@@ -77,8 +79,10 @@ class Paginator {
         break
 
       case 'last':
-        this.page = this.contents.length - 1
-        this.update()
+        if (this.page < this.contents.length - 1) {
+          this.page = this.contents.length - 1
+          this.update()
+        }
     }
 
     if (canManageReactions(this.msg)) {
