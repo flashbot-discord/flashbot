@@ -81,7 +81,7 @@ class Paginator {
         this.update()
     }
 
-    if (this.msg.channel.permissionsFor(this._client.user).has('MANAGE_MESSAGES')) {
+    if (canManageReactions(this.msg)) {
       const users = await sel.users.fetch()
       Array.from(users.keys())
         .filter((id) => id !== this._client.user.id)
@@ -98,11 +98,19 @@ class Paginator {
 
   stop () {
     this.keepRun = false
-    const botReactions = this.msg.reactions.cache.filter((r) => Array.from(this.reactions.values()).includes(r.emoji.toString()))
-    botReactions.forEach((r) => {
-      r.users.remove(this._client.user)
-    })
+
+    if (canManageReactions(this.msg)) this.msg.reactions.removeAll()
+    else {
+      const botReactions = this.msg.reactions.cache.filter((r) => Array.from(this.reactions.values()).includes(r.emoji.toString()))
+      botReactions.forEach((r) => {
+        r.users.remove(this._client.user)
+      })
+    }
   }
+}
+
+function canManageReactions (msg) {
+  return msg.guild && msg.channel.permissionsFor(msg.client.user).has('MANAGE_MESSAGES')
 }
 
 module.exports = Paginator
