@@ -62,8 +62,8 @@ class ServerInfoCommand extends Command {
         .addField(`:map: ${t('commands.serverinfo.region', locale)}`, `${t('regions.' + guild.region, locale)} (\`${guild.region}\`)`)
         .addField(':shield: ' + t('commands.serverinfo.verificationLevel', locale), verificationLevelText)
         .addField(':lock: ' + t('commands.serverinfo.2faRequireForMod.title', locale), twoFARequireForModText)
-        .addField(':busts_in_silhouette: ' + tn('commands.serverinfo.memberCount.title', locale, guild.memberCount), memberCountText)
-        .addField(':tv: ' + tn('commands.serverinfo.channelCount.title', locale, guild.channels.cache.size), channelCountText)
+        .addField(':busts_in_silhouette: ' + tn('commands.serverinfo.memberCount.title', locale, guild.memberCount), memberCountText, true)
+        .addField(':tv: ' + tn('commands.serverinfo.channelCount.title', locale, guild.channels.cache.size), channelCountText, true)
         .addField(':birthday: ' + t('commands.serverinfo.createdAt.title', locale), createdAt)
     }
 
