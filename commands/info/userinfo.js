@@ -57,7 +57,7 @@ class UserInfoCommand extends Command {
         `**:id: ${t('commands.userinfo.id', locale)}**: ${user.id}\n` +
         `**${t('commands.userinfo.status', locale)}**: ${status}\n` +
         `**${t('commands.userinfo.clients', locale)}**: ${clientStatus.join(', ')}\n` +
-        `**${t('commands.userinfo.createdAt', locale)}**: ${createdAt}`
+        `**:birthday: ${t('commands.userinfo.createdAt', locale)}**: ${createdAt}`
       )
     }
 
