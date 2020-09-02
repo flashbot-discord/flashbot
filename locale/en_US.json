@@ -97,7 +97,8 @@
           "disabled": "disabled",
           "enabled": "enabled"
         }
-      }
+      },
+      "requestedBy": "Requested by %1$s `%2$s`"
     },
     "userinfo": {
       "DESC": "Shows user information.",
@@ -110,7 +111,7 @@
         "web": ":earth_americas: web"
       },
       "id": "User ID",
-      "createdAt": "Account Creation Date",
+      "createdAt": "This account is created at",
       "status": "Current Status",
       "clients": "Clients Logged on",
       "createdDate": "LLLL",
