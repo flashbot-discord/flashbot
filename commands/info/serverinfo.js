@@ -65,6 +65,19 @@ class ServerInfoCommand extends Command {
         .addField(':busts_in_silhouette: ' + tn('commands.serverinfo.memberCount.title', locale, guild.memberCount), memberCountText, true)
         .addField(':tv: ' + tn('commands.serverinfo.channelCount.title', locale, guild.channels.cache.size), channelCountText, true)
         .addField(':birthday: ' + t('commands.serverinfo.createdAt.title', locale), createdAt)
+    } else {
+      data = `**${t('commands.serverinfo.title', locale, guild.name)}**\n` +
+        `(${t('commands.serverinfo.requestedBy', locale, `<@${msg.author.id}>`, msg.author.tag)})\n\n` +
+        `**:desktop: ${t('commands.serverinfo.name', locale)}**: ${guild.name}\n` +
+        `**:id: ${t('commands.serverinfo.id', locale)}**: ${guild.id}\n` +
+        `**:crown: ${t('commands.serverinfo.owner', locale)}**: ${guild.owner.user.tag} (${guild.owner.id})\n` +
+        `**:map: ${t('commands.serverinfo.region', locale)}**: ${t('regions.' + guild.region, locale)} (\`${guild.region}\`)\n` +
+        `**:shield: ${t('commands.serverinfo.verificationLevel', locale)}**: ${verificationLevelText}\n` +
+        `**:lock: ${t('commands.serverinfo.2faRequireForMod.title', locale)}**: ${twoFARequireForModText}\n\n` +
+        `**:busts_in_silhouette: ${tn('commands.serverinfo.memberCount.title', locale, guild.memberCount)}**\n${memberCountText}\n\n` +
+        `**:tv: ${tn('commands.serverinfo.channelCount.title', locale, guild.channels.cache.size)}**\n${channelCountText}\n\n` +
+        `**:birthday: ${t('commands.serverinfo.createdAt.title', locale)}**: ${createdAt}`
+
     }
 
     return msg.channel.send(data)

@@ -96,7 +96,8 @@
           "disabled": "비활성화됨",
           "enabled": "활성화됨"
         }
-      }
+      },
+      "requestedBy": "%1$s `%2$s`이(가) 요청함"
     },
     "userinfo": {
       "DESC": "사용자 정보를 보여줍니다.",
@@ -125,7 +126,7 @@
         "2": "이 서버에 관련된 정보"
       },
       "pageText": "페이지 %1$d/%2$d",
-      "requestedBy": "(%1$s `%2$s`이(가) 요청함)"
+      "requestedBy": "%1$s `%2$s`이(가) 요청함"
     },
     "eval": {
       "input": "입력:",
