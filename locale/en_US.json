@@ -339,13 +339,40 @@
     },
     "dice": {
       "result": "Rolled %1$s-sided dice and `%2$s` came out!",
-      "error": "Please enter **an integer equal or greater than 1** for number of dice faces."
+      "error": "Please enter **an integer equal or greater than 1** for number of dice faces.",
+      "DESC": "commands.dice.DESC"
     },
     "maintenance": {
       "status": "Is maintenance mode on? `%1$s`",
       "usage": "```\nUsage: %1$smaintenance (status)\n\n(status) - Set the maintenance mode status\n  [start / on / 시작] - Start maintenance mode\n  [end / off / 종료] - End maintenance mode\n```",
       "start": "Maintenance mode has been started.",
       "end": "Maintenance mode has been ended."
+    },
+    "tictactoe": {
+      "waiting": "<@%1$s> is waiting for you to play tic-tac-toe together!\nPress :white_check_mark: if you want to play!\n(Press :x: to cancel the game)",
+      "noOneJoined": "No one joined in 20 seconds, so the game was cancelled.",
+      "gameCancelled": "Cancelled tic-tac-toe game.",
+      "game": {
+        "title": "Tic-Tac-Toe",
+        "description": {
+          "playing": "%1$s's turn",
+          "win": "%1$s won!",
+          "content": "%1$s :x:\n%2$s :o:",
+          "draw": "Tie!"
+        },
+        "timeOut": "Input time exceeded, so %1$s won the tic-tac-toe game!",
+        "win": "%1$s won the tic-tac-toe game!",
+        "draw": "The tic-tac-toe game ended in a draw!"
+      },
+      "error": {
+        "alreadyMarked": "That position is already marked. Please select other position.",
+        "notPlaying": "The tic-tac-toe game is not running."
+      },
+      "gameStopped": "Stopped tic-tac-toe game.",
+      "usage": "Usage: ```\n%1$stictactoe <start/stop>\n\n<start> - Start the tic-tac-toe game.\n<stop> - Force stop the running tic-tac-toe game.\n```"
+    },
+    "sample": {
+      "DESC": "commands.sample.DESC"
     }
   },
   "CommandHandler": {
