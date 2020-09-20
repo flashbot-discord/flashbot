@@ -37,7 +37,7 @@ class TicTacToeCommand extends Command {
         const collected = await botMsg.awaitReactions((reaction, user) => {
           if (user.bot) return false
           else {
-            if (reaction.emoji.name === '✅' && user.id === msg.author.id) action = 'start'
+            if (reaction.emoji.name === '✅' && user.id !== msg.author.id) action = 'start'
             else if (reaction.emoji.name === '❌' && user.id === msg.author.id) action = 'cancel'
             else return false
 
