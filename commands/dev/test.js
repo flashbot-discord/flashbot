@@ -1,4 +1,5 @@
 const Command = require('../../classes/Command')
+const parsePeriod = require('../../modules/parsePeriod')
 
 class TestCommand extends Command {
   constructor (client) {
@@ -11,9 +12,21 @@ class TestCommand extends Command {
     })
   }
 
-  async run (_client, msg, _query, _locale) {
+  async run (_client, msg, query, _locale) {
     // Enter your code to test
-    return msg.channel.send('testing the command')
+    const cmd = query.args[0]
+
+    switch (cmd) {
+      case 'parseperiod': {
+        const input = query.args[1]
+        const result = parsePeriod(input)
+        console.log(result)
+        msg.channel.send(`
+\`\`\`
+${result}
+\`\`\``)
+      }
+    }
   }
 }
 
