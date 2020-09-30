@@ -373,6 +373,17 @@
     },
     "sample": {
       "DESC": "commands.sample.DESC"
+    },
+    "blacklist": {
+      "error": {
+        "invalidPeriod": "Invalid period entered.",
+        "alreadyExists": "The blacklist record of that user already exists."
+      },
+      "usage": "commands.blacklist.usage",
+      "add": {
+        "usage": "%1$sblacklist add <user> <period> [reason]\n\n<user> - The user to ban from using the bot\n<period> - The period to ban the user from using the bot\n[reason] - The reason that the user is banned from using the bot",
+        "complete": "Added that user to the blacklist. That user cannot use the bot until `%1$s`."
+      }
     }
   },
   "CommandHandler": {
@@ -451,5 +462,8 @@
       "name": "Very High ┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻",
       "description": "Must have a verified phone on their Discord account."
     }
+  },
+  "modules": {
+    "parsePeriod": "Period Syntax:\n  1d2h3m4s - 1 day 2 hours 3 minutes 4 seconds\n  (d - days, h - hours, m - minutes, s - seconds)"
   }
 }
