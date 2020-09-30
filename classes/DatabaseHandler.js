@@ -25,8 +25,8 @@ class DatabaseHandler {
       }
 
       case 'json': {
-        // JSON db uses two files:
-        // guild.json, user.json
+        // JSON db uses three files:
+        // guild.json, user.json, blacklist.json
         try {
           if (!connection) connection = {}
           const folder = path.join(path.resolve(), 'data', 'jsondb')
@@ -40,7 +40,12 @@ class DatabaseHandler {
           const user = require(path.join(folder, userFile))
           const blacklist = require(path.join(folder, blacklistFile))
           this.obj = { guild, user, blacklist }
-          this.path = { folder, guildFile, userFile }
+          this.path = {
+            folder,
+            guildFile,
+            userFile,
+            blacklistFile
+          }
 
           client.logger.debug(logPos, '[JSON] 3 database files loaded')
         } catch (err) {
@@ -112,6 +117,7 @@ class DatabaseHandler {
 
     this._save(this.obj.guild, this.path.guildFile)
     this._save(this.obj.user, this.path.userFile)
+    this._save(this.obj.blacklist, this.path.blacklistFile)
 
     this._client.logger.log(logPos, '[JSON] All data were saved')
   }

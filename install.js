@@ -95,7 +95,7 @@ async function run () {
 
       const blacklistjson = path.join(jsonDBPath, 'blacklist.json')
       if (!fs.existsSync(blacklistjson)) {
-        fs.writeFileSync(blacklistjson, '[]')
+        fs.writeFileSync(blacklistjson, '{}')
         console.log('Created blacklist.json file.')
       }
 
