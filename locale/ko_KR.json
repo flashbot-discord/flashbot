@@ -421,7 +421,7 @@
     "india": ":flag_in: 인도"
   },
   "perms": {
-    "ADD_REACTION": "반응 추가하기",
+    "ADD_REACTIONS": "반응 추가하기",
     "ADMINISTRATOR": "관리자"
   },
   "verificationLevel": {

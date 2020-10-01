@@ -51,7 +51,7 @@ class RegisterCommand extends Command {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      msg.channel.send(t('commands.register.reactFail', locale, client.locale.t('perms.ADD_REACTION', locale)))
+      msg.channel.send(t('commands.register.reactFail', locale, client.locale.t('perms.ADD_REACTIONS', locale)))
     }
 
     const pend = async (c) => {

@@ -427,7 +427,7 @@
     "india": ":flag_in: India"
   },
   "perms": {
-    "ADD_REACTION": "Add Reaction",
+    "ADD_REACTIONS": "Add Reactions",
     "ADMINISTRATOR": "Administrator"
   },
   "verificationLevel": {
