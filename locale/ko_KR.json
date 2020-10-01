@@ -371,6 +371,15 @@
     "uptime": {
       "title": "봇 업타임",
       "description": "이 봇이 작동한 지 %1$sms가 지났어요!"
+    },
+    "permcheck": {
+      "title": "권한 목록",
+      "isOwner": "이 서버의 소유자에요. 모든 권한이 허용되어 있어요.",
+      "granted": "허용됨",
+      "denied": "거부됨",
+      "grantedInChannel": "이 채널에서 허용됨",
+      "deniedInChannel": "이 채널에서 거부됨",
+      "isAdmin": "이 서버에서 관리자 권한을 갖고 있어요. 모든 권한이 허용되어 있어요."
     }
   },
   "CommandHandler": {
@@ -425,8 +434,29 @@
     "india": ":flag_in: 인도"
   },
   "perms": {
-    "ADD_REACTIONS": "반응 추가하기",
-    "ADMINISTRATOR": "관리자"
+    "ADD_REACTION": "반응 추가하기",
+    "ADMINISTRATOR": "관리자",
+    "VIEW_AUDIT_LOG": "감사 로그 보기",
+    "MANAGE_GUILD": "서버 관리하기",
+    "MANAGE_ROLES": "역할 관리하기",
+    "MANAGE_CHANNELS": "채널 관리하기",
+    "KICK_MEMBERS": "멤버 추방하기",
+    "BAN_MEMBERS": "멤버 차단하기",
+    "CREATE_INSTANT_INVITE": "초대 코드 만들기",
+    "CHANGE_NICKNAME": "별명 변경하기",
+    "MANAGE_NICKNAMES": "별명 관리하기",
+    "MANAGE_EMOJIS": "이모티콘 관리",
+    "MANAGE_WEBHOOKS": "웹후크 관리하기",
+    "VIEW_CHANNEL": "채팅 채널 읽기 및 음성 채널 보기",
+    "SEND_MESSAGES": "메세지 보내기",
+    "SEND_TTS_MESSAGES": "TTS 메세지 보내기",
+    "MANAGE_MESSAGES": "메세지 관리",
+    "EMBED_LINKS": "링크 첨부",
+    "ATTACH_FILES": "파일 첨부",
+    "READ_MESSAGE_HISTORY": "메세지 기록 보기",
+    "MENTION_EVERYONE": "`@everyone`, `@here`, 모든 역할 멘션하기",
+    "USE_EXTERNAL_EMOJIS": "외부 이모티콘 사용하기",
+    "ADD_REACTIONS": "반응 추가하기"
   },
   "verificationLevel": {
     "LOW": {
