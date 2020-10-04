@@ -4,7 +4,7 @@ const ch = require('child_process')
 
 const compVer = require('compare-versions')
 
-const DB_VER = 'v0.2.0' // current db version
+const DB_VER = 'v0.1.0' // current db version
 const MIN_DB_VER = 'v0.1.0' // minimum checkpoint db version
 
 const globalElements = require('./classes/globalElements')
