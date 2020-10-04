@@ -373,6 +373,10 @@
     },
     "sample": {
       "DESC": "commands.sample.DESC"
+    },
+    "uptime": {
+      "title": "Bot Uptime",
+      "description": "The bot was running for %s milliseconds"
     }
   },
   "CommandHandler": {

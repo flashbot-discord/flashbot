@@ -367,6 +367,10 @@
     },
     "sample": {
       "DESC": "commands.sample.DESC"
+    },
+    "uptime": {
+      "title": "봇 업타임",
+      "description": "이 봇이 작동한 지 %1$sms가 지났어요!"
     }
   },
   "CommandHandler": {
