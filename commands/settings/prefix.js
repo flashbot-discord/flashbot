@@ -30,7 +30,7 @@ class PrefixCommand extends Command {
       if (query.args.length < 2) {
         const prefix = await database.guilds.prefix.get((this._client.db, msg.guild.id))
         return msg.reply(t('commands.prefix.set.pleaseEnterPrefix', locale, prefix))
-      } else if (!msg.member.permissions.any(setPerms)) return msg.reply(t('commands.prefix.set.noPerms', locale))
+      } else if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.any(setPerms)) return msg.reply(t('commands.prefix.set.noPerms', locale))
       else {
         const prefix = query.args[1]
 
