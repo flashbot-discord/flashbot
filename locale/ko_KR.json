@@ -373,7 +373,13 @@
       "description": "이 봇이 작동한 지 %1$sms가 지났어요!"
     },
     "permcheck": {
-      "title": "권한 목록",
+      "embed": {
+        "title": "권한 목록",
+        "channelName": "%1$s 채널"
+      },
+      "noEmbed": {
+        "title": "%2$s 채널에서의 %1$s의 권한 목록"
+      },
       "isOwner": "이 서버의 소유자에요. 모든 권한이 허용되어 있어요.",
       "granted": "허용됨",
       "denied": "거부됨",
@@ -456,7 +462,13 @@
     "READ_MESSAGE_HISTORY": "메세지 기록 보기",
     "MENTION_EVERYONE": "`@everyone`, `@here`, 모든 역할 멘션하기",
     "USE_EXTERNAL_EMOJIS": "외부 이모티콘 사용하기",
-    "ADD_REACTIONS": "반응 추가하기"
+    "ADD_REACTIONS": "반응 추가하기",
+    "CONNECT": "연결",
+    "SPEAK": "말하기",
+    "MUTE_MEMBERS": "멤버들의 마이크 음소거하기",
+    "DEAFEN_MEMBERS": "멤버의 헤드셋 음소거하기",
+    "MOVE_MEMBERS": "멤버 이동",
+    "USE_VAD": "음성 감지 사용"
   },
   "verificationLevel": {
     "LOW": {
