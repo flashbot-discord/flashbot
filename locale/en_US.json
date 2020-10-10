@@ -379,7 +379,13 @@
       "description": "The bot was running for %s milliseconds"
     },
     "permcheck": {
-      "title": "Permission Checker",
+      "embed": {
+        "title": "Permissions List",
+        "channelName": "In %1$s channel"
+      },
+      "noEmbed": {
+        "title": "Permissions List for %1$s in %2$s"
+      },
       "isOwner": "You are the owner of this server. All permissions are granted for you.",
       "granted": "Granted",
       "denied": "Denied",
@@ -462,7 +468,13 @@
     "READ_MESSAGE_HISTORY": "Read Message History",
     "MENTION_EVERYONE": "Mention `@everyone`, `@here`, and All Roles",
     "USE_EXTERNAL_EMOJIS": "Use External Emojis",
-    "ADD_REACTIONS": "Add Reactions"
+    "ADD_REACTIONS": "Add Reactions",
+    "CONNECT": "Connect",
+    "SPEAK": "Speak",
+    "MUTE_MEMBERS": "Mute Members",
+    "DEAFEN_MEMBERS": "Deafen Members",
+    "MOVE_MEMBERS": "Move Members",
+    "USE_VAD": "Use Voice Activity"
   },
   "verificationLevel": {
     "LOW": {
