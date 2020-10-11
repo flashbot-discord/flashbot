@@ -386,6 +386,15 @@
       "grantedInChannel": "이 채널에서 허용됨",
       "deniedInChannel": "이 채널에서 거부됨",
       "isAdmin": "이 서버에서 관리자 권한을 갖고 있어요. 모든 권한이 허용되어 있어요."
+    },
+    "notice": {
+      "previewEmbed": {
+        "title": "FlashBot 공지"
+      },
+      "confirm": "이 내용으로 공지를 보낼까요?",
+      "cancelled": "공지 발송이 취소되었습니다.",
+      "timeOut": "입력 시간이 초과되어 자동으로 공지 잘송을 취소했어요.",
+      "started": "공지 발송 작업을 시작했어요. 작업이 완료될 때까지는 오랜 시간이 걸릴 수 있어요."
     }
   },
   "CommandHandler": {
