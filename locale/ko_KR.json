@@ -403,7 +403,8 @@
       "guildOnly": "이 명령어는 서버 텍스트 채널에서만 실행할 수 있어요."
     },
     "noUserPermission": "이 명령어를 실행하려면 `%1$s` 권한이 필요해요.",
-    "unregisteredOwner": "[경고] 이 봇의 소유자이나 가입하지 않았습니다. 일반적인 경우라면 나오지 않을 오류가 발생할 수 있습니다."
+    "unregisteredOwner": "[경고] 이 봇의 소유자이나 가입하지 않았습니다. 일반적인 경우라면 나오지 않을 오류가 발생할 수 있습니다.",
+    "noClientPermission": "이 명령어를 실행하기 위해서 봇에게 `%1$s` 권한을 부여해 주세요!"
   },
   "ClientError": {
     "error": "예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\nAn unexpected Error occured. Please report this error message and the Error ID to the Support server.\n\n오류 메세지 Error message: ```\n%1$s\n```\n오류 ID Error ID: `%2$s`"
@@ -499,6 +500,18 @@
     "VERY_HIGH": {
       "name": "매우 높음 ┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻",
       "description": "휴대폰 인증이 완료된 Discord 계정이어야 해요."
+    }
+  },
+  "modules": {
+    "sendNotice": {
+      "embed": {
+        "title": "FlashBot 공지",
+        "whyNoticeSentHere": {
+          "title": "공지가 왜 이 채널에 올라오나요?",
+          "content": "FlashBot의 공지는 기본적으로 랜덤 채널에 올라와요! 봇이 공지를 보낼 채널을 지정하고 싶다면 아래 방법 중 하나를 적용해 주세요!\n\n* `FlashBot공지` 또는 `FlashBot-공지`를 채널 주제에 넣기(우선적으로 작동)\n* `봇공지` 또는 `봇-공지` 채널 만들기"
+        },
+        "author": "공지 작성자: %1$s"
+      }
     }
   }
 }

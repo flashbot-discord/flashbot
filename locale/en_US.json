@@ -409,7 +409,8 @@
       "guildOnly": "This command can only be used in the server text channel."
     },
     "noUserPermission": "You need to have `%1$s` permissions to use this command.",
-    "unregisteredOwner": "[Warning] You are the ot's owner, but you're not registered. Errors which doesn't exists in normal situations may occur."
+    "unregisteredOwner": "[Warning] You are the ot's owner, but you're not registered. Errors which doesn't exists in normal situations may occur.",
+    "noClientPermission": "Please grant `%1$s` permission to the bot to use this command."
   },
   "ClientError": {
     "error": "An unexpected Error occured. Please report this error message and the Error ID to the Support server.\n예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\n\nError message (오류 메세지): ```\n%1$s\n```\nError ID (오류 ID): `%2$s`"
@@ -505,6 +506,18 @@
     "VERY_HIGH": {
       "name": "Very High ┻━┻ ﾐヽ(ಠ益ಠ)ノ彡┻━┻",
       "description": "Must have a verified phone on their Discord account."
+    }
+  },
+  "modules": {
+    "sendNotice": {
+      "embed": {
+        "title": "FlashBot announcement",
+        "whyNoticeSentHere": {
+          "title": "Why this announcement delivered here?",
+          "content": "Typically, bot announcement is sent to random channel. If you want to set specific bot announcement channel, choose one method below:\n\n* Put `FlashBot공지` or `FlashBot-공지` in the channel topic (takes prioirty)\n* Create the channel with the name `봇공지` or `봇-공지`"
+        },
+        "author": "Written by %1$s"
+      }
     }
   }
 }
