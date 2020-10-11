@@ -192,9 +192,9 @@ class CommandHandler {
       if (cmd._owner && !owner) return await msg.reply(t('CommandHandler.run.ownerOnly', locale))
 
       if (msg.guild) {
-        if (!msg.guild.me.permissions.has(cmd._clientPerms)) return msg.reply(t('CommandHandler.noClientPermission', locale, cmd._clientPerms.join('`, `')))
+        if (!msg.channel.permissionsFor(client.user).has(cmd._clientPerms)) return msg.reply(t('CommandHandler.noClientPermission', locale, cmd._clientPerms.join('`, `')))
 
-        if (!owner && !msg.member.permissions.has(cmd._userPerms)) return msg.reply(t('CommandHandler.noUserPermission', locale, cmd._userPerms.join('`, `')))
+        if (!owner && !msg.channel.permissionsFor(msg.author).has(cmd._userPerms)) return msg.reply(t('CommandHandler.noUserPermission', locale, cmd._userPerms.join('`, `')))
       }
 
       // Log command usage
