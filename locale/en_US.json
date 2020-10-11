@@ -392,6 +392,15 @@
       "grantedInChannel": "Granted in this channel",
       "deniedInChannel": "Denied in this channel",
       "isAdmin": "You have the `ADMINISTRATOR` permission in this channel. All permissions are granted for you."
+    },
+    "notice": {
+      "previewEmbed": {
+        "title": "FlashBot Announcement"
+      },
+      "confirm": "Send this announcement to all servers?",
+      "cancelled": "Cancelled sending announcements.",
+      "timeOut": "Input timed out, so sending announcements is cancelled automatically.",
+      "started": "Started the announcement sending process. This may take a lot of time."
     }
   },
   "CommandHandler": {
