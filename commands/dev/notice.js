@@ -1,6 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 
 const Command = require('../../classes/Command')
+const sendNotice = require('../../modules/sendNotice')
 
 class NoticeCommand extends Command {
   constructor (client) {
@@ -45,9 +46,8 @@ class NoticeCommand extends Command {
         return msg.reply(t('commands.notice.cancelled', locale))
       } else if (emoji === '✅') {
         // Run
-        // TODO sendNotice module here
-
         msg.reply(t('commands.notice.started', locale))
+        await sendNotice(client, text, msg.author)
       }
     }
   }
