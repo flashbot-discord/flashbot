@@ -400,7 +400,10 @@
       "confirm": "Send this announcement to all servers?",
       "cancelled": "Cancelled sending announcements.",
       "timeOut": "Input timed out, so sending announcements is cancelled automatically.",
-      "started": "Started the announcement sending process. This may take a lot of time."
+      "started": "Started the announcement sending process. This may take a lot of time.",
+      "error": {
+        "noText": "Please enter the announcement text you want to send after the command."
+      }
     }
   },
   "CommandHandler": {
