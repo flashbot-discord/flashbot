@@ -19,8 +19,10 @@ class NoticeCommand extends Command {
     const t = client.locale.t
     const text = query.args.join(' ')
 
+    if (text.length < 1) return msg.reply(t('commands.notice.error.noText', locale))
+
     const embed = new MessageEmbed()
-      .setTitle(t('commands.notice.previewEmbed.title', locale))
+      .setTitle(':loudspeaker: ' + t('commands.notice.previewEmbed.title', locale))
       .setDescription(text)
 
     const botMsg = await msg.reply(t('commands.notice.confirm', locale), embed)
