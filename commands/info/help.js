@@ -33,14 +33,11 @@ class HelpCommand extends Command {
     })
 
     // is DM
-    let dm = true
-    if (msg.guild && args.here) dm = false
+    const dm = !msg.guild || !args.here
 
     // Enable/Disable Page
-    let page = true
-    if (dm ||
-      args['no-page'] ||
-      (!dm && !msg.channel.permissionsFor(msg.guild.me).has('ADD_REACTIONS'))) page = false
+    const page = (!args['no-page'] &&
+      (dm || msg.channel.permissionsFor(client.user).has('ADD_REACTIONS')))
 
     // Embed Maker
     const embeds = []
