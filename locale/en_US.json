@@ -340,7 +340,7 @@
     "dice": {
       "result": "Rolled %1$s-sided dice and `%2$s` came out!",
       "error": "Please enter **an integer equal or greater than 1** for number of dice faces.",
-      "DESC": "commands.dice.DESC"
+      "DESC": "Roll a dice!"
     },
     "maintenance": {
       "status": "Is maintenance mode on? `%1$s`",
@@ -372,11 +372,12 @@
       "usage": "Usage: ```\n%1$stictactoe <start/stop>\n\n<start> - Start the tic-tac-toe game.\n<stop> - Force stop the running tic-tac-toe game.\n```"
     },
     "sample": {
-      "DESC": "commands.sample.DESC"
+      "DESC": "This is a sample command. Nothing happens."
     },
     "uptime": {
       "title": "Bot Uptime",
-      "description": "The bot was running for %s milliseconds"
+      "description": "The bot was running for %s milliseconds",
+      "DESC": "Shows the uptime of the bot."
     },
     "permcheck": {
       "embed": {
@@ -391,7 +392,8 @@
       "denied": "Denied",
       "grantedInChannel": "Granted in this channel",
       "deniedInChannel": "Denied in this channel",
-      "isAdmin": "You have the `ADMINISTRATOR` permission in this channel. All permissions are granted for you."
+      "isAdmin": "You have the `ADMINISTRATOR` permission in this channel. All permissions are granted for you.",
+      "DESC": "Shows your permissions list."
     },
     "notice": {
       "previewEmbed": {

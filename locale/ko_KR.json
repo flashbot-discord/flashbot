@@ -334,7 +334,7 @@
     "dice": {
       "result": "(정)%1$s면체 주사위에서 `%2$s`이(가) 나왔어요!",
       "error": "주사위 면수는 **1 이상의 정수**로 입력해 주세요.",
-      "DESC": "commands.dice.DESC"
+      "DESC": "주사위를 굴려요!"
     },
     "maintenance": {
       "status": "현재 점검 중 여부: `%1$s`",
@@ -366,11 +366,12 @@
       "usage": "사용법: ```\n%1$s틱택토 <시작/종료>\n\n<시작> - 틱택토 게임을 시작합니다.\n<종료> - 진행 중인 틱택토 게임을 강제로 종료합니다.\n```"
     },
     "sample": {
-      "DESC": "commands.sample.DESC"
+      "DESC": "샘플 명령어"
     },
     "uptime": {
       "title": "봇 업타임",
-      "description": "이 봇이 작동한 지 %1$sms가 지났어요!"
+      "description": "이 봇이 작동한 지 %1$sms가 지났어요!",
+      "DESC": "봇의 업타임을 알려줘요."
     },
     "permcheck": {
       "embed": {
@@ -385,7 +386,8 @@
       "denied": "거부됨",
       "grantedInChannel": "이 채널에서 허용됨",
       "deniedInChannel": "이 채널에서 거부됨",
-      "isAdmin": "이 서버에서 관리자 권한을 갖고 있어요. 모든 권한이 허용되어 있어요."
+      "isAdmin": "이 서버에서 관리자 권한을 갖고 있어요. 모든 권한이 허용되어 있어요.",
+      "DESC": "자신이 가지고 있는 권한들을 보여줘요"
     },
     "notice": {
       "previewEmbed": {
