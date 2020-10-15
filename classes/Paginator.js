@@ -72,7 +72,7 @@ class Paginator {
         return
 
       case 'next':
-        if (this.page - 1 >= this.contents.length) break
+        if (this.page >= this.contents.length - 1) break
 
         this.page++
         this.update()
