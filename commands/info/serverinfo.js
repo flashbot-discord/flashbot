@@ -77,7 +77,6 @@ class ServerInfoCommand extends Command {
         `**:busts_in_silhouette: ${tn('commands.serverinfo.memberCount.title', locale, guild.memberCount)}**\n${memberCountText}\n\n` +
         `**:tv: ${tn('commands.serverinfo.channelCount.title', locale, guild.channels.cache.size)}**\n${channelCountText}\n\n` +
         `**:birthday: ${t('commands.serverinfo.createdAt.title', locale)}**: ${createdAt}`
-
     }
 
     return msg.channel.send(data)

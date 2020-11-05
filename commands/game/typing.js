@@ -1,5 +1,5 @@
 const path = require('path')
-const { Collection, MessageCollector } = require('discord.js')
+const { MessageCollector } = require('discord.js')
 const hangul = require('hangul-js')
 
 const Command = require('../../classes/Command')
@@ -30,7 +30,6 @@ class TypingGameCommand extends Command {
     switch (query.args[0]) {
       case 'reload':
       case '리로드':
-
       case 'ㄱ디ㅐㅁㅇ':
       case 'flfhem':
         if (!client.config.owner.includes(msg.author.id)) return msg.reply(t('commands.typing.error.noPermissionToReload', locale))
@@ -39,7 +38,6 @@ class TypingGameCommand extends Command {
 
       case 'start':
       case '시작':
-
       case 'ㄴㅅㅁㄱㅅ':
       case 'tlwkr': {
         // Check if the data is loaded
@@ -112,7 +110,6 @@ class TypingGameCommand extends Command {
       case '종료':
       case '정지':
       case '중지':
-
       case 'ㄴ새ㅔ':
       case 'whdfy':
       case 'wjdwl':
@@ -122,7 +119,6 @@ class TypingGameCommand extends Command {
 
       case '카테고리':
       case 'category':
-
       case 'zkxprhfl':
       case 'ㅊㅁㅅㄷ해교':
         if (!query.args[1]) return msg.reply(t('commands.typing.emptyCategorySearchQuery', locale, query.prefix))
