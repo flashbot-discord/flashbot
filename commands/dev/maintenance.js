@@ -23,8 +23,10 @@ class MaintenanceCommand extends Command {
       // End maintenance
       client.onlineMode = true
       msg.reply(t('commands.maintenance.end', locale))
-    } else msg.reply(t('commands.maintenance.status', locale, String(!client.onlineMode)) + '\n'
-      + t('commands.maintenance.usage', locale, query.prefix))
+    } else {
+      msg.reply(t('commands.maintenance.status', locale, String(!client.onlineMode)) + '\n' +
+      t('commands.maintenance.usage', locale, query.prefix))
+    }
   }
 }
 

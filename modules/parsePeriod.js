@@ -1,5 +1,5 @@
 module.exports = (periodText) => {
-  // 1d2h3m4s 
+  // 1d2h3m4s
 
   // days
   const daysSplit = periodText.split('d')
@@ -56,7 +56,7 @@ module.exports = (periodText) => {
   }
 }
 
-function parse(split) {
+function parse (split) {
   if (split.length === 1) return 0
   else if (split.length !== 2) return null
   const num = Number(split[0])

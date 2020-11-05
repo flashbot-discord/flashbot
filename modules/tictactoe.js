@@ -45,11 +45,11 @@ function mark (channelid, player, position) {
     win = -1
     endGame(channelid)
   }
-  
+
   return makeResultObj(true, {
     panel: session.board,
     collector: session.collector,
-    win,
+    win
   })
 }
 

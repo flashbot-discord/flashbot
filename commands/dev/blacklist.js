@@ -12,7 +12,7 @@ class BlacklistCommand extends Command {
   }
 
   async run (client, msg, query, locale) {
-    if(['추가', 'add'].includes(query.args[0])) {
+    if (['추가', 'add'].includes(query.args[0])) {
 
     }
   }

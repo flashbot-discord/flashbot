@@ -44,7 +44,7 @@ class EvalCommand extends Command {
 
     let bd
     let result = ''
-    let error = { occured: false, obj: null }
+    const error = { occured: false, obj: null }
     let useEmbed = canSendEmbed(client.user, msg.channel)
 
     if (!isUnsafe) bd = this.hideToken()

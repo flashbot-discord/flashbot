@@ -17,7 +17,7 @@ class DiceCommand extends Command {
     if (query.args.length > 0) {
       const input = query.args[0]
       if (
-        !/^[0-9]+$/.test(input) || 
+        !/^[0-9]+$/.test(input) ||
         parseInt(input) < 1
       ) return msg.reply(t('commands.dice.error', locale))
       else sides = parseInt(input)
