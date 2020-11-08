@@ -43,9 +43,7 @@ class PermissionCheckCommand extends Command {
     })
   }
 
-  async run (client, msg, _query, locale) {
-    const t = client.locale.t
-
+  async run (client, msg, _query, { t }) {
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
     const targetUser = msg.mentions.members.size > 0 ? msg.mentions.members.first() : msg.member
@@ -57,43 +55,43 @@ class PermissionCheckCommand extends Command {
     if (useEmbed) {
       const embed = new MessageEmbed()
         .setAuthor(targetUser.user.tag, targetUser.user.avatarURL())
-        .setTitle(t('commands.permcheck.embed.title', locale))
+        .setTitle(t('commands.permcheck.embed.title'))
 
-      let descText = t('commands.permcheck.embed.channelName', locale, targetChannel.toString()) + '\n\n'
+      let descText = t('commands.permcheck.embed.channelName', targetChannel.toString()) + '\n\n'
       if (targetUser.id === msg.guild.owner.id) {
-        descText += t('commands.permcheck.isOwner', locale)
+        descText += t('commands.permcheck.isOwner')
       } else if (targetUser.permissions.has('ADMINISTRATOR')) {
-        descText += t('commands.permcheck.isAdmin', locale)
+        descText += t('commands.permcheck.isAdmin')
       }
       embed.setDescription(descText)
 
       const availablePermList = filterPermList(permList, targetChannel.type)
       availablePermList.forEach((obj, perm) => {
-        embed.addField(t(`perms.${perm}`, locale), makePermsMsg({
+        embed.addField(t(`perms.${perm}`), makePermsMsg({
           granted: serverPerms.has(perm),
           grantedInChannel: obj.channelType != null ? channelPerms.has(perm) : null
-        }, t, locale))
+        }, t))
       })
 
       output = embed
     } else {
-      let str = t('commands.permcheck.noEmbed.title', locale, targetUser.user.tag, targetChannel.toString()) + '\n'
+      let str = t('commands.permcheck.noEmbed.title', targetUser.user.tag, targetChannel.toString()) + '\n'
 
       if (targetUser.id === msg.guild.owner.id) {
-        str += `> ${t('commands.permcheck.isOwner', locale)}`
+        str += `> ${t('commands.permcheck.isOwner')}`
       } else if (targetUser.permissions.has('ADMINISTRATOR')) {
-        str += `> ${t('commands.permcheck.isAdmin', locale)}`
+        str += `> ${t('commands.permcheck.isAdmin')}`
       }
 
       str += '\n\n'
 
       const availablePermList = filterPermList(permList, targetChannel.type)
       availablePermList.forEach((obj, perm) => {
-        str += `**${t(`perms.${perm}`, locale)}**\n` +
+        str += `**${t(`perms.${perm}`)}**\n` +
           makePermsMsg({
             granted: serverPerms.has(perm),
             grantedInChannel: obj.channelType != null ? channelPerms.has(perm) : null
-          }, t, locale) +
+          }, t) +
           '\n\n'
       })
 
@@ -112,18 +110,18 @@ function filterPermList (list, channelType) {
   })
 }
 
-function makePermsMsg (opts, t, locale) {
+function makePermsMsg (opts, t) {
   const { granted, grantedInChannel } = opts
   let msg = ''
 
   const channelPermAvailable = typeof grantedInChannel === 'boolean'
 
   msg += (granted ? ':white_check_mark:' : ':x:') + ' '
-  msg += t(`commands.permcheck.${granted ? 'granted' : 'denied'}`, locale)
+  msg += t(`commands.permcheck.${granted ? 'granted' : 'denied'}`)
 
   if (channelPermAvailable) {
     msg += '\n' + (grantedInChannel ? ':white_check_mark:' : ':x:') + ' '
-    msg += `**${t(`commands.permcheck.${grantedInChannel ? 'granted' : 'denied'}InChannel`, locale)}**`
+    msg += `**${t(`commands.permcheck.${grantedInChannel ? 'granted' : 'denied'}InChannel`)}**`
   }
 
   return msg

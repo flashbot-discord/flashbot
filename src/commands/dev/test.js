@@ -12,7 +12,7 @@ class TestCommand extends Command {
     })
   }
 
-  async run (_client, msg, query, _locale) {
+  async run (_client, msg, query, _) {
     // Enter your code to test
     const cmd = query.args[0]
 

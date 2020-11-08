@@ -13,8 +13,7 @@ class TicTacToeCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
+  async run (client, msg, query, { t }) {
     const cmd = query.args[0]
 
     switch (cmd) {
@@ -26,7 +25,7 @@ class TicTacToeCommand extends Command {
         tictactoeModule.prepareGame(msg.channel.id)
 
         // Wait for game
-        const botMsg = await msg.channel.send(t('commands.tictactoe.waiting', locale, msg.author.id))
+        const botMsg = await msg.channel.send(t('commands.tictactoe.waiting', msg.author.id))
 
         await botMsg.react('✅')
         await botMsg.react('❌')
@@ -48,16 +47,16 @@ class TicTacToeCommand extends Command {
         // Cancel process
         if (collected.size < 1) {
           tictactoeModule.endGame(msg.channel.id)
-          return msg.channel.send(t('commands.tictactoe.noOneJoined', locale))
+          return msg.channel.send(t('commands.tictactoe.noOneJoined'))
         } else if (action === 'cancel') {
           tictactoeModule.endGame(msg.channel.id)
-          return msg.reply(t('commands.tictactoe.gameCancelled', locale))
+          return msg.reply(t('commands.tictactoe.gameCancelled'))
         } else if (action === 'manual') {
           tictactoeModule.endGame(msg.channel.id)
         } else if (action !== 'start') throw new Error(`Unexpected action value '${action}'`)
 
         const player2 = collected.first().users.cache.find((u) => u.id !== client.user.id)
-        runGame(msg, player2, locale)
+        runGame(msg, player2, t)
         break
       }
 
@@ -67,20 +66,19 @@ class TicTacToeCommand extends Command {
       case 'ㄴ새ㅔ':
         if (tictactoeModule.isGamePlaying(msg.channel.id)) {
           tictactoeModule.getSession().collector.stop('manual')
-          msg.channel.send(t('commands.tictactoe.gameStopped', locale))
-        } else msg.channel.send(t('commands.tictactoe.error.notPlaying', locale))
+          msg.channel.send(t('commands.tictactoe.gameStopped'))
+        } else msg.channel.send(t('commands.tictactoe.error.notPlaying'))
 
         break
 
       // Default
       default:
-        return msg.reply(t('commands.tictactoe.usage', locale, query.prefix))
+        return msg.reply(t('commands.tictactoe.usage', query.prefix))
     }
   }
 }
 
-async function runGame (msg, player2, locale) {
-  const t = msg.client.locale.t
+async function runGame (msg, player2, t) {
   const useEmbed = msg.channel.permissionsFor(msg.client.user).has('EMBED_LINKS')
 
   // Host, Guest
@@ -92,14 +90,14 @@ async function runGame (msg, player2, locale) {
   let gamePanel
   if (useEmbed) {
     gamePanel = new MessageEmbed()
-      .setTitle(t('commands.tictactoe.game.title', locale))
+      .setTitle(t('commands.tictactoe.game.title'))
   } else gamePanel = ''
 
   gamePanel = modifyGamePanel(gamePanel, {
     players,
     turn,
     panelData: []
-  }, t, locale)
+  }, t)
 
   const gamePanelMsg = await msg.channel.send(gamePanel)
 
@@ -123,10 +121,10 @@ async function runGame (msg, player2, locale) {
     const result = tictactoeModule.mark(msg.channel.id, turn, parseInt(userInput.content))
     if (!result.success) {
       try {
-        handleError(msg, result.data, locale)
+        handleError(msg, result.data, t)
       } catch (err) {
         const e = new ClientError(err)
-        e.report(msg, locale, 'Commands / tictactoe#runGame()')
+        e.report(msg, t, 'Commands / tictactoe#runGame()')
       }
 
       return
@@ -147,7 +145,7 @@ async function runGame (msg, player2, locale) {
       turn,
       panelData,
       win
-    }, t, locale)
+    }, t)
 
     // Finally, update the message
     gamePanelMsg.edit(gamePanel)
@@ -170,13 +168,13 @@ async function runGame (msg, player2, locale) {
         turn,
         panelData,
         win: changeTurn(turn)
-      }, t, locale)
+      }, t)
       gamePanelMsg.edit(gamePanel)
 
-      msg.channel.send(t('commands.tictactoe.game.timeOut', locale, winner.toString()))
+      msg.channel.send(t('commands.tictactoe.game.timeOut', winner.toString()))
     } else if (reason === 'win') {
-      msg.channel.send(t('commands.tictactoe.game.win', locale, winner.toString()))
-    } else msg.channel.send(t('commands.tictactoe.game.draw', locale))
+      msg.channel.send(t('commands.tictactoe.game.win', winner.toString()))
+    } else msg.channel.send(t('commands.tictactoe.game.draw'))
   })
 }
 
@@ -187,12 +185,10 @@ function validateInput (position) {
     position <= 9
 }
 
-function handleError (msg, reason, locale) {
-  const t = msg.client.locale.t
-
+function handleError (msg, reason, t) {
   switch (reason) {
     case 'AlreadyMarked':
-      msg.reply(t('commands.tictactoe.error.alreadyMarked', locale))
+      msg.reply(t('commands.tictactoe.error.alreadyMarked'))
       break
 
     case 'InvalidPosition':
@@ -228,7 +224,7 @@ function formatPanelNum (panel) {
   return str
 }
 
-function modifyGamePanel (panel, data, t, locale) {
+function modifyGamePanel (panel, data, t) {
   const { players, turn, win, panelData } = data
   const useEmbed = panel instanceof MessageEmbed
   const panelNum = formatPanelNum(panelData)
@@ -237,11 +233,11 @@ function modifyGamePanel (panel, data, t, locale) {
   let statusText = ''
   if (someoneWin) {
     statusText = win !== -1
-      ? t('commands.tictactoe.game.description.win', locale, players[win].toString())
-      : t('commands.tictactoe.game.description.draw', locale)
-  } else statusText = t('commands.tictactoe.game.description.playing', locale, players[turn].toString())
+      ? t('commands.tictactoe.game.description.win', players[win].toString())
+      : t('commands.tictactoe.game.description.draw')
+  } else statusText = t('commands.tictactoe.game.description.playing', players[turn].toString())
 
-  const panelContentText = t('commands.tictactoe.game.description.content', locale, ...players.map(p => p.toString()))
+  const panelContentText = t('commands.tictactoe.game.description.content', ...players.map(p => p.toString()))
 
   const panelText = `
 ${statusText}

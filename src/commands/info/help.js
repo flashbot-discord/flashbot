@@ -22,8 +22,7 @@ class HelpCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
+  async run (client, msg, query, { t }) {
     const args = minimist(query.args, {
       boolean: ['here', 'no-page'],
       alias: {
@@ -44,21 +43,21 @@ class HelpCommand extends Command {
     const createEmbed = (group, currentPage, totalPage, isFirst) => {
       const embed = new MessageEmbed()
       if (isFirst) {
-        embed.setTitle(t('commands.help.title', locale))
+        embed.setTitle(t('commands.help.title'))
 
-        const groupT = t('commandGroup.' + group, locale)
-        if (page) embed.setDescription(t('commands.help.desc', locale, groupT, currentPage, totalPage))
-        else embed.setDescription(t('commands.help.descNoPage', locale, groupT))
+        const groupT = t('commandGroup.' + group)
+        if (page) embed.setDescription(t('commands.help.desc', groupT, currentPage, totalPage))
+        else embed.setDescription(t('commands.help.descNoPage', groupT))
       } else {
-        embed.setDescription(t('commands.help.descNoPage', locale, t('commandGroup.' + group, locale)))
+        embed.setDescription(t('commands.help.descNoPage', t('commandGroup.' + group)))
       }
 
-      if (page) embed.setFooter(t('commands.help.footer', locale, client.VERSION))
-      else embed.setFooter(t('commands.help.footerNoPage', locale, client.VERSION))
+      if (page) embed.setFooter(t('commands.help.footer', client.VERSION))
+      else embed.setFooter(t('commands.help.footerNoPage', client.VERSION))
 
       client.commands.groups.get(group).forEach((c) => {
         const cmd = client.commands.get(c)
-        embed.addField(client.config.prefix + cmd._name, t(cmd._desc, locale))
+        embed.addField(client.config.prefix + cmd._name, t(cmd._desc))
       })
 
       return embed
@@ -89,7 +88,7 @@ class HelpCommand extends Command {
       })
     }
     if (dm) {
-      if (msg.guild) await msg.reply(t('commands.help.sentToDM', locale))
+      if (msg.guild) await msg.reply(t('commands.help.sentToDM'))
     }
   }
 }

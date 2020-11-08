@@ -19,10 +19,8 @@ class LoadCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
-
-    if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd, locale))
+  async run (client, msg, query, { t }) {
+    if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd, t))
 
     const input = query.args[0]
 
@@ -31,8 +29,8 @@ class LoadCommand extends Command {
 
     const r = client.commands.register(cmd, fullpath)
 
-    if (!r) return msg.reply(t('commands.load.alreadyExists', locale))
-    return msg.reply(t('commands.load.added', locale, input))
+    if (!r) return msg.reply(t('commands.load.alreadyExists'))
+    return msg.reply(t('commands.load.added', input))
   }
 }
 

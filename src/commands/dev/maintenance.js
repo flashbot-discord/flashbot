@@ -11,21 +11,20 @@ class MaintenanceCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
+  async run (client, msg, query, { t }) {
     const cmd = query.args[0]
 
     if (['start', 'on', '시작'].includes(cmd)) {
       // Start maintenance
       client.onlineMode = false
-      msg.reply(t('commands.maintenance.start', locale))
+      msg.reply(t('commands.maintenance.start'))
     } else if (['end', 'off', '종료'].includes(cmd)) {
       // End maintenance
       client.onlineMode = true
-      msg.reply(t('commands.maintenance.end', locale))
+      msg.reply(t('commands.maintenance.end'))
     } else {
-      msg.reply(t('commands.maintenance.status', locale, String(!client.onlineMode)) + '\n' +
-      t('commands.maintenance.usage', locale, query.prefix))
+      msg.reply(t('commands.maintenance.status', String(!client.onlineMode)) + '\n' +
+      t('commands.maintenance.usage', query.prefix))
     }
   }
 }

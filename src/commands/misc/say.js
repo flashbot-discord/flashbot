@@ -23,15 +23,14 @@ class SayCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
-    if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
+  async run (client, msg, query, { t }) {
+    if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, t))
 
     const str = query.args.join(' ')
 
     // Reset the pattern count
     MessageMentions.EVERYONE_PATTERN.lastIndex = 0
-    if (MessageMentions.EVERYONE_PATTERN.test(str)) return await msg.reply(t('commands.say.noEveryone', locale))
+    if (MessageMentions.EVERYONE_PATTERN.test(str)) return await msg.reply(t('commands.say.noEveryone'))
 
     const say = query.args.join(' ')
     if (
@@ -42,10 +41,10 @@ class SayCommand extends Command {
       if (msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
         const embed = new MessageEmbed()
           .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
-          .setFooter(t('commands.say.embedFooter', locale))
+          .setFooter(t('commands.say.embedFooter'))
           .setDescription(say)
         msg.channel.send(embed)
-      } else msg.channel.send(t('commands.say.say', locale, say, msg.author.tag))
+      } else msg.channel.send(t('commands.say.say', say, msg.author.tag))
     }
   }
 }

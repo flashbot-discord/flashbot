@@ -1,5 +1,5 @@
 const path = require('path')
-const i18n = require('i18n')
+const { I18n } = require('i18n')
 
 const database = require('../database')
 
@@ -8,6 +8,7 @@ class LocaleHandler {
     const logPos = this.logPos = 'LocaleHandler'
 
     client.logger.log(logPos, 'Setting up i18n')
+    const i18n = new I18n()
     i18n.configure({
       directory: path.join(path.resolve(), 'src', 'locale'),
       defaultLocale: 'ko_KR',
@@ -26,17 +27,35 @@ class LocaleHandler {
     client.logger.log(logPos, 'i18n has been set up')
   }
 
-  t (phrase, locale, ...args) {
-    return i18n.__({ phrase, locale }, ...args)
-  }
+  getTranslateFunc (baseLocale) {
+    const t = (phraseOrOptions, ...args) => {
+      let phrase
+      let locale = baseLocale
+      if (typeof phraseOrOptions === 'object') {
+        phrase = phraseOrOptions.phrase
+        if (phraseOrOptions.locale) locale = phraseOrOptions.locale
+      } else phrase = phraseOrOptions
 
-  tn (phrase, locale, count) {
-    return i18n.__n({
-      singular: phrase,
-      plural: phrase,
-      locale,
-      count
-    })
+      return this.i18n.__({ phrase, locale }, ...args)
+    }
+
+    const tn = (phraseOrOptions, count) => {
+      let phrase
+      let locale = baseLocale
+      if (typeof phraseOrOptions === 'object') {
+        phrase = phraseOrOptions.phrase
+        if (phraseOrOptions.locale) locale = phraseOrOptions.locale
+      } else phrase = phraseOrOptions
+
+      return this.i18n.__n({
+        singular: phrase,
+        plural: phrase,
+        locale,
+        count
+      })
+    }
+
+    return { t, tn }
   }
 
   async getLocale (isGuild, obj) {

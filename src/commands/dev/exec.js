@@ -22,11 +22,9 @@ class ExecuteCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
-
+  async run (client, msg, query, { t }) {
     const str = query.args.join(' ')
-    if (!str) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
+    if (!str) return await msg.reply(Command.makeUsage(this, query.cmd, t))
     client.logger.log('Command / Exec', '[EXEC] ' + msg.author.tag + ' executed the command: ' + str)
 
     const m = await msg.reply('Executing...')
@@ -50,18 +48,18 @@ class ExecuteCommand extends Command {
     if (useEmbed) {
       const _str = str.length > 1000 ? str.slice(0, 1000) + moreText : str
       const embed = new MessageEmbed()
-        .setTitle(t('commands.exec.title', locale))
-        .addField(t('commands.exec.input', locale), '```\n' + _str + '\n```')
-        .addField(t('commands.exec.output', locale), '```\n' + result + '\n```')
+        .setTitle(t('commands.exec.title'))
+        .addField(t('commands.exec.input'), '```\n' + _str + '\n```')
+        .addField(t('commands.exec.output'), '```\n' + result + '\n```')
       error ? embed.setColor(0xff0000) : embed.setColor(0x00ff00)
 
       return m.edit({ content: '', embed })
     } else {
       const _str = str.length > 150 ? str.slice(0, 150) + moreText : str
       const _result = result.length > 1750 ? result.slice(0, 1750) + moreText : result
-      return m.edit(t('commands.exec.input', locale) + '```\n' +
+      return m.edit(t('commands.exec.input') + '```\n' +
         _str + '\n```\n' +
-        t('commands.exec.output', locale) + '```\n' +
+        t('commands.exec.output') + '```\n' +
         _result + '\n```'
       )
     }

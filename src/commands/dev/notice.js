@@ -15,17 +15,16 @@ class NoticeCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
+  async run (client, msg, query, { t }) {
     const text = query.args.join(' ')
 
-    if (text.length < 1) return msg.reply(t('commands.notice.error.noText', locale))
+    if (text.length < 1) return msg.reply(t('commands.notice.error.noText'))
 
     const embed = new MessageEmbed()
-      .setTitle(':loudspeaker: ' + t('commands.notice.previewEmbed.title', locale))
+      .setTitle(':loudspeaker: ' + t('commands.notice.previewEmbed.title'))
       .setDescription(text)
 
-    const botMsg = await msg.reply(t('commands.notice.confirm', locale), embed)
+    const botMsg = await msg.reply(t('commands.notice.confirm'), embed)
 
     botMsg.react('✅')
     botMsg.react('❌')
@@ -40,15 +39,15 @@ class NoticeCommand extends Command {
 
     if (collected.size < 1) {
       // Timeout
-      return msg.reply(t('commands.notice.timeOut', locale))
+      return msg.reply(t('commands.notice.timeOut'))
     } else {
       const emoji = collected.first().emoji.name
       if (emoji === '❌') {
         // User cancelled
-        return msg.reply(t('commands.notice.cancelled', locale))
+        return msg.reply(t('commands.notice.cancelled'))
       } else if (emoji === '✅') {
         // Run
-        msg.reply(t('commands.notice.started', locale))
+        msg.reply(t('commands.notice.started'))
         await sendNotice(client, text, msg.author)
       }
     }

@@ -157,19 +157,22 @@ class CommandHandler {
   }
 
   async run (cmd, client, msg, query) {
-    const t = client.locale.t
     const owner = client.config.owner.includes(msg.author.id)
+
+    // Get locale and create translate function
     let locale = await client.locale.getLocale(false, msg.author)
     if (msg.guild && locale == null) {
       const guildLocale = await client.locale.getLocale(true, msg.guild)
       if (guildLocale != null) locale = guildLocale
       else locale = client.locale.defaultLocale
     }
+    const translateFunc = client.locale.getTranslateFunc(locale)
+    const { t } = translateFunc
 
     try {
       // Database Check
       if ((cmd._requireDB || cmd._userReg || cmd._guildAct) && !client.db.ready) {
-        return await msg.channel.send(t('error.DBNotReady', locale))
+        return await msg.channel.send(t('error.DBNotReady'))
       }
 
       // Registration Check
@@ -177,34 +180,34 @@ class CommandHandler {
         cmd._userReg &&
         !(await database.users.isRegistered(client.db, msg.author.id))
       ) {
-        if (owner) msg.channel.send(t('CommandHandler.unregisteredOwner', locale))
-        else return msg.reply(t('Command.pleaseRegister.user', locale, client.config.prefix))
+        if (owner) msg.channel.send(t('CommandHandler.unregisteredOwner'))
+        else return msg.reply(t('Command.pleaseRegister.user', client.config.prefix))
       }
 
-      if (cmd._guildOnly && !msg.guild) return await msg.reply(t('CommandHandler.run.guildOnly', locale))
+      if (cmd._guildOnly && !msg.guild) return await msg.reply(t('CommandHandler.run.guildOnly'))
 
       if (
         cmd._guildAct &&
         !(await database.guilds.isActivated(client.db, msg.guild.id))
-      ) return msg.channel.send(t('Command.pleaseRegister.guild', locale, client.config.prefix))
+      ) return msg.channel.send(t('Command.pleaseRegister.guild', client.config.prefix))
 
       // Perms Check
-      if (cmd._owner && !owner) return await msg.reply(t('CommandHandler.run.ownerOnly', locale))
+      if (cmd._owner && !owner) return await msg.reply(t('CommandHandler.run.ownerOnly'))
 
       if (msg.guild) {
-        if (!msg.channel.permissionsFor(client.user).has(cmd._clientPerms)) return msg.reply(t('CommandHandler.noClientPermission', locale, cmd._clientPerms.join('`, `')))
+        if (!msg.channel.permissionsFor(client.user).has(cmd._clientPerms)) return msg.reply(t('CommandHandler.noClientPermission', cmd._clientPerms.join('`, `')))
 
-        if (!owner && !msg.channel.permissionsFor(msg.author).has(cmd._userPerms)) return msg.reply(t('CommandHandler.noUserPermission', locale, cmd._userPerms.join('`, `')))
+        if (!owner && !msg.channel.permissionsFor(msg.author).has(cmd._userPerms)) return msg.reply(t('CommandHandler.noUserPermission', cmd._userPerms.join('`, `')))
       }
 
       // Log command usage
       this.stats.stat(query.cmd, msg.guild ? msg.guild.id : 0)
 
       // Run
-      await cmd.run(client, msg, query, locale)
+      await cmd.run(client, msg, query, translateFunc)
     } catch (err) {
       const e = new ClientError(err)
-      e.report(msg, locale, `${this.logPos}.run => ${cmd._name}`)
+      e.report(msg, t, `${this.logPos}.run => ${cmd._name}`)
     }
   }
 }

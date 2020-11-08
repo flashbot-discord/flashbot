@@ -11,11 +11,9 @@ class StatCommand extends Command {
     })
   }
 
-  run (client, msg, query, locale) {
-    const t = client.locale.t
-
+  run (client, msg, query, { t }) {
     const total = client.commands.stats.getTotal()
-    msg.channel.send(t('commands.stat.total', locale, total))
+    msg.channel.send(t('commands.stat.total', total))
   }
 }
 

@@ -13,8 +13,7 @@ class UptimeCommand extends Command {
     })
   }
 
-  async run (client, msg, _query, locale) {
-    const t = client.locale.t
+  async run (client, msg, _query, t) {
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
     const uptime = Date.now() - client.readyAt.getTime()
@@ -22,13 +21,13 @@ class UptimeCommand extends Command {
     let output
     if (useEmbed) {
       const embed = new MessageEmbed()
-        .setTitle(':clock1: ' + t('commands.uptime.title', locale))
-        .setDescription(t('commands.uptime.description', locale, uptime))
+        .setTitle(':clock1: ' + t('commands.uptime.title'))
+        .setDescription(t('commands.uptime.description', uptime))
         .setFooter(msg.author.tag, msg.author.avatarURL())
         .setTimestamp()
 
       output = embed
-    } else output = t('commands.uptime.description', locale, uptime)
+    } else output = t('commands.uptime.description', uptime)
 
     msg.channel.send(output)
   }

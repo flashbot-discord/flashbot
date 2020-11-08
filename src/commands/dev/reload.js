@@ -18,17 +18,15 @@ class ReloadCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
-
-    if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd, locale))
+  async run (client, msg, query, { t }) {
+    if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd))
 
     const input = query.args[0]
     const cmd = client.commands.get(input)
-    if (!cmd) return msg.reply(t('commands.reload.cannotfind', locale, input))
+    if (!cmd) return msg.reply(t('commands.reload.cannotfind', input))
 
     cmd.reload()
-    return msg.reply(t('commands.reload.reloaded', locale, cmd._name))
+    return msg.reply(t('commands.reload.reloaded', cmd._name))
   }
 }
 

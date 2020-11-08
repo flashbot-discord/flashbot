@@ -12,8 +12,8 @@ class SupportCommand extends Command {
     this.inviteLink = 'https://discord.gg/epY3waF'
   }
 
-  run (client, msg, _query, locale) {
-    return msg.reply(client.locale.t('commands.support.text', locale) + '\n' + this.inviteLink)
+  run (client, msg, _query, { t }) {
+    return msg.reply(t('commands.support.text') + '\n' + this.inviteLink)
   }
 }
 

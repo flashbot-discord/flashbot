@@ -14,8 +14,8 @@ class BeepCommand extends Command {
     })
   }
 
-  async run (client, msg, _args, locale) {
-    return await msg.channel.send(client.locale.t('commands.beep.run:boop', locale))
+  async run (client, msg, _args, { t }) {
+    return msg.channel.send(t('commands.beep.run:boop'))
   }
 }
 

@@ -18,19 +18,17 @@ class UnloadCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
-
+  async run (client, msg, query, { t }) {
     if (query.args.length < 1) {
-      return msg.reply(Command.makeUsage(this, query.msg, locale))
+      return msg.reply(Command.makeUsage(this, query.msg, t))
     }
 
     const input = query.args[0]
     const cmd = client.commands.get(input)
-    if (!cmd) return msg.reply(t('commands.unload.cannotfind', locale, input))
+    if (!cmd) return msg.reply(t('commands.unload.cannotfind', input))
 
     cmd.unload()
-    return msg.reply(t('commands.unload.unloaded', locale, cmd._name))
+    return msg.reply(t('commands.unload.unloaded', cmd._name))
   }
 }
 

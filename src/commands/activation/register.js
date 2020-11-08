@@ -15,11 +15,9 @@ class RegisterCommand extends Command {
     this._logPos = 'RegisterCommand'
   }
 
-  async run (client, msg, args, locale) {
-    const t = client.locale.t
-
+  async run (client, msg, args, { t }) {
     const isRegistered = await database.users.isRegistered(client.db, msg.author.id)
-    if (isRegistered) return msg.reply(t('commands.register.alreadyRegistered', locale))
+    if (isRegistered) return msg.reply(t('commands.register.alreadyRegistered'))
 
     let result
     let done = false
@@ -43,24 +41,24 @@ class RegisterCommand extends Command {
       } else return false
     }
 
-    const botMsg = await msg.channel.send(t('commands.register.title', locale) + '\n\n' +
-      t('commands.register.content', locale) + '\n\n' +
-      t('commands.register.confirm', locale))
+    const botMsg = await msg.channel.send(t('commands.register.title') + '\n\n' +
+      t('commands.register.content') + '\n\n' +
+      t('commands.register.confirm'))
 
     try {
       await botMsg.react('✅')
       await botMsg.react('❌')
     } catch (err) {
-      msg.channel.send(t('commands.register.reactFail', locale, client.locale.t('perms.ADD_REACTIONS', locale)))
+      msg.channel.send(t('commands.register.reactFail', t('perms.ADD_REACTIONS')))
     }
 
     const pend = async (c) => {
       if (done) return
 
       if (c.size > 0 && result) {
-        await this.agree(msg, locale)
+        await this.agree(msg, t)
       } else {
-        this.deny(msg, locale)
+        this.deny(msg, t)
       }
 
       done = true
@@ -73,7 +71,7 @@ class RegisterCommand extends Command {
     botMsg.awaitReactions(rcFilter, { time: 15000, max: 1 }).then(pend)
   }
 
-  async agree (msg, locale) {
+  async agree (msg, t) {
     // Activation
     try {
       await database.users.register(this._client.db, {
@@ -81,16 +79,16 @@ class RegisterCommand extends Command {
       })
     } catch (err) {
       const e = new ClientError(err)
-      e.report(msg, locale, this._logPos + '.agree')
+      e.report(msg, t, this._logPos + '.agree')
     }
 
     // Done!
     this._client.logger.log('Command / Register', `[User Registration] ${msg.author.tag} (${msg.member.nickname}) has registered to the bot`)
-    msg.channel.send(this._client.locale.t('commands.register.agree', locale, this._client.config.prefix))
+    msg.channel.send(t('commands.register.agree', this._client.config.prefix))
   }
 
-  deny (msg, locale) {
-    msg.channel.send(this._client.locale.t('commands.register.deny', locale))
+  deny (msg, t) {
+    msg.channel.send(t('commands.register.deny'))
   }
 }
 

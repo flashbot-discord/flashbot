@@ -18,9 +18,7 @@ class ServerInfoCommand extends Command {
     })
   }
 
-  async run (client, msg, _query, locale) {
-    const { t, tn } = client.locale
-
+  async run (client, msg, _query, { t, tn }) {
     let data
     const guild = msg.guild
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
@@ -29,54 +27,54 @@ class ServerInfoCommand extends Command {
     const [bots, users] = members.partition((member) => member.user.bot)
     const userCount = users.size
     const botCount = bots.size
-    const memberCountText = `:adult: ${tn('commands.serverinfo.memberCount.value.userCount', locale, userCount)}\n` +
-      `:robot: ${tn('commands.serverinfo.memberCount.value.botCount', locale, botCount)}`
+    const memberCountText = `:adult: ${tn('commands.serverinfo.memberCount.value.userCount', userCount)}\n` +
+      `:robot: ${tn('commands.serverinfo.memberCount.value.botCount', botCount)}`
 
     const channelCache = guild.channels.cache
     const textChannelCount = channelCache.filter((c) => c.type === 'text').size
     const voiceChannelCount = channelCache.filter((c) => c.type === 'voice').size
     const categoryCount = channelCache.filter((c) => c.type === 'category').size
     const newsChannelCount = channelCache.filter((c) => c.type === 'news').size
-    const channelCountText = `:keyboard: ${tn('commands.serverinfo.channelCount.value.textChannelCount', locale, textChannelCount)}\n` +
-      `:microphone2: ${tn('commands.serverinfo.channelCount.value.voieChannelCount', locale, voiceChannelCount)}\n` +
-      `:file_folder: ${tn('commands.serverinfo.channelCount.value.categoryCount', locale, categoryCount)}\n` +
-      `:newspaper: ${tn('commands.serverinfo.channelCount.value.newsChannelCount', locale, newsChannelCount)}`
+    const channelCountText = `:keyboard: ${tn('commands.serverinfo.channelCount.value.textChannelCount', textChannelCount)}\n` +
+      `:microphone2: ${tn('commands.serverinfo.channelCount.value.voieChannelCount', voiceChannelCount)}\n` +
+      `:file_folder: ${tn('commands.serverinfo.channelCount.value.categoryCount', categoryCount)}\n` +
+      `:newspaper: ${tn('commands.serverinfo.channelCount.value.newsChannelCount', newsChannelCount)}`
 
     const verificationLevel = guild.verificationLevel
-    const verificationLevelText = `**${t(`verificationLevel.${verificationLevel}.name`, locale)}** (\`${verificationLevel}\`)\n` +
-      t(`verificationLevel.${verificationLevel}.description`, locale)
+    const verificationLevelText = `**${t(`verificationLevel.${verificationLevel}.name`)}** (\`${verificationLevel}\`)\n` +
+      t(`verificationLevel.${verificationLevel}.description`)
 
     const is2FAReqOn = guild.mfaLevel === 1
-    const twoFARequireForModText = `${is2FAReqOn ? ':white_check_mark:' : ':x:'} ${t(`commands.serverinfo.2faRequireForMod.value.${is2FAReqOn ? 'enabled' : 'disabled'}`, locale)} (\`${guild.mfaLevel}\`)`
+    const twoFARequireForModText = `${is2FAReqOn ? ':white_check_mark:' : ':x:'} ${t(`commands.serverinfo.2faRequireForMod.value.${is2FAReqOn ? 'enabled' : 'disabled'}`)} (\`${guild.mfaLevel}\`)`
 
-    const createdAt = moment(guild.createdAt).tz('Asia/Seoul').format(t('commands.serverinfo.createdAt.value', locale))
+    const createdAt = moment(guild.createdAt).tz('Asia/Seoul').format(t('commands.serverinfo.createdAt.value'))
 
     if (useEmbed) {
       data = new MessageEmbed()
-        .setTitle(t('commands.serverinfo.title', locale, guild.name))
+        .setTitle(t('commands.serverinfo.title', guild.name))
         .setThumbnail(guild.iconURL({ dynamic: true, size: 1024 }))
         .setFooter(msg.author.tag, msg.author.avatarURL({ dynamic: true, size: 1024 }))
-        .addField(':desktop: ' + t('commands.serverinfo.name', locale), guild.name, true)
-        .addField(':id: ' + t('commands.serverinfo.id', locale), guild.id, true)
-        .addField(`:crown: ${t('commands.serverinfo.owner', locale)}`, `<@${guild.owner.id}> ${guild.owner.user.tag} (${guild.owner.id})`)
-        .addField(`:map: ${t('commands.serverinfo.region', locale)}`, `${t('regions.' + guild.region, locale)} (\`${guild.region}\`)`)
-        .addField(':shield: ' + t('commands.serverinfo.verificationLevel', locale), verificationLevelText)
-        .addField(':lock: ' + t('commands.serverinfo.2faRequireForMod.title', locale), twoFARequireForModText)
-        .addField(':busts_in_silhouette: ' + tn('commands.serverinfo.memberCount.title', locale, guild.memberCount), memberCountText, true)
-        .addField(':tv: ' + tn('commands.serverinfo.channelCount.title', locale, guild.channels.cache.size), channelCountText, true)
-        .addField(':birthday: ' + t('commands.serverinfo.createdAt.title', locale), createdAt)
+        .addField(':desktop: ' + t('commands.serverinfo.name'), guild.name, true)
+        .addField(':id: ' + t('commands.serverinfo.id'), guild.id, true)
+        .addField(`:crown: ${t('commands.serverinfo.owner')}`, `<@${guild.owner.id}> ${guild.owner.user.tag} (${guild.owner.id})`)
+        .addField(`:map: ${t('commands.serverinfo.region')}`, `${t('regions.' + guild.region)} (\`${guild.region}\`)`)
+        .addField(':shield: ' + t('commands.serverinfo.verificationLevel'), verificationLevelText)
+        .addField(':lock: ' + t('commands.serverinfo.2faRequireForMod.title'), twoFARequireForModText)
+        .addField(':busts_in_silhouette: ' + tn('commands.serverinfo.memberCount.title', guild.memberCount), memberCountText, true)
+        .addField(':tv: ' + tn('commands.serverinfo.channelCount.title', guild.channels.cache.size), channelCountText, true)
+        .addField(':birthday: ' + t('commands.serverinfo.createdAt.title'), createdAt)
     } else {
-      data = `**${t('commands.serverinfo.title', locale, guild.name)}**\n` +
-        `(${t('commands.serverinfo.requestedBy', locale, `<@${msg.author.id}>`, msg.author.tag)})\n\n` +
-        `**:desktop: ${t('commands.serverinfo.name', locale)}**: ${guild.name}\n` +
-        `**:id: ${t('commands.serverinfo.id', locale)}**: ${guild.id}\n` +
-        `**:crown: ${t('commands.serverinfo.owner', locale)}**: ${guild.owner.user.tag} (${guild.owner.id})\n` +
-        `**:map: ${t('commands.serverinfo.region', locale)}**: ${t('regions.' + guild.region, locale)} (\`${guild.region}\`)\n` +
-        `**:shield: ${t('commands.serverinfo.verificationLevel', locale)}**: ${verificationLevelText}\n` +
-        `**:lock: ${t('commands.serverinfo.2faRequireForMod.title', locale)}**: ${twoFARequireForModText}\n\n` +
-        `**:busts_in_silhouette: ${tn('commands.serverinfo.memberCount.title', locale, guild.memberCount)}**\n${memberCountText}\n\n` +
-        `**:tv: ${tn('commands.serverinfo.channelCount.title', locale, guild.channels.cache.size)}**\n${channelCountText}\n\n` +
-        `**:birthday: ${t('commands.serverinfo.createdAt.title', locale)}**: ${createdAt}`
+      data = `**${t('commands.serverinfo.title', guild.name)}**\n` +
+        `(${t('commands.serverinfo.requestedBy', `<@${msg.author.id}>`, msg.author.tag)})\n\n` +
+        `**:desktop: ${t('commands.serverinfo.name')}**: ${guild.name}\n` +
+        `**:id: ${t('commands.serverinfo.id')}**: ${guild.id}\n` +
+        `**:crown: ${t('commands.serverinfo.owner')}**: ${guild.owner.user.tag} (${guild.owner.id})\n` +
+        `**:map: ${t('commands.serverinfo.region')}**: ${t('regions.' + guild.region)} (\`${guild.region}\`)\n` +
+        `**:shield: ${t('commands.serverinfo.verificationLevel')}**: ${verificationLevelText}\n` +
+        `**:lock: ${t('commands.serverinfo.2faRequireForMod.title')}**: ${twoFARequireForModText}\n\n` +
+        `**:busts_in_silhouette: ${tn('commands.serverinfo.memberCount.title', guild.memberCount)}**\n${memberCountText}\n\n` +
+        `**:tv: ${tn('commands.serverinfo.channelCount.title', guild.channels.cache.size)}**\n${channelCountText}\n\n` +
+        `**:birthday: ${t('commands.serverinfo.createdAt.title')}**: ${createdAt}`
     }
 
     return msg.channel.send(data)

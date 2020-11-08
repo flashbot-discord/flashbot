@@ -8,9 +8,9 @@ class ClientError extends Error {
     this.stack = err.stack
   }
 
-  report (msg, locale, logPos) {
+  report (msg, t, logPos) {
     msg.client.logger.error(logPos, this.stack)
-    msg.reply(msg.client.locale.t('ClientError.error', locale, this.message, this.uid))
+    msg.reply(t('ClientError.error', this.message, this.uid))
     // TODO Webhook sending system
   }
 }

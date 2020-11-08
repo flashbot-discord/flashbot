@@ -125,23 +125,22 @@ class Command {
     return await msg.reply(cmd._client.locale.t('Command.pleaseRegister.guild', locale, cmd._client.config.prefix))
   }
 
-  static makeUsage (cmd, called, locale) {
-    const t = cmd._client.locale.t
+  static makeUsage (cmd, called, t) {
     let str = ''
     cmd._args.forEach((arg) => {
-      const name = t(arg.name, locale)
-      const type = t(arg.type, locale)
+      const name = t(arg.name)
+      const type = t(arg.type)
 
       str = str + (arg.optional ? '[' : '(') + name + ': ' + type + (arg.optional ? ']' : ')') + ' '
     })
     str += '\n\n'
     cmd._args.forEach((arg) => {
-      const name = t(arg.name, locale)
-      const desc = t(arg.description, locale)
+      const name = t(arg.name)
+      const desc = t(arg.description)
       str = str + (arg.optional ? '[' : '(') + name + (arg.optional ? ']' : ')') + ' - ' + desc + ' ' + '\n'
     })
 
-    return t('Command.makeUsage.str', locale, cmd._client.config.prefix, called, str)
+    return t('Command.makeUsage.str', cmd._client.config.prefix, called, str)
   }
 }
 

@@ -9,7 +9,7 @@ class DBKRVerifyCommand extends Command {
     })
   }
 
-  run (client, msg, _query, _locale) {
+  run (client, msg, _query, _) {
     msg.reply('comjun04#5963 (393674169243402240)')
   }
 }

@@ -13,10 +13,8 @@ class InviteCommand extends Command {
     this.koreanbotsLink = 'https://koreanbots.dev/bots/580047857344708619'
   }
 
-  async run (client, msg, guild, locale) {
-    const t = client.locale.t
-
-    return msg.channel.send(t('commands.invite.text', locale, this.inviteLink, this.koreanbotsLink))
+  async run (client, msg, guild, { t }) {
+    return msg.channel.send(t('commands.invite.text', this.inviteLink, this.koreanbotsLink))
   }
 }
 

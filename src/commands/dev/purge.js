@@ -18,8 +18,8 @@ class PurgeCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    if (query.args < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
+  async run (client, msg, query, { t }) {
+    if (query.args < 1) return await msg.reply(Command.makeUsage(this, query.cmd, t))
 
     // TODO WIP
   }

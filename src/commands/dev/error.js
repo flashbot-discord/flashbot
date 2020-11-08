@@ -11,7 +11,7 @@ class ErrorCommand extends Command {
     })
   }
 
-  run (_client, _msg, _query, _locale) {
+  run (_client, _msg, _query, _) {
     throw new Error('예상한 오류가 발생했습니다\n```~~계획대로야~~```')
   }
 }

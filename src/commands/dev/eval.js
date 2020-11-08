@@ -23,8 +23,7 @@ class EvalCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
+  async run (client, msg, query, { t }) {
     const args = minimist(query.args, {
       stopEarly: true,
       boolean: 'u',
@@ -37,7 +36,7 @@ class EvalCommand extends Command {
     const isUnsafe = args.unsafe
 
     const str = args._.join(' ')
-    if (!str) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
+    if (!str) return await msg.reply(Command.makeUsage(this, query.cmd, t))
     client.logger.log('Command / Eval', '[EVAL] ' + msg.author.tag + ' evaluated the code: ' + str)
 
     const m = await msg.reply('Evaling...')
@@ -72,18 +71,18 @@ class EvalCommand extends Command {
     if (useEmbed) {
       const _str = str.length > 1000 ? str.slice(0, 1000) + moreText : str
       const embed = new MessageEmbed()
-        .setTitle(t('commands.eval.title', locale))
-        .addField(t('commands.eval.input', locale), '```\n' + _str + '\n```')
-        .addField(t('commands.eval.output', locale), '```\n' + result + '\n```')
+        .setTitle(t('commands.eval.title'))
+        .addField(t('commands.eval.input'), '```\n' + _str + '\n```')
+        .addField(t('commands.eval.output'), '```\n' + result + '\n```')
       embed.setColor(error.occured ? 'RED' : 'GREEN')
 
       return m.edit({ content: '', embed })
     } else {
       const _str = str.length > 150 ? str.slice(0, 150) + moreText : str
       const _result = result.length > 1750 ? result.slice(0, 1750) + moreText : result
-      const print = t('commands.eval.input', locale) + '```\n' +
+      const print = t('commands.eval.input') + '```\n' +
         _str + '\n```\n' +
-        t('commands.eval.output', locale) + '```\n' +
+        t('commands.eval.output') + '```\n' +
         _result + '\n```'
 
       return m.edit(print)

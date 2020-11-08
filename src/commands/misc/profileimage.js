@@ -17,10 +17,10 @@ class ProfileImageCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
+  async run (client, msg, query, { t }) {
     if (msg.mentions.users.size > 0) return await msg.channel.send(msg.mentions.users.first().displayAvatarURL({ dynamic: true, size: 1024 }))
 
-    if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, locale))
+    if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, t))
   }
 }
 
