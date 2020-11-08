@@ -10,22 +10,20 @@ class DiceCommand extends Command {
     })
   }
 
-  async run (client, msg, query, locale) {
-    const t = client.locale.t
-
+  async run (client, msg, query, { t }) {
     let sides = 6
     if (query.args.length > 0) {
       const input = query.args[0]
       if (
         !/^[0-9]+$/.test(input) ||
         parseInt(input) < 1
-      ) return msg.reply(t('commands.dice.error', locale))
+      ) return msg.reply(t('commands.dice.error'))
       else sides = parseInt(input)
     }
 
     // Random
     const randNum = Math.floor(Math.random() * (sides - 1)) + 1
-    return msg.channel.send(':game_die: ' + t('commands.dice.result', locale, sides, randNum))
+    return msg.channel.send(':game_die: ' + t('commands.dice.result', sides, randNum))
   }
 }
 
