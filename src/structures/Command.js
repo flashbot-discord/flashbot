@@ -15,7 +15,14 @@ class Command {
      * 명령어 설명
      * @type {string}
      */
-    this._desc = infos.description || ''
+    this._desc = infos.description || `commands.${infos.name}.DESC`
+
+    /**
+     * whether the description needs to be translated
+     * 명령어 설명을 변역해야 하는지 여부
+     * @type {boolean}
+     */
+    this._descNeedsTranslate = !!infos.description
 
     /**
      * the aliases of a command
@@ -141,6 +148,10 @@ class Command {
     })
 
     return t('Command.makeUsage.str', cmd._client.config.prefix, called, str)
+  }
+
+  _translateDesc (t) {
+    return this._descNeedsTranslate ? t(this._desc) : this._desc
   }
 }
 
