@@ -37,10 +37,12 @@ class BotClient extends Client {
 
     // Load Config
     if (fs.existsSync(path.join(path.resolve(), 'config.js'))) config = require(path.join(path.resolve(), 'config.js'))
-    else config = {
-      owner: [],
-      prefix: '//',
-      extensions: {}
+    else {
+      config = {
+        owner: [],
+        prefix: '//',
+        extensions: {}
+      }
     }
 
     config.token = token
