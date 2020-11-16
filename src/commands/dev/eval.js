@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js')
 const minimist = require('minimist')
 const util = require('util')
 
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 const canSendEmbed = require('../../modules/canSendEmbed')
 
 class EvalCommand extends Command {
@@ -13,18 +13,27 @@ class EvalCommand extends Command {
       description: 'commands.eval.DESC:Evaluates a code.',
       group: 'dev',
       owner: true,
-      args: [
-        {
-          name: 'commands.eval.args.code.NAME:code',
-          type: 'common.string:string',
-          description: 'commands.eval.args.code.DESC:The code to evaluate.'
-        }
-      ]
+      /*
+      args: {
+        unsafe: {
+          aliases: ['u', 'ㅕ'],
+          type: 'boolean',
+          optional: true
+        },
+        _: [
+          {
+            name: 'code',
+            type: 'infinity',
+            optional: false,
+          }
+        ]
+      }
+      */
     })
   }
 
   async run (client, msg, query, { t }) {
-    const args = minimist(query.args, {
+    const args = minimist(query.rawArgs, {
       stopEarly: true,
       boolean: 'u',
       alias: {

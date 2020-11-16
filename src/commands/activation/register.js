@@ -1,4 +1,4 @@
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 const ClientError = require('../../structures/ClientError')
 const database = require('../../database')
 

@@ -2,7 +2,7 @@
  * @name args-info.js
  * @description 입력된 인수를 체크하는 명령어입니다.
  */
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 class ArgsInfoCommand extends Command {
   constructor (client) {

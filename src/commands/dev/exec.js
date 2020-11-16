@@ -14,9 +14,9 @@ class ExecuteCommand extends Command {
       owner: true,
       args: [
         {
-          name: 'commands.exec.args.cmd.NAME:command',
-          type: 'common.string:string',
-          description: 'commands.exec.args.cmd.DESC:The command to run on the shell.'
+          name: 'command',
+          type: 'infinity',
+          optional: false
         }
       ]
     })
