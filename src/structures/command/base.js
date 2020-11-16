@@ -1,3 +1,5 @@
+const ArgumentCollector = require('./arguments')
+
 class Command {
   constructor (client, infos) {
     this._logPos = 'Command'
@@ -83,9 +85,9 @@ class Command {
     /**
      * the command arguments
      * 명령어에서 사용하는 인수들
-     * @type {Array}
+     * @type {ArgumentCollector}
      */
-    this._args = infos.args || []
+    this._args = new ArgumentCollector(this)
 
     /**
      * command group which includes this command
@@ -100,6 +102,19 @@ class Command {
      * @type {string}
      */
     this._path = ''
+
+    // Add default value to args
+    if (
+      infos.args != null &&
+      typeof infos.args === 'object' &&
+      !Array.isArray(infos.args)
+    ) {
+      for (const arg in infos.args) {
+        this._args.registerNamedArgument(infos.args[arg])
+      }
+    } else if (Array.isArray(infos.args)) {
+      this._args.registerUnnamedArguments(infos.args)
+    }
   }
 
   async run (_client, _msg, _args, _locale) {
@@ -153,6 +168,44 @@ class Command {
   _translateDesc (t) {
     return this._descNeedsTranslate ? t(this._desc) : this._desc
   }
+
+  /*
+  _validateArgs (rawArgs) {
+    const argsParseOpts = { aliases: {}, default: {} }
+    if (!Array.isArray(this._args) && typeof this._args === 'object') {
+      for (const arg in this._args) {
+        if (arg === '_') continue
+
+        const argData = this._args[arg]
+        if (Array.isArray(argData.aliases) && argData.aliases.length > 0) argsParseOpts.alias[arg] = argData.aliases
+        if (argData.default != null) argsParseOpts.default[arg] = argData.default
+      }
+    }
+
+    const inputArgs = minimist(rawArgs, argsParseOpts)
+
+    let passed = true
+    if (Array.isArray(this._args)) {
+      this._args.forEach((cmdArg, idx) => {
+        if (!passed) return
+
+        // Is the type correct?
+        if (!argTypes[cmdArg.type].validate(inputArgs[idx])) {
+          passed = false
+          return
+        }
+
+        // Is required argument exist?
+        if (!cmdArg.optional && cmdArg.type !== 'boolean' && !inputArgs[idx]) {
+          passed = false
+          return
+        }
+
+
+      })
+    }
+  }
+  */
 }
 
 module.exports = Command

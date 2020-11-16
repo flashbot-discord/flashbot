@@ -1,3 +1,5 @@
+const minimist = require('minimist')
+
 class MsgQuery {
   constructor (content, prefix, calledByMention) {
     this.raw = content
@@ -9,7 +11,7 @@ class MsgQuery {
     this.arr = this.content.split(' ').filter((c) => c.length > 0)
     if (calledByMention && this.arr.length < 1) this.arr = ['hello']
     this.cmd = this.arr[0]
-    this.args = splitDoubleQuotes(this.arr.slice(1))
+    this.rawArgs = splitDoubleQuotes(this.arr.slice(1))
   }
 }
 

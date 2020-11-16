@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const minimist = require('minimist')
 
 const StatHandler = require('./StatHandler')
 const database = require('../database')
@@ -175,7 +176,7 @@ class CommandHandler {
         return await msg.channel.send(t('error.DBNotReady'))
       }
 
-      // Registration Check
+      // Is User Registered?
       if (
         cmd._userReg &&
         !(await database.users.isRegistered(client.db, msg.author.id))
@@ -184,8 +185,10 @@ class CommandHandler {
         else return msg.reply(t('Command.pleaseRegister.user', client.config.prefix))
       }
 
+      // Is Guild Only?
       if (cmd._guildOnly && !msg.guild) return await msg.reply(t('CommandHandler.run.guildOnly'))
 
+      // Is Guild Activated?
       if (
         cmd._guildAct &&
         !(await database.guilds.isActivated(client.db, msg.guild.id))
@@ -200,6 +203,9 @@ class CommandHandler {
         if (!owner && !msg.channel.permissionsFor(msg.author).has(cmd._userPerms)) return msg.reply(t('CommandHandler.noUserPermission', cmd._userPerms.join('`, `')))
       }
 
+      // Parse arguments and validate
+      query.args = cmd._args.parseArguments(query.rawArgs)
+      
       // Log command usage
       this.stats.stat(query.cmd, msg.guild ? msg.guild.id : 0)
 
