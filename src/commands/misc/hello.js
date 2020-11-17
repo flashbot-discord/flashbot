@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 const canSendEmbed = require('../../modules/canSendEmbed')
 const getPrefix = require('../../modules/getPrefix')
 

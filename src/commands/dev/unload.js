@@ -1,4 +1,4 @@
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 class UnloadCommand extends Command {
   constructor (client) {
@@ -10,8 +10,8 @@ class UnloadCommand extends Command {
       owner: true,
       args: [
         {
-          name: 'commands.unload.args.command.NAME:command',
-          type: 'common.string:string',
+          key: 'command',
+          type: 'string',
           description: 'commands.unload.args.command.DESC:Command to unload'
         }
       ]

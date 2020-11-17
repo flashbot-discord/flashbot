@@ -2,7 +2,7 @@ const path = require('path')
 const { MessageCollector } = require('discord.js')
 const hangul = require('hangul-js')
 
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 const typingModule = require('../../modules/typing')
 
 // TODO change name to 'fasttype'

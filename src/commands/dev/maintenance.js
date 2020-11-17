@@ -1,4 +1,4 @@
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 class MaintenanceCommand extends Command {
   constructor (client) {

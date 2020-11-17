@@ -3,7 +3,7 @@
  * @description 저장된 메모를 보여줍니다.
  */
 
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 class MemoCommand extends Command {
   constructor (client) {

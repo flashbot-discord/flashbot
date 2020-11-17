@@ -3,7 +3,7 @@
  * @description beep - boop
  */
 
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 class BeepCommand extends Command {
   constructor (client) {

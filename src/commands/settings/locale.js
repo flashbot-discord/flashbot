@@ -3,7 +3,7 @@
  * @description 설정된 언어 확인 및 변경
  */
 
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 const database = require('../../database')
 
 class LocaleCommand extends Command {
@@ -20,9 +20,9 @@ class LocaleCommand extends Command {
       userReg: true,
       args: [
         {
-          name: 'commands.locale.args.locale.NAME:locale',
+          key: 'locale',
           description: 'commands.locale.args.locale.DESC: When present, change the locale of the server to this value.',
-          type: 'common.string',
+          type: 'string',
           optional: true
         }
       ]

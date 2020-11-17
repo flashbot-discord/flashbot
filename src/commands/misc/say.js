@@ -4,7 +4,7 @@
  */
 
 const { MessageMentions, MessageEmbed } = require('discord.js')
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 class SayCommand extends Command {
   constructor (client) {
@@ -15,9 +15,9 @@ class SayCommand extends Command {
       group: 'misc',
       args: [
         {
-          name: 'commands.say.args.text.NAME:text',
+          key: 'text',
           description: 'commands.say.args.text.DESC:Text to say.',
-          type: 'common.string:string'
+          type: 'string'
         }
       ]
     })

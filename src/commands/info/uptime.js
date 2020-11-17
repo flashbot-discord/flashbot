@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 // const moment = require('moment-timezone')
 
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 class UptimeCommand extends Command {
   constructor (client) {

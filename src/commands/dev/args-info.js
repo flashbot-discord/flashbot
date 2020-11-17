@@ -13,9 +13,9 @@ class ArgsInfoCommand extends Command {
       group: 'dev',
       args: [
         {
-          name: 'commands.args-info.args.args.NAME:args',
+          name: 'args',
           description: 'commands.args-info.args.args.DESC:The arguments to pass. Infinite arguments are accepted.',
-          type: 'common.any:any'
+          type: 'any'
         }
       ]
     })

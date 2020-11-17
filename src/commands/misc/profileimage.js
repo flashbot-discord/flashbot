@@ -1,4 +1,4 @@
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 class ProfileImageCommand extends Command {
   constructor (client) {
@@ -9,9 +9,9 @@ class ProfileImageCommand extends Command {
       group: 'misc',
       args: [
         {
-          name: 'commands.profileimage.args.member.NAME:member',
+          key: 'member',
           description: 'commands.profileimage.args.member.DESC:The member to see the profile image. Currently, only mentions are accepted.',
-          type: 'common.mention:mention'
+          type: 'userMention'
         }
       ]
     })

@@ -1,6 +1,6 @@
 const { MessageEmbed, Collection } = require('discord.js')
 
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 const permList = new Collection([
   ['ADMINISTRATOR', { channelType: null }],

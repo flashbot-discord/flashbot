@@ -1,4 +1,4 @@
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 const path = require('path')
 
 class LoadCommand extends Command {
@@ -11,8 +11,8 @@ class LoadCommand extends Command {
       owner: true,
       args: [
         {
-          name: 'commands.load.args.command.NAME:command',
-          type: 'common.string:string',
+          key: 'command',
+          type: 'string',
           description: 'commands.load.args.command.DESC:Command to load'
         }
       ]

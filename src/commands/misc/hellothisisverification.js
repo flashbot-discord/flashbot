@@ -1,4 +1,4 @@
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 class DBKRVerifyCommand extends Command {
   constructor (client) {

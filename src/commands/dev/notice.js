@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 const sendNotice = require('../../modules/sendNotice')
 
 class NoticeCommand extends Command {

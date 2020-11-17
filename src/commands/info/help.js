@@ -2,7 +2,7 @@ const { MessageEmbed } = require('discord.js')
 const minimist = require('minimist')
 
 const Paginator = require('../../structures/Paginator')
-const Command = require('../../structures/Command')
+const Command = require('../_Command')
 
 class HelpCommand extends Command {
   constructor (client) {
@@ -13,9 +13,9 @@ class HelpCommand extends Command {
       group: 'info',
       args: [
         {
-          name: 'commands.help.args.command.NAME:command',
+          key: 'command',
           description: 'commands.help.args.command.DESC:Shows information about that command.',
-          type: 'common.string:string',
+          type: 'string',
           optional: true
         }
       ]
