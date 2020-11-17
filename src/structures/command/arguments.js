@@ -56,10 +56,13 @@ class ArgumentCollector {
   }
 
   parseArguments (rawArgs) {
-    const booleanTypedArgs = []
-    const stringTypedArgs = []
-    const aliases = {}
-console.log(this.args)
+    console.log(this.args)
+    const useNamedArgs = Object.keys(this.args.named).length > 0
+
+    if (useNamedArgs) return this._parseNamedArgs(rawArgs)
+    else return this._parseUnnamedArgs(rawArgs)
+
+    /*
     for (const argName in this.args.named) {
       const arg = this.args.named[argName]
       if (arg.type === 'boolean') booleanTypedArgs.push(argName)
@@ -75,11 +78,11 @@ console.log(this.args)
       if (arg.aliases) aliases[arg.name] = arg.aliases
     })
 console.log(booleanTypedArgs, stringTypedArgs, aliases)
-    const parsedArgs = minimist(rawArgs, {
-      boolean: booleanTypedArgs,
-      string: stringTypedArgs,
-      alias: aliases
-    })
+    const parsedArgs = useNamedArgs ? minimist(rawArgs, {
+        boolean: booleanTypedArgs,
+        string: stringTypedArgs,
+        alias: aliases
+      }) : rawArgs
 console.log(parsedArgs)
     // Check
     for (const argName in parsedArgs) {
@@ -107,6 +110,66 @@ console.log(parsedArgs)
       
     })
 console.log(parsedArgs) 
+    return parsedArgs
+    */
+  }
+
+  _parseNamedArgs (argsArr) {
+    const booleanTypedArgs = []
+    const stringTypedArgs = []
+    const aliases = {}
+
+    for (argName in this.args.named) {
+      const arg = this.args.named[argName]
+
+      // Check boolean/string typed args
+      // to pass it to minimist
+      if (arg.type === 'boolean') booleanTypedArgs.push(argName)
+      else if (arg.type === 'string') stringTypedArgs.push(argName)
+
+      // Aliases
+      if (arg.aliases) aliases[argName] = arg.aliases
+    }
+
+    // minimist
+    const parsedArgs = minimist(argsArr, {
+      boolean: booleanTypedArgs,
+      string: stringTypedArgs,
+      alias: aliases
+    })
+
+    const finalArgs = {}
+
+    // Check
+    for (const argName in parsedArgs) {
+      const arg = parsedArgs[argName]
+      if (argName === '_') {
+        Object.assign(finalArgs, this._parseUnnamedArgs(arg))
+      } else {
+        const argData = this.args.named[argName]
+
+        if (!argData) continue
+        else if (!types[argData.type].validate(arg)) throw new Error('Argument type mismatch')
+      
+        finalArgs[argName] = types[argData.type].parse(arg)
+      }
+    }
+
+    return finalArgs
+  }
+
+  _parseUnnamedArgs (argsArr) {
+    const parsedArgs = {}
+console.log(argsArr)
+    argsArr.forEach((arg, idx) => {
+      const argData = this.args.unnamed[idx]
+      if (!argData) return
+
+      if (!types[argData.type].validate(arg)) throw new Error('Argument type mismatch')
+
+      parsedArgs[argData.key] = types[argData.type].parse(arg)
+    })
+
     return parsedArgs
   }
 

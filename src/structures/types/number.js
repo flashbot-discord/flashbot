@@ -1,5 +1,5 @@
 module.exports = {
   type: 'number',
-  validate: el => typeof el === 'number',
-  parse: el => el // minimist parses this actually
+  validate: el => typeof Number(el) === 'number' && !isNaN(Number(el)),
+  parse: el => Number(el) // minimist parses this actually
 }
