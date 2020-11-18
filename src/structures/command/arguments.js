@@ -149,9 +149,11 @@ console.log(parsedArgs)
         const argData = this.args.named[argName]
 
         if (!argData) continue
-        else if (!types[argData.type].validate(arg)) throw new Error('Argument type mismatch')
+
+        const usedType = this._validateArg(arg, argData.type)
+        if (!usedType) throw new Error('Argument type mismatch')
       
-        finalArgs[argName] = types[argData.type].parse(arg)
+        finalArgs[argName] = types[usedType].parse(arg)
       }
     }
 
@@ -165,12 +167,22 @@ console.log(argsArr)
       const argData = this.args.unnamed[idx]
       if (!argData) return
 
-      if (!types[argData.type].validate(arg)) throw new Error('Argument type mismatch')
+      const usedType = this._validateArg(arg, argData.type)
+      if (!usedType) throw new Error('Argument type mismatch')
 
-      parsedArgs[argData.key] = types[argData.type].parse(arg)
+      parsedArgs[argData.key] = types[usedType].parse(arg)
     })
 
     return parsedArgs
+  }
+
+  _validateArg (arg, type) {
+    if (Array.isArray(type)) {
+      const usedType = type.find(t => types[t].validate(arg))
+      return usedType != null ? usedType : null
+    } else {
+      return types[type].validate(arg) ? type : null
+    }
   }
 
   has (name) {
