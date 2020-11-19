@@ -10,8 +10,8 @@ class ReloadCommand extends Command {
       owner: true,
       args: [
         {
-          name: 'commands.reload.args.command.NAME:command',
-          type: 'common.string:string',
+          name: 'command',
+          type: 'string',
           description: 'commands.reload.args.command.DESC:Command to reload'
         }
       ]

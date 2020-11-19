@@ -10,9 +10,9 @@ class PurgeCommand extends Command {
       owner: true,
       args: [
         {
-          name: 'commands.purge.args.name.NAME:name',
+          name: 'name',
           description: 'commands.purge.args.name.DESC:The name of the data to purge cache. (guild / user)',
-          type: 'common.string:string'
+          type: 'string'
         }
       ]
     })

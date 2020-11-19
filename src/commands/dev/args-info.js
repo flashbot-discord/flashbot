@@ -15,7 +15,8 @@ class ArgsInfoCommand extends Command {
         {
           name: 'args',
           description: 'commands.args-info.args.args.DESC:The arguments to pass. Infinite arguments are accepted.',
-          type: 'any'
+          type: 'any',
+          infinity: true
         }
       ]
     })
