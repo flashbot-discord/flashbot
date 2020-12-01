@@ -110,7 +110,8 @@ class Command {
       !Array.isArray(infos.args)
     ) {
       for (const arg in infos.args) {
-        this._args.registerNamedArgument(infos.args[arg])
+        if (arg === '_') this._args.registerUnnamedArguments(infos.args[arg])
+        else this._args.registerNamedArgument(arg, infos.args[arg])
       }
     } else if (Array.isArray(infos.args) && infos.args.length > 0) {
       this._args.registerUnnamedArguments(infos.args)
