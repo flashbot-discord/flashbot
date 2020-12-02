@@ -9,6 +9,11 @@ class ArgumentCollector {
     this.args = { named: {}, unnamed: [] }
   }
 
+  /**
+   * Register named argument
+   * @param {string} argName name of the argument
+   * @param {*} argInfo information object of the argument
+   */
   registerNamedArgument (argName, argInfo) {
     /*
     name: string (throws Error if not provided): {
@@ -44,6 +49,10 @@ class ArgumentCollector {
     }
   }
 
+  /**
+   * Register unnamed arguments
+   * @param {Array} argInfosArr 
+   */
   registerUnnamedArguments (argInfosArr) {
     /*
     {
@@ -63,7 +72,7 @@ class ArgumentCollector {
 
       // type
       if (!this._validateType(argInfo.type)) argInfo.type = null
-                                                              // optional field
+      // optional field
       const optional = Boolean(argInfo.optional)
 
       this.args.unnamed.push({
@@ -75,6 +84,12 @@ class ArgumentCollector {
     }
   }
 
+  /**
+   * Check whether the type is registered
+   * @param {string} type type to check
+   * @returns {boolean} is the type registered
+   * @private
+   */
   _validateType (type) {
     if (typeof type === 'string') {
       if (types[type] == null) throw new TypeError('Invalid argument type')
@@ -84,9 +99,13 @@ class ArgumentCollector {
       else return true
     } else if (type == null) return false
     else throw new TypeError('Argument type must be string or Array<string> or null')
-       
   }
 
+  /**
+   * Parses arguments
+   * @param {Object|Array} rawArgs 
+   * @returns {Object}
+   */
   parseArguments (rawArgs) {
     const useNamedArgs = Object.keys(this.args.named).length > 0
 
@@ -94,6 +113,10 @@ class ArgumentCollector {
     else return this._parseUnnamedArgs(rawArgs)
   }
 
+  /**
+   * Parses named arguments
+   * @param {Array} argsArr array of named arguments
+   */
   _parseNamedArgs (argsArr) {
     const booleanTypedArgs = []
     const stringTypedArgs = []
@@ -140,6 +163,10 @@ class ArgumentCollector {
     return finalArgs
   }
 
+  /**
+   * Parses unnamed arguments
+   * @param {Array} argsArr array of unnamed arguments
+   */
   _parseUnnamedArgs (argsArr) {
     const parsedArgs = {}
 
@@ -156,6 +183,12 @@ class ArgumentCollector {
     return parsedArgs
   }
 
+  /**
+   * Validates arg value with the type
+   * @param {string} arg the argument value
+   * @param {string} type type of the argument
+   * @private
+   */
   _validateArg (arg, type) {
     if (Array.isArray(type)) {
       const usedType = type.find(t => types[t].validate(arg))
@@ -165,6 +198,11 @@ class ArgumentCollector {
     }
   }
 
+  /**
+   * Checks whether the argument registered in this collector
+   * @param {string} name name of the argument
+   * @returns {boolean}
+   */
   has (name) {
     return name in this.args.named ||
       this.args.unnamed.some(el => el.key === name)
