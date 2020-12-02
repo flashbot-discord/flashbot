@@ -57,8 +57,8 @@ class ArgumentCollector {
 
     for (const argInfo of argInfosArr) {
       // name
-      const key = String(argInfo.key)
-      if (key.length < 1) throw new Error('Argument key is empty')
+      const key = argInfo.key
+      if (typeof key !== 'string' || key.length < 1) throw new Error('Argument key is empty')
       else if (this.args.unnamed.some(a => a.key === key)) throw new Error('Argument name already exists')
 
       // type
@@ -92,57 +92,6 @@ class ArgumentCollector {
 
     if (useNamedArgs) return this._parseNamedArgs(rawArgs)
     else return this._parseUnnamedArgs(rawArgs)
-
-    /*
-    for (const argName in this.args.named) {
-      const arg = this.args.named[argName]
-      if (arg.type === 'boolean') booleanTypedArgs.push(argName)
-      else if (arg.type === 'string') stringTypedArgs.push(argName)
-
-      if (arg.aliases) aliases[argName] = arg.aliases
-    }
-    this.args.unnamed
-      .forEach(arg => {
-      if (arg.type === 'boolean') booleanTypedArgs.push(arg.name)
-      else if (arg.type === 'string') stringTypedArgs.push(arg.name)
-
-      if (arg.aliases) aliases[arg.name] = arg.aliases
-    })
-console.log(booleanTypedArgs, stringTypedArgs, aliases)
-    const parsedArgs = useNamedArgs ? minimist(rawArgs, {
-        boolean: booleanTypedArgs,
-        string: stringTypedArgs,
-        alias: aliases
-      }) : rawArgs
-console.log(parsedArgs)
-    // Check
-    for (const argName in parsedArgs) {
-      const parsedArg = parsedArgs[argName]
-      if (argName === '_') {
-        parsedArg.forEach((arg, idx) => {
-          const argData = this.args.unnamed[idx]
-
-          if (!argData) return
-          else if (!types[argData.type].validate(arg)) throw new Error('Argument type mismatch')
-
-          parsedArgs[argData.key] = types[argData.type].parse(arg)
-        })
-      } else {
-        const argData = this.args.named[argName]
-
-        if (!argData) continue
-        else if (!types[argData.type].validate(parsedArg)) throw new Error('Argument type mismatch')
-      
-        parsedArgs[argName] = types[argData.type].parse(parsedArg)
-      }
-    }
-
-    parsedArgs._.forEach(arg => {
-      
-    })
-console.log(parsedArgs) 
-    return parsedArgs
-    */
   }
 
   _parseNamedArgs (argsArr) {
