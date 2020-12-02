@@ -169,10 +169,18 @@ class ArgumentCollector {
    */
   _parseUnnamedArgs (argsArr) {
     const parsedArgs = {}
+    let ignoreAfter = false
 
     argsArr.forEach((arg, idx) => {
+      if (ignoreAfter) return
+
       const argData = this.args.unnamed[idx]
       if (!argData) return
+
+      if (argData.type === 'text') {
+        arg = argsArr.slice(idx).join(' ')
+        ignoreAfter = true
+      }
 
       const usedType = this._validateArg(arg, argData.type)
       if (!usedType) throw new Error('Argument type mismatch')

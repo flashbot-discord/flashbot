@@ -2,6 +2,7 @@ module.exports = {
   number: require('./number'),
   string: require('./string'),
   boolean: require('./boolean'),
+  text: require('./text'),
 
   snowflake: require('./snowflake'),
 
