@@ -146,6 +146,8 @@ class ArgumentCollector {
     // Check
     for (const argName in parsedArgs) {
       const arg = parsedArgs[argName]
+
+      // unnamed args inside named args
       if (argName === '_') {
         Object.assign(finalArgs, this._parseUnnamedArgs(arg))
       } else {
@@ -177,6 +179,7 @@ class ArgumentCollector {
       const argData = this.args.unnamed[idx]
       if (!argData) return
 
+      // 'text' type contains strings including spaces
       if (argData.type === 'text') {
         arg = argsArr.slice(idx).join(' ')
         ignoreAfter = true

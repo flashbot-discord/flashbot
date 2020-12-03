@@ -1,4 +1,6 @@
 module.exports = {
+  any: require('./any'),
+
   number: require('./number'),
   string: require('./string'),
   boolean: require('./boolean'),
