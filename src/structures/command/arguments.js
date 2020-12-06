@@ -1,6 +1,5 @@
 const minimist = require('minimist')
 
-const Command = require('./base')
 const types = require('../types/index')
 
 class ArgumentCollector {
@@ -51,7 +50,7 @@ class ArgumentCollector {
 
   /**
    * Register unnamed arguments
-   * @param {Array} argInfosArr 
+   * @param {Array} argInfosArr
    */
   registerUnnamedArguments (argInfosArr) {
     /*
@@ -107,7 +106,7 @@ class ArgumentCollector {
 
   /**
    * Parses arguments
-   * @param {Object|Array} rawArgs 
+   * @param {Object|Array} rawArgs
    * @returns {Object}
    */
   parseArguments (rawArgs) {
@@ -161,8 +160,15 @@ class ArgumentCollector {
         if (!argData) continue
 
         const usedType = this._validateArg(arg, argData.type)
-        if (!usedType) throw new Error('Argument type mismatch')
-      
+        if (!usedType) {
+          const throwObj = {
+            error: true,
+            named: true,
+            argData
+          }
+          throw throwObj
+        }
+
         finalArgs[argName] = types[usedType].parse(arg)
       }
     }
@@ -205,7 +211,17 @@ class ArgumentCollector {
         ignoreAfter = true
       } else {
         usedType = this._validateArg(arg, argData.type)
-        if (!usedType) throw new Error('Argument type mismatch')
+
+        // NOTE: type mismatch
+        if (!usedType) {
+          const throwObj = {
+            error: true,
+            named: false,
+            argData,
+            index: idx
+          }
+          throw throwObj
+        }
 
         parsedArgs[argData.key] = types[usedType].parse(arg)
       }

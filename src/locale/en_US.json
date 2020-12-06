@@ -427,6 +427,13 @@
     "pleaseRegister": {
       "guild": "You need to register this server in order to use this feature. Please register using the `%1$sactivate` command.",
       "user": "Command.pleaseRegister.user"
+    },
+    "arguments": {
+      "typeMismatch": {
+        "unnamedArgs": "The type of %1$s(st/nd/rd/th) argument `%2$s` should be `%3$s`.",
+        "namedArgs": "The type of argument `%1$s` should be `%2$s`.",
+        "multipleArgs": "%1$s` or `%2$s"
+      }
     }
   },
   "error": {

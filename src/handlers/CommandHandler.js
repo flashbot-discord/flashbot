@@ -204,7 +204,21 @@ class CommandHandler {
       }
 
       // Parse arguments and validate
-      query.args = cmd._args.parseArguments(query.rawArgs)
+      try {
+        query.args = cmd._args.parseArguments(query.rawArgs)
+      } catch (err) {
+        if (!(err instanceof Error) && typeof err === 'object') {
+          const argsText = Array.isArray(err.argData.type)
+            ? t('Command.arguments.typeMismatch.multipleArgs', err.argData.type.slice(0, -1).join('`, `'), err.argData.type.slice(-1)[0])
+            : err.argData.type
+
+          if (err.named) {
+            return msg.reply(t('Command.arguments.typeMismatch.namedArgs', err.argData.name, argsText))
+          } else {
+            return msg.reply(t('Command.arguments.typeMismatch.unnamedArgs', err.index + 1, err.argData.key, argsText))
+          }
+        }
+      }
       
       // Log command usage
       this.stats.stat(query.cmd, msg.guild ? msg.guild.id : 0)

@@ -421,6 +421,13 @@
     "pleaseRegister": {
       "guild": "이 기능을 사용하기 위해서는 서버 활성화가 필요합니다. `%1$sactivate` 명령어를 사용하여 활성화하세요.",
       "user": "이 기능을 사용하려면 이용자로 가입해야 합니다. `%1$sregister` 명령어로 가입하세요."
+    },
+    "arguments": {
+      "typeMismatch": {
+        "unnamedArgs": "이 명령어의 %1$s번째 인수인 `%2$s`은(는) `%3$s` 타입이어야 해요.",
+        "namedArgs": "이 명령어의 인수인 `%1$s`은(는) `%2$s` 타입이어야 해요.",
+        "multipleArgs": "%1$s`(이)나 `%2$s"
+      }
     }
   },
   "error": {
