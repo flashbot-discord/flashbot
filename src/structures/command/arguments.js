@@ -60,7 +60,7 @@ class ArgumentCollector {
       type: string|Array<string> (null),
       optional: boolean (false),
       default: any (undefined),
-      // infinity: boolean (false)
+      infinity: boolean (false)
     }
     */
 
@@ -75,11 +75,15 @@ class ArgumentCollector {
       // optional field
       const optional = Boolean(argInfo.optional)
 
+      // infinity field
+      const infinity = Boolean(argInfo.infinity)
+
       this.args.unnamed.push({
         key,
         type: argInfo.type,
         optional,
-        default: argInfo.default
+        default: argInfo.default,
+        infinity
       })
     }
   }
@@ -116,6 +120,7 @@ class ArgumentCollector {
   /**
    * Parses named arguments
    * @param {Array} argsArr array of named arguments
+   * @private
    */
   _parseNamedArgs (argsArr) {
     const booleanTypedArgs = []
@@ -168,6 +173,7 @@ class ArgumentCollector {
   /**
    * Parses unnamed arguments
    * @param {Array} argsArr array of unnamed arguments
+   * @private
    */
   _parseUnnamedArgs (argsArr) {
     const parsedArgs = {}
@@ -185,10 +191,24 @@ class ArgumentCollector {
         ignoreAfter = true
       }
 
-      const usedType = this._validateArg(arg, argData.type)
-      if (!usedType) throw new Error('Argument type mismatch')
+      let usedType
+      if (argData.infinity && argData.type !== 'text') {
+        const args = argsArr.slice(idx)
+        const arr = []
+        for (const a of args) {
+          usedType = this._validateArg(a, argData.type)
+          if (usedType) arr.push(types[usedType].parse(a))
+          else break
+        }
 
-      parsedArgs[argData.key] = types[usedType].parse(arg)
+        parsedArgs[argData.key] = arr
+        ignoreAfter = true
+      } else {
+        usedType = this._validateArg(arg, argData.type)
+        if (!usedType) throw new Error('Argument type mismatch')
+
+        parsedArgs[argData.key] = types[usedType].parse(arg)
+      }
     })
 
     return parsedArgs
