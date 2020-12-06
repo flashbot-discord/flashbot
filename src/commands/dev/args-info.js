@@ -13,7 +13,7 @@ class ArgsInfoCommand extends Command {
       group: 'dev',
       args: [
         {
-          name: 'args',
+          key: 'args',
           description: 'commands.args-info.args.args.DESC:The arguments to pass. Infinite arguments are accepted.',
           type: 'any',
           infinity: true
@@ -23,9 +23,9 @@ class ArgsInfoCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd, t))
+    //if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd, t))
 
-    return msg.channel.send(t('commands.args-info.run', query.cmd, query.args.join(', ')))
+    return msg.channel.send(t('commands.args-info.run', query.cmd, query.args.args.join(', ')))
   }
 }
 

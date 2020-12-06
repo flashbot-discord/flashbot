@@ -14,8 +14,8 @@ class ExecuteCommand extends Command {
       owner: true,
       args: [
         {
-          name: 'command',
-          type: 'infinity',
+          key: 'command',
+          type: 'text',
           optional: false
         }
       ]
@@ -23,8 +23,8 @@ class ExecuteCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    const str = query.args.join(' ')
-    if (!str) return await msg.reply(Command.makeUsage(this, query.cmd, t))
+    const str = query.args.command
+    if (!str) return msg.reply(Command.makeUsage(this, query.cmd, t))
     client.logger.log('Command / Exec', '[EXEC] ' + msg.author.tag + ' executed the command: ' + str)
 
     const m = await msg.reply('Executing...')
@@ -68,7 +68,6 @@ class ExecuteCommand extends Command {
   async execute (cmd) {
     return new Promise((resolve, reject) => {
       ch.exec(cmd, (err, stdout, stderr) => {
-        console.log(stdout, stderr)
         if (err) reject(new Error(err + '\n' + stdout))
         else resolve(stdout)
       })

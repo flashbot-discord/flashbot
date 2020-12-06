@@ -11,31 +11,38 @@ class HelpCommand extends Command {
       description: 'commands.help.DESC:Shows help message.',
       aliases: ['도움', '도움말', 'ㅗ디ㅔ', 'ehdna', 'ehdnaakf'],
       group: 'info',
-      args: [
-        {
-          key: 'command',
-          description: 'commands.help.args.command.DESC:Shows information about that command.',
-          type: 'string',
+      args: {
+        here: {
+          aliases: ['h', 'ㅗㄷㄱㄷ', 'ㅗ'],
+          description: 'desc',
+          type: 'boolean',
           optional: true
-        }
-      ]
+        },
+        'no-page': {
+          aliases: ['n', 'nopage', 'ㅜㅐ-ㅔㅁㅎㄷ', 'ㅜ', 'ㅜㅐㅔㅁㅎㄷ'],
+          description: 'desc2',
+          type: 'boolean',
+          optional: true
+        },
+
+        _ :[
+          {
+            key: 'command',
+            description: 'commands.help.args.command.DESC:Shows information about that command.',
+            type: 'string',
+            optional: true
+          }
+        ]
+      }
     })
   }
 
   async run (client, msg, query, { t }) {
-    const args = minimist(query.args, {
-      boolean: ['here', 'no-page'],
-      alias: {
-        here: ['h', 'ㅗㄷㄱㄷ', 'ㅗ'],
-        'no-page': ['n', 'ㅜㅐ-ㅔㅁㅎㄷ', 'ㅜ']
-      }
-    })
-
     // is DM
-    const dm = !msg.guild || !args.here
+    const dm = !msg.guild || !query.args.here
 
     // Enable/Disable Page
-    const page = (!args['no-page'] &&
+    const page = (!query.args['no-page'] &&
       (dm || msg.channel.permissionsFor(client.user).has('ADD_REACTIONS')))
 
     // Embed Maker
