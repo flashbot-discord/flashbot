@@ -1,6 +1,8 @@
 const path = require('path')
 const fs = require('fs')
 
+const InternalStorageHandler = require('./InternalStorageHandler')
+
 class DatabaseHandler {
   constructor (client, type, connection) {
     const logPos = this.logPos = 'DatabaseHandler'
@@ -8,6 +10,10 @@ class DatabaseHandler {
     this.type = type
 
     client.logger.log(logPos, 'Database Handler Initializing...')
+
+    // Internal storage (game session, etc)
+    this.internal = new InternalStorageHandler()
+
     client.logger.log(logPos, 'Database Type: ' + type)
     switch (type) {
       case 'mysql':
