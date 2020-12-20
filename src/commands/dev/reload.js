@@ -21,7 +21,7 @@ class ReloadCommand extends Command {
   async run (client, msg, query, { t }) {
     if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd))
 
-    const input = query.args[0]
+    const input = query.args.command
     const cmd = client.commands.get(input)
     if (!cmd) return msg.reply(t('commands.reload.cannotfind', input))
 

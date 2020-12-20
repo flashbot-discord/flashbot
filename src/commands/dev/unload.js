@@ -23,7 +23,7 @@ class UnloadCommand extends Command {
       return msg.reply(Command.makeUsage(this, query.msg, t))
     }
 
-    const input = query.args[0]
+    const input = query.args.command
     const cmd = client.commands.get(input)
     if (!cmd) return msg.reply(t('commands.unload.cannotfind', input))
 
