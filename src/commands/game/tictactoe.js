@@ -3,26 +3,34 @@ const Command = require('../_Command')
 const tictactoeModule = require('../../modules/tictactoe')
 const ClientError = require('../../structures/ClientError')
 
+// for test
+const PLAY_MYSELF = true
+
 class TicTacToeCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'tictactoe',
       aliases: ['tic-tac-toe', '틱택토', '샻-ㅅㅁㅊ-샏', '샻ㅅㅁㅊ샏', 'xlrxorxh'],
       description: 'commands.tictactoe.DESC',
-      group: 'game'
+      group: 'game',
+      args: [
+        {
+          key: 'cmd',
+          description: '',
+          type: 'string'
+        }
+      ]
     })
   }
 
   async run (client, msg, query, { t }) {
-    const cmd = query.args[0]
-
-    switch (cmd) {
+    switch (query.args.cmd) {
       case '시작':
       case 'start':
       case 'tlwkr':
       case 'ㄴㅅㅁㄱㅅ': {
         // Start game session
-        tictactoeModule.prepareGame(msg.channel.id)
+        tictactoeModule.prepareGame(client, msg.channel.id)
 
         // Wait for game
         const botMsg = await msg.channel.send(t('commands.tictactoe.waiting', msg.author.id))
@@ -36,7 +44,7 @@ class TicTacToeCommand extends Command {
         const collected = await botMsg.awaitReactions((reaction, user) => {
           if (user.bot) return false
           else {
-            if (reaction.emoji.name === '✅' && user.id !== msg.author.id) action = 'start'
+            if (reaction.emoji.name === '✅' && (PLAY_MYSELF ? user.id === msg.author.id : user.id !== msg.author.id)) action = 'start'
             else if (reaction.emoji.name === '❌' && user.id === msg.author.id) action = 'cancel'
             else return false
 
