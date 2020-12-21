@@ -4,7 +4,7 @@ const tictactoeModule = require('../../modules/tictactoe')
 const ClientError = require('../../structures/ClientError')
 
 // for test
-const PLAY_MYSELF = true
+const PLAY_MYSELF = false
 
 class TicTacToeCommand extends Command {
   constructor (client) {

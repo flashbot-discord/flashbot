@@ -24,8 +24,9 @@ class TypingGameCommand extends Command {
     this._logPos = 'Command / typing'
   }
 
-  async run (client, msg, query, t) {
-    switch (query.args[0]) {
+  async run (client, msg, query, { t }) {
+    // TODO args support
+    switch (query.rawArgs[0]) {
       case 'reload':
       case '리로드':
       case 'ㄱ디ㅐㅁㅇ':
@@ -50,15 +51,15 @@ class TypingGameCommand extends Command {
 
         // Choose Language
         let lang = this.default
-        if (query.args[1]) {
-          if (typingModule.isLocaleExist(query.args[1])) lang = typingModule.getBaseLocale(query.args[1])
+        if (query.rawArgs[1]) {
+          if (typingModule.isLocaleExist(query.rawArgs[1])) lang = typingModule.getBaseLocale(query.rawArgs[1])
           else return msg.reply(t('commands.typing.error.langNotExist'))
         }
 
         // Category select
         let category
-        if (query.args[2]) {
-          const categoryInput = query.args[2]
+        if (query.rawArgs[2]) {
+          const categoryInput = query.rawArgs[2]
           if (!typingModule.isCategoryExist(lang, categoryInput)) return msg.reply(t('commands.typing.error.categoryNotExist'))
           else category = categoryInput
         } else category = null
@@ -119,7 +120,7 @@ class TypingGameCommand extends Command {
       case 'category':
       case 'zkxprhfl':
       case 'ㅊㅁㅅㄷ해교':
-        if (!query.args[1]) return msg.reply(t('commands.typing.emptyCategorySearchQuery', query.prefix))
+        if (!query.rawArgs[1]) return msg.reply(t('commands.typing.emptyCategorySearchQuery', query.prefix))
         else return msg.reply('WIP')
     }
   }
