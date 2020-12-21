@@ -3,12 +3,11 @@ class InternalStorageHandler {
     this._storage = {}
   }
 
-  register (key = '') {
+  register (key = '', value = {}) {
     if (this.has(key)) throw new Error('storage key already registered')
     else {
-      const obj = {}
-      this._storage[key] = obj
-      return obj
+      this._storage[key] = value
+      return value
     }
   }
 
