@@ -11,10 +11,20 @@ const session = new Collection()
 let isLoading = false
 let isLoaded = false
 
-exports.isLoading = () => isLoading
-exports.isLoaded = () => isLoaded
+let isReady = false
 
-exports.getData = (baseLocale, category) => {
+function init (client) {
+  if (isReady) return
+
+  client.db.internal.register('typing', {
+    typingData,
+    localeList,
+    session
+  })
+  isReady = true
+}
+
+function getData (baseLocale, category) {
   const localeData = typingData.get(baseLocale)
   const categoryData = category != null ? localeData.get(category) : localeData.filter((c) => c.data.length > 0).random()
   if (categoryData.data.length < 1) return null
@@ -26,15 +36,15 @@ exports.getData = (baseLocale, category) => {
   return data
 }
 
-exports.startGame = (channelid, collector) => session.set(channelid, collector)
-exports.isPlaying = (channelid) => session.has(channelid)
-exports.getSession = (channelid) => session.get(channelid)
-exports.endGame = (channelid) => session.delete(channelid)
+const startGame = (channelid, collector) => session.set(channelid, collector)
+const isPlaying = (channelid) => session.has(channelid)
+const getSession = (channelid) => session.get(channelid)
+const endGame = (channelid) => session.delete(channelid)
 
-exports.getBaseLocale = (locale) => localeList.get(locale)
-exports.isLocaleExist = (locale) => localeList.has(locale)
+const getBaseLocale = (locale) => localeList.get(locale)
+const isLocaleExist = (locale) => localeList.has(locale)
 
-exports.isCategoryExist = (baseLocale, category) => {
+function isCategoryExist (baseLocale, category) {
   const data = typingData.get(baseLocale)
   return data.has(category)
 }
@@ -46,12 +56,12 @@ exports.getCategory = (baseLocale, category) => {
 }
 */
 
-exports.clearAllData = () => {
+function clearAllData () {
   typingData.clear()
   localeList.clear()
 }
 
-exports.loadData = (basePath, logger) => {
+function loadData (basePath, logger) {
   // TODO make it async
   isLoading = true
 
@@ -113,6 +123,31 @@ exports.loadData = (basePath, logger) => {
   return makeResultObj(true)
 }
 
+/**
+ * @private
+ */
 function makeResultObj (success, reason) {
   return { success, reason }
+}
+
+module.exports = {
+  init,
+  isReady: () => isReady,
+
+  isLoading: () => isLoading,
+  isLoaded: () => isLoaded,
+  getData,
+
+  startGame,
+  isPlaying,
+  getSession,
+  endGame,
+
+  getBaseLocale,
+  isLocaleExist,
+
+  isCategoryExist,
+
+  clearAllData,
+  loadData
 }

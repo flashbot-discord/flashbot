@@ -136,6 +136,8 @@ class TypingGameCommand extends Command {
   }
 
   loadData (msg, t) {
+    if (!typingModule.isReady()) typingModule.init(msg.client)
+
     const result = typingModule.loadData(this.path, msg.client.logger)
 
     if (!result.success) {
