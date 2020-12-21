@@ -369,7 +369,8 @@
         "notPlaying": "The tic-tac-toe game is not running."
       },
       "gameStopped": "Stopped tic-tac-toe game.",
-      "usage": "Usage: ```\n%1$stictactoe <start/stop>\n\n<start> - Start the tic-tac-toe game.\n<stop> - Force stop the running tic-tac-toe game.\n```"
+      "usage": "Usage: ```\n%1$stictactoe <start/stop>\n\n<start> - Start the tic-tac-toe game.\n<stop> - Force stop the running tic-tac-toe game.\n```",
+      "alreadyPlaying": "The tictactoe game is already playing in this channel."
     },
     "sample": {
       "DESC": "This is a sample command. Nothing happens."

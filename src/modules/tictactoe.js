@@ -1,8 +1,20 @@
 const { Collection, MessageCollector } = require('discord.js')
 
 const sessions = new Collection()
+let isReady = false
 
-const prepareGame = (channelid) => sessions.set(channelid, 'preparing')
+function init (client) {
+  if (isReady) return
+
+  client.db.internal.register('tictactoe', sessions)
+  isReady = true
+}
+
+function prepareGame (client, channelid) {
+  if (!isReady) init(client)
+  sessions.set(channelid, 'preparing')
+}
+
 function startGame (channelid, collector) {
   const emptyBoard = []
   emptyBoard.length = 9
@@ -15,7 +27,7 @@ function startGame (channelid, collector) {
 }
 const endGame = (channelid) => sessions.delete(channelid)
 
-const isGamePlaying = (channelid) => sessions.has(channelid) && sessions.get(channelid) instanceof MessageCollector
+const isGamePlaying = (channelid) => sessions.has(channelid)
 const getSession = (channelid) => sessions.get(channelid)
 
 function mark (channelid, player, position) {

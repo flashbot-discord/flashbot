@@ -29,6 +29,9 @@ class TicTacToeCommand extends Command {
       case 'start':
       case 'tlwkr':
       case 'ㄴㅅㅁㄱㅅ': {
+        // Prevent multiple games in one channel
+        if (tictactoeModule.isGamePlaying(msg.channel.id)) return msg.channel.send(t('commands.tictactoe.alreadyPlaying'))
+
         // Start game session
         tictactoeModule.prepareGame(client, msg.channel.id)
 
@@ -73,7 +76,7 @@ class TicTacToeCommand extends Command {
       case 'whdfy':
       case 'ㄴ새ㅔ':
         if (tictactoeModule.isGamePlaying(msg.channel.id)) {
-          tictactoeModule.getSession().collector.stop('manual')
+          tictactoeModule.getSession(msg.channel.id).collector.stop('manual')
           msg.channel.send(t('commands.tictactoe.gameStopped'))
         } else msg.channel.send(t('commands.tictactoe.error.notPlaying'))
 
@@ -179,6 +182,7 @@ async function runGame (msg, player2, t) {
       }, t)
       gamePanelMsg.edit(gamePanel)
 
+      tictactoeModule.endGame(msg.channel.id)
       msg.channel.send(t('commands.tictactoe.game.timeOut', winner.toString()))
     } else if (reason === 'win') {
       msg.channel.send(t('commands.tictactoe.game.win', winner.toString()))
