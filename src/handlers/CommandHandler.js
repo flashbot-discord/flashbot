@@ -1,6 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const minimist = require('minimist')
+const { Collection } = require('discord.js')
 
 const StatHandler = require('./StatHandler')
 const database = require('../database')
@@ -25,17 +26,17 @@ class CommandHandler {
      * Commands registry
      * @type {Map<string, Command>} Registered commands, mapped with their name
      */
-    this.commands = new Map()
+    this.commands = new Collection()
     /**
      * Command Aliases registry
      * @type {Map<string, string>} Map of Aliases => Command name
      */
-    this.aliases = new Map()
+    this.aliases = new Collection()
     /**
      * Command Groups registry
      * @type {Map<string, string>} Map of group name => group description
      */
-    this.groups = new Map()
+    this.groups = new Collection()
 
     this.stats = new StatHandler(client)
   }
@@ -102,10 +103,9 @@ class CommandHandler {
       return this._client.logger.error(logPos, `Command '${c._name}' already exists.`)
     }
 
-    for (const alias of this.aliases) {
-      if (c._aliases.includes(alias)) {
-        return this._client.logger.error(logPos, `Command Alias '${alias}' already exists.`)
-      }
+    if (c._aliases.some(alias => this.aliases.has(alias))) {
+      const alias = c._aliases.find(a => this.aliases.has(a))
+      return this._client.logger.error(logPos, `Command Alias '${alias}' already exists.`)
     }
 
     c._path = fullpath
