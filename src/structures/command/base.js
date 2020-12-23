@@ -103,6 +103,13 @@ class Command {
      */
     this._path = ''
 
+    /**
+     * whether the command is enabled
+     * 명령어 활성화 여부
+     * @type {boolean}
+     */
+    this._enabled = true
+
     // Add default value to args
     if (
       infos.args != null &&

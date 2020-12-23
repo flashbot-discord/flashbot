@@ -157,6 +157,10 @@ class CommandHandler {
     return this.commands.get(cmd)
   }
 
+  has (name, alias = false) {
+    return alias ? this.aliases.has(name) : this.commands.has(name)
+  }
+
   async run (cmd, client, msg, query) {
     const owner = client.config.owner.includes(msg.author.id)
 
@@ -170,11 +174,15 @@ class CommandHandler {
     const translateFunc = client.locale.getTranslateFunc(locale)
     const { t } = translateFunc
 
+    // NOTE: Begin permission checks
     try {
       // Database Check
       if ((cmd._requireDB || cmd._userReg || cmd._guildAct) && !client.db.ready) {
         return await msg.channel.send(t('error.DBNotReady'))
       }
+
+      // NOTE: Check if command is globally disabled
+      if (!owner && !cmd._enabled) return msg.reply(t('CommandHandler.cmdDisabled'))
 
       // Is User Registered?
       if (
