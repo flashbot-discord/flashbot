@@ -402,9 +402,15 @@
         "noText": "공지를 보낼 내용을 명령어 뒤에 입력해 주세요."
       }
     },
-    "disable": {
-      "noSuchCommand": "commands.disable.noSuchCommand",
-      "complete": "commands.disable.complete"
+    "disablecmd": {
+      "noSuchCommand": "입력한 명령어가 존재하지 않아요.",
+      "complete": "`%1$s` 명령어를 비활성화했습니다.",
+      "alreadyDisabled": "해당 명령어는 이미 비활성화되어 있어요."
+    },
+    "enablecmd": {
+      "complete": "`%1$s` 명령어를 활성화했습니다.",
+      "noSuchCommand": "입력한 명령어가 존재하지 않아요.",
+      "alreadyEnabled": "해당 명령어는 이미 활성화되어 있어요."
     }
   },
   "CommandHandler": {

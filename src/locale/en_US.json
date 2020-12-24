@@ -408,9 +408,15 @@
         "noText": "Please enter the announcement text you want to send after the command."
       }
     },
-    "disable": {
-      "noSuchCommand": "commands.disable.noSuchCommand",
-      "complete": "commands.disable.complete"
+    "disablecmd": {
+      "noSuchCommand": "cannot find that command.",
+      "complete": "`%1$s` command is now disabled.",
+      "alreadyDisabled": "that command is already disabled."
+    },
+    "enablecmd": {
+      "complete": "`%1$s` command is now enabled.",
+      "noSuchCommand": "cannot find that command.",
+      "alreadyEnabled": "that command is already enabled."
     }
   },
   "CommandHandler": {
