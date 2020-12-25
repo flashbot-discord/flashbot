@@ -159,7 +159,11 @@
           "DESC": "Command to reload"
         }
       },
-      "DESC": "reloads a command"
+      "DESC": "reloads a command",
+      "allReload": {
+        "result": "reloaded `%2$s` of `%1$s` command(s).",
+        "failedCmds": "`%1$s` command(s) failed - `%2$s`"
+      }
     },
     "say": {
       "args": {
