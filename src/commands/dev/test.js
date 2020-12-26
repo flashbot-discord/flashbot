@@ -1,3 +1,5 @@
+const { inspect } = require('util')
+
 const Command = require('../_Command')
 const parsePeriod = require('../../modules/parsePeriod')
 
@@ -8,22 +10,29 @@ class TestCommand extends Command {
       aliases: ['테스트', 'ㅅㄷㄴㅅ', 'xptmxm'],
       description: 'commands.test.DESC:Command Testing',
       group: 'dev',
-      owner: true
+      owner: true,
+      args: [
+        {
+          key: 'cmd',
+          type: 'string',
+          optional: 'false'
+        }
+      ]
     })
   }
 
   async run (_client, msg, query, _) {
     // Enter your code to test
-    const cmd = query.args[0]
+    const cmd = query.args.cmd
 
     switch (cmd) {
       case 'parseperiod': {
-        const input = query.args[1]
+        const input = query.rawArgs[1]
         const result = parsePeriod(input)
         console.log(result)
         msg.channel.send(`
 \`\`\`
-${result}
+${inspect(result)}
 \`\`\``)
       }
     }
