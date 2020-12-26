@@ -1,17 +1,20 @@
 const { MessageEmbed } = require('discord.js')
 
-module.exports = async (client, noticeText, requestedUser) => {
-  const t = client.locale.t
+module.exports = async (msg, t, noticeText) => {
+  const client = msg.client
+  const requestedUser = msg.author
   const locale = 'ko_KR' // TODO temp
 
+  const tt = (phrase, ...args) => t({ phrase, locale }, ...args)
+
   const embed = new MessageEmbed()
-    .setTitle(':loudspeaker: ' + t('modules.sendNotice.embed.title', locale))
+    .setTitle(':loudspeaker: ' + tt('modules.sendNotice.embed.title'))
     .setDescription(noticeText)
-    .setFooter(t('modules.sendNotice.embed.author', locale, requestedUser.tag), requestedUser.avatarURL())
-    .addField(t('modules.sendNotice.embed.whyNoticeSentHere.title', locale), t('modules.sendNotice.embed.whyNoticeSentHere.content', locale))
+    .setFooter(tt('modules.sendNotice.embed.author', requestedUser.tag), requestedUser.avatarURL())
+    .addField(tt('modules.sendNotice.embed.whyNoticeSentHere.title'), tt('modules.sendNotice.embed.whyNoticeSentHere.content'))
 
   const guilds = client.guilds.cache
-  guilds.forEach(async guild => {
+  for await (const [_, guild] of guilds) {
     const availableChannels = guild.channels.cache.filter(ch => {
       return ['text', 'news'].includes(ch.type) &&
         ch.permissionsFor(client.user).has([
@@ -19,7 +22,7 @@ module.exports = async (client, noticeText, requestedUser) => {
           'EMBED_LINKS'
         ])
     })
-    if (availableChannels.size < 1) return
+    if (availableChannels.size < 1) continue
 
     // Find channels preferred to send notice
     // TODO refactor
@@ -38,11 +41,11 @@ module.exports = async (client, noticeText, requestedUser) => {
     let channel
     if (preferredChannel1) channel = preferredChannel1
     else if (preferredChannel2) channel = preferredChannel2
-    else return
+    else continue
 
     await channel.send(embed)
     await wait()
-  })
+  }
 }
 
 function wait () {

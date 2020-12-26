@@ -11,12 +11,19 @@ class NoticeCommand extends Command {
       description: 'commands.notice.DESC',
       group: 'dev',
       owner: true,
-      clientPerms: ['EMBED_LINKS', 'ADD_REACTIONS']
+      clientPerms: ['EMBED_LINKS', 'ADD_REACTIONS'],
+      args: [
+        {
+          key: 'text',
+          type: 'text',
+          optional: false
+        }
+      ]
     })
   }
 
   async run (client, msg, query, { t }) {
-    const text = query.args.join(' ')
+    const text = query.args.text
 
     if (text.length < 1) return msg.reply(t('commands.notice.error.noText'))
 
@@ -47,8 +54,9 @@ class NoticeCommand extends Command {
         return msg.reply(t('commands.notice.cancelled'))
       } else if (emoji === '✅') {
         // Run
+        // TODO show live status
         msg.reply(t('commands.notice.started'))
-        await sendNotice(client, text, msg.author)
+        await sendNotice(msg, t, text)
       }
     }
   }
