@@ -7,18 +7,26 @@ class MaintenanceCommand extends Command {
       aliases: ['maintain', '점검', 'ㅡ먀ㅜㅅ두뭋ㄷ', 'ㅡ먀ㅜㅅ먀ㅜ', 'wjarja'],
       description: 'commands.maintenance.DESC',
       group: 'dev',
-      owner: true
+      owner: true,
+      args: [
+        {
+          key: 'status',
+          description: '',
+          type: 'string',
+          optional: false
+        }
+      ]
     })
   }
 
   async run (client, msg, query, { t }) {
-    const cmd = query.args[0]
+    const cmd = query.args.status
 
-    if (['start', 'on', '시작'].includes(cmd)) {
+    if (['start', 'on', '시작', 'ㄴㅅㅁㄱㅅ', 'ㅐㅜ', 'tlwkr'].includes(cmd)) {
       // Start maintenance
       client.onlineMode = false
       msg.reply(t('commands.maintenance.start'))
-    } else if (['end', 'off', '종료'].includes(cmd)) {
+    } else if (['end', 'off', '종료', '둥', 'ㅐㄹㄹ', 'whdfy'].includes(cmd)) {
       // End maintenance
       client.onlineMode = true
       msg.reply(t('commands.maintenance.end'))

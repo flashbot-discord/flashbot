@@ -51,7 +51,7 @@ class ExecuteCommand extends Command {
         .setTitle(t('commands.exec.title'))
         .addField(t('commands.exec.input'), '```\n' + _str + '\n```')
         .addField(t('commands.exec.output'), '```\n' + result + '\n```')
-      error ? embed.setColor(0xff0000) : embed.setColor(0x00ff00)
+      embed.setColor(error ? 'RED' : 'GREEN')
 
       return m.edit({ content: '', embed })
     } else {

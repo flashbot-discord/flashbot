@@ -16,21 +16,23 @@ class PrefixCommand extends Command {
     })
   }
 
+  // TODO: apply subcommand
+
   async run (client, msg, query, { t }) {
     // Get mode
-    if (query.args.length < 1) {
+    if (query.rawArgs.length < 1) {
       const prefix = await getPrefix(client, msg.guild.id)
       return msg.channel.send(t('commands.prefix.info', prefix))
-    } else if (['set', '설정'].includes(query.args[0])) {
+    } else if (['set', '설정'].includes(query.rawArgs[0])) {
     // Set mode
       const setPerms = ['MANAGE_GUILD']
 
-      if (query.args.length < 2) {
+      if (query.rawArgs.length < 2) {
         const prefix = await database.guilds.prefix.get((this._client.db, msg.guild.id))
         return msg.reply(t('commands.prefix.set.pleaseEnterPrefix', prefix))
       } else if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.any(setPerms)) return msg.reply(t('commands.prefix.set.noPerms'))
       else {
-        const prefix = query.args[1]
+        const prefix = query.rawArgs[1]
 
         if (prefix.length > 11) return msg.reply(t('commands.prefix.set.tooLong'))
         if (textFormat.hasEveryoneMention(prefix)) return msg.reply(t('commands.prefix.set.everyoneNotAllowed'))

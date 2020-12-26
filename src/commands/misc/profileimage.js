@@ -17,6 +17,8 @@ class ProfileImageCommand extends Command {
     })
   }
 
+  // TODO: needs args fix (user: both mention or ids)
+
   async run (client, msg, query, { t }) {
     if (msg.mentions.users.size > 0) return await msg.channel.send(msg.mentions.users.first().displayAvatarURL({ dynamic: true, size: 1024 }))
 
