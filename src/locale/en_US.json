@@ -98,7 +98,15 @@
           "enabled": "enabled"
         }
       },
-      "requestedBy": "Requested by %1$s `%2$s`"
+      "requestedBy": "Requested by %1$s `%2$s`",
+      "serverBoost": {
+        "content": {
+          "level": "Level `{{level}}`",
+          "forNextLevel": "`{{requiredBoost}}` boost(s) for next level ({{currentBoost}} / {{boostForNextLevel}})",
+          "maxLevel": "Maximum level!"
+        },
+        "title": "`{{boost}}` server boost(s)"
+      }
     },
     "userinfo": {
       "DESC": "Shows user information.",

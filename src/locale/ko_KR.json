@@ -97,7 +97,15 @@
           "enabled": "활성화됨"
         }
       },
-      "requestedBy": "%1$s `%2$s`이(가) 요청함"
+      "requestedBy": "%1$s `%2$s`이(가) 요청함",
+      "serverBoost": {
+        "content": {
+          "level": "레벨 `{{level}}`",
+          "forNextLevel": "다음 레벨까지 `{{requiredBoost}}`개 남음 ({{currentBoost}} / {{boostForNextLevel}})",
+          "maxLevel": "최대 레벨 도달!"
+        },
+        "title": "서버 부스트 `{{boost}}`개"
+      }
     },
     "userinfo": {
       "DESC": "사용자 정보를 보여줍니다.",
