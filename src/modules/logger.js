@@ -35,7 +35,9 @@ const func = (scope) => {
       debugFunc(chalk.red(msg))
 
       process.exit(1)
-    }
+    },
+
+    extend: (str) => func(`${scope}:${str}`)
   }
 }
 
@@ -46,12 +48,12 @@ func.init = (debugMode, opts) => {
 
   console.log('== Logger Options ==')
 
-  options.debugMode = debugMode || false
+  options.debugMode = Boolean(debugMode)
   console.log(`options.debugMode = ${String(options.debugMode)}`)
   options.forceEnableLogsOnDebug = Boolean(opts.forceEnableLogsOnDebug)
   console.log(`options.forceEnableLogsOnDebug = ${String(options.forceEnableLogsOnDebug)}`)
 
-  if (debugMode) debugFuncGen.enable('flashbot*')
+  if (options.debugMode) debugFuncGen.enable('flashbot*')
 }
 
 func.logChat = (msg) => {
