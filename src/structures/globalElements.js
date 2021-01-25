@@ -1,6 +1,6 @@
 module.exports = (logger) => {
   const log = (msg) => {
-    if (logger) logger.log('globalElements', msg)
+    if (logger) logger.log(msg)
     else console.log(msg)
   }
 

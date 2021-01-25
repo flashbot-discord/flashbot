@@ -3,8 +3,10 @@ const fs = require('fs')
 const path = require('path')
 
 const globalElements = require('./globalElements')
-const Logger = require('./Logger')
 const DatabaseHandler = require('../handlers/DatabaseHandler')
+
+const loggerGen = require('../modules/logger')
+const logger = loggerGen('BotClient')
 
 /**
  * Main Bot Client
@@ -13,29 +15,26 @@ const DatabaseHandler = require('../handlers/DatabaseHandler')
 class BotClient extends Client {
   constructor () {
     super()
-    const logPos = this.logPos = 'BotClient'
 
-    // Setup Logger
-    const logger = new Logger()
-    this.logger = logger
-
-    logger.log(logPos, 'FlashBot Startup')
+    logger.log('initializing bot instance')
 
     // Load Global Properties and Functions
-    globalElements(logger)
-    logger.log(logPos, 'Loaded Global Properties and Functions')
+    logger.log('loading Global Properties and Functions')
+    globalElements(loggerGen('globalElements'))
 
     let config
 
     // Load token seperately
+    logger.log('Loading bot TOKEN')
     let token = ''
     if (process.env.flashbotToken) token = process.env.flashbotToken
     else if (fs.existsSync(path.join(path.resolve(), 'token.json'))) token = require(path.join(path.resolve(), 'token.json')).token
 
-    if (typeof token !== 'string' || token.length < 1) logger.fatal(logPos, 'Invalid bot TOKEN provided.')
-    logger.log(logPos, 'Loaded bot TOKEN')
+    if (typeof token !== 'string' || token.length < 1) logger.fatal('Invalid bot TOKEN provided.')
 
     // Load Config
+    // TODO: read config file, and use only what it needs.
+    logger.log('loading configuration')
     if (fs.existsSync(path.join(path.resolve(), 'config.js'))) config = require(path.join(path.resolve(), 'config.js'))
     else {
       config = {
@@ -49,29 +48,31 @@ class BotClient extends Client {
     config.prefix = process.env.flashBotPrefix || config.prefix
 
     // Owner
+    // TODO loglevel = verbose
+    logger.log('checking bot owners')
     if (!Array.isArray(config.owner) || config.owner.length < 1) {
-      logger.warn(logPos, 'No owner in the environment variable or config file; You cannot use owner-only commands.')
+      logger.warn('No owner in the environment variable or config file; You cannot use owner-only commands.')
       config.owner = []
     }
 
     // Prefix
-    if (typeof config.prefix !== 'string') logger.fatal(logPos, "Invalid type for 'config.prefix'. Accepts String.")
-    if (config.prefix.length < 1) logger.warn(logPos, 'Command prefix configuration not found. You can only enter commands by pinging the bot.')
+    if (typeof config.prefix !== 'string') logger.fatal("Invalid type for 'config.prefix'. Accepts String.")
+    if (config.prefix.length < 1) logger.warn('Command prefix configuration not found. You can only enter commands by pinging the bot.')
 
     // Debug mode
     if (config.debug) {
       this.debugMode = logger.debugMode = true
-      logger.debug(logPos, 'Debug mode enabled.')
+      logger.debug('Debug mode enabled.')
     } else this.debugMode = logger.debugMode = false
 
     // Extensions
     if (config.extensions != null && typeof config.extensions !== 'object') {
-      logger.warn(logPos, 'Invalid type for extension configuration. Accepts object.')
+      logger.warn('Invalid type for extension configuration. Accepts object.')
       config.extensions = {}
     } else if (config.extensions == null) config.extensions = {}
 
     this.config = config
-    logger.log(logPos, 'Loaded bot configuration')
+    logger.log('loaded configuration')
   }
 
   get onlineMode () {
@@ -91,33 +92,32 @@ class BotClient extends Client {
   start () {
     const logPos = this.logPos + '.start'
 
-    this.logger.log(logPos, 'Logging in to Discord...')
+    logger.log('logging in to Discord...')
     this.login(this.config.token)
   }
 
   async setupDatabase () {
-    const logPos = this.logPos + '.setupDatabase'
-
-    if (typeof this.config.db !== 'object') return this.logger.warn(logPos, 'Database type not found: Database related features will be disabled.')
+    const _logger = logger.extend('setupDatabase')
+    if (typeof this.config.db !== 'object') return _logger.warn('Database type not found: Database related features will be disabled.')
 
     this.db = await new DatabaseHandler(this, this.config.db.type, this.config.db.connection)
     await this.db.test()
-    this.logger.debug(logPos, 'Database Handler has been set up')
+    _logger.debug('Database Handler has been set up')
   }
 
   registerLocaleHandler (localeHandler) {
     this.locale = localeHandler
-    this.logger.debug(this.logPos + '.registerLocaleHandler', 'Locale Handler registered to Bot Client')
+    logger.debug('Locale Handler registered')
   }
 
   registerCommandHandler (cmdHandler) {
     this.commands = cmdHandler
-    this.logger.debug(this.logPos + '.registerCommandHandler', 'Command Handler registered to Bot Client')
+    logger.debug('Command Handler registered')
   }
 
   registerExtensionHandler (extHandler) {
     this.extensions = extHandler
-    this.logger.debug(this.logPos + '.registerExtensionHandler', 'Extension Handler registered to Bot Client')
+    logger.debug('Extension Handler registered to Bot Client')
   }
 
   /**
@@ -128,7 +128,7 @@ class BotClient extends Client {
    */
   registerEvent (type, fn, ...args) {
     this.on(type, (...eventArgs) => fn(this, ...eventArgs, ...args))
-    this.logger.debug(this.logPos + '.registerEvent', "'" + type + "' event registered to Bot Client")
+    logger.debug(`${type} event registered to Bot Client`)
   }
 }
 
