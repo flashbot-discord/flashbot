@@ -1,38 +1,93 @@
 const chalk = require('chalk')
-const debugFuncGen = require('debug')
+const stripColor = require('strip-ansi')
 
-const options = {
-  debugMode: false,
-  forceEnableLogsOnDebug: false
+const { createLogger, format, transports, addColors } = require('winston')
+const { printf, splat, colorize, timestamp, ms, combine } = format
+
+const config = require('../../config')
+
+const colors = {
+  fatal: chalk.bgWhite.red.bold,
+  error: chalk.red,
+  warn: chalk.yellow,
+  info: chalk.cyanBright,
+  chat: text => text,
+  verbose: chalk.blueBright,
+  debug: chalk.blue
 }
 
+const myFormat = printf(({
+  level,
+  message,
+  label,
+  timestamp,
+  ms
+}) => {
+  const colorizer = colors[stripColor(level)]
+  return `${colorizer(`[${timestamp}] [${label}]`)} ${level} | ${colorizer(message)} ${chalk.magentaBright(ms)}`
+})
+
+const myCustomLevels = {
+  levels: {
+    fatal: 0,
+    error: 1,
+    warn: 2,
+    info: 3,
+    chat: 4,
+    verbose: 5,
+    debug: 6
+  },
+  colors: {
+    fatal: 'whiteBG red bold',
+    error: 'red',
+    warn: 'yellow',
+    info: 'white',
+    chat: 'grey',
+    verbose: 'cyan',
+    debug: 'blue'
+  }
+}
+
+const logger = createLogger({
+  levels: myCustomLevels.levels,
+  transports: [
+    new transports.Console({
+      level: config.debug ? 'debug' : 'chat',
+      format: combine(
+        splat(),
+        colorize(),
+        timestamp(),
+        ms(),
+        myFormat
+      )
+    })
+  ]
+})
+
+addColors(myCustomLevels.colors)
+
 const func = (scope) => {
-  const debugFunc = debugFuncGen('flashbot:' + scope)
-
-  const useNormalLog = !options.debugMode || options.forceEnableLogaOnDebug || false
-
   return {
-    log: (msg) => {
-      if (useNormalLog) log(scope, msg)
-      debugFunc(chalk.cyanBright(msg))
+    chat: (msg) => {
+      logger.chat(msg, { label: 'chat' })
     },
-    debug: (msg) => {
-      if (options.debugMode) {
-        if (useNormalLog) debug(scope, msg)
-        debugFunc(chalk.blueBright(msg))
-      }
+    log: (msg, ...args) => {
+      logger.info(msg, ...args, { label: scope })
     },
-    warn: (msg) => {
-      if (useNormalLog) warn(scope, msg)
-      debugFunc(chalk.yellow(msg))
+    debug: (msg, ...args) => {
+      logger.debug(msg, ...args, { label: scope })
     },
-    error: (msg) => {
-      if (useNormalLog) error(scope, msg)
-      debugFunc(chalk.redBright(msg))
+    verbose: (msg, ...args) => {
+      logger.verbose(msg, ...args, { label: scope })
     },
-    fatal: (msg) => {
-      if (useNormalLog) fatal(scope, msg)
-      debugFunc(chalk.red(msg))
+    warn: (msg, ...args) => {
+      logger.warn(msg, ...args, { label: scope })
+    },
+    error: (msg, ...args) => {
+      logger.error(msg, ...args, { label: scope })
+    },
+    fatal: (msg, ...args) => {
+      logger.fatal(msg, ...args, { label: scope })
 
       process.exit(1)
     },
@@ -41,8 +96,7 @@ const func = (scope) => {
   }
 }
 
-func.options = options
-
+/*
 func.init = (debugMode, opts) => {
   console.log('Logger Init...')
 
@@ -55,31 +109,9 @@ func.init = (debugMode, opts) => {
 
   if (options.debugMode) debugFuncGen.enable('flashbot*')
 }
+*/
 
-func.logChat = (msg) => {
-  console.log(`${_genDatetime()} ${msg}`)
-}
-
-function log (from, msg) {
-  console.log(_genDatetime() + chalk.cyanBright(' [Log | ' + from + '] ' + msg))
-}
-
-function debug (from, msg) {
-  if (this.debugMode) console.log(_genDatetime() + chalk.blueBright(' [Debug | ' + from + '] ' + msg))
-}
-
-function warn (from, msg) {
-  console.warn(_genDatetime() + chalk.yellow(' [WARN | ' + from + '] ' + msg))
-}
-
-function error (from, msg) {
-  console.error(_genDatetime() + chalk.redBright(' [ERROR | ' + from + '] ' + msg))
-}
-
-function fatal (from, msg) {
-  console.error(_genDatetime() + chalk.red(' [FATAL | ' + from + '] FATAL ERROR: ' + msg))
-}
-
+/*
 function _genDatetime () {
   const date = new Date()
   return '[' + date.getFullYear() + '-' +
@@ -90,5 +122,6 @@ function _genDatetime () {
       String(date.getSeconds()).padStart(2, '0') + '.' +
       String(date.getMilliseconds()).padStart(3, '0') + ']'
 }
+*/
 
 module.exports = func

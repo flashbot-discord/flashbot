@@ -12,9 +12,6 @@ const config = require('../config')
 
 // Setup logger first
 const logger = require('./modules/logger')
-logger.init(config.debug, {
-  forceEnableLogsOnDebug: false
-})
 
 const log = logger('main')
 log.log(`
