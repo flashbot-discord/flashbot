@@ -23,8 +23,9 @@ const myFormat = printf(({
   timestamp,
   ms
 }) => {
-  const colorizer = colors[stripColor(level)]
-  return `${colorizer(`[${timestamp}] [${label}]`)} ${level} | ${colorizer(message)} ${chalk.magentaBright(ms)}`
+  const _level = stripColor(level)
+  const colorizer = colors[_level]
+  return `${chalk.grey(`[${timestamp}]`)} ${_level === 'chat' ? '' : `[${label}] `}${level} | ${colorizer(message)} ${chalk.magentaBright(ms)}`
 })
 
 const myCustomLevels = {
@@ -52,7 +53,7 @@ const logger = createLogger({
   levels: myCustomLevels.levels,
   transports: [
     new transports.Console({
-      level: config.debug ? 'debug' : 'chat',
+      level: config.logLevel || 'chat',
       format: combine(
         splat(),
         colorize(),
@@ -92,7 +93,7 @@ const func = (scope) => {
       process.exit(1)
     },
 
-    extend: (str) => func(`${scope}:${str}`)
+    extend: (str) => func(`${scope}.${str}`)
   }
 }
 

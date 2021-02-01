@@ -1,6 +1,6 @@
 module.exports = (logger) => {
   const log = (msg) => {
-    if (logger) logger.log(msg)
+    if (logger) logger.verbose(msg)
     else console.log(msg)
   }
 

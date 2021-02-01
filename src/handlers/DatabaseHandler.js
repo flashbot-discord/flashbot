@@ -3,22 +3,23 @@ const fs = require('fs')
 
 const InternalStorageHandler = require('./InternalStorageHandler')
 
+const logger = require('../modules/logger')('DatabaseHandler')
+
 class DatabaseHandler {
   constructor (client, type, connection) {
-    const logPos = this.logPos = 'DatabaseHandler'
     this._client = client
     this.type = type
 
-    client.logger.log(logPos, 'Database Handler Initializing...')
+    logger.log('Database Handler Initializing...')
 
     // Internal storage (game session, etc)
     this.internal = new InternalStorageHandler()
 
-    client.logger.log(logPos, 'Database Type: ' + type)
+    logger.verbose('Database Type: ' + type)
     switch (type) {
       case 'mysql':
       case 'pg': {
-        client.logger.debug(logPos, 'Preparing knex Query Builder...')
+        logger.verbose(logPos, 'Preparing knex Query Builder...')
         const knex = require('knex')({
           client: type,
           connection,
@@ -36,32 +37,32 @@ class DatabaseHandler {
         try {
           if (!connection) connection = {}
           const folder = path.join(path.resolve(), 'data', 'jsondb')
-          this._client.logger.debug(logPos, '[JSON] Root stroage folder: ' + folder)
+          logger.debug('[JSON] Root stroage folder: ' + folder)
           const guildFile = 'guild.json'
           const userFile = 'user.json'
           const blacklistFile = 'blacklist.json'
 
-          client.logger.debug(logPos, '[JSON] Loading database files...')
+          logger.verbose('[JSON] Loading database files...')
           const guild = require(path.join(folder, guildFile))
           const user = require(path.join(folder, userFile))
           const blacklist = require(path.join(folder, blacklistFile))
           this.obj = { guild, user, blacklist }
           this.path = { folder, guildFile, userFile }
 
-          client.logger.debug(logPos, '[JSON] 3 database files loaded')
+          logger.verbose('[JSON] 3 database files loaded')
         } catch (err) {
-          client.logger.error(logPos, '[JSON] Error when setting up json storage: ' + err.stack)
+          logger.error('[JSON] Error when setting up json storage: ' + err.stack)
         }
         break
       }
 
       default:
-        return client.logger.error(logPos, 'Invalid database type: ' + type)
+        return logger.error('Invalid database type: ' + type)
     }
 
     setInterval(() => this.test(), 60000) // DB Test period
 
-    client.logger.log(logPos, 'Database Handler initialized')
+    logger.log('Database Handler initialized')
   }
 
   // ready value
@@ -70,21 +71,23 @@ class DatabaseHandler {
   }
 
   set ready (v) {
+    const loggerFn = logger.extend('ready setter')
+
     if (v !== this._ready) {
       if (v) {
-        this._client.logger.log(this.logPos + ':' + this.type, 'Test Passed')
+        loggerFn.log('Test Passed')
         this._ready = true
       } else {
-        this._client.logger.warn(this.logPos + ':' + this.type, 'Test Failed; Database feature disabled.')
+        loggerFn.warn('Test Failed; Database feature disabled.')
         this._ready = false
       }
     }
   }
 
   async test () {
-    const logPos = this.logPos + '.test'
+    const loggerFn = logger.extend('test')
 
-    this._client.logger.debug(logPos, 'Testing database status')
+    loggerFn.log('Testing database status')
     switch (this.type) {
       case 'mysql':
       case 'pg':
@@ -93,13 +96,13 @@ class DatabaseHandler {
           this.ready = true
           return true
         } catch (err) {
-          this._client.logger.error(logPos + ':' + this.type, 'Failed to connect to the database: ' + err.stack)
+          loggerFn.error('Failed to connect to the database: ' + err.stack)
           this.ready = false
           return false
         }
       case 'json':
         // Autosave (defaults to 1 minute)
-        this._client.logger.log(logPos, '[JSON] Auto-saving...')
+        loggerFn.verbose('[JSON] Auto-saving...')
         try {
           this.save()
           this.ready = true
@@ -112,14 +115,14 @@ class DatabaseHandler {
   }
 
   save () {
-    const logPos = this.logPos + '.save'
+    const loggerFn = logger.extend('save')
 
-    if (this.type !== 'json') return this._client.logger.warn(logPos, 'No need to save; This only works with JSON database')
+    if (this.type !== 'json') return loggerFn.warn('No need to save; This only works with JSON database')
 
     this._save(this.obj.guild, this.path.guildFile)
     this._save(this.obj.user, this.path.userFile)
 
-    this._client.logger.log(logPos, '[JSON] All data were saved')
+    loggerFn.log('[JSON] All data were saved')
   }
 
   _save (obj, filename) {

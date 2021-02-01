@@ -25,7 +25,7 @@ class BotClient extends Client {
     let config
 
     // Load token seperately
-    logger.log('Loading bot TOKEN')
+    logger.verbose('Loading bot TOKEN')
     let token = ''
     if (process.env.flashbotToken) token = process.env.flashbotToken
     else if (fs.existsSync(path.join(path.resolve(), 'token.json'))) token = require(path.join(path.resolve(), 'token.json')).token
@@ -49,7 +49,7 @@ class BotClient extends Client {
 
     // Owner
     // TODO loglevel = verbose
-    logger.log('checking bot owners')
+    logger.verbose('checking bot owners')
     if (!Array.isArray(config.owner) || config.owner.length < 1) {
       logger.warn('No owner in the environment variable or config file; You cannot use owner-only commands.')
       config.owner = []
@@ -102,22 +102,22 @@ class BotClient extends Client {
 
     this.db = await new DatabaseHandler(this, this.config.db.type, this.config.db.connection)
     await this.db.test()
-    _logger.debug('Database Handler has been set up')
+    _logger.log('Database Handler has been set up')
   }
 
   registerLocaleHandler (localeHandler) {
     this.locale = localeHandler
-    logger.debug('Locale Handler registered')
+    logger.verbose('Locale Handler registered')
   }
 
   registerCommandHandler (cmdHandler) {
     this.commands = cmdHandler
-    logger.debug('Command Handler registered')
+    logger.verbose('Command Handler registered')
   }
 
   registerExtensionHandler (extHandler) {
     this.extensions = extHandler
-    logger.debug('Extension Handler registered to Bot Client')
+    logger.verbose('Extension Handler registered to Bot Client')
   }
 
   /**
@@ -128,7 +128,7 @@ class BotClient extends Client {
    */
   registerEvent (type, fn, ...args) {
     this.on(type, (...eventArgs) => fn(this, ...eventArgs, ...args))
-    logger.debug(`${type} event registered to Bot Client`)
+    logger.verbose(`${type} event registered to Bot Client`)
   }
 }
 

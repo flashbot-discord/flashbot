@@ -1,4 +1,5 @@
 const ArgumentCollector = require('./arguments')
+const logger = require('../../modules/logger')('Command')
 
 class Command {
   constructor (client, infos) {
@@ -130,16 +131,16 @@ class Command {
   }
 
   reload () {
-    const logPos = this._logPos + '.reload'
+    const loggerFn = logger.extend('reload')
 
-    this._client.logger.log(logPos, "Reloading command '" + this._name + "'")
+    logger.log(`Reloading command '${this._name}'`)
     const cmdPath = this._path
     delete require.cache[cmdPath]
     const newCmd = require(cmdPath)
-    this._client.logger.debug(logPos, "Deleted command cache for '" + this._name + "'")
+    logger.verbose(`Deleted command cache for '${this._name}'`)
 
     this._client.commands.reregister(this, newCmd)
-    this._client.logger.log(logPos, "Reloaded command '" + this._name + "'")
+    logger.log(`Reloaded command '${this._name}'`)
   }
 
   unload () {

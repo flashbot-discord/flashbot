@@ -79,4 +79,4 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 app.use(express.static('public'))
-app.listen(PORT, () => client.logger.log('BOT MAIN', `Web server on port ${PORT}`))
+app.listen(PORT, () => log.log(`Web server on port ${PORT}`))
