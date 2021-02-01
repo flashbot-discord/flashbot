@@ -97,32 +97,4 @@ const func = (scope) => {
   }
 }
 
-/*
-func.init = (debugMode, opts) => {
-  console.log('Logger Init...')
-
-  console.log('== Logger Options ==')
-
-  options.debugMode = Boolean(debugMode)
-  console.log(`options.debugMode = ${String(options.debugMode)}`)
-  options.forceEnableLogsOnDebug = Boolean(opts.forceEnableLogsOnDebug)
-  console.log(`options.forceEnableLogsOnDebug = ${String(options.forceEnableLogsOnDebug)}`)
-
-  if (options.debugMode) debugFuncGen.enable('flashbot*')
-}
-*/
-
-/*
-function _genDatetime () {
-  const date = new Date()
-  return '[' + date.getFullYear() + '-' +
-      String(date.getMonth() + 1).padStart(2, '0') + '-' +
-      String(date.getDate()).padStart(2, '0') + ' ' +
-      String(date.getHours()).padStart(2, '0') + ':' +
-      String(date.getMinutes()).padStart(2, '0') + ':' +
-      String(date.getSeconds()).padStart(2, '0') + '.' +
-      String(date.getMilliseconds()).padStart(3, '0') + ']'
-}
-*/
-
 module.exports = func
