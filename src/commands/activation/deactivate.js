@@ -1,6 +1,7 @@
 const Command = require('../_Command')
 const ClientError = require('../../structures/ClientError')
 const database = require('../../database')
+const logger = require('../../modules/logger')('cmd:deactivate')
 
 class DeactivateCommand extends Command {
   constructor (client) {
@@ -15,8 +16,6 @@ class DeactivateCommand extends Command {
       requireDB: true,
       userReg: true
     })
-
-    this._logPos = 'DeactivateCommand'
   }
 
   async run (client, msg, query, { t }) {
@@ -75,16 +74,18 @@ class DeactivateCommand extends Command {
   }
 
   async agree (msg, t) {
+    const loggerFn = logger.extend('agree')
+
     // Deactivation
     try {
       await this.dbHandle(this._client.db, msg.guild.id)
     } catch (e) {
       const error = new ClientError(e)
-      error.report(msg, t, this._logPos + '.agree')
+      error.report(msg, t, 'cmd:deactivate.agree')
     }
 
     // Done!
-    this._client.logger.log('Command / Deactivate', `[Bot Deactivation] ${msg.author.tag} (${msg.member.nickname}) deactivated the bot in ${msg.guild.name}`)
+    loggerFn.log(`[Server Deactivation] ${msg.author.tag} (${msg.member.nickname}) deactivated the bot in ${msg.guild.name}`)
     msg.channel.send(t('commands.deactivate.agree', this._client.config.prefix))
   }
 

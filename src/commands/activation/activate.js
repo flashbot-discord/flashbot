@@ -1,6 +1,7 @@
 const Command = require('../_Command')
 const ClientError = require('../../structures/ClientError')
 const database = require('../../database')
+const logger = require('../../modules/logger')('cmd:activate')
 
 class ActivateCommand extends Command {
   constructor (client) {
@@ -14,8 +15,6 @@ class ActivateCommand extends Command {
       requireDB: true,
       userReg: true
     })
-
-    this._logPos = 'ActivateCommand'
   }
 
   async run (client, msg, query, { t }) {
@@ -76,16 +75,18 @@ class ActivateCommand extends Command {
   }
 
   async agree (msg, t) {
+    const loggerFn = logger.extend('agree')
+
     // Activation
     try {
       await this.dbHandle(this._client.db, msg.guild.id)
     } catch (e) {
       const error = new ClientError(e)
-      error.report(msg, t, this._logPos + '.agree')
+      error.report(msg, t, 'cmd:activate.agree')
     }
 
     // Done!
-    this._client.logger.log('Command / Activate', `[Bot Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
+    loggerFn.log(`[Server Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
     msg.channel.send(t('commands.activate.agree'))
   }
 

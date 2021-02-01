@@ -87,7 +87,7 @@ class DatabaseHandler {
   async test () {
     const loggerFn = logger.extend('test')
 
-    loggerFn.log('Testing database status')
+    loggerFn.verbose('Testing database status')
     switch (this.type) {
       case 'mysql':
       case 'pg':
