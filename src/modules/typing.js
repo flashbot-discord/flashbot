@@ -2,7 +2,7 @@ const { Collection } = require('discord.js')
 const path = require('path')
 const fs = require('fs')
 
-const logPos = 'module / typing'
+const logger = require('./logger')('module:typing')
 
 // Data Storage
 const typingData = new Collection()
@@ -61,11 +61,13 @@ function clearAllData () {
   localeList.clear()
 }
 
-function loadData (basePath, logger) {
+function loadData (basePath) {
+  const loggerFn = logger.extend('loadData')
+
   // TODO make it async
   isLoading = true
 
-  logger.log(logPos, 'Start loading typing data...')
+  loggerFn.log('Start loading typing data...')
 
   if (!fs.existsSync(basePath)) return makeResultObj(false, 'noDataFolder')
 
@@ -74,8 +76,8 @@ function loadData (basePath, logger) {
 
   locales.forEach((locale) => {
     const loadPath = path.join(basePath, locale)
-    logger.log(logPos, `Loading typing data for locale '${locale}'...`)
-    logger.debug(logPos, 'load path: ' + loadPath)
+    loggerFn.verbose(`Loading typing data for locale '${locale}'`)
+    loggerFn.debug('load path: ' + loadPath)
     if (
       !(fs.lstatSync(loadPath).isDirectory()) ||
         !fs.existsSync(path.join(loadPath, 'manifest.json')) ||
@@ -87,29 +89,29 @@ function loadData (basePath, logger) {
     const data = new Collection()
     const tempDataSortedByGroup = {}
     manifest.groups.forEach((group) => {
-      logger.debug(logPos, `register group '${group.id}'`)
+      loggerFn.verbose(`registering group '${group.id}'`)
       data.set(group.id, group)
       tempDataSortedByGroup[group.id] = []
     })
     manifest.locale.forEach((localeAlias) => {
-      logger.debug(logPos, `register locale alias '${localeAlias}'`)
+      loggerFn.verbose(`registering locale alias '${localeAlias}'`)
       localeList.set(localeAlias, locale)
     })
 
     // NOTE Load each data files
     manifest.files.forEach((file) => {
-      logger.debug(logPos, `load data file '${file}'`)
+      loggerFn.verbose(`loading data file '${file}'`)
       const textData = JSON.parse(fs.readFileSync(path.join(loadPath, file)).toString())
       textData.forEach((td) => {
         if (!data.has(td.group)) {
-          logger.error(logPos, `Failed to load data which contains unregistered group: group '${td.group}' from data '${td.text}'`)
+          loggerFn.error(`Failed to load data which contains unregistered group: group '${td.group}' from data '${td.text}'`)
           // FIXME return makeResultObj(false, 'dataContainsUnregisteredGroup')
         } else tempDataSortedByGroup[td.group].push(td)
       })
     })
 
     manifest.groups.forEach((group) => {
-      logger.debug(logPos, `applying data file to group '${group.id}'`)
+      loggerFn.verbose(`applying data file to group '${group.id}'`)
       const tempData = data.get(group.id)
       tempData.data = tempDataSortedByGroup[group.id]
       data.set(group.id, tempData)

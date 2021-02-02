@@ -14,6 +14,7 @@ module.exports = async (msg, t, noticeText) => {
     .addField(tt('modules.sendNotice.embed.whyNoticeSentHere.title'), tt('modules.sendNotice.embed.whyNoticeSentHere.content'))
 
   const guilds = client.guilds.cache
+  // eslint-disable-next-line no-unused-vars
   for await (const [_, guild] of guilds) {
     const availableChannels = guild.channels.cache.filter(ch => {
       return ['text', 'news'].includes(ch.type) &&

@@ -8,6 +8,16 @@ const VERSION = 'v1.0-dev'
 const BUILD_DATE = '2020/11/6'
 /* eslint-enable no-unused-vars */
 
+// Setup logger first
+const logger = require('./modules/logger')
+
+const log = logger('main')
+log.log(`
+=== FlashBot Startup ===
+
+Version: ${VERSION}
+Build Date: ${BUILD_DATE}\n`)
+
 // import necessary modules
 const path = require('path')
 
@@ -22,6 +32,7 @@ const onMessageEvent = require('./events/onMessage')
  * Main Client
  * @type {BotClient}
  */
+log.log('creating bot instance')
 const client = new BotClient()
 client.VERSION = VERSION
 client.BUILD_DATE = BUILD_DATE
@@ -29,9 +40,11 @@ client.BUILD_DATE = BUILD_DATE
 /**
  * Database
  */
+log.log('setting up database')
 client.setupDatabase()
 
 // Setup Locale (i18n)
+log.log('creating and registering locale handler')
 client.registerLocaleHandler(new LocaleHandler(client))
 
 // event
@@ -64,4 +77,4 @@ const app = express()
 const PORT = process.env.PORT || 5000
 
 app.use(express.static('public'))
-app.listen(PORT, () => client.logger.log('BOT MAIN', `Web server on port ${PORT}`))
+app.listen(PORT, () => log.log(`Web server on port ${PORT}`))

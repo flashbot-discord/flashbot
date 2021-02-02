@@ -1,4 +1,4 @@
-const { Collection, MessageCollector } = require('discord.js')
+const { Collection } = require('discord.js')
 
 const sessions = new Collection()
 let isReady = false

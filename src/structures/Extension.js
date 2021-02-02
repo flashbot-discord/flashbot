@@ -1,21 +1,24 @@
+const loggerGen = require('../modules/logger')
+const logger = loggerGen('Extension')
+
 class Extension {
   constructor (client, infos) {
-    this._logPos = 'Extension'
     this._client = client
 
     this._name = infos.name || ''
     this._desc = infos.description || ''
 
-    if (this._name.length < 1) return client.logger.error(this._logPos, 'Extension name is empty.')
+    if (this._name.length < 1) return logger.error('Extension name is empty.')
     this._config = client.config.extensions[this._name] || {}
 
-    const logTxt = this._logPos + ' / ' + this._name
+    const extLogger = loggerGen(`extension:${this._name}`)
     this._logger = {
-      log: (msg) => client.logger.log(logTxt, msg),
-      debug: (msg) => client.logger.debug(logTxt, msg),
-      warn: (msg) => client.logger.warn(logTxt, msg),
-      error: (msg) => client.logger.error(logTxt, msg),
-      fatal: (msg) => client.logger.fatal(logTxt, msg)
+      log: (msg) => extLogger.log(msg),
+      verbose: (msg) => extLogger.verbose(msg),
+      debug: (msg) => extLogger.debug(msg),
+      warn: (msg) => extLogger.warn(msg),
+      error: (msg) => extLogger.error(msg),
+      fatal: (msg) => extLogger.fatal(msg)
     }
   }
 

@@ -3,11 +3,13 @@ const { I18n } = require('i18n')
 
 const database = require('../database')
 
+const loggerGen = require('../modules/logger')
+const logger = loggerGen('LocaleHandler')
+const loggeri18n = loggerGen('i18n')
+
 class LocaleHandler {
   constructor (client) {
-    const logPos = this.logPos = 'LocaleHandler'
-
-    client.logger.log(logPos, 'Setting up i18n')
+    logger.log('setting up i18n')
     const i18n = new I18n()
     i18n.configure({
       directory: path.join(path.resolve(), 'src', 'locale'),
@@ -16,15 +18,15 @@ class LocaleHandler {
       syncFiles: true,
       autoReload: true,
       indent: '  ',
-      logDebugFn: (msg) => client.logger.debug('i18n', msg),
-      logWarnFn: (msg) => client.logger.warn('i18n', msg),
-      logErrorFn: (msg) => client.logger.error('i18n', msg)
+      logDebugFn: (msg) => loggeri18n.debug(msg),
+      logWarnFn: (msg) => loggeri18n.warn(msg),
+      logErrorFn: (msg) => loggeri18n.error(msg)
     })
     this.i18n = i18n
     this.defaultLocale = 'ko_KR'
 
     this._client = client
-    client.logger.log(logPos, 'i18n has been set up')
+    logger.log('i18n has been set up')
   }
 
   getTranslateFunc (baseLocale) {

@@ -1,5 +1,7 @@
 const uuid = require('uuid-random')
 
+const loggerGen = require('../modules/logger')
+
 class ClientError extends Error {
   constructor (err) {
     super(err)
@@ -9,7 +11,8 @@ class ClientError extends Error {
   }
 
   report (msg, t, logPos) {
-    msg.client.logger.error(logPos, this.stack)
+    const logger = loggerGen(logPos)
+    logger.error(this.stack)
     msg.reply(t('ClientError.error', this.message, this.uid))
     // TODO Webhook sending system
   }

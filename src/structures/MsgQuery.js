@@ -1,5 +1,3 @@
-const minimist = require('minimist')
-
 class MsgQuery {
   constructor (content, prefix, calledByMention) {
     this.raw = content

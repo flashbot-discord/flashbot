@@ -1,16 +1,18 @@
 const fs = require('fs')
 const path = require('path')
-const minimist = require('minimist')
 const { Collection } = require('discord.js')
 
 const StatHandler = require('./StatHandler')
 const database = require('../database')
 const ClientError = require('../structures/ClientError')
 
+const logger = require('../modules/logger')('CommandHandler')
+
+/**
+ * Stores commands and execute on command message.
+ */
 class CommandHandler {
   constructor (client) {
-    this.logPos = 'CommandHandler'
-
     /**
      * Bot Client
      * @type {BotClient} client
@@ -41,98 +43,128 @@ class CommandHandler {
     this.stats = new StatHandler(client)
   }
 
+  /**
+   * register command groups.
+   * @type {Array<string>} groups array of group names
+   */
   registerGroups (groups) {
     groups.forEach((group) => {
       this.groups.set(group, [])
-      this._client.logger.log(this.logPos + '.registerGroups', `Registered command group '${group}'`)
+      logger.verbose(`registered command group '${group}'`)
     })
   }
 
+  /**
+   * register base command directory path and load commands.
+   * @type {string} cmdPath path to commands directory
+   */
   registerBaseCommands (cmdPath) {
-    const logPos = this.logPos + '.registerBaseCommands'
-    if (this.baseCmdPath.length > 0) this._client.logger.error(logPos, 'Base Command path already registered')
+    if (this.baseCmdPath.length > 0) logger.error('Base Command path already registered')
     this.baseCmdPath = cmdPath
-    this._client.logger.log(logPos, 'Base Command path registered: ' + cmdPath)
+    logger.verbose('Base Command path: ' + cmdPath)
 
     this.registerCommandsIn(cmdPath)
   }
 
+  /**
+   * load commands from base path.
+   * @type {string} cmdPath path to commands directory
+   */
   registerCommandsIn (cmdPath) {
-    const logPos = this.logPos + '.registerCommandsIn'
+    const loggerFn = logger.extend('registerCommandsIn')
 
+    // read base directory
     try {
       const folders = fs.readdirSync(cmdPath)
 
       folders.forEach((folder) => {
         if (!fs.lstatSync(path.join(cmdPath, folder)).isDirectory()) return
-        this._client.logger.debug(logPos, `Loading commands in folder '${folder}'`)
+        loggerFn.debug(`Loading commands in folder '${folder}'`)
 
+        // read files within each directory
         try {
           const cmdFiles = fs.readdirSync(path.join(cmdPath, folder))
 
           cmdFiles.forEach((cmdFile) => {
             try {
-              this._client.logger.debug(logPos, 'Checking file for command: ' + cmdFile)
-              if (!cmdFile.endsWith('.js')) return this._client.logger.debug(logPos, 'Not a Javascript file. Skipping.')
+              // check file type
+              loggerFn.debug('Checking file for command: ' + cmdFile)
+              if (!cmdFile.endsWith('.js')) return loggerFn.debug('Not a Javascript file. Skipping.')
 
               const fullpath = path.join(cmdPath, folder, cmdFile)
               const cmd = require(fullpath)
               this.register(cmd, fullpath)
             } catch (err) {
-              this._client.logger.error(logPos, `Error loading command '${cmdFile}'.\n` + err.stack)
+              logger.error(`Error loading command '${cmdFile}'.\n` + err.stack)
             }
           })
         } catch (err) {
-          this._client.logger.error(logPos, `Error fetching file list in folder '${folder}'.\n` + err.stack)
+          loggerFn.error(`Error fetching file list in folder '${folder}'.\n` + err.stack)
         }
       })
     } catch (err) {
-      this._client.logger.error(logPos, 'Error loading folders that the commands located.\n' + err.stack)
+      loggerFn.error('Error loading folders that the commands located.\n' + err.stack)
     }
 
-    this._client.logger.log(logPos, this.commands.size + ' commands registered.')
-    this._client.logger.log(logPos, this.aliases.size + ' command aliases registered.')
+    loggerFn.log(this.commands.size + ' commands registered.')
+    loggerFn.log(this.aliases.size + ' command aliases registered.')
   }
 
+  /**
+   * creates and registers a command.
+   * @type {*} CommandFile command class from file
+   * @type {string} fullpath absolute path to command file
+   * @returns {Command} registered command object
+   */
   register (CommandFile, fullpath) {
-    const logPos = this.logPos + '.register'
+    const loggerFn = logger.extend('register')
     const c = new CommandFile(this._client)
 
     // Conflict check
     if (this.commands.has(c._name)) {
-      return this._client.logger.error(logPos, `Command '${c._name}' already exists.`)
+      return loggerFn.error(`Command '${c._name}' already exists.`)
     }
 
     if (c._aliases.some(alias => this.aliases.has(alias))) {
       const alias = c._aliases.find(a => this.aliases.has(a))
-      return this._client.logger.error(logPos, `Command Alias '${alias}' already exists.`)
+      return logger.error(`Command Alias '${alias}' already exists.`)
     }
 
+    // register command to registry
     c._path = fullpath
 
     this.commands.set(c._name, c)
-    this._client.logger.debug(logPos, `Registered command object '${c._name}'`)
+    logger.debug(`Registered command object '${c._name}'`)
 
     this.aliases.set(c._name, c._name)
     if (c._aliases.length > 0) c._aliases.forEach((alias) => { this.aliases.set(alias, c._name) })
-    this._client.logger.debug(logPos, `Registered all command aliases for '${c._name}': ` + c._aliases.join(', '))
+    logger.debug(`Registered all command aliases for '${c._name}': ` + c._aliases.join(', '))
     if (this.groups.has(c._group)) this.groups.get(c._group).push(c._name)
     else {
-      this._client.logger.error(logPos, `Cannot register command '${c._name}' to group '${c._group}' which is not registered.`)
+      logger.error(`Cannot register command '${c._name}' to group '${c._group}' which is not registered.`)
       return c.unload()
     }
 
-    this._client.logger.log(logPos, 'Command Loaded: ' + c._name)
+    logger.log('Command Loaded: ' + c._name)
     return c
   }
 
+  /**
+   * reregisters a command
+   * @type {Command} oldCmd old command object
+   * @type {*} newCmd new command class to reregister
+   */
   reregister (oldCmd, newCmd) {
     this.unregister(oldCmd)
     this.register(newCmd, oldCmd._path)
   }
 
+  /**
+   * unregisters a command.
+   * @type {Command} cmd command to unregister
+   */
   unregister (cmd) {
-    const logPos = this.logPos + '.unregister'
+    const loggerFn = logger.extend('unregister')
 
     // remove command name in group
     if (cmd._group.length > 0) {
@@ -141,15 +173,15 @@ class CommandHandler {
     }
 
     // remove all aliases
-    this._client.logger.debug(logPos, "Unregistering all command aliases for '" + cmd._name + "'")
+    loggerFn.verbose(`Unregistering all command aliases for '${cmd._name}'`)
     cmd._aliases.forEach((alias) => { if (this.aliases.has(alias)) this.aliases.delete(alias) })
     this.commands.delete(cmd._name)
 
     // remove command name itself
-    this._client.logger.debug(logPos, "Unregistering command '" + cmd._name + "'")
+    loggerFn.verbose(`Unregistering command '${cmd._name}'`)
     this.commands.delete(cmd._name)
 
-    this._client.logger.log(logPos, 'Command Unloaded: ' + cmd._name)
+    loggerFn.log('Command Unloaded: ' + cmd._name)
   }
 
   get (name) {
@@ -162,12 +194,20 @@ class CommandHandler {
   }
 
   async run (cmd, client, msg, query) {
+    const loggerFn = logger.extend('run')
+    loggerFn.verbose('command execution request: ' + cmd._name)
+
     const owner = client.config.owner.includes(msg.author.id)
+    loggerFn.debug('isOwner: ' + String(owner))
 
     // Get locale and create translate function
     let locale = await client.locale.getLocale(false, msg.author)
+    loggerFn.debug('user locale: ' + locale)
+
     if (msg.guild && locale == null) {
       const guildLocale = await client.locale.getLocale(true, msg.guild)
+      loggerFn.debug('guild locale: ' + guildLocale)
+
       if (guildLocale != null) locale = guildLocale
       else locale = client.locale.defaultLocale
     }
@@ -227,7 +267,7 @@ class CommandHandler {
           }
         }
       }
-      
+
       // Log command usage
       this.stats.stat(query.cmd, msg.guild ? msg.guild.id : 0)
 

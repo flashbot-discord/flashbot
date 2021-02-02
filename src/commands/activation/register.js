@@ -1,6 +1,7 @@
 const Command = require('../_Command')
 const ClientError = require('../../structures/ClientError')
 const database = require('../../database')
+const logger = require('../../modules/logger')('cmd:register')
 
 class RegisterCommand extends Command {
   constructor (client) {
@@ -11,8 +12,6 @@ class RegisterCommand extends Command {
       group: 'activation',
       requireDB: true
     })
-
-    this._logPos = 'RegisterCommand'
   }
 
   async run (client, msg, args, { t }) {
@@ -72,6 +71,8 @@ class RegisterCommand extends Command {
   }
 
   async agree (msg, t) {
+    const loggerFn = logger.extend('agree')
+
     // Activation
     try {
       await database.users.register(this._client.db, {
@@ -79,11 +80,11 @@ class RegisterCommand extends Command {
       })
     } catch (err) {
       const e = new ClientError(err)
-      e.report(msg, t, this._logPos + '.agree')
+      e.report(msg, t, 'cmd:register.agree')
     }
 
     // Done!
-    this._client.logger.log('Command / Register', `[User Registration] ${msg.author.tag} (${msg.member.nickname}) has registered to the bot`)
+    loggerFn.log(`[User Registration] ${msg.author.tag} (${msg.member.nickname}) has been registered`)
     msg.channel.send(t('commands.register.agree', this._client.config.prefix))
   }
 

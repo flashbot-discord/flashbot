@@ -4,6 +4,7 @@ const util = require('util')
 
 const Command = require('../_Command')
 const canSendEmbed = require('../../modules/canSendEmbed')
+const logger = require('../../modules/logger')('cmd:eval')
 
 class EvalCommand extends Command {
   constructor (client) {
@@ -12,7 +13,7 @@ class EvalCommand extends Command {
       aliases: ['evaluate', 'ㄷㅍ미', 'ㄷㅍ미ㅕㅁㅅㄷ'],
       description: 'commands.eval.DESC:Evaluates a code.',
       group: 'dev',
-      owner: true,
+      owner: true
       /*
       args: {
         unsafe: {
@@ -43,10 +44,11 @@ class EvalCommand extends Command {
 
     // Unsafe mode check
     const isUnsafe = args.unsafe
+    logger.debug(`isUnsafe = ${String(isUnsafe)}`)
 
     const str = args._.join(' ')
     if (!str) return await msg.reply(Command.makeUsage(this, query.cmd, t))
-    client.logger.log('Command / Eval', '[EVAL] ' + msg.author.tag + ' evaluated the code: ' + str)
+    logger.log(`[EVAL] ${msg.author.tag} evaluated the code: ${str}`)
 
     const m = await msg.reply('Evaling...')
 
@@ -72,7 +74,7 @@ class EvalCommand extends Command {
     if (!isUnsafe) this.restoreToken(bd)
     bd = null
 
-    client.logger.debug('Command / Eval', `[EVAL] Result: ${error.obj ? error.obj.stack : result}`)
+    logger.debug(`[EVAL] Result: ${error.obj ? error.obj.stack : result}`)
 
     if (result.length > 1000) useEmbed = false
     const moreText = '\nAnd much more...'

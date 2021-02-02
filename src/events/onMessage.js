@@ -2,6 +2,8 @@ const MsgQuery = require('../structures/MsgQuery')
 const getPrefix = require('../modules/getPrefix')
 const ClientError = require('../structures/ClientError')
 
+const logger = require('../modules/logger')('event:onMessage')
+
 async function onMessage (client, msg) {
   if (msg.author.bot || !msg.content) return
 
@@ -13,12 +15,14 @@ async function onMessage (client, msg) {
     prefix = `<@${client.user.id}>`
     calledByMention = true
   }
+  logger.debug(`calledByMention = ${String(calledByMention)}`)
+  logger.debug(`prefix = ${prefix}`)
 
   // Log
   let logString
   if (msg.guild) logString = `${msg.guild.name} > ${msg.channel.name} > ${msg.author.tag} (${msg.member.nickname}) > ${msg.content}`
   else logString = `DM ${msg.channel.recipient.tag} > ${msg.author.tag} > ${msg.content}`
-  client.logger.onCmd(logString)
+  logger.chat(logString)
 
   const query = new MsgQuery(msg.content, prefix, calledByMention)
   query.calledByMention = calledByMention

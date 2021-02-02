@@ -138,7 +138,7 @@ class TypingGameCommand extends Command {
   loadData (msg, t) {
     if (!typingModule.isReady()) typingModule.init(msg.client)
 
-    const result = typingModule.loadData(this.path, msg.client.logger)
+    const result = typingModule.loadData(this.path)
 
     if (!result.success) {
       // TODO Only report this to console and support server error log channel

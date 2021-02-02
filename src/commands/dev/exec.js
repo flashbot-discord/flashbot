@@ -4,6 +4,8 @@ const ch = require('child_process')
 const Command = require('../_Command')
 const canSendEmbed = require('../../modules/canSendEmbed')
 
+const logger = require('../../modules/logger')('cmd:exec')
+
 class ExecuteCommand extends Command {
   constructor (client) {
     super(client, {
@@ -25,7 +27,7 @@ class ExecuteCommand extends Command {
   async run (client, msg, query, { t }) {
     const str = query.args.command
     if (!str) return msg.reply(Command.makeUsage(this, query.cmd, t))
-    client.logger.log('Command / Exec', '[EXEC] ' + msg.author.tag + ' executed the command: ' + str)
+    logger.log(`[EXEC] ${msg.author.tag} executed the command: ${str}`)
 
     const m = await msg.reply('Executing...')
 
@@ -40,7 +42,7 @@ class ExecuteCommand extends Command {
       error = true
     }
 
-    client.logger.debug('Command / Exec', '[EXEC] Result: ' + result)
+    logger.debug('[EXEC] Result: ' + result)
 
     if (result.length > 1000) useEmbed = false
     const moreText = '\nAnd much more...'
