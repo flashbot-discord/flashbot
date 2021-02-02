@@ -19,7 +19,7 @@ class DatabaseHandler {
     switch (type) {
       case 'mysql':
       case 'pg': {
-        logger.verbose(logPos, 'Preparing knex Query Builder...')
+        logger.verbose('Preparing knex Query Builder...')
         const knex = require('knex')({
           client: type,
           connection,

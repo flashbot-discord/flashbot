@@ -13,7 +13,7 @@ class EvalCommand extends Command {
       aliases: ['evaluate', 'ㄷㅍ미', 'ㄷㅍ미ㅕㅁㅅㄷ'],
       description: 'commands.eval.DESC:Evaluates a code.',
       group: 'dev',
-      owner: true,
+      owner: true
       /*
       args: {
         unsafe: {

@@ -133,14 +133,14 @@ class Command {
   reload () {
     const loggerFn = logger.extend('reload')
 
-    logger.log(`Reloading command '${this._name}'`)
+    loggerFn.log(`Reloading command '${this._name}'`)
     const cmdPath = this._path
     delete require.cache[cmdPath]
     const newCmd = require(cmdPath)
-    logger.verbose(`Deleted command cache for '${this._name}'`)
+    loggerFn.verbose(`Deleted command cache for '${this._name}'`)
 
     this._client.commands.reregister(this, newCmd)
-    logger.log(`Reloaded command '${this._name}'`)
+    loggerFn.log(`Reloaded command '${this._name}'`)
   }
 
   unload () {
@@ -209,7 +209,6 @@ class Command {
           passed = false
           return
         }
-
 
       })
     }

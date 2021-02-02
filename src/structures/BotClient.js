@@ -90,8 +90,6 @@ class BotClient extends Client {
   }
 
   start () {
-    const logPos = this.logPos + '.start'
-
     logger.log('logging in to Discord...')
     this.login(this.config.token)
   }

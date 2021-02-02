@@ -8,8 +8,6 @@ const VERSION = 'v1.0-dev'
 const BUILD_DATE = '2020/11/6'
 /* eslint-enable no-unused-vars */
 
-const config = require('../config')
-
 // Setup logger first
 const logger = require('./modules/logger')
 

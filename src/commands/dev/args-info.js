@@ -23,7 +23,7 @@ class ArgsInfoCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    //if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd, t))
+    // if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd, t))
 
     return msg.channel.send(t('commands.args-info.run', query.cmd, query.args.args.join(', ')))
   }

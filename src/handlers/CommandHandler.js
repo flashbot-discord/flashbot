@@ -1,6 +1,5 @@
 const fs = require('fs')
 const path = require('path')
-const minimist = require('minimist')
 const { Collection } = require('discord.js')
 
 const StatHandler = require('./StatHandler')
@@ -174,15 +173,15 @@ class CommandHandler {
     }
 
     // remove all aliases
-    logger.verbose(`Unregistering all command aliases for '${cmd._name}'`)
+    loggerFn.verbose(`Unregistering all command aliases for '${cmd._name}'`)
     cmd._aliases.forEach((alias) => { if (this.aliases.has(alias)) this.aliases.delete(alias) })
     this.commands.delete(cmd._name)
 
     // remove command name itself
-    logger.verbose(`Unregistering command '${cmd._name}'`)
+    loggerFn.verbose(`Unregistering command '${cmd._name}'`)
     this.commands.delete(cmd._name)
 
-    logger.log('Command Unloaded: ' + cmd._name)
+    loggerFn.log('Command Unloaded: ' + cmd._name)
   }
 
   get (name) {
@@ -268,7 +267,7 @@ class CommandHandler {
           }
         }
       }
-      
+
       // Log command usage
       this.stats.stat(query.cmd, msg.guild ? msg.guild.id : 0)
 

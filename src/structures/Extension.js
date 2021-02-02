@@ -1,5 +1,5 @@
-const logger = require('../modules/logger')
-const loggerFn = logger('Extension')
+const loggerGen = require('../modules/logger')
+const logger = loggerGen('Extension')
 
 class Extension {
   constructor (client, infos) {
@@ -11,10 +11,10 @@ class Extension {
     if (this._name.length < 1) return logger.error('Extension name is empty.')
     this._config = client.config.extensions[this._name] || {}
 
-    const extLogger = logger(`extension:${this._name}`)
+    const extLogger = loggerGen(`extension:${this._name}`)
     this._logger = {
       log: (msg) => extLogger.log(msg),
-      verbose: (nsg) => extLogger.verbose(msg),
+      verbose: (msg) => extLogger.verbose(msg),
       debug: (msg) => extLogger.debug(msg),
       warn: (msg) => extLogger.warn(msg),
       error: (msg) => extLogger.error(msg),
