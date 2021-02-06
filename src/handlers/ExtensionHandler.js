@@ -10,11 +10,9 @@ class ExtensionHandler {
   }
 
   async register (ExtClass) {
-    const loggerFn = logger.extend('register')
-
     const Ext = new ExtClass(this._client)
     if (!(Ext instanceof Extension)) {
-      loggerFn.error('Cannot load extension: extension does not extends the Extension class.')
+      logger.error('Cannot load extension: extension does not extends the Extension class.')
       Ext.destroy()
       return
     }
@@ -25,25 +23,23 @@ class ExtensionHandler {
   }
 
   registerExtensionsIn (extPath) {
-    const loggerFn = logger.extend('registerExtensionsIn')
-
     try {
       const folders = fs.readdirSync(extPath)
 
       folders.forEach(async (folder) => {
         if (!fs.lstatSync(path.join(extPath, folder)).isDirectory()) return
-        loggerFn.log(`Loading extension '${folder}'`)
+        logger.log(`Loading extension '${folder}'`)
 
         try {
           const fullpath = path.join(extPath, folder, 'index.js')
           const ext = require(fullpath)
           await this.register(ext, fullpath)
         } catch (err) {
-          loggerFn.error(`Error loading extension '${folder}'.\n` + err.stack)
+          logger.error(`Error loading extension '${folder}'.\n` + err.stack)
         }
       })
     } catch (err) {
-      loggerFn.error('Error loading folders that the extensions located.\n' + err.stack)
+      logger.error('Error loading folders that the extensions located.\n' + err.stack)
     }
   }
 }

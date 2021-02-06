@@ -5,6 +5,7 @@ const { Collection } = require('discord.js')
 const StatHandler = require('./StatHandler')
 const database = require('../database')
 const ClientError = require('../structures/ClientError')
+const ArgumentError = require('../structures/command/ArgumentError')
 
 const logger = require('../modules/logger')('CommandHandler')
 
@@ -164,8 +165,6 @@ class CommandHandler {
    * @type {Command} cmd command to unregister
    */
   unregister (cmd) {
-    const loggerFn = logger.extend('unregister')
-
     // remove command name in group
     if (cmd._group.length > 0) {
       const group = this.groups.get(cmd._group)
@@ -173,15 +172,15 @@ class CommandHandler {
     }
 
     // remove all aliases
-    loggerFn.verbose(`Unregistering all command aliases for '${cmd._name}'`)
+    logger.verbose(`Unregistering all command aliases for '${cmd._name}'`)
     cmd._aliases.forEach((alias) => { if (this.aliases.has(alias)) this.aliases.delete(alias) })
     this.commands.delete(cmd._name)
 
     // remove command name itself
-    loggerFn.verbose(`Unregistering command '${cmd._name}'`)
+    logger.verbose(`Unregistering command '${cmd._name}'`)
     this.commands.delete(cmd._name)
 
-    loggerFn.log('Command Unloaded: ' + cmd._name)
+    logger.log('Command Unloaded: ' + cmd._name)
   }
 
   get (name) {
@@ -194,19 +193,18 @@ class CommandHandler {
   }
 
   async run (cmd, client, msg, query) {
-    const loggerFn = logger.extend('run')
-    loggerFn.verbose('command execution request: ' + cmd._name)
+    logger.verbose('requested command execution of %o', cmd._name)
 
     const owner = client.config.owner.includes(msg.author.id)
-    loggerFn.debug('isOwner: ' + String(owner))
+    logger.debug('isOwner: %o', owner)
 
     // Get locale and create translate function
     let locale = await client.locale.getLocale(false, msg.author)
-    loggerFn.debug('user locale: ' + locale)
+    logger.debug('user locale: %o', locale)
 
     if (msg.guild && locale == null) {
       const guildLocale = await client.locale.getLocale(true, msg.guild)
-      loggerFn.debug('guild locale: ' + guildLocale)
+      logger.debug('guild locale: %o', guildLocale)
 
       if (guildLocale != null) locale = guildLocale
       else locale = client.locale.defaultLocale
@@ -215,6 +213,8 @@ class CommandHandler {
     const { t } = translateFunc
 
     // NOTE: Begin permission checks
+    logger.verbose('checking permissions for running command')
+
     try {
       // Database Check
       if ((cmd._requireDB || cmd._userReg || cmd._guildAct) && !client.db.ready) {
@@ -229,6 +229,7 @@ class CommandHandler {
         cmd._userReg &&
         !(await database.users.isRegistered(client.db, msg.author.id))
       ) {
+        logger.debug('user is not registered')
         if (owner) msg.channel.send(t('CommandHandler.unregisteredOwner'))
         else return msg.reply(t('Command.pleaseRegister.user', client.config.prefix))
       }
@@ -240,7 +241,10 @@ class CommandHandler {
       if (
         cmd._guildAct &&
         !(await database.guilds.isActivated(client.db, msg.guild.id))
-      ) return msg.channel.send(t('Command.pleaseRegister.guild', client.config.prefix))
+      ) {
+        logger.debug('guild is not activated')
+        return msg.channel.send(t('Command.pleaseRegister.guild', client.config.prefix))
+      }
 
       // Perms Check
       if (cmd._owner && !owner) return await msg.reply(t('CommandHandler.run.ownerOnly'))
@@ -251,11 +255,15 @@ class CommandHandler {
         if (!owner && !msg.channel.permissionsFor(msg.author).has(cmd._userPerms)) return msg.reply(t('CommandHandler.noUserPermission', cmd._userPerms.join('`, `')))
       }
 
+      logger.verbose('permission chack passed')
+      logger.verbose('parsing arguments')
+
       // Parse arguments and validate
       try {
         query.args = cmd._args.parseArguments(query.rawArgs)
       } catch (err) {
-        if (!(err instanceof Error) && typeof err === 'object') {
+        logger.debug('error on arg parsing: %O', err)
+        if (err instanceof ArgumentError) {
           const argsText = Array.isArray(err.argData.type)
             ? t('Command.arguments.typeMismatch.multipleArgs', err.argData.type.slice(0, -1).join('`, `'), err.argData.type.slice(-1)[0])
             : err.argData.type
@@ -265,13 +273,16 @@ class CommandHandler {
           } else {
             return msg.reply(t('Command.arguments.typeMismatch.unnamedArgs', err.index + 1, err.argData.key, argsText))
           }
-        }
+        } else throw err
       }
+
+      logger.verbose('argument parsed')
 
       // Log command usage
       this.stats.stat(query.cmd, msg.guild ? msg.guild.id : 0)
 
       // Run
+      logger.verbose('running command')
       await cmd.run(client, msg, query, translateFunc)
     } catch (err) {
       const e = new ClientError(err)

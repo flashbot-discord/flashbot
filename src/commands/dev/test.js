@@ -15,13 +15,14 @@ class TestCommand extends Command {
         {
           key: 'cmd',
           type: 'string',
-          optional: 'false'
+          optional: false
         }
       ]
     })
   }
 
   async run (_client, msg, query, _) {
+    console.log(query)
     // Enter your code to test
     const cmd = query.args.cmd
 

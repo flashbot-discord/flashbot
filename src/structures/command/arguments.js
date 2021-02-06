@@ -1,6 +1,9 @@
 const minimist = require('minimist')
 
 const types = require('../types/index')
+const ArgumentError = require('./ArgumentError')
+const loggerGen = require('../../modules/logger')
+const logger = loggerGen('ArgumentCollector')
 
 class ArgumentCollector {
   constructor (parentCommand) {
@@ -22,6 +25,8 @@ class ArgumentCollector {
       default: any (undefined)
     }
     */
+    logger.debug('argName = %s', argName)
+    logger.debug('argInfo = %O', argInfo)
 
     // name
     if (argName in this.args.named) throw new Error('Argument name already exists')
@@ -62,8 +67,12 @@ class ArgumentCollector {
       infinity: boolean (false)
     }
     */
+    logger.verbose('registering unnamed args')
+    logger.debug('argInfosArr = %O', argInfosArr)
 
     for (const argInfo of argInfosArr) {
+      logger.debug('argInfo = %O', argInfo)
+
       // name
       const key = argInfo.key
       if (typeof key !== 'string' || key.length < 1) throw new Error('Argument key is empty')
@@ -126,8 +135,10 @@ class ArgumentCollector {
     const stringTypedArgs = []
     const aliases = {}
 
+    logger.verbose('parsing named args')
     for (const argName in this.args.named) {
       const arg = this.args.named[argName]
+      logger.debug('arg info: %O', arg)
 
       // Check boolean/string typed args
       // to pass it to minimist
@@ -185,6 +196,81 @@ class ArgumentCollector {
     const parsedArgs = {}
     let ignoreAfter = false
 
+    const argInfos = this.args.unnamed
+    logger.verbose('parsing unnamed args')
+    logger.debug('argInfos = %O', argInfos)
+
+    let idx = 0
+    for (const argData of argInfos) {
+      if (ignoreAfter) break
+
+      logger.debug('using argData: %O', argData)
+      const arg = argsArr[0]
+
+      // NOTE: check if arg is empty
+      if (arg == null) {
+        logger.debug('argument is empty')
+        if (!argData.optional) throw new ArgumentError('non-optional argument is missing', {
+          named: false,
+          index: idx,
+          argData
+        })
+        else continue
+      }
+
+      // NOTE: validate arg type
+      // 'text' type contains strings including spaces
+      if (argData.type === 'text') {
+        arg = argsArr.join(' ')
+        ignoreAfter = true
+      }
+
+      let usedType
+
+      // NOTE: handle infinity args (and not text)
+      if (argData.infinity && argData.type !== 'text') {
+        logger.verbose('processing infinity args')
+        const args = argsArr
+        const arr = []
+        for (const a of args) {
+          usedType = this._validateArg(a, argData.type)
+          if (usedType) {
+            arr.push(types[usedType].parse(a))
+            argsArr.shift()
+          }
+          else break
+        }
+
+        parsedArgs[argData.key] = arr
+        ignoreAfter = true
+
+      } else {
+        // NOTE: handle normal args
+        logger.verbose('processing non-infinity args')
+
+        usedType = this._validateArg(arg, argData.type)
+        logger.debug('usedType = %O', usedType)
+
+        // NOTE: throw Error if type mismatch
+        if (!usedType) {
+          throw new ArgumentError('type mismatch', {
+            named: false,
+            index: idx,
+            argData
+          })
+        }
+
+        parsedArgs[argData.key] = types[usedType].parse(arg)
+
+      }
+
+      idx++
+    }
+
+    logger.debug('final parsed args: %O', parsedArgs)
+    return parsedArgs
+
+    /*
     argsArr.forEach((arg, idx) => {
       if (ignoreAfter) return
 
@@ -227,7 +313,8 @@ class ArgumentCollector {
       }
     })
 
-    return parsedArgs
+    return parsedArgsa
+    */
   }
 
   /**
