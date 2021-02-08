@@ -104,13 +104,13 @@ class ArgumentCollector {
    */
   _validateType (type) {
     if (typeof type === 'string') {
-      if (types[type] == null) throw new TypeError('Invalid argument type')
+      if (types[type] == null) throw new TypeError(`Invalid argument type '${type}'`)
       else return true
     } else if (Array.isArray(type)) {
-      if (!type.every(t => types[t] != null)) throw new TypeError('Invalid argument type')
+      if (!type.every(t => types[t] != null)) throw new TypeError(`Invalid argument type in one of ['${type.join(`', '`)}']`)
       else return true
     } else if (type == null) return false
-    else throw new TypeError('Argument type must be string or Array<string> or null')
+    else throw new TypeError('Argument type must be string, Array<string> or null')
   }
 
   /**
@@ -118,11 +118,11 @@ class ArgumentCollector {
    * @param {Object|Array} rawArgs
    * @returns {Object}
    */
-  parseArguments (rawArgs) {
+  async parseArguments (msg, rawArgs) {
     const useNamedArgs = Object.keys(this.args.named).length > 0
 
-    if (useNamedArgs) return this._parseNamedArgs(rawArgs)
-    else return this._parseUnnamedArgs(rawArgs)
+    if (useNamedArgs) return await this._parseNamedArgs(msg, rawArgs)
+    else return await this._parseUnnamedArgs(msg, rawArgs)
   }
 
   /**
@@ -130,7 +130,7 @@ class ArgumentCollector {
    * @param {Array} argsArr array of named arguments
    * @private
    */
-  _parseNamedArgs (argsArr) {
+  async _parseNamedArgs (msg, argsArr) {
     const booleanTypedArgs = []
     const stringTypedArgs = []
     const aliases = {}
@@ -164,13 +164,13 @@ class ArgumentCollector {
 
       // unnamed args inside named args
       if (argName === '_') {
-        Object.assign(finalArgs, this._parseUnnamedArgs(arg))
+        Object.assign(finalArgs, await this._parseUnnamedArgs(msg, arg))
       } else {
         const argData = this.args.named[argName]
 
         if (!argData) continue
 
-        const usedType = this._validateArg(arg, argData.type)
+        const usedType = await this._validateArg(msg, arg, argData.type)
         if (!usedType) {
           const throwObj = {
             error: true,
@@ -180,7 +180,7 @@ class ArgumentCollector {
           throw throwObj
         }
 
-        finalArgs[argName] = types[usedType].parse(arg)
+        finalArgs[argName] = await types[usedType].parse(arg)
       }
     }
 
@@ -192,7 +192,7 @@ class ArgumentCollector {
    * @param {Array} argsArr array of unnamed arguments
    * @private
    */
-  _parseUnnamedArgs (argsArr) {
+  async _parseUnnamedArgs (msg, argsArr) {
     const parsedArgs = {}
     let ignoreAfter = false
 
@@ -233,9 +233,9 @@ class ArgumentCollector {
         const args = argsArr
         const arr = []
         for (const a of args) {
-          usedType = this._validateArg(a, argData.type)
+          usedType = await this._validateValue(msg, a, argData.type)
           if (usedType) {
-            arr.push(types[usedType].parse(a))
+            arr.push(await types[usedType].parse(msg, a))
             argsArr.shift()
           }
           else break
@@ -248,7 +248,7 @@ class ArgumentCollector {
         // NOTE: handle normal args
         logger.verbose('processing non-infinity args')
 
-        usedType = this._validateArg(arg, argData.type)
+        usedType = await this._validateValue(msg, arg, argData.type)
         logger.debug('usedType = %O', usedType)
 
         // NOTE: throw Error if type mismatch
@@ -260,7 +260,7 @@ class ArgumentCollector {
           })
         }
 
-        parsedArgs[argData.key] = types[usedType].parse(arg)
+        parsedArgs[argData.key] = await types[usedType].parse(msg, arg)
 
       }
 
@@ -269,52 +269,6 @@ class ArgumentCollector {
 
     logger.debug('final parsed args: %O', parsedArgs)
     return parsedArgs
-
-    /*
-    argsArr.forEach((arg, idx) => {
-      if (ignoreAfter) return
-
-      const argData = this.args.unnamed[idx]
-      if (!argData) return
-
-      // 'text' type contains strings including spaces
-      if (argData.type === 'text') {
-        arg = argsArr.slice(idx).join(' ')
-        ignoreAfter = true
-      }
-
-      let usedType
-      if (argData.infinity && argData.type !== 'text') {
-        const args = argsArr.slice(idx)
-        const arr = []
-        for (const a of args) {
-          usedType = this._validateArg(a, argData.type)
-          if (usedType) arr.push(types[usedType].parse(a))
-          else break
-        }
-
-        parsedArgs[argData.key] = arr
-        ignoreAfter = true
-      } else {
-        usedType = this._validateArg(arg, argData.type)
-
-        // NOTE: type mismatch
-        if (!usedType) {
-          const throwObj = {
-            error: true,
-            named: false,
-            argData,
-            index: idx
-          }
-          throw throwObj
-        }
-
-        parsedArgs[argData.key] = types[usedType].parse(arg)
-      }
-    })
-
-    return parsedArgsa
-    */
   }
 
   /**
@@ -323,12 +277,12 @@ class ArgumentCollector {
    * @param {string} type type of the argument
    * @private
    */
-  _validateArg (arg, type) {
+  async _validateValue (msg, arg, type) {
     if (Array.isArray(type)) {
-      const usedType = type.find(t => types[t].validate(arg))
+      const usedType = type.find(async t => await types[t].validate(msg, arg))
       return usedType != null ? usedType : null
     } else {
-      return types[type].validate(arg) ? type : null
+      return await types[type].validate(msg, arg) ? type : null
     }
   }
 

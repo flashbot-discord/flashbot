@@ -9,9 +9,10 @@ class ProfileImageCommand extends Command {
       group: 'misc',
       args: [
         {
-          key: 'member',
+          key: 'user',
           description: 'commands.profileimage.args.member.DESC:The member to see the profile image. Currently, only mentions are accepted.',
-          type: 'userMention'
+          type: 'user',
+          optional: true
         }
       ]
     })
@@ -20,9 +21,8 @@ class ProfileImageCommand extends Command {
   // TODO: needs args fix (user: both mention or ids)
 
   async run (client, msg, query, { t }) {
-    if (msg.mentions.users.size > 0) return await msg.channel.send(msg.mentions.users.first().displayAvatarURL({ dynamic: true, size: 1024 }))
-
-    if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, t))
+    const user = query.args.user || msg.author
+    await msg.channel.send(user.displayAvatarURL({ dynamic: true, size: 1024 }))
   }
 }
 

@@ -1,5 +1,5 @@
 module.exports = {
   type: 'text',
-  validate: el => typeof el === 'string',
-  parse: el => el
+  validate: (msg, el) => typeof el === 'string',
+  parse: (msg, el) => el
 }

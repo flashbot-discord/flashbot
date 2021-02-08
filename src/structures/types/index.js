@@ -8,7 +8,7 @@ module.exports = {
 
   snowflake: require('./snowflake'),
 
-  userMention: require('./userMention'),
-  channelMention: require('./channelMention'),
-  roleMention: require('./roleMention')
+  user: require('./user'),
+  channel: require('./channel'),
+  role: require('./role')
 }

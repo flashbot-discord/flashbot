@@ -1,5 +1,5 @@
 module.exports = {
   type: 'any',
-  validate: el => true,
-  parse: el => el
+  validate: () => true,
+  parse: (msg, el) => el
 }

@@ -260,12 +260,14 @@ class CommandHandler {
 
       // Parse arguments and validate
       try {
-        query.args = cmd._args.parseArguments(query.rawArgs)
+        query.args = await cmd._args.parseArguments(msg, query.rawArgs)
       } catch (err) {
         logger.debug('error on arg parsing: %O', err)
         if (err instanceof ArgumentError) {
           const argsText = Array.isArray(err.argData.type)
-            ? t('Command.arguments.typeMismatch.multipleArgs', err.argData.type.slice(0, -1).join('`, `'), err.argData.type.slice(-1)[0])
+            ? err.argData.type.length > 1
+              ? t('Command.arguments.typeMismatch.multipleArgs', err.argData.type.slice(0, -1).join('`, `'), err.argData.type.slice(-1)[0])
+              : err.argData.type[0]
             : err.argData.type
 
           if (err.named) {
