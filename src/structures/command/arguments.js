@@ -136,6 +136,7 @@ class ArgumentCollector {
     const aliases = {}
 
     logger.verbose('parsing named args')
+
     for (const argName in this.args.named) {
       const arg = this.args.named[argName]
       logger.debug('arg info: %O', arg)
@@ -155,35 +156,45 @@ class ArgumentCollector {
       string: stringTypedArgs,
       alias: aliases
     })
+    logger.debug('raw minimist output: %O', parsedArgs)
 
     const finalArgs = {}
 
-    // Check
-    for (const argName in parsedArgs) {
-      const arg = parsedArgs[argName]
-
-      // unnamed args inside named args
-      if (argName === '_') {
-        Object.assign(finalArgs, await this._parseUnnamedArgs(msg, arg))
-      } else {
-        const argData = this.args.named[argName]
-
-        if (!argData) continue
-
-        const usedType = await this._validateArg(msg, arg, argData.type)
-        if (!usedType) {
-          const throwObj = {
-            error: true,
-            named: true,
-            argData
-          }
-          throw throwObj
-        }
-
-        finalArgs[argName] = await types[usedType].parse(arg)
-      }
+    // unnamed args inside named args
+    if (parsedArgs._) {
+      logger.verbose('found unnamed args in parsedArgs. processing first.')
+      Object.assign(finalArgs, await this._parseUnnamedArgs(msg, parsedArgs._))
     }
 
+    for (const argName in this.args.named) {
+      const argData = this.args.named[argName]
+      const arg = parsedArgs[argName]
+      logger.debug('using argData: %O', argData)
+      logger.debug('arg value to parse: %O', arg)
+
+      // NOTE: check if arg is empty
+      if (arg == null) {
+        logger.debug('argument is empty')
+        if (!argData.optional) throw new ArgumentError('non-optional argument is missing', {
+          named: true,
+          argData
+        })
+        else continue
+      }
+
+      const usedType = await this._validateValue(msg, arg, argData.type)
+      if (!usedType) {
+        throw new ArgumentError('arg type mismatch', {
+          named: true,
+          argData
+        })
+      }
+
+      finalArgs[argName] = await types[usedType].parse(msg, arg)
+
+    }
+
+    logger.debug('final parsed named args: %O', finalArgs)
     return finalArgs
   }
 
@@ -205,7 +216,7 @@ class ArgumentCollector {
       if (ignoreAfter) break
 
       logger.debug('using argData: %O', argData)
-      const arg = argsArr[0]
+      let arg = argsArr[idx]
 
       // NOTE: check if arg is empty
       if (arg == null) {
@@ -230,10 +241,12 @@ class ArgumentCollector {
       // NOTE: handle infinity args (and not text)
       if (argData.infinity && argData.type !== 'text') {
         logger.verbose('processing infinity args')
-        const args = argsArr
+        const args = argsArr.slice() // clone
         const arr = []
         for (const a of args) {
           usedType = await this._validateValue(msg, a, argData.type)
+          logger.debug('argv: %O, usedType: %O', a, usedType)
+
           if (usedType) {
             arr.push(await types[usedType].parse(msg, a))
             argsArr.shift()
@@ -253,7 +266,7 @@ class ArgumentCollector {
 
         // NOTE: throw Error if type mismatch
         if (!usedType) {
-          throw new ArgumentError('type mismatch', {
+          throw new ArgumentError('arg type mismatch', {
             named: false,
             index: idx,
             argData
@@ -267,7 +280,7 @@ class ArgumentCollector {
       idx++
     }
 
-    logger.debug('final parsed args: %O', parsedArgs)
+    logger.debug('final parsed unnamed args: %O', parsedArgs)
     return parsedArgs
   }
 

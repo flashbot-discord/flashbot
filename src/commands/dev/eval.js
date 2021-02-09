@@ -13,42 +13,33 @@ class EvalCommand extends Command {
       aliases: ['evaluate', 'ㄷㅍ미', 'ㄷㅍ미ㅕㅁㅅㄷ'],
       description: 'commands.eval.DESC:Evaluates a code.',
       group: 'dev',
-      owner: true
-      /*
+      owner: true,
       args: {
         unsafe: {
-          aliases: ['u', 'ㅕ'],
+          aliases: ['u'],
           type: 'boolean',
           optional: true
         },
         _: [
           {
-            name: 'code',
-            type: 'infinity',
+            key: 'code',
+            type: 'text',
             optional: false,
           }
         ]
       }
-      */
     })
   }
 
   async run (client, msg, query, { t }) {
-    const args = minimist(query.rawArgs, {
-      stopEarly: true,
-      boolean: 'u',
-      alias: {
-        unsafe: ['u', 'ㅕㅜㄴㅁㄹㄷ', 'ㅕ']
-      }
-    })
-
     // Unsafe mode check
-    const isUnsafe = args.unsafe
+    const isUnsafe = query.args.unsafe
     logger.debug(`isUnsafe = ${String(isUnsafe)}`)
 
-    const str = args._.join(' ')
+    const str = query.args.code
     if (!str) return await msg.reply(Command.makeUsage(this, query.cmd, t))
     logger.log(`[EVAL] ${msg.author.tag} evaluated the code: ${str}`)
+    if (isUnsafe) logger.log('[EVAL] CODE IS RUNNING WITH UNSAFE MODE; Sensetive data protection will be disabled for this eval session.')
 
     const m = await msg.reply('Evaling...')
 
@@ -74,7 +65,7 @@ class EvalCommand extends Command {
     if (!isUnsafe) this.restoreToken(bd)
     bd = null
 
-    logger.debug(`[EVAL] Result: ${error.obj ? error.obj.stack : result}`)
+    logger.log(`[EVAL] Result: ${error.obj ? error.obj.stack : result}`)
 
     if (result.length > 1000) useEmbed = false
     const moreText = '\nAnd much more...'

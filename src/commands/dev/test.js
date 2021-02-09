@@ -21,6 +21,24 @@ class TestCommand extends Command {
     })
   }
 
+  *args (msg) {
+    const cmd = yield {
+      type: 'string',
+      optional: false,
+      oneOf: ['parseperiod']
+    }
+
+    switch (cmd) {
+      case 'parseperiod': {
+        const period = yield {
+          type: 'string',
+          optional: false
+        }
+        return { cmd, period }
+      }
+    }
+  }
+
   async run (_client, msg, query, _) {
     console.log(query)
     // Enter your code to test
