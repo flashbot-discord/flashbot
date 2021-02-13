@@ -7,7 +7,17 @@ const { printf, splat, colorize, timestamp, ms, combine } = format
 const debugGen = require('debug')
 const debugChat = debugGen('flashbot:chat')
 
-const config = require('../../config')
+const _config = require('../../config')
+const config = _config.logger ? {
+  enable: _config.logger.enable != null ? _config.logger.enable : true,
+  useDebug: _config.logger.useDebug != null ? _config.logger.useDebug : false,
+  level : _config.logger.level || 'chat'
+} : {
+  enable: true,
+  useDebug: false,
+  level: 'chat'
+}
+const enabled = config.enable
 
 const colors = {
   fatal: chalk.bgWhite.red.bold,
@@ -60,7 +70,7 @@ const logger = createLogger({
   levels: myCustomLevels.levels,
   transports: [
     new transports.Console({
-      level: config.logger && config.logger.level ? config.logger.level : 'chat',
+      level: config.level,
       format: combine(
         splat(),
         colorize(),
@@ -77,8 +87,8 @@ addColors(myCustomLevels.colors)
 // NOTE: debug
 
 let useDebug = false
-if (config.logger && config.logger.useDebug) {
-  debugGen.enable('flashbot:*')
+if (config.useDebug) {
+  if (enabled) debugGen.enable('flashbot:*')
   useDebug = true
 }
 
@@ -89,31 +99,30 @@ const func = (scope) => {
 
   return {
     chat: (msg) => {
-      if (!useDebug) logger.chat(msg, { label: 'chat' })
-      debugChat(msg)
+      if (enabled && !useDebug) logger.chat(msg, { label: 'chat' })
     },
     log: (msg, ...args) => {
-      if (!useDebug) logger.info(msg, ...args, { label: scope })
+      if (enabled && !useDebug) logger.info(msg, ...args, { label: scope })
       debugFunc('info', msg, ...args)
     },
     debug: (msg, ...args) => {
-      if (!useDebug) logger.debug(msg, ...args, { label: scope })
+      if (enabled && !useDebug) logger.debug(msg, ...args, { label: scope })
       debugFunc('debug', msg, ...args)
     },
     verbose: (msg, ...args) => {
-      if (!useDebug) logger.verbose(msg, ...args, { label: scope })
+      if (enabled && !useDebug) logger.verbose(msg, ...args, { label: scope })
       debugFunc('verbose', msg, ...args)
     },
     warn: (msg, ...args) => {
-      if (!useDebug) logger.warn(msg, ...args, { label: scope })
+      if (enabled && !useDebug) logger.warn(msg, ...args, { label: scope })
       debugFunc('warn', msg, ...args)
     },
     error: (msg, ...args) => {
-      if (!useDebug) logger.error(msg, ...args, { label: scope })
+      if (enabled && !useDebug) logger.error(msg, ...args, { label: scope })
       debugFunc('error', msg, ...args)
     },
     fatal: (msg, ...args) => {
-      if (!useDebug) logger.fatal(msg, ...args, { label: scope })
+      if (enabled && !useDebug) logger.fatal(msg, ...args, { label: scope })
       debugFunc('fatal', msg, ...args)
 
       process.exit(1)
