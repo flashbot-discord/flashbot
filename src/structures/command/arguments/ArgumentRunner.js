@@ -49,6 +49,7 @@ async function runArgs (msg, command, rawArgs) {
   Object.assign(parsedArgs, unnamedArgs)
   Object.assign(parsedArgs, namedArgs)
 
+  logger.debug('final args: %O', parsedArgs)
   return parsedArgs
 }
 
@@ -180,7 +181,7 @@ async function runUnnamedArgs (msg, argDataList, argsArr) {
 
 async function runDynamicArgs (msg, command, rawArgs) {
   const logger = _logger.extend('runDynamicArgs')
-  const finalArgs = {}
+  //const finalArgs = {}
   const iter = command.args(msg)
 
   let current = iter.next()
@@ -206,10 +207,13 @@ async function runDynamicArgs (msg, command, rawArgs) {
     Object.assign(parsedArgs, parsedUnnamedArgs)
     Object.assign(parsedArgs, parsedNamedArgs)
 
-    Object.assign(finalArgs, parsedArgs)
+    //Object.assign(finalArgs, parsedArgs)
     current = iter.next(parsedArgs)
   }
 
+  const finalArgs = current.value
+
+  logger.debug('final parsed dynamic args: %O', finalArgs)
   return finalArgs
 }
 
@@ -276,8 +280,8 @@ async function processArg (msg, arg, argData) {
       returnObj.arg = argData.optional
         ? parsedValue != null
           ? parsedValue
-          : argData.default
-        : null
+          : argData.default != null ? argData.default : null
+        : parsedValue
     } else {
       returnObj.arg = argData.optional ? argData.default : null
     }
