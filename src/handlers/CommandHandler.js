@@ -3,9 +3,10 @@ const path = require('path')
 const { Collection } = require('discord.js')
 
 const StatHandler = require('./StatHandler')
+const argumentRunner = require('../structures/command/arguments/ArgumentRunner')
 const database = require('../database')
 const ClientError = require('../structures/ClientError')
-const ArgumentError = require('../structures/command/ArgumentError')
+const ArgumentError = require('../structures/command/arguments/ArgumentError')
 
 const logger = require('../modules/logger')('CommandHandler')
 
@@ -260,7 +261,7 @@ class CommandHandler {
 
       // Parse arguments and validate
       try {
-        query.args = await cmd._args.parseArguments(msg, query.rawArgs)
+        query.args = await argumentRunner.runArgs(msg, cmd, query.rawArgs) //await cmd._args.parseArguments(msg, query.rawArgs)
       } catch (err) {
         logger.debug('error on arg parsing: %O', err)
         if (err instanceof ArgumentError) {

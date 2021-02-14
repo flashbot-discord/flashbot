@@ -1,4 +1,4 @@
-const ArgumentCollector = require('./arguments')
+const ArgumentCollector = require('./arguments/ArgumentCollector')
 const logger = require('../../modules/logger')('Command')
 
 class Command {
@@ -112,11 +112,15 @@ class Command {
     this._enabled = true
 
     // Add default value to args
-    if (
+
+    if (typeof this.args === 'function') this._args.dynamic = true
+    else if (
       infos.args != null &&
       typeof infos.args === 'object' &&
       !Array.isArray(infos.args)
     ) {
+      if (typeof this.args === 'function') this._args.dynamic = true
+
       for (const arg in infos.args) {
         if (arg === '_') this._args.registerUnnamedArguments(infos.args[arg])
         else this._args.registerNamedArgument(arg, infos.args[arg])

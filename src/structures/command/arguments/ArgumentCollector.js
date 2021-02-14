@@ -1,14 +1,15 @@
 const minimist = require('minimist')
 
-const types = require('../types/index')
+const types = require('../../types/index')
 const ArgumentError = require('./ArgumentError')
-const loggerGen = require('../../modules/logger')
+const loggerGen = require('../../../modules/logger')
 const logger = loggerGen('ArgumentCollector')
 
 class ArgumentCollector {
   constructor (parentCommand) {
     this._command = parentCommand
     this.args = { named: {}, unnamed: [] }
+    this.dynamic = false
   }
 
   /**
@@ -49,7 +50,8 @@ class ArgumentCollector {
     this.args.named[argName] = {
       aliases,
       type: argInfo.type,
-      optional
+      optional,
+      default: argInfo.default
     }
   }
 
@@ -118,18 +120,44 @@ class ArgumentCollector {
    * @param {Object|Array} rawArgs
    * @returns {Object}
    */
+  /*
   async parseArguments (msg, rawArgs) {
+    if (this.dynamic) return await this._parseArgsFunc(msg)
+    
     const useNamedArgs = Object.keys(this.args.named).length > 0
-
     if (useNamedArgs) return await this._parseNamedArgs(msg, rawArgs)
     else return await this._parseUnnamedArgs(msg, rawArgs)
   }
+  */
+  /**
+   * Parses dynamic arg function.
+   */
+  /*
+  async _parseArgsFunc (msg) {
+    // Runs through iterator
+    const iter = this._command.args()
+    const parsedArgs = {}
+
+    let current = iter.next()
+    while (!current.done) {
+      let parsed
+
+      const isNamedArg = current.named
+      if (!isNamed) parsed = this._parseUnnamedArgs(msg, [ argData ])
+      else parsed = this._parseNamedArgs(msg, argData)
+
+      Object.assign(parsedArgs, parsed)
+      current = iter.next(parsed)
+    }
+  }
+  */
 
   /**
    * Parses named arguments
    * @param {Array} argsArr array of named arguments
    * @private
    */
+  /*
   async _parseNamedArgs (msg, argsArr) {
     const booleanTypedArgs = []
     const stringTypedArgs = []
@@ -197,12 +225,14 @@ class ArgumentCollector {
     logger.debug('final parsed named args: %O', finalArgs)
     return finalArgs
   }
+  */
 
   /**
    * Parses unnamed arguments
    * @param {Array} argsArr array of unnamed arguments
    * @private
    */
+  /*
   async _parseUnnamedArgs (msg, argsArr) {
     const parsedArgs = {}
     let ignoreAfter = false
@@ -283,6 +313,7 @@ class ArgumentCollector {
     logger.debug('final parsed unnamed args: %O', parsedArgs)
     return parsedArgs
   }
+  */
 
   /**
    * Validates arg value with the type
@@ -290,6 +321,7 @@ class ArgumentCollector {
    * @param {string} type type of the argument
    * @private
    */
+  /*
   async _validateValue (msg, arg, type) {
     if (Array.isArray(type)) {
       const usedType = type.find(async t => await types[t].validate(msg, arg))
@@ -298,7 +330,7 @@ class ArgumentCollector {
       return await types[type].validate(msg, arg) ? type : null
     }
   }
-
+  */
   /**
    * Checks whether the argument registered in this collector
    * @param {string} name name of the argument
