@@ -39,15 +39,51 @@ class PermissionCheckCommand extends Command {
       name: 'permcheck',
       aliases: ['perm', 'perms', 'permission', 'permissions', '권한확인', '권한', 'ㅔㄷ그', 'ㅔㄷ근', 'ㅔㄷ그ㅑㄴ냐ㅐㅜ', 'ㅔㄷ그ㅑㄴ냐ㅐㅜㄴ', 'rnjsgksghkrdls', 'rnjsgks'],
       description: 'commands.permcheck.DESC',
-      group: 'info'
+      group: 'info',
+      /*
+      args: [
+        {
+          key: 'target',
+          type: 'member',
+          optional: true
+        },
+        {
+          key: 'channel',
+          type: 'channel',
+          optional: true
+        }
+      ]
+      */
     })
   }
 
-  async run (client, msg, _query, { t }) {
+  *args (msg) {
+    const { target } = yield {
+      unnamed: {
+        key: 'target',
+        type: 'member',
+        optional: true,
+        default: msg.member
+      }
+    }
+
+    const { channel } = yield {
+      unnamed: {
+        key: 'channel',
+        type: 'channel',
+        optional: true,
+        default: msg.channel
+      }
+    }
+
+    return { target, channel }
+  }
+
+  async run (client, msg, query, { t }) {
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
-    const targetUser = msg.mentions.members.size > 0 ? msg.mentions.members.first() : msg.member
-    const targetChannel = msg.mentions.channels.size > 0 ? msg.mentions.channels.first() : msg.channel
+    const targetUser = query.args.target
+    const targetChannel = query.args.channel
     const serverPerms = targetUser.permissions
     const channelPerms = targetChannel.permissionsFor(targetUser)
 
@@ -87,12 +123,12 @@ class PermissionCheckCommand extends Command {
 
       const availablePermList = filterPermList(permList, targetChannel.type)
       availablePermList.forEach((obj, perm) => {
-        str += `**${t(`perms.${perm}`)}**\n` +
-          makePermsMsg({
+        str += `**${t(`perms.${perm}`)}**\n`
+          + makePermsMsg({
             granted: serverPerms.has(perm),
             grantedInChannel: obj.channelType != null ? channelPerms.has(perm) : null
-          }, t) +
-          '\n\n'
+          }, t)
+          + '\n\n'
       })
 
       output = str

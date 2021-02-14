@@ -10,29 +10,35 @@ class TestCommand extends Command {
       aliases: ['테스트', 'ㅅㄷㄴㅅ', 'xptmxm'],
       description: 'commands.test.DESC:Command Testing',
       group: 'dev',
-      owner: true,
+      owner: true,/*
       args: [
         {
           key: 'cmd',
           type: 'string',
           optional: false
         }
-      ]
+      ]*/
     })
   }
 
   *args (msg) {
-    const cmd = yield {
-      type: 'string',
-      optional: false,
-      oneOf: ['parseperiod']
+    const { cmd } = yield {
+      unnamed: {
+        key: 'cmd',
+        type: 'string',
+        optional: false,
+        oneOf: ['parseperiod']
+      }
     }
-
+console.log(cmd)
     switch (cmd) {
       case 'parseperiod': {
-        const period = yield {
-          type: 'string',
-          optional: false
+        const { period } = yield {
+          unnamed: {
+            key: 'value',
+            type: 'string',
+            optional: false
+          }
         }
         return { cmd, period }
       }
@@ -46,7 +52,7 @@ class TestCommand extends Command {
 
     switch (cmd) {
       case 'parseperiod': {
-        const input = query.rawArgs[1]
+        const input = query.args.value
         const result = parsePeriod(input)
         console.log(result)
         msg.channel.send(`
