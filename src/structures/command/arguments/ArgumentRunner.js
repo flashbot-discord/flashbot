@@ -125,7 +125,13 @@ async function runNamedArgs (msg, argDataList, argsArr, stopEarly = false) {
 
     finalArgs[argName] = await types[usedType].parse(msg, arg)
     */
-    const data = await processArg(msg, arg, argData)
+    let data
+    try {
+      data = await processArg(msg, arg, argData)
+    } catch (e) {
+      e.named = true
+      throw e
+    }
     finalArgs[argName] = data.arg
   }
 
@@ -181,7 +187,7 @@ async function runUnnamedArgs (msg, argDataList, argsArr) {
 
 async function runDynamicArgs (msg, command, argsArr) {
   const logger = _logger.extend('runDynamicArgs')
-  const rawArgs = argsArr.slice()
+  let rawArgs = argsArr.slice()
   const iter = command.args(msg)
 
   let current = iter.next()
