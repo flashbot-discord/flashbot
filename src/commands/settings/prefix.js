@@ -17,22 +17,53 @@ class PrefixCommand extends Command {
   }
 
   // TODO: apply subcommand
+  *args () {
+    const returnObj = {}
+
+    const { mode } = yield {
+      unnamed: {
+        key: 'mode',
+        type: 'string',
+        optional: true
+      }
+    }
+
+    switch (mode) {
+      case 'set':
+      case '설정': {
+        returnObj.mode = 'set'
+
+        const { prefix } = yield {
+          unnamed: {
+            key: 'prefix',
+            type: 'string'
+          }
+        }
+        returnObj.prefix = prefix
+      }
+    }
+
+    if (mode == null) returnObj.mode = 'get'
+
+    return returnObj
+  }
 
   async run (client, msg, query, { t }) {
     // Get mode
-    if (query.rawArgs.length < 1) {
+    if (query.args.mode === 'get') {
       const prefix = await getPrefix(client, msg.guild.id)
       return msg.channel.send(t('commands.prefix.info', prefix))
-    } else if (['set', '설정'].includes(query.rawArgs[0])) {
+    } else if (query.args.mode === 'set') {
     // Set mode
       const setPerms = ['MANAGE_GUILD']
 
       if (query.rawArgs.length < 2) {
+        // TODO Delete this (should not work anymore)
         const prefix = await database.guilds.prefix.get((this._client.db, msg.guild.id))
         return msg.reply(t('commands.prefix.set.pleaseEnterPrefix', prefix))
       } else if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.any(setPerms)) return msg.reply(t('commands.prefix.set.noPerms'))
       else {
-        const prefix = query.rawArgs[1]
+        const prefix = query.args.prefix
 
         if (prefix.length > 11) return msg.reply(t('commands.prefix.set.tooLong'))
         if (textFormat.hasEveryoneMention(prefix)) return msg.reply(t('commands.prefix.set.everyoneNotAllowed'))

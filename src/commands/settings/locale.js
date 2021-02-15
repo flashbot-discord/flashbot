@@ -17,29 +17,47 @@ class LocaleCommand extends Command {
       description: 'commands.locale.DESC:See or change the bot locale on the server.',
       group: 'settings',
       requireDB: true,
-      userReg: true,
-      args: {
-        guild: {
-          description: 'whether the locale shuold be set to guild. Only works on set mode.',
-          aliases: ['g'],
-          type: 'boolean'
-        },
-        _: [
-          {
-            key: 'mode',
-            description: 'commands.locale.args.mode.DESC: When present, change the locale of the server to this value.',
-            type: 'string',
-            optional: true
-          },
-          {
-            key: 'locale',
-            description: 'commands.locale.args.locale.DESC:The locale to change. Only works in set mode.',
-            type: 'string',
-            optional: true
-          }
-        ]
-      }
+      userReg: true
     })
+  }
+
+  *args () {
+    const returnObj = {}
+
+    const { mode } = yield {
+      unnamed: {
+        key: 'mode',
+        type: 'string',
+        description: 'commands.locale.args.mode.DESC: When present, change the locale of the server to this value.',
+        optional: true
+      }
+    }
+    returnObj.mode = mode
+
+    switch (mode) {
+      case 'list':
+        break
+
+      case 'set': {
+        const { locale, guild } = yield {
+          named: {
+            guild: {
+              type: 'boolean',
+              description: 'whether the locale shuold be set to guild.',
+            }
+          },
+          unnamed: {
+            key: 'locale',
+            type: 'string',
+            description: 'commands.locale.args.locale.DESC:The locale to change.',
+          }
+        }
+        returnObj.locale = locale
+        returnObj.guild = guild
+      }
+    }
+
+    return returnObj
   }
 
   async run (client, msg, query, { t }) {

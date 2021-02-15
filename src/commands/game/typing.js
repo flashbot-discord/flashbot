@@ -24,21 +24,91 @@ class TypingGameCommand extends Command {
     this._logPos = 'Command / typing'
   }
 
-  async run (client, msg, query, { t }) {
-    // TODO args support
-    switch (query.rawArgs[0]) {
+  *args () {
+    const returnObj = {}
+
+    const { cmd } = yield {
+      unnamed: {
+        key: 'cmd',
+        type: 'string'
+      }
+    }
+
+    switch (cmd) {
       case 'reload':
       case '리로드':
       case 'ㄱ디ㅐㅁㅇ':
       case 'flfhem':
-        if (!client.config.owner.includes(msg.author.id)) return msg.reply(t('commands.typing.error.noPermissionToReload'))
-
-        return this.loadData(msg, t)
+        returnObj.cmd = 'reload'
+        break
 
       case 'start':
       case '시작':
       case 'ㄴㅅㅁㄱㅅ':
       case 'tlwkr': {
+        returnObj.cmd = 'start'
+
+        const { lang } = yield {
+          unnamed: {
+            key: 'lang',
+            type: 'string',
+            optional: true
+          }
+        }
+        returnObj.lang = lang
+
+        const { category } = yield {
+          unnamed: {
+            key: 'category',
+            type: 'string',
+            optional: true
+          }
+        }
+        returnObj.category = category
+
+        break
+      }
+
+      case 'stop':
+      case '종료':
+      case '정지':
+      case '중지':
+      case 'ㄴ새ㅔ':
+      case 'whdfy':
+      case 'wjdwl':
+      case 'wndwl':
+        returnObj.cmd = 'stop'
+        break
+
+      case '카테고리':
+      case 'category':
+      case 'zkxprhfl':
+      case 'ㅊㅁㅅㄷ해교':
+        returnObj.cmd = 'category'
+
+        const { searchQuery } = yield {
+          unnamed: {
+            key: 'searchQuery',
+            type: 'string',
+          }
+        }
+        returnObj.searchQuery = searchQuery
+
+        break
+    }
+
+    return returnObj
+  }
+
+  async run (client, msg, query, { t }) {
+    // TODO args support
+    switch (query.args.cmd) {
+      case 'reload':
+        if (!client.config.owner.includes(msg.author.id)) return msg.reply(t('commands.typing.error.noPermissionToReload'))
+
+        return this.loadData(msg, t)
+
+      case 'start': {
         // Check if the data is loaded
         if (!typingModule.isLoaded()) {
           msg.channel.send(t('commands.typing.loading'))
@@ -51,15 +121,16 @@ class TypingGameCommand extends Command {
 
         // Choose Language
         let lang = this.default
-        if (query.rawArgs[1]) {
-          if (typingModule.isLocaleExist(query.rawArgs[1])) lang = typingModule.getBaseLocale(query.rawArgs[1])
+        if (query.args.lang) {
+          const langInput = query.args.lang
+          if (typingModule.isLocaleExist(langInput)) lang = typingModule.getBaseLocale(langInput)
           else return msg.reply(t('commands.typing.error.langNotExist'))
         }
 
         // Category select
         let category
-        if (query.rawArgs[2]) {
-          const categoryInput = query.rawArgs[2]
+        if (query.args.category) {
+          const categoryInput = query.args.category
           if (!typingModule.isCategoryExist(lang, categoryInput)) return msg.reply(t('commands.typing.error.categoryNotExist'))
           else category = categoryInput
         } else category = null
@@ -106,20 +177,11 @@ class TypingGameCommand extends Command {
       }
 
       case 'stop':
-      case '종료':
-      case '정지':
-      case '중지':
-      case 'ㄴ새ㅔ':
-      case 'whdfy':
-      case 'wjdwl':
-      case 'wndwl':
         this.stop(msg, t)
         break
 
-      case '카테고리':
       case 'category':
-      case 'zkxprhfl':
-      case 'ㅊㅁㅅㄷ해교':
+        console.log(query.rawArgs)
         if (!query.rawArgs[1]) return msg.reply(t('commands.typing.emptyCategorySearchQuery', query.prefix))
         else return msg.reply('WIP')
     }
