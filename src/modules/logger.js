@@ -7,15 +7,17 @@ const { printf, splat, colorize, timestamp, ms, combine } = format
 const debugGen = require('debug')
 
 const _config = require('../../config')
-const config = _config.logger ? {
-  enable: _config.logger.enable != null ? _config.logger.enable : true,
-  useDebug: _config.logger.useDebug != null ? _config.logger.useDebug : false,
-  level: _config.logger.level || 'chat'
-} : {
-  enable: true,
-  useDebug: false,
-  level: 'chat'
-}
+const config = _config.logger
+  ? {
+      enable: _config.logger.enable != null ? _config.logger.enable : true,
+      useDebug: _config.logger.useDebug != null ? _config.logger.useDebug : false,
+      level: _config.logger.level || 'chat'
+    }
+  : {
+      enable: true,
+      useDebug: false,
+      level: 'chat'
+    }
 const enabled = config.enable
 
 const colors = {
