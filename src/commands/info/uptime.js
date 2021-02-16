@@ -13,7 +13,7 @@ class UptimeCommand extends Command {
     })
   }
 
-  async run (client, msg, _query, t) {
+  async run (client, msg, _query, { t }) {
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
     const uptime = Date.now() - client.readyAt.getTime()

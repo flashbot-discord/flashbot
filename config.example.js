@@ -12,6 +12,11 @@ module.exports = {
       database: ''
     }
   },
+  logger: {
+    enable: true,
+    level: 'chat',
+    useDebug: false
+  },
   extensions: {
     extensionName: {
       your: 'config'

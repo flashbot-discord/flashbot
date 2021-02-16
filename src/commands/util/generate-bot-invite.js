@@ -13,7 +13,7 @@ class GenerateBotInviteCommand extends Command {
       args: [
         {
           key: 'bot',
-          type: ['snowflake', 'userMention'],
+          type: 'user',
           optional: false
         }
       ]

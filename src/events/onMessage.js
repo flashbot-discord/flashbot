@@ -7,6 +7,7 @@ const logger = require('../modules/logger')('event:onMessage')
 async function onMessage (client, msg) {
   if (msg.author.bot || !msg.content) return
 
+  logger.verbose('checking prefix')
   let calledByMention = false
   let prefix = await checkPrefix(msg)
   if (typeof prefix !== 'string' && !prefix) return
@@ -27,6 +28,8 @@ async function onMessage (client, msg) {
   const query = new MsgQuery(msg.content, prefix, calledByMention)
   query.calledByMention = calledByMention
   if (calledByMention && query.cmd.length < 1) query.cmd = 'hello' // HelloCommand
+  logger.debug('query = %O', query)
+
   const cmd = client.commands.get(query.cmd)
   if (cmd) {
     if (!client.onlineMode && !client.config.owner.includes(msg.author.id)) return msg.reply(client.locale.t('error.maintenance', 'ko_KR'))

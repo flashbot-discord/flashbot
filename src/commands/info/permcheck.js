@@ -40,14 +40,50 @@ class PermissionCheckCommand extends Command {
       aliases: ['perm', 'perms', 'permission', 'permissions', '권한확인', '권한', 'ㅔㄷ그', 'ㅔㄷ근', 'ㅔㄷ그ㅑㄴ냐ㅐㅜ', 'ㅔㄷ그ㅑㄴ냐ㅐㅜㄴ', 'rnjsgksghkrdls', 'rnjsgks'],
       description: 'commands.permcheck.DESC',
       group: 'info'
+      /*
+      args: [
+        {
+          key: 'target',
+          type: 'member',
+          optional: true
+        },
+        {
+          key: 'channel',
+          type: 'channel',
+          optional: true
+        }
+      ]
+      */
     })
   }
 
-  async run (client, msg, _query, { t }) {
+  * args (msg) {
+    const { target } = yield {
+      unnamed: {
+        key: 'target',
+        type: 'member',
+        optional: true,
+        default: msg.member
+      }
+    }
+
+    const { channel } = yield {
+      unnamed: {
+        key: 'channel',
+        type: 'channel',
+        optional: true,
+        default: msg.channel
+      }
+    }
+
+    return { target, channel }
+  }
+
+  async run (client, msg, query, { t }) {
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
-    const targetUser = msg.mentions.members.size > 0 ? msg.mentions.members.first() : msg.member
-    const targetChannel = msg.mentions.channels.size > 0 ? msg.mentions.channels.first() : msg.channel
+    const targetUser = query.args.target
+    const targetChannel = query.args.channel
     const serverPerms = targetUser.permissions
     const channelPerms = targetChannel.permissionsFor(targetUser)
 

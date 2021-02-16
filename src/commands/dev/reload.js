@@ -27,7 +27,7 @@ class ReloadCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd))
+    if (!query.args.all && !query.args.command) return msg.reply(Command.makeUsage(this, query.cmd))
 
     if (query.args.all) {
       const list = client.commands.commands.clone()
