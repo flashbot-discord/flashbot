@@ -17,7 +17,7 @@ class PrefixCommand extends Command {
   }
 
   // TODO: apply subcommand
-  *args () {
+  * args () {
     const returnObj = {}
 
     const { mode } = yield {

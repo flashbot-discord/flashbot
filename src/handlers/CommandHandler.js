@@ -261,7 +261,7 @@ class CommandHandler {
 
       // Parse arguments and validate
       try {
-        query.args = await argumentRunner.runArgs(msg, cmd, query.rawArgs) //await cmd._args.parseArguments(msg, query.rawArgs)
+        query.args = await argumentRunner.runArgs(msg, cmd, query.rawArgs) // await cmd._args.parseArguments(msg, query.rawArgs)
       } catch (err) {
         logger.debug('error on arg parsing: %O', err)
         if (err instanceof ArgumentError) {

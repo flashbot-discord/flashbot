@@ -159,13 +159,16 @@ async function runUnnamedArgs (msg, argDataList, argsArr) {
 
     logger.debug('using argData: %O', argData)
 
-    // 'text' type contains strings including spaces
+    let arg
+
+    // NOTE: 'text' type contains strings including spaces
     if (argData.type === 'text') {
       arg = argsArr.slice(idx).join(' ')
       ignoreAfter = true
-    } else arg = argsArr[idx]
+    } else if (argData.infinity) arg = argsArr.slice(idx)
+    else arg = argsArr[idx]
 
-    logger.debug('using arg value: %O', arg)
+    logger.debug('using argv: %O', arg)
 
     let data
     try {
@@ -213,7 +216,7 @@ async function runDynamicArgs (msg, command, argsArr) {
     Object.assign(parsedArgs, parsedUnnamedArgs)
     Object.assign(parsedArgs, parsedNamedArgs)
 
-    //Object.assign(finalArgs, parsedArgs)
+    // Object.assign(finalArgs, parsedArgs)
     current = iter.next(parsedArgs)
   }
 
@@ -225,7 +228,7 @@ async function runDynamicArgs (msg, command, argsArr) {
 
 /**
    * Validates arg value with the type
-   * @param {string} arg the argument value
+   * @param {string|Array<string>} arg The argument value, array of string if infinity arguments
    * @param {string} type type of the argument
    * @private
    */
@@ -236,14 +239,10 @@ async function processArg (msg, arg, argData) {
   if (arg == null) {
     logger.debug('argument is empty')
     if (!argData.optional) {
-      throw new ArgumentError('non-optional argument is missing', {
-        //named: true, // FIXME
-        argData
-      })
+      throw new ArgumentError('non-optional argument is missing', { argData })
     }
   }
 
-  // NOTE: validate arg type
   let usedType
   const returnObj = {
     arg: null,
@@ -253,7 +252,7 @@ async function processArg (msg, arg, argData) {
   // NOTE: handle infinity args (and not text)
   if (argData.infinity && argData.type !== 'text') {
     logger.verbose('processing infinity args')
-    const args = argsArr.slice() // clone
+    const args = arg.slice() // clone
     const arr = []
     for (const a of args) {
       usedType = await validateValue(msg, a, argData.type)
@@ -261,7 +260,6 @@ async function processArg (msg, arg, argData) {
 
       if (usedType) {
         arr.push(await types[usedType].parse(msg, a))
-        argsArr.shift()
       } else break
     }
 
@@ -297,8 +295,6 @@ async function processArg (msg, arg, argData) {
 }
 
 async function validateValue (msg, arg, type) {
-  const logger = _logger.extend('validateValue')
-
   let usedType
   if (Array.isArray(type)) {
     usedType = type.find(async t => await types[t].validate(msg, arg))

@@ -1,7 +1,4 @@
-const minimist = require('minimist')
-
 const types = require('../../types/index')
-const ArgumentError = require('./ArgumentError')
 const loggerGen = require('../../../modules/logger')
 const logger = loggerGen('ArgumentCollector')
 
@@ -109,7 +106,7 @@ class ArgumentCollector {
       if (types[type] == null) throw new TypeError(`Invalid argument type '${type}'`)
       else return true
     } else if (Array.isArray(type)) {
-      if (!type.every(t => types[t] != null)) throw new TypeError(`Invalid argument type in one of ['${type.join(`', '`)}']`)
+      if (!type.every(t => types[t] != null)) throw new TypeError(`Invalid argument type in one of ['${type.join('\', \'')}']`)
       else return true
     } else if (type == null) return false
     else throw new TypeError('Argument type must be string, Array<string> or null')
@@ -123,7 +120,7 @@ class ArgumentCollector {
   /*
   async parseArguments (msg, rawArgs) {
     if (this.dynamic) return await this._parseArgsFunc(msg)
-    
+
     const useNamedArgs = Object.keys(this.args.named).length > 0
     if (useNamedArgs) return await this._parseNamedArgs(msg, rawArgs)
     else return await this._parseUnnamedArgs(msg, rawArgs)

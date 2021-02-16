@@ -24,7 +24,7 @@ class TypingGameCommand extends Command {
     this._logPos = 'Command / typing'
   }
 
-  *args () {
+  * args () {
     const returnObj = {}
 
     const { cmd } = yield {
@@ -83,18 +83,19 @@ class TypingGameCommand extends Command {
       case '카테고리':
       case 'category':
       case 'zkxprhfl':
-      case 'ㅊㅁㅅㄷ해교':
+      case 'ㅊㅁㅅㄷ해교': {
         returnObj.cmd = 'category'
 
         const { searchQuery } = yield {
           unnamed: {
             key: 'searchQuery',
-            type: 'string',
+            type: 'string'
           }
         }
         returnObj.searchQuery = searchQuery
 
         break
+      }
     }
 
     return returnObj

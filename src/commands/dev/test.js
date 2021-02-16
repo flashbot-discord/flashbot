@@ -14,7 +14,7 @@ class TestCommand extends Command {
     })
   }
 
-  *args (msg) {
+  * args (msg) {
     const returnObj = {}
 
     const { cmd } = yield {

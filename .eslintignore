@@ -1,1 +1,5 @@
+.eslintrc.js
+
 extensions/
+test/
+

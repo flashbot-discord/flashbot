@@ -1,5 +1,4 @@
 const { MessageEmbed } = require('discord.js')
-const minimist = require('minimist')
 const util = require('util')
 
 const Command = require('../_Command')
@@ -24,7 +23,7 @@ class EvalCommand extends Command {
           {
             key: 'code',
             type: 'text',
-            optional: false,
+            optional: false
           }
         ]
       }

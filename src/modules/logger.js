@@ -5,13 +5,12 @@ const { createLogger, format, transports, addColors } = require('winston')
 const { printf, splat, colorize, timestamp, ms, combine } = format
 
 const debugGen = require('debug')
-const debugChat = debugGen('flashbot:chat')
 
 const _config = require('../../config')
 const config = _config.logger ? {
   enable: _config.logger.enable != null ? _config.logger.enable : true,
   useDebug: _config.logger.useDebug != null ? _config.logger.useDebug : false,
-  level : _config.logger.level || 'chat'
+  level: _config.logger.level || 'chat'
 } : {
   enable: true,
   useDebug: false,

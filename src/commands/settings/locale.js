@@ -21,7 +21,7 @@ class LocaleCommand extends Command {
     })
   }
 
-  *args () {
+  * args () {
     const returnObj = {}
 
     const { mode } = yield {
@@ -43,13 +43,13 @@ class LocaleCommand extends Command {
           named: {
             guild: {
               type: 'boolean',
-              description: 'whether the locale shuold be set to guild.',
+              description: 'whether the locale shuold be set to guild.'
             }
           },
           unnamed: {
             key: 'locale',
             type: 'string',
-            description: 'commands.locale.args.locale.DESC:The locale to change.',
+            description: 'commands.locale.args.locale.DESC:The locale to change.'
           }
         }
         returnObj.locale = locale

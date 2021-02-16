@@ -39,7 +39,7 @@ class PermissionCheckCommand extends Command {
       name: 'permcheck',
       aliases: ['perm', 'perms', 'permission', 'permissions', '권한확인', '권한', 'ㅔㄷ그', 'ㅔㄷ근', 'ㅔㄷ그ㅑㄴ냐ㅐㅜ', 'ㅔㄷ그ㅑㄴ냐ㅐㅜㄴ', 'rnjsgksghkrdls', 'rnjsgks'],
       description: 'commands.permcheck.DESC',
-      group: 'info',
+      group: 'info'
       /*
       args: [
         {
@@ -57,7 +57,7 @@ class PermissionCheckCommand extends Command {
     })
   }
 
-  *args (msg) {
+  * args (msg) {
     const { target } = yield {
       unnamed: {
         key: 'target',
@@ -123,12 +123,12 @@ class PermissionCheckCommand extends Command {
 
       const availablePermList = filterPermList(permList, targetChannel.type)
       availablePermList.forEach((obj, perm) => {
-        str += `**${t(`perms.${perm}`)}**\n`
-          + makePermsMsg({
+        str += `**${t(`perms.${perm}`)}**\n` +
+          makePermsMsg({
             granted: serverPerms.has(perm),
             grantedInChannel: obj.channelType != null ? channelPerms.has(perm) : null
-          }, t)
-          + '\n\n'
+          }, t) +
+          '\n\n'
       })
 
       output = str
