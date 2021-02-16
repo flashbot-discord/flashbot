@@ -103,28 +103,6 @@ async function runNamedArgs (msg, argDataList, argsArr, stopEarly = false) {
     logger.debug('using argData: %O', argData)
     logger.debug('arg value to parse: %O', arg)
 
-    /*
-    // NOTE: check if arg is empty
-    if (arg == null) {
-      logger.debug('argument is empty')
-      if (!argData.optional) {
-        throw new ArgumentError('non-optional argument is missing', {
-          named: true,
-          argData
-        })
-      } else continue
-    }
-
-    const usedType = await this._validateValue(msg, arg, argData.type)
-    if (!usedType) {
-      throw new ArgumentError('arg type mismatch', {
-        named: true,
-        argData
-      })
-    }
-
-    finalArgs[argName] = await types[usedType].parse(msg, arg)
-    */
     let data
     try {
       data = await processArg(msg, arg, argData)
