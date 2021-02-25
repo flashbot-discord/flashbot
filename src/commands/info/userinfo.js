@@ -14,15 +14,22 @@ class UserInfoCommand extends Command {
       name: 'userinfo',
       aliases: ['user-info', '이용자정보', '사용자정보', '유저정보', 'ㅕㄴㄷ갸ㅜ래', 'ㅕㄴㄷㄱ-ㅑㅜ래', 'dldydwkwjdqh', 'tkdydwkwjdqh', 'dbwjwjdqh'],
       description: 'commands.userinfo.DESC:Shows user information.',
-      group: 'info'
+      group: 'info',
+      args: [
+        {
+          key: 'user',
+          type: 'user',
+          optional: true
+        }
+      ]
     })
   }
 
-  async run (client, msg, _args, { t }) {
+  async run (client, msg, query, { t }) {
     const m = await msg.channel.send('Loading...')
 
     const data = []
-    const user = msg.mentions.users.size > 0 ? msg.mentions.users.first() : msg.author
+    const user = query.args.user ? query.args.user : msg.author
     const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
     const statusTxt = new Map([
@@ -68,7 +75,8 @@ class UserInfoCommand extends Command {
   }
 
   getClientStat (clientStat, t) {
-    if (clientStat == null) return null
+    // TODO: i18n
+    if (clientStat == null) return [ 'null' ]
 
     const text = Object.keys(clientStat).map((el) => t('commands.userinfo.clientStatus.' + el)) || t('commands.userinfo.clientOffline')
     return text
