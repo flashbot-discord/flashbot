@@ -40,6 +40,12 @@ class ArgumentCollector {
     // type
     if (!this._validateType(argInfo.type)) argInfo.type = null
 
+    // NOTE: description
+    // if empty, return null to use locale parsing at execution
+    const description = typeof argInfo.description === 'string' && argInfo.description.length > 0 
+      ? argInfo.description
+      : null
+
     // optional
     const optional = Boolean(argInfo.optional)
 
@@ -47,6 +53,7 @@ class ArgumentCollector {
     this.args.named[argName] = {
       aliases,
       type: argInfo.type,
+      description,
       optional,
       default: argInfo.default
     }
@@ -79,6 +86,14 @@ class ArgumentCollector {
 
       // type
       if (!this._validateType(argInfo.type)) argInfo.type = null
+
+      // NOTE: description
+      // if empty, return null to use locale parsing at execution
+      const description = typeof argInfo.description === 'string' && argInfo.description.length > 0 
+        ? argInfo.description
+        : null
+
+
       // optional field
       const optional = Boolean(argInfo.optional)
 
@@ -88,6 +103,7 @@ class ArgumentCollector {
       this.args.unnamed.push({
         key,
         type: argInfo.type,
+        description,
         optional,
         default: argInfo.default,
         infinity
