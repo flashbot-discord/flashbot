@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const { Collection } = require('discord.js')
 
+const Command = require('../structures/command/base')
 const StatHandler = require('./StatHandler')
 const argumentRunner = require('../structures/command/arguments/ArgumentRunner')
 const database = require('../database')
@@ -271,11 +272,12 @@ class CommandHandler {
               : err.argData.type[0]
             : err.argData.type
 
-          if (err.named) {
-            return msg.reply(t('Command.arguments.typeMismatch.namedArgs', err.argData.name, argsText))
-          } else {
-            return msg.reply(t('Command.arguments.typeMismatch.unnamedArgs', err.index + 1, err.argData.key, argsText))
-          }
+          const usageText = Command.makeUsage(cmd, query, t, err)
+          const print = 
+`${t('CommandHandler.usage')}\`\`\`
+${usageText}
+\`\`\``
+          return msg.reply(print)
         } else throw err
       }
 

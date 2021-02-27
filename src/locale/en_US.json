@@ -281,7 +281,8 @@
           "NAME": "command",
           "DESC": "The command to run on the shell."
         }
-      }
+      },
+      "DESC": "Execute shell commands."
     },
     "register": {
       "title": "Flashbot user registration",
@@ -439,14 +440,15 @@
     "noUserPermission": "You need to have `%1$s` permissions to use this command.",
     "unregisteredOwner": "[Warning] You are the ot's owner, but you're not registered. Errors which doesn't exists in normal situations may occur.",
     "noClientPermission": "Please grant `%1$s` permission to the bot to use this command.",
-    "cmdDisabled": "this command is disabled globally."
+    "cmdDisabled": "this command is disabled globally.",
+    "usage": "Usage:"
   },
   "ClientError": {
     "error": "An unexpected Error occured. Please report this error message and the Error ID to the Support server.\n예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\n\nError message (오류 메세지): ```\n%1$s\n```\nError ID (오류 ID): `%2$s`"
   },
   "Command": {
     "makeUsage": {
-      "str": "Usage: ```\n%1$s%2$s %3$s\n(Required) [Optional]\n```"
+      "footer": "<Required> (Optional)"
     },
     "pleaseRegister": {
       "guild": "You need to register this server in order to use this feature. Please register using the `%1$sactivate` command.",
@@ -454,8 +456,6 @@
     },
     "arguments": {
       "typeMismatch": {
-        "unnamedArgs": "The type of %1$s(st/nd/rd/th) argument `%2$s` should be `%3$s`.",
-        "namedArgs": "The type of argument `%1$s` should be `%2$s`.",
         "multipleArgs": "%1$s` or `%2$s"
       }
     }
