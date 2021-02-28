@@ -169,7 +169,7 @@ class Command {
        * `arg1` - <type> some arg desc
        * `arg2` - <type> some another arg desc (optional)
        * 
-       * Go to online docs for more detailed help.
+       * Go to online docs for more information.
        * (Use `//help` to get the link)
        */
       // Don't show named args (flags) here.
@@ -182,11 +182,16 @@ class Command {
         const description = arg.description || t(`commands.${cmd._name}.args.${arg.key}.DESC`)
 
         str1 += `${startBracket}${arg.key}${endBracket} `
-        str2 += `${startBracket}${arg.key}: ${arg.type}${endBracket} - ${description} ${arg.optional ? `*(${'OpTiOnAl'})*` : ''}`
+        str2 += `${startBracket}${arg.key}: ${arg.type}${endBracket} - ${description} ${arg.optional ? t('Command.makeUsage.optional') : ''}`
       }
 
-      let str = `${str1}\n\n${str2}`
-      return `${query.prefix}${query.cmd} ${str}\n\n${t('Command.makeUsage.footer')}`
+      return (
+`${query.prefix}${query.cmd} ${str1}
+
+${str2}
+
+${t('Command.makeUsage.footer')}
+${t('Command.makeUsage.detailedHelpNotice', { prefix: query.prefix })}`)
     } else {
       console.log(argErr)
     }

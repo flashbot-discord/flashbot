@@ -458,7 +458,9 @@
   },
   "Command": {
     "makeUsage": {
-      "footer": "<Required> [Optional]"
+      "footer": "<Required> [Optional]",
+      "optional": "(optional)",
+      "detailedHelpNotice": "Go to online docs for more information.\n(Use `{{{prefix}}}help` to get the link)"
     },
     "pleaseRegister": {
       "guild": "You need to register this server in order to use this feature. Please register using the `%1$sactivate` command.",
