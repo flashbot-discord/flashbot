@@ -16,7 +16,7 @@ class ExecuteCommand extends Command {
       owner: true,
       args: [
         {
-          key: 'command',
+          key: 'cmd',
           type: 'text',
           optional: false
         }
