@@ -15,16 +15,26 @@
         }
       },
       "args": {
-        "commands": {
-          "name": "명령어",
-          "desc": "도움말을 보고 싶은 명령어"
+        "command": {
+          "DESC": "도움말을 보고 싶은 명령어"
         }
       },
       "DESC": "도움말을 보여줍니다.",
       "sentToDM": "DM(개인 메세지)으로 도움말을 보냈습니다.",
       "footer": "이모지를 이용하여 페이지를 넘기세요. / 제한 시간 30초 / 버전: %1$s",
       "footerNoPage": "버전: %1$s",
-      "descNoPage": "commands.help.descNoPage"
+      "descNoPage": "commands.help.descNoPage",
+      "cmdhelp": {
+        "title": "`{{{cmdcall}}}` 명령어 도움말",
+        "requiredBotPerms": "봇이 필요한 권한",
+        "requiredUserPerms": "사용자가 필요한 권한",
+        "usage": "사용법",
+        "perms": {
+          "none": "없음",
+          "or": "또는"
+        },
+        "ownerOnly": "봇 소유자 전용 명령어 여부"
+      }
     },
     "ping": {
       "desc": "퐁!",

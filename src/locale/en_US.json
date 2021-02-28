@@ -15,16 +15,26 @@
         }
       },
       "args": {
-        "commands": {
-          "name": "commands",
-          "desc": "commands you want to see its help message"
+        "command": {
+          "DESC": "the command to see command help"
         }
       },
       "DESC": "Shows help message.",
       "sentToDM": "Sent the help messages to your DM.",
       "footer": "Use the emojis to flip the page. / Time limit: 30 seconds / Version: %1$s",
       "footerNoPage": "Version: %1$s",
-      "descNoPage": "commands.help.descNoPage"
+      "descNoPage": "commands.help.descNoPage",
+      "cmdhelp": {
+        "title": "`{{{cmdcall}}}` command help",
+        "requiredBotPerms": "Required Bot Permissions",
+        "requiredUserPerms": "Required User Permissions",
+        "usage": "Command usage",
+        "perms": {
+          "none": "None",
+          "or": "or"
+        },
+        "ownerOnly": "Owner-only command"
+      }
     },
     "ping": {
       "desc": "Pong!",
@@ -448,7 +458,7 @@
   },
   "Command": {
     "makeUsage": {
-      "footer": "<Required> (Optional)"
+      "footer": "<Required> [Optional]"
     },
     "pleaseRegister": {
       "guild": "You need to register this server in order to use this feature. Please register using the `%1$sactivate` command.",
