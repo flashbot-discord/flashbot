@@ -3,17 +3,6 @@
     "help": {
       "desc": "Show Flashbot's help message.\n**%1$s** (Page %2$s of %3$s)",
       "title": "FlashBot Help Page",
-      "cmdHelp": {
-        "no_cmd": "That command does not exist.",
-        "result": {
-          "title": "Help message of `%s`",
-          "title_noEmbed": "**Help message of `%s`**",
-          "args": "Arguments",
-          "aliases": "Aliases",
-          "args_noEmbed": "Arguments:",
-          "aliases_noEmbed": "Aliases:"
-        }
-      },
       "args": {
         "command": {
           "DESC": "the command to see command help"
@@ -33,19 +22,17 @@
           "none": "None",
           "or": "or"
         },
-        "ownerOnly": "Owner-only command"
+        "ownerOnly": "Owner-only command",
+        "description": "Command Description"
       }
     },
     "ping": {
-      "desc": "Pong!",
-      "run": "Pong!",
       "pinging": "Pinging...",
       "websocketPing": "WebSocket: %1$sms",
       "msgPing": "Message: %1$sms",
       "DESC": "Pong!"
     },
     "beep": {
-      "desc": "boop",
       "run": "boop",
       "DESC": "boop"
     },
@@ -273,7 +260,12 @@
       "DESC": "Saves the json database file now."
     },
     "test": {
-      "DESC": "Command Testing"
+      "DESC": "Command Testing",
+      "args": {
+        "cmd": {
+          "DESC": "commands.test.args.cmd.DESC"
+        }
+      }
     },
     "hellothisisverification": {
       "DESC": "koreanbots"

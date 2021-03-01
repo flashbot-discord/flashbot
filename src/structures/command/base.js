@@ -168,6 +168,8 @@ class Command {
      * `arg1` - <type> some arg desc
      * `arg2` - <type> some another arg desc (optional)
      *
+     * <Required> [Optional]
+     *
      * Go to online docs for more information.
      * (Use `//help` to get the link)
      */
