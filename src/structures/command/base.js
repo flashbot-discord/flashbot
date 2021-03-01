@@ -160,23 +160,23 @@ class Command {
     return await msg.reply(cmd._client.locale.t('Command.pleaseRegister.guild', locale, cmd._client.config.prefix))
   }
 
-  static makeUsage (cmd, query, t, argErr = null) {
-    if (!cmd._args.dynamic) {
-      /*
-       * Usage:
-       * //somecmd <necessary arg> [optional arg]
-       *
-       * `arg1` - <type> some arg desc
-       * `arg2` - <type> some another arg desc (optional)
-       * 
-       * Go to online docs for more information.
-       * (Use `//help` to get the link)
-       */
-      // Don't show named args (flags) here.
-      let str1 = ''
-      let str2 = ''
+  static makeUsage (cmd, query, t, argData = null) {
+    /*
+     * Usage:
+     * //somecmd <necessary arg> [optional arg]
+     *
+     * `arg1` - <type> some arg desc
+     * `arg2` - <type> some another arg desc (optional)
+     *
+     * Go to online docs for more information.
+     * (Use `//help` to get the link)
+     */
+    // Don't show named args (flags) here.
+    let str1 = ''
+    let str2 = ''
 
-      for (const arg of cmd._args.args.unnamed) {
+    const makeUsageStr = (argsArr) => {
+      for (const arg of argsArr) {
         const startBracket = arg.optional ? '[' : '<'
         const endBracket = arg.optional ? ']' : '>'
         const description = arg.description || t(`commands.${cmd._name}.args.${arg.key}.DESC`)
@@ -184,38 +184,26 @@ class Command {
         str1 += `${startBracket}${arg.key}${endBracket} `
         str2 += `${startBracket}${arg.key}: ${arg.type}${endBracket} - ${description} ${arg.optional ? t('Command.makeUsage.optional') : ''}`
       }
+    }
 
-      return (
+    if (!cmd._args.dynamic) makeUsageStr(cmd._args.args.unnamed)
+    else {
+      if (!argData) {
+        argData = cmd.args().next().value.unnamed
+      }
+
+      if (argData) makeUsageStr([argData])
+      str1 += '......'
+    }
+
+    return (
 `${query.prefix}${query.cmd} ${str1}
 
 ${str2}
 
 ${t('Command.makeUsage.footer')}
 ${t('Command.makeUsage.detailedHelpNotice', { prefix: query.prefix })}`)
-    } else {
-      console.log(argErr)
-    }
   }
-
-  /*
-  static makeUsage (cmd, called, t) {
-    let str = ''
-    cmd._args.forEach((arg) => {
-      const name = t(arg.name)
-      const type = t(arg.type)
-
-      str = str + (arg.optional ? '[' : '(') + name + ': ' + type + (arg.optional ? ']' : ')') + ' '
-    })
-    str += '\n\n'
-    cmd._args.forEach((arg) => {
-      const name = t(arg.name)
-      const desc = t(arg.description)
-      str = str + (arg.optional ? '[' : '(') + name + (arg.optional ? ']' : ')') + ' - ' + desc + ' ' + '\n'
-    })
-
-    return t('Command.makeUsage.str', cmd._client.config.prefix, called, str)
-  }
-  */
 
   _translateDesc (t) {
     return this._descNeedsTranslate ? t(this._desc) : this._desc
