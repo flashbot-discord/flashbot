@@ -103,7 +103,7 @@ class HelpCommand extends Command {
         prefix: query.prefix,
         cmd: cmdText
       }
-      const desc = cmd._descNeedsTranslate ? t(cmd._desc) : cmd._desc
+      const desc = cmd._translateDesc(t)
 
       let botPermsText = cmd._clientPerms.length > 0
         ? ''
