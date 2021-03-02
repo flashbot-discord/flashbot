@@ -25,7 +25,7 @@ class Command {
      * 명령어 설명을 변역해야 하는지 여부
      * @type {boolean}
      */
-    this._descNeedsTranslate = !!infos.description
+    this._descNeedsTranslate = !infos.description
 
     /**
      * the aliases of a command
@@ -160,7 +160,7 @@ class Command {
     return await msg.reply(cmd._client.locale.t('Command.pleaseRegister.guild', locale, cmd._client.config.prefix))
   }
 
-  static makeUsage (cmd, query, t, argData = null) {
+  static makeUsage (msg, cmd, query, t, argData = null) {
     /*
      * Usage:
      * //somecmd <necessary arg> [optional arg]
@@ -191,7 +191,7 @@ class Command {
     if (!cmd._args.dynamic) makeUsageStr(cmd._args.args.unnamed)
     else {
       if (!argData) {
-        argData = cmd.args().next().value.unnamed
+        argData = cmd.args(msg).next().value.unnamed
       }
 
       if (argData) makeUsageStr([argData])

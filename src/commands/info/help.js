@@ -131,7 +131,7 @@ class HelpCommand extends Command {
         .addField(t('commands.help.cmdhelp.requiredBotPerms'), botPermsText, true)
         .addField(t('commands.help.cmdhelp.requiredUserPerms'), userPermsText, true)
         .addField(t('commands.help.cmdhelp.ownerOnly'), cmd._owner ? ':o:' : ':x:', true)
-        .addField(t('commands.help.cmdhelp.usage'), `\`\`\`\n${Command.makeUsage(cmd, fakeQueryObj, t)}\n\`\`\``)
+        .addField(t('commands.help.cmdhelp.usage'), `\`\`\`\n${Command.makeUsage(msg, cmd, fakeQueryObj, t)}\n\`\`\``)
 
       msg.channel.send(embed)
     }

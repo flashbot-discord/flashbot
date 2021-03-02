@@ -272,7 +272,7 @@ class CommandHandler {
               : err.argData.type[0]
             : err.argData.type
 
-          const usageText = Command.makeUsage(cmd, query, t, err.argData)
+          const usageText = Command.makeUsage(msg, cmd, query, t, err.argData)
           const print = 
 `${t('CommandHandler.usage')}\`\`\`
 ${usageText}
