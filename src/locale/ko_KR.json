@@ -5,7 +5,7 @@
       "title": "FlashBot 도움말 페이지",
       "args": {
         "command": {
-          "DESC": "도움말을 보고 싶은 명령어"
+          "DESC": "상세한 정보를 볼 명령어"
         }
       },
       "DESC": "도움말을 보여줍니다.",
@@ -132,7 +132,12 @@
         "2": "이 서버에 관련된 정보"
       },
       "pageText": "페이지 %1$d/%2$d",
-      "requestedBy": "%1$s `%2$s`이(가) 요청함"
+      "requestedBy": "%1$s `%2$s`이(가) 요청함",
+      "args": {
+        "user": {
+          "DESC": "유저정보를 확인할 유저"
+        }
+      }
     },
     "eval": {
       "input": "입력:",
@@ -149,7 +154,12 @@
     "args-info": {
       "noArgs": "인수가 입력되지 않았습니다.",
       "run": "명령어 이름: %1$s\n인수: %2$s",
-      "DESC": "인수를 가지고 테스트하는 중"
+      "DESC": "인수를 가지고 테스트하는 중",
+      "args": {
+        "args": {
+          "DESC": "명령어에 입력할 인수들"
+        }
+      }
     },
     "reload": {
       "reloaded": "`%1$s` 명령어를 다시 불러왔습니다.",
@@ -188,7 +198,15 @@
       "noLanguage": "입력한 언어가 존재하지 않습니다.",
       "DESC": "이 서버에서 사용되는 언어를 보거나 바꿉니다.",
       "noPermission": "언어를 변경하기 위해서는 `%1$s` 권한이 필요해요!",
-      "list": "언어 목록: \n`%1$s`"
+      "list": "언어 목록: \n`%1$s`",
+      "args": {
+        "mode": {
+          "DESC": "서브커맨드"
+        },
+        "locale": {
+          "DESC": "새로 설정할 언어"
+        }
+      }
     },
     "activate": {
       "title": "**FlashBot** 활성화",
@@ -235,9 +253,8 @@
     },
     "profileimage": {
       "args": {
-        "member": {
-          "NAME": "멤버",
-          "DESC": "프로필 사진을 볼 멤버. 현재 멘션만 사용할 수 있습니다."
+        "user": {
+          "DESC": "프로필 사진을 보여줄 유저"
         }
       },
       "DESC": "프로필 사진을 보여줍니다."
@@ -259,7 +276,7 @@
       "DESC": "명령어 테스트",
       "args": {
         "cmd": {
-          "DESC": "commands.test.args.cmd.DESC"
+          "DESC": "서브커맨드"
         }
       }
     },
@@ -280,7 +297,7 @@
           "DESC": "쉘에서 실행할 명령어"
         }
       },
-      "DESC": "Execute shell commands."
+      "DESC": "쉘 명령어를 실행합니다."
     },
     "register": {
       "title": "**FlashBot** 이용자 가입",
@@ -296,10 +313,16 @@
       "noArgs": "초대 링크를 만들 봇을 명령어 뒤에 `@멘션`하거나, 해당 봇의 ID를 입력해 주세요.",
       "userProvided": "사용자가 아닌 봇의 `@멘션`니나 ID를 입력해 주세요.",
       "invalidID": "잘못된 봇 아이디를 입력한 것 같아요. 봇의 `@멘션`이나 ID를 **정확하게** 입력해주세요.",
-      "DESC": "어떤 봇 초대 코드든 만들어 줍니다."
+      "DESC": "어떤 봇 초대 코드든 만들어 줍니다.",
+      "args": {
+        "bot": {
+          "DESC": "초대할 봇의 id나 멘션"
+        }
+      }
     },
     "stat": {
-      "total": "이 세션에서의 총 명령어 실행 수: %1$s번"
+      "total": "이 세션에서의 총 명령어 실행 수: %1$s번",
+      "DESC": "봇에 대한 여러 통계를 제공합니다."
     },
     "typing": {
       "error": {
@@ -321,7 +344,13 @@
       "notPlaying": "이 채널에서 타자 게임을 진행하고 있지 않아요.",
       "cmdStop": "타자 게임을 종료했습니다.",
       "noCopyright": "없음",
-      "emptyCategorySearchQuery": "카테고리를 검색하려면 `%1$s타자 카테고리 (검색어)`와 같이 입력해주세요."
+      "emptyCategorySearchQuery": "카테고리를 검색하려면 `%1$s타자 카테고리 (검색어)`와 같이 입력해주세요.",
+      "DESC": "타자 게임을 할 수 있어요!",
+      "args": {
+        "cmd": {
+          "DESC": "서브커맨드"
+        }
+      }
     },
     "prefix": {
       "info": "이 서버의 봇 접두어는 %1$s이에요. 봇 접두사를 변경하고 싶다면 `%1$s접두사 설정 <새 접두사>`를 입력해 주세요.",
@@ -332,7 +361,12 @@
         "everyoneNotAllowed": "접두사를 `@everyone`이나 `@here`로 설정할 수 없어요!",
         "noPerms": "이 서버에서의 봇 접두사를 설정하려면 `서버 관리` 권한이 필요해요."
       },
-      "DESC": "이 서버에서의 봇 접두사를 보거나 설정합니다."
+      "DESC": "이 서버에서의 봇 접두사를 보거나 설정합니다.",
+      "args": {
+        "mode": {
+          "DESC": "서브커맨드"
+        }
+      }
     },
     "hello": {
       "title": "안녕하세요!",
@@ -350,13 +384,24 @@
     "dice": {
       "result": "(정)%1$s면체 주사위에서 `%2$s`이(가) 나왔어요!",
       "error": "주사위 면수는 **1 이상의 정수**로 입력해 주세요.",
-      "DESC": "주사위를 굴려요!"
+      "DESC": "주사위를 굴려요!",
+      "args": {
+        "sides": {
+          "DESC": "주사위 면 수"
+        }
+      }
     },
     "maintenance": {
       "status": "현재 점검 중 여부: `%1$s`",
       "usage": "```\n사용법: %1$s점검 (상태설정)\n\n(상태설정) - 점검 상태를 설정\n  [start / on / 시작] - 점검모드 시작\n  [end / off / 종료] - 점검모드 종료\n```",
       "start": "점검 모드가 시작되었습니다.",
-      "end": "점검 모드가 종료되었습니다."
+      "end": "점검 모드가 종료되었습니다.",
+      "DESC": "봇 점검모드를 설정합니다.",
+      "args": {
+        "status": {
+          "DESC": "변경할 점검 상태"
+        }
+      }
     },
     "tictactoe": {
       "waiting": "<@%1$s>님이 틱택토 게임을 할 사람을 기다리고 있어요!\n같이 게임을 하고 싶은 사람은 :white_check_mark:를 눌러 참여하세요!\n(게임을 취소하고 싶다면 :x:를 누르세요)",
@@ -380,7 +425,13 @@
       },
       "gameStopped": "틱택토 게임을 종료했어요.",
       "usage": "사용법: ```\n%1$s틱택토 <시작/종료>\n\n<시작> - 틱택토 게임을 시작합니다.\n<종료> - 진행 중인 틱택토 게임을 강제로 종료합니다.\n```",
-      "alreadyPlaying": "이 채널에서 이미 진행 중인 틱택토 게임이 있어요."
+      "alreadyPlaying": "이 채널에서 이미 진행 중인 틱택토 게임이 있어요.",
+      "DESC": "틱택토 게임을 즐겨보세요!",
+      "args": {
+        "cmd": {
+          "DESC": "서브커맨드"
+        }
+      }
     },
     "sample": {
       "DESC": "샘플 명령어"
@@ -404,7 +455,12 @@
       "grantedInChannel": "이 채널에서 허용됨",
       "deniedInChannel": "이 채널에서 거부됨",
       "isAdmin": "이 서버에서 관리자 권한을 갖고 있어요. 모든 권한이 허용되어 있어요.",
-      "DESC": "자신이 가지고 있는 권한들을 보여줘요"
+      "DESC": "자신이 가지고 있는 권한들을 보여줘요",
+      "args": {
+        "target": {
+          "DESC": "권한을 확인할 유저의 아이디나 멘션"
+        }
+      }
     },
     "notice": {
       "previewEmbed": {
@@ -416,17 +472,41 @@
       "started": "공지 발송 작업을 시작했어요. 작업이 완료될 때까지는 오랜 시간이 걸릴 수 있어요.",
       "error": {
         "noText": "공지를 보낼 내용을 명령어 뒤에 입력해 주세요."
+      },
+      "DESC": "공지를 발송합니다.",
+      "args": {
+        "text": {
+          "DESC": "보낼 공지 내용"
+        }
       }
     },
     "disablecmd": {
       "noSuchCommand": "입력한 명령어가 존재하지 않아요.",
       "complete": "`%1$s` 명령어를 비활성화했습니다.",
-      "alreadyDisabled": "해당 명령어는 이미 비활성화되어 있어요."
+      "alreadyDisabled": "해당 명령어는 이미 비활성화되어 있어요.",
+      "DESC": "명령어를 비활성화합니다.",
+      "args": {
+        "command": {
+          "DESC": "비활성화할 명령어의 이름"
+        }
+      }
     },
     "enablecmd": {
       "complete": "`%1$s` 명령어를 활성화했습니다.",
       "noSuchCommand": "입력한 명령어가 존재하지 않아요.",
-      "alreadyEnabled": "해당 명령어는 이미 활성화되어 있어요."
+      "alreadyEnabled": "해당 명령어는 이미 활성화되어 있어요.",
+      "DESC": "명령어를 활성화합니다.",
+      "args": {
+        "command": {
+          "DESC": "활성화할 명령어의 이름"
+        }
+      }
+    },
+    "blacklist": {
+      "DESC": "블랙리스트"
+    },
+    "error": {
+      "DESC": "테스트 목적으로 강제로 오류를 발생시킵니다."
     }
   },
   "CommandHandler": {
@@ -441,7 +521,7 @@
     "usage": "사용법:"
   },
   "ClientError": {
-    "error": "예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\nAn unexpected Error occured. Please report this error message and the Error ID to the Support server.\n\n오류 메세지 Error message: ```\n%1$s\n```\n오류 ID Error ID: `%2$s`"
+    "error": "예상치 못한 오류가 발생하였습니다. 지원 서버에 오류 메세지랑 오류 ID를 제보해 주세요.\nAn unexpected Error occured. Please report this error message and the Error ID to the Support server.\n\n오류 메세지 (Error message): ```\n%1$s\n```\n오류 ID (Error ID): `%2$s`"
   },
   "Command": {
     "makeUsage": {

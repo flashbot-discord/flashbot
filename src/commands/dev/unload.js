@@ -5,14 +5,12 @@ class UnloadCommand extends Command {
     super(client, {
       name: 'unload',
       aliases: ['ㅕㅟㅐㅁㅇ'],
-      description: 'commands.unload.DESC:Unloads a command.',
       group: 'dev',
       owner: true,
       args: [
         {
           key: 'command',
-          type: 'string',
-          description: 'commands.unload.args.command.DESC:Command to unload'
+          type: 'string'
         }
       ]
     })

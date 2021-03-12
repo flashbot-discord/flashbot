@@ -11,12 +11,10 @@ class SayCommand extends Command {
     super(client, {
       name: 'say',
       aliases: ['말하기', 'ㄴ묘', 'akfgkrl'],
-      description: 'commands.say.DESC:Says back!',
       group: 'misc',
       args: [
         {
           key: 'text',
-          description: 'commands.say.args.text.DESC:Text to say.',
           type: 'text'
         }
       ]

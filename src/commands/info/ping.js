@@ -4,7 +4,6 @@ class PingCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'ping',
-      description: 'commands.ping.DESC:Pong!',
       aliases: ['핑'],
       group: 'info'
     })

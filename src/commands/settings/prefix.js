@@ -8,7 +8,6 @@ class PrefixCommand extends Command {
     super(client, {
       name: 'prefix',
       aliases: ['접두사', '접두어', 'ㅔㄱㄷ럍', 'wjqentk', 'wjqendj'],
-      description: 'commands.prefix.DESC',
       group: 'settings',
       requireDB: true,
       guildOnly: true,

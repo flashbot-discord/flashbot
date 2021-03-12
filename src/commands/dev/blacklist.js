@@ -5,7 +5,6 @@ class BlacklistCommand extends Command {
     super(client, {
       name: 'blacklist',
       aliases: ['블랙리스트', '블랙', 'ㅠㅣㅁ차ㅣㅑㄴㅅ', 'qmfforfltmxm', 'qmffor'],
-      description: 'commands.blacklist.DESC:Blacklist',
       group: 'dev',
       owner: true
     })

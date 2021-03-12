@@ -8,7 +8,6 @@ class ActivateCommand extends Command {
     super(client, {
       name: 'activate',
       aliases: ['act', '활성화', 'ㅁㅊ샾ㅁㅅㄷ', 'ㅁㅊㅅ', 'ghkftjdghk'],
-      description: 'commands.activate.DESC:Activate this bot on the server',
       group: 'activation',
       userPerms: ['ADMINISTRATOR'],
       guildOnly: true,

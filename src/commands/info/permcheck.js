@@ -38,22 +38,7 @@ class PermissionCheckCommand extends Command {
     super(client, {
       name: 'permcheck',
       aliases: ['perm', 'perms', 'permission', 'permissions', '권한확인', '권한', 'ㅔㄷ그', 'ㅔㄷ근', 'ㅔㄷ그ㅑㄴ냐ㅐㅜ', 'ㅔㄷ그ㅑㄴ냐ㅐㅜㄴ', 'rnjsgksghkrdls', 'rnjsgks'],
-      description: 'commands.permcheck.DESC',
       group: 'info'
-      /*
-      args: [
-        {
-          key: 'target',
-          type: 'member',
-          optional: true
-        },
-        {
-          key: 'channel',
-          type: 'channel',
-          optional: true
-        }
-      ]
-      */
     })
   }
 

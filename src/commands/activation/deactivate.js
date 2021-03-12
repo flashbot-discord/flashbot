@@ -8,7 +8,6 @@ class DeactivateCommand extends Command {
     super(client, {
       name: 'deactivate',
       aliases: ['deact', '비활성화', 'ㅇㄷㅁㅊ샾ㅁㅅㄷ', 'ㅇㄷㅁㅊㅅ', 'qlghkftjdghk'],
-      description: 'commands.deactivate.DESC:Deactivate this bot on the server',
       group: 'activation',
       userPerms: ['ADMINISTRATOR'],
       guildOnly: true,

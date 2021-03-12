@@ -5,7 +5,6 @@ class SupportCommand extends Command {
     super(client, {
       name: 'support',
       aliases: ['지원', '서포트', '녀ㅔㅔㅐㄱㅅ', 'wlfnjs', 'tjvhxm'],
-      description: 'commands.support.DESC:Gives the link to the support server.',
       group: 'info'
     })
 

@@ -4,14 +4,12 @@ class PurgeCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'purge',
-      description: 'commands.purge.DESC:Purges database cache.',
       aliases: ['ㅔㅕㄱㅎㄷ'],
       group: 'dev',
       owner: true,
       args: [
         {
           key: 'name',
-          description: 'commands.purge.args.name.DESC:The name of the data to purge cache. (guild / user)',
           type: 'string'
         }
       ]

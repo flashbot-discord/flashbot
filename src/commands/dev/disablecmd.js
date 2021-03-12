@@ -5,14 +5,12 @@ class DisableCmdCommand extends Command {
     super(client, {
       name: 'disablecmd',
       aliases: ['disable', '명령어비활성화', '얀뮤ㅣㄷ층', '얀뮤ㅣㄷ', 'audfuddjqlghkftjdghk'],
-      description: 'commands.disablecmd.DESC',
       group: 'dev',
       owner: true,
       args: [
         {
           key: 'command',
-          type: 'string',
-          description: ''
+          type: 'string'
         }
       ]
     })

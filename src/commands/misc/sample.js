@@ -5,7 +5,6 @@ class SampleCommand extends Command {
     super(client, {
       name: 'sample',
       aliases: ['ㄴ므ㅔㅣㄷ'],
-      description: 'commands.sample.DESC',
       group: 'misc'
     })
   }

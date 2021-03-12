@@ -4,7 +4,6 @@ class SaveNowCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'savenow',
-      description: 'commands.savenow.DESC:Saves the json database file now.',
       aliases: ['ㄴㅁㅍ두ㅐㅈ'],
       group: 'dev',
       owner: true

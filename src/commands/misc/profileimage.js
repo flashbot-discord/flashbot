@@ -5,12 +5,10 @@ class ProfileImageCommand extends Command {
     super(client, {
       name: 'profileimage',
       aliases: ['프사', '프로필사진', 'proimg', 'ㅔ개랴ㅣ댜ㅡㅁㅎㄷ', 'vmtk', 'vmfhvmftkwls', 'ㅔ개ㅑㅡㅎ'],
-      description: 'commands.profileimage.DESC:Shows a profile image',
       group: 'misc',
       args: [
         {
           key: 'user',
-          description: 'commands.profileimage.args.member.DESC:The member to see the profile image. Currently, only mentions are accepted.',
           type: 'user',
           optional: true
         }

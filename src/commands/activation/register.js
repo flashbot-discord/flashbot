@@ -8,7 +8,6 @@ class RegisterCommand extends Command {
     super(client, {
       name: 'register',
       aliases: ['등록', 'ㄱㄷ햔ㅅㄷㄱ', 'emdfhr'],
-      description: 'commands.register.DESC',
       group: 'activation',
       requireDB: true
     })

@@ -9,7 +9,6 @@ class GenerateBotInviteCommand extends Command {
         'ㅎ둗ㄱㅁㅅㄷ-ㅠㅐㅅ-ㅑㅜ퍗ㄷ', 'ㅎ둗ㄱㅁㅅ듀ㅐ샤ㅜ퍗ㄷ', 'ㅎ두ㅠㅐ샤ㅜ퍗ㄷ', 'qhtcheotodtjd', 'qhtcheofldzmtodtjd'
       ],
       group: 'util',
-      description: 'commands.generate-bot-invite.DESC',
       args: [
         {
           key: 'bot',

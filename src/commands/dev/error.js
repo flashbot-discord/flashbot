@@ -5,7 +5,6 @@ class ErrorCommand extends Command {
     super(client, {
       name: 'error',
       aliases: ['에러', 'ㄷㄱㄱ객', 'dpfj'],
-      description: 'commands.error.DESC',
       group: 'dev',
       ownerOnly: true
     })
