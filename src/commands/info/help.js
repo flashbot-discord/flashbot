@@ -3,6 +3,12 @@ const { MessageEmbed } = require('discord.js')
 const Paginator = require('../../structures/Paginator')
 const Command = require('../_Command')
 
+const LINKS = {
+  main: 'https://flashbot.ga',
+  docs: 'https://docs.flashbot.ga',
+  support: 'https://discord.gg/epY3waF'
+}
+
 class HelpCommand extends Command {
   constructor (client) {
     super(client, {
@@ -37,14 +43,62 @@ class HelpCommand extends Command {
     const dm = !msg.guild || query.args.dm
 
     if (!query.args.command) {
-      // Enable/Disable Page
-      const page = !query.args['no-page'] &&
-        (dm || msg.channel.permissionsFor(client.user).has('ADD_REACTIONS'))
+      const useEmbed = !query.args['no-embed'] && msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
+      const makeLinkText = () => {
+        let text = ''
+        for (const linkName in LINKS) {
+          const link = LINKS[linkName]
+          const translated = t(`commands.help.links.${linkName}`)
+          text += useEmbed
+            ? `:link: [${translated}](${link})\n`
+            : `:link: ${translated}: ${link}\n`
+        }
+
+        return text
+      }
+
+      let mainData
+      if (useEmbed) {
+        const mainEmbed = new MessageEmbed()
+          .setTitle(t('commands.help.title'))
+          .setDescription(t('commands.help.firstMsg', {
+            prefix: query.prefix,
+            cmdcall: query.cmd
+          }))
+
+        client.commands.groups.forEach((cmdList, group) => {
+          if (group === 'dev') return
+          mainEmbed.addField(t(`commandGroup.${group}`), `\`${cmdList.join('`, `')}\``)
+        })
+
+        mainEmbed.addField(t('commands.help.links.TITLE'), makeLinkText())
+        mainData = mainEmbed
+      } else {
+        const title = t('commands.help.title')
+        const desc = t('commands.help.firstMsg', {
+          prefix: query.prefix,
+          cmdcall: query.cmd
+        })
+        const linkText = `__${t('commands.help.links.TITLE')}__\n${makeLinkText()}`
+
+        let cmdListText = ''
+        client.commands.groups.forEach((cmdList, group) => {
+          if (group === 'dev') return
+          cmdListText += `__${t(`commandGroup.${group}`)}__\n` + `\`${cmdList.join('`, `')}\`\n`
+        })
+
+        mainData = `**${title}**\n\n${desc}\n\n${cmdListText}\n${linkText}`
+      }
+
+      msg.channel.send(mainData)
+
+      /*
       // FIXME: Not working on embed-unable channel
       // Embed Maker
-      const embeds = []
-      const createEmbed = (group, currentPage, totalPage, isFirst) => {
+      const contents = []
+
+      const createContent = (group, currentPage, totalPage, isFirst) => {
         const embed = new MessageEmbed()
         if (isFirst) {
           embed.setTitle(t('commands.help.title'))
@@ -67,11 +121,11 @@ class HelpCommand extends Command {
         return embed
       }
 
-      embeds.push(createEmbed('info', 1, 5, true))
-      embeds.push(createEmbed('activation', 2, 5, page))
-      embeds.push(createEmbed('util', 3, 5, page))
-      embeds.push(createEmbed('settings', 4, 5, page))
-      embeds.push(createEmbed('misc', 5, 5, page))
+      contents.push(createEmbed('info', 1, 5, true))
+      contents.push(createEmbed('activation', 2, 5, page))
+      contents.push(createEmbed('util', 3, 5, page))
+      contents.push(createEmbed('settings', 4, 5, page))
+      contents.push(createEmbed('misc', 5, 5, page))
 
       // Start Paginator
       if (page) {
@@ -93,6 +147,7 @@ class HelpCommand extends Command {
       }
 
       if (dm && msg.guild) await msg.reply(t('commands.help.sentToDM'))
+      */
     } else {
       // NOTE: Specific command help
       const cmdText = query.args.command

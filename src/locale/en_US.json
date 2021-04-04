@@ -2,7 +2,7 @@
   "commands": {
     "help": {
       "desc": "Show Flashbot's help message.\n**%1$s** (Page %2$s of %3$s)",
-      "title": "FlashBot Help Page",
+      "title": "FlashBot Help",
       "args": {
         "command": {
           "DESC": "The command to see command help"
@@ -24,6 +24,13 @@
         },
         "ownerOnly": "Owner-only command",
         "description": "Command Description"
+      },
+      "firstMsg": "Thank you for using FlashBot! Flashbot is actively being developed to have many features; games, utility tools and more.\n\nCheck out the links below to see the docs and help manuals. (use `{{{prefix}}}{{{cmdcall}}} <command name>` for specific command help)",
+      "links": {
+        "main": "Website",
+        "docs": "Docs and Help manuals",
+        "support": "Support Server",
+        "TITLE": "Useful Links"
       }
     },
     "ping": {
@@ -557,7 +564,9 @@
     "activation": "Activations",
     "misc": "Others",
     "util": "Utilities",
-    "settings": "Settings"
+    "settings": "Settings",
+    "memo": "Memo",
+    "game": "Game"
   },
   "regions": {
     "south-korea": ":flag_kr: South Korea",
