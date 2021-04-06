@@ -16,7 +16,7 @@ class ReloadCommand extends Command {
         _: [
           {
             key: 'command',
-            type: 'string',
+            type: 'string'
           }
         ]
       }

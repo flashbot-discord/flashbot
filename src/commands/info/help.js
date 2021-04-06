@@ -1,6 +1,6 @@
 const { MessageEmbed } = require('discord.js')
 
-const Paginator = require('../../structures/Paginator')
+// const Paginator = require('../../structures/Paginator')
 const Command = require('../_Command')
 
 const LINKS = {
@@ -40,7 +40,7 @@ class HelpCommand extends Command {
 
   async run (client, msg, query, { t }) {
     // is DM
-    const dm = !msg.guild || query.args.dm
+    // const dm = !msg.guild || query.args.dm
 
     if (!query.args.command) {
       const useEmbed = !query.args['no-embed'] && msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
@@ -164,7 +164,7 @@ class HelpCommand extends Command {
         ? ''
         : t('commands.help.cmdhelp.perms.none')
       cmd._clientPerms.forEach((perm, idx) => {
-        let last = idx === cmd._clientPerms.length - 1
+        const last = idx === cmd._clientPerms.length - 1
         if (last) botPermsText += t('commands.help.cmdhelp.perms.or') + ' '
         botPermsText += t(`perms.${perm}`) + (last ? '' : ', ')
       })
@@ -173,7 +173,7 @@ class HelpCommand extends Command {
         ? ''
         : t('commands.help.cmdhelp.perms.none')
       cmd._userPerms.forEach((perm, idx) => {
-        let last = idx === cmd._userPerms.length - 1
+        const last = idx === cmd._userPerms.length - 1
         if (last) userPermsText += t('commands.help.cmdhelp.perms.or') + ' '
         userPermsText += `\`${t(`perms.${perm}`)}\`${last ? '' : ', '}`
       })
