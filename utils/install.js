@@ -7,7 +7,7 @@ const compVer = require('compare-versions')
 const DB_VER = 'v0.1.0' // current db version
 const MIN_DB_VER = 'v0.1.0' // minimum checkpoint db version
 
-const globalElements = require('./classes/globalElements')
+const globalElements = require('../src/structures/globalElements')
 globalElements(false)
 console.log('Loaded Global Properties and Functions.')
 
@@ -21,7 +21,7 @@ run().then(installDeps).then((v) => {
 })
 
 async function run () {
-  const config = require('./config')
+  const config = require('../config')
 
   console.log('Initializing Database...')
   switch (config.db.type) {
