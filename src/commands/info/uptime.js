@@ -8,7 +8,6 @@ class UptimeCommand extends Command {
     super(client, {
       name: 'uptime',
       aliases: ['업타임', 'ㅕㅔ샤ㅡㄷ', 'djqxkdla'],
-      description: 'commands.uptime.DESC',
       group: 'info'
     })
   }

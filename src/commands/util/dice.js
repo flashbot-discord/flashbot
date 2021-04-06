@@ -5,7 +5,6 @@ class DiceCommand extends Command {
     super(client, {
       name: 'dice',
       aliases: ['주사위', '얓ㄷ', 'wntkdnl'],
-      description: 'commands.dice.DESC',
       group: 'util',
       args: [
         {

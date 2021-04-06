@@ -8,7 +8,6 @@ class HelloCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'hello',
-      description: 'commands.hello.DESC',
       aliases: ['안녕', 'ㅎㅇ', 'hi',
         'ㅗ디ㅣㅐ', 'dkssud', 'gd', 'ㅗㅑ'],
       group: 'misc'

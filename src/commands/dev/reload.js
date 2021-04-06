@@ -5,21 +5,18 @@ class ReloadCommand extends Command {
     super(client, {
       name: 'reload',
       aliases: ['리로드', 'ㄱ디ㅐㅁㅇ', 'flfhem'],
-      description: 'commands.reload.DESC:reloads a command',
       group: 'dev',
       owner: true,
       args: {
         all: {
           aliases: ['a', '모두'],
           type: 'boolean',
-          description: '',
           optional: true
         },
         _: [
           {
             key: 'command',
-            type: 'string',
-            description: 'commands.reload.args.command.DESC:Command to reload'
+            type: 'string'
           }
         ]
       }

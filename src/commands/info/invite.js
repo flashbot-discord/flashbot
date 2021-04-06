@@ -5,7 +5,6 @@ class InviteCommand extends Command {
     super(client, {
       name: 'invite',
       aliases: ['초대', 'ㅑㅜ퍗ㄷ', 'cheo'],
-      description: 'commands.invite.DESC',
       group: 'info'
     })
 

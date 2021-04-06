@@ -5,14 +5,12 @@ class EnableCmdCommand extends Command {
     super(client, {
       name: 'enablecmd',
       aliases: ['enable', '명령어활성화', '두뮤ㅣㄷ', '두뮤ㅣㄷ층', 'audfuddjghkftjdghk'],
-      description: 'commands.enablecmd.DESC',
       group: 'dev',
       owner: true,
       args: [
         {
           key: 'command',
-          type: 'string',
-          description: ''
+          type: 'string'
         }
       ]
     })

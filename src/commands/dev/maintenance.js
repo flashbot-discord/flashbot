@@ -5,13 +5,11 @@ class MaintenanceCommand extends Command {
     super(client, {
       name: 'maintenance',
       aliases: ['maintain', '점검', 'ㅡ먀ㅜㅅ두뭋ㄷ', 'ㅡ먀ㅜㅅ먀ㅜ', 'wjarja'],
-      description: 'commands.maintenance.DESC',
       group: 'dev',
       owner: true,
       args: [
         {
           key: 'status',
-          description: '',
           type: 'string',
           optional: false
         }

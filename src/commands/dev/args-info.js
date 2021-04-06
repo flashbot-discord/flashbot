@@ -9,12 +9,10 @@ class ArgsInfoCommand extends Command {
     super(client, {
       name: 'args-info',
       aliases: ['argsinfo', 'ㅁㄱㅎㄴ-ㅑㅜ래', 'ㅁㄱㅎ냐ㅜ래'],
-      description: 'commands.args-info.DESC:Testing with arguments',
       group: 'dev',
       args: [
         {
           key: 'args',
-          description: 'commands.args-info.args.args.DESC:The arguments to pass. Infinite arguments are accepted.',
           type: 'any',
           infinity: true
         }

@@ -42,7 +42,7 @@ class ArgumentCollector {
 
     // NOTE: description
     // if empty, return null to use locale parsing at execution
-    const description = typeof argInfo.description === 'string' && argInfo.description.length > 0 
+    const description = typeof argInfo.description === 'string' && argInfo.description.length > 0
       ? argInfo.description
       : null
 
@@ -89,10 +89,9 @@ class ArgumentCollector {
 
       // NOTE: description
       // if empty, return null to use locale parsing at execution
-      const description = typeof argInfo.description === 'string' && argInfo.description.length > 0 
+      const description = typeof argInfo.description === 'string' && argInfo.description.length > 0
         ? argInfo.description
         : null
-
 
       // optional field
       const optional = Boolean(argInfo.optional)

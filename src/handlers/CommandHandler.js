@@ -266,14 +266,16 @@ class CommandHandler {
       } catch (err) {
         logger.debug('error on arg parsing: %O', err)
         if (err instanceof ArgumentError) {
+          /*
           const argsText = Array.isArray(err.argData.type)
             ? err.argData.type.length > 1
               ? t('Command.arguments.typeMismatch.multipleArgs', err.argData.type.slice(0, -1).join('`, `'), err.argData.type.slice(-1)[0])
               : err.argData.type[0]
             : err.argData.type
+          */
 
-          const usageText = Command.makeUsage(cmd, query, t, err)
-          const print = 
+          const usageText = Command.makeUsage(msg, cmd, query, t, err.argData)
+          const print =
 `${t('CommandHandler.usage')}\`\`\`
 ${usageText}
 \`\`\``

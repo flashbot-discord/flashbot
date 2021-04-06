@@ -2,40 +2,44 @@
   "commands": {
     "help": {
       "desc": "Show Flashbot's help message.\n**%1$s** (Page %2$s of %3$s)",
-      "title": "FlashBot Help Page",
-      "cmdHelp": {
-        "no_cmd": "That command does not exist.",
-        "result": {
-          "title": "Help message of `%s`",
-          "title_noEmbed": "**Help message of `%s`**",
-          "args": "Arguments",
-          "aliases": "Aliases",
-          "args_noEmbed": "Arguments:",
-          "aliases_noEmbed": "Aliases:"
-        }
-      },
+      "title": "FlashBot Help",
       "args": {
-        "commands": {
-          "name": "commands",
-          "desc": "commands you want to see its help message"
+        "command": {
+          "DESC": "The command to see command help"
         }
       },
       "DESC": "Shows help message.",
       "sentToDM": "Sent the help messages to your DM.",
-      "footer": "Use the emojis to flip the page. / Time limit: 30 seconds / Version: %1$s",
+      "footer": "Click the emoji to navigate through pages (30 seconds limit) / Version: %1$s",
       "footerNoPage": "Version: %1$s",
-      "descNoPage": "commands.help.descNoPage"
+      "descNoPage": "commands.help.descNoPage",
+      "cmdhelp": {
+        "title": "`{{{cmdcall}}}` command help",
+        "requiredBotPerms": "Required Bot Permissions",
+        "requiredUserPerms": "Required User Permissions",
+        "usage": "Command usage",
+        "perms": {
+          "none": "None",
+          "or": "or"
+        },
+        "ownerOnly": "Owner-only command",
+        "description": "Command Description"
+      },
+      "firstMsg": "Thank you for using FlashBot! Flashbot is actively being developed to have many features; games, utility tools and more.\n\nCheck out the links below to see the docs and help manuals. (use `{{{prefix}}}{{{cmdcall}}} <command name>` for specific command help)",
+      "links": {
+        "main": "Website",
+        "docs": "Docs and Help manuals",
+        "support": "Support Server",
+        "TITLE": "Useful Links"
+      }
     },
     "ping": {
-      "desc": "Pong!",
-      "run": "Pong!",
       "pinging": "Pinging...",
       "websocketPing": "WebSocket: %1$sms",
       "msgPing": "Message: %1$sms",
       "DESC": "Pong!"
     },
     "beep": {
-      "desc": "boop",
       "run": "boop",
       "DESC": "boop"
     },
@@ -135,7 +139,12 @@
         "2": "Informations related to this server"
       },
       "pageText": "Page %1$d of %2$d",
-      "requestedBy": "(Requested by %1$s `%2$s`)"
+      "requestedBy": "(Requested by %1$s `%2$s`)",
+      "args": {
+        "user": {
+          "DESC": "The user to show their information"
+        }
+      }
     },
     "eval": {
       "desc": "Evaluates JS code. Needs Administrator permission to use this.",
@@ -154,7 +163,12 @@
       "desc": "for checking command arguments",
       "noArgs": "No arguments provided.",
       "run": "Command name: %1$s\nArguments: %2$s",
-      "DESC": "Testing with arguments"
+      "DESC": "Testing with arguments",
+      "args": {
+        "args": {
+          "DESC": "Arguments to test"
+        }
+      }
     },
     "reload": {
       "desc": "Reloads a command. (Currently not working)",
@@ -194,7 +208,15 @@
       "noLanguage": "The language you entered does not exist.",
       "DESC": "See or change the bot locale on the server.",
       "noPermission": "You don't have `%1$s` permission to do that.",
-      "list": "Locale list:\n`%1$s`"
+      "list": "Locale list:\n`%1$s`",
+      "args": {
+        "mode": {
+          "DESC": "Subcommand"
+        },
+        "locale": {
+          "DESC": "The locale to set"
+        }
+      }
     },
     "activate": {
       "title": "Activate **FlashBot**",
@@ -242,9 +264,8 @@
     },
     "profileimage": {
       "args": {
-        "member": {
-          "NAME": "member",
-          "DESC": "The member to see the profile image. Currently, only mentions are accepted."
+        "user": {
+          "DESC": "The user to show their progile image"
         }
       },
       "DESC": "Shows a profile image"
@@ -263,7 +284,12 @@
       "DESC": "Saves the json database file now."
     },
     "test": {
-      "DESC": "Command Testing"
+      "DESC": "Command Testing",
+      "args": {
+        "cmd": {
+          "DESC": "Subcommand"
+        }
+      }
     },
     "hellothisisverification": {
       "DESC": "koreanbots"
@@ -298,10 +324,16 @@
       "noArgs": "Enter the bot `@mention` or its ID after the command to generate bot invite link.",
       "userProvided": "Please enter the **bot** `@mention` or its ID.",
       "invalidID": "Incorrect bot ID provided. Please enter the bot `@mention` or its ID **correctly**.",
-      "DESC": "Generate invite link of any bot."
+      "DESC": "Generate invite link of any bot.",
+      "args": {
+        "bot": {
+          "DESC": "The id or mention of the bot you want to invite"
+        }
+      }
     },
     "stat": {
-      "total": "Total command execution on this session: %1$s"
+      "total": "Total command execution on this session: %1$s",
+      "DESC": "Provides some stats about the bot."
     },
     "typing": {
       "error": {
@@ -324,7 +356,13 @@
       "cmdStop": "Stopped the typing game.",
       "noCopyright": "nowhere",
       "emptySearchQuery": "commands.typing.emptySearchQuery",
-      "emptyCategorySearchQuery": "commands.typing.emptyCategorySearchQuery"
+      "emptyCategorySearchQuery": "commands.typing.emptyCategorySearchQuery",
+      "DESC": "Play typing game",
+      "args": {
+        "cmd": {
+          "DESC": "Subcommand"
+        }
+      }
     },
     "prefix": {
       "info": "This server's bot prefix is `%1$s`. If you want to change bot prefix, please type `%1$sprefix set <new prefix>`.",
@@ -335,7 +373,12 @@
         "everyoneNotAllowed": "You cannot set prefix to `@everyone` or `@here`!",
         "noPerms": "You need to have `Manage Server` permission to set the server prefix."
       },
-      "DESC": "See or set the bot's prefix on the server."
+      "DESC": "See or set the bot's prefix on the server.",
+      "args": {
+        "mode": {
+          "DESC": "Subcommand"
+        }
+      }
     },
     "hello": {
       "title": "Hello!",
@@ -353,13 +396,24 @@
     "dice": {
       "result": "Rolled %1$s-sided dice and `%2$s` came out!",
       "error": "Please enter **an integer equal or greater than 1** for number of dice faces.",
-      "DESC": "Roll a dice!"
+      "DESC": "Roll a dice!",
+      "args": {
+        "sides": {
+          "DESC": "The number of sides of a dice"
+        }
+      }
     },
     "maintenance": {
       "status": "Is maintenance mode on? `%1$s`",
       "usage": "```\nUsage: %1$smaintenance (status)\n\n(status) - Set the maintenance mode status\n  [start / on / 시작] - Start maintenance mode\n  [end / off / 종료] - End maintenance mode\n```",
       "start": "Maintenance mode has been started.",
-      "end": "Maintenance mode has been ended."
+      "end": "Maintenance mode has been ended.",
+      "DESC": "Set the bot maintenance mode.",
+      "args": {
+        "status": {
+          "DESC": "The maintenance status to change"
+        }
+      }
     },
     "tictactoe": {
       "waiting": "<@%1$s> is waiting for you to play tic-tac-toe together!\nPress :white_check_mark: if you want to play!\n(Press :x: to cancel the game)",
@@ -383,7 +437,13 @@
       },
       "gameStopped": "Stopped tic-tac-toe game.",
       "usage": "Usage: ```\n%1$stictactoe <start/stop>\n\n<start> - Start the tic-tac-toe game.\n<stop> - Force stop the running tic-tac-toe game.\n```",
-      "alreadyPlaying": "The tictactoe game is already playing in this channel."
+      "alreadyPlaying": "The tictactoe game is already playing in this channel.",
+      "DESC": "Play tic-tac-toe game!",
+      "args": {
+        "cmd": {
+          "DESC": "Subcommand"
+        }
+      }
     },
     "sample": {
       "DESC": "This is a sample command. Nothing happens."
@@ -407,7 +467,12 @@
       "grantedInChannel": "Granted in this channel",
       "deniedInChannel": "Denied in this channel",
       "isAdmin": "You have the `ADMINISTRATOR` permission in this channel. All permissions are granted for you.",
-      "DESC": "Shows your permissions list."
+      "DESC": "Shows a member's permissions list.",
+      "args": {
+        "target": {
+          "DESC": "The id or mention of member to see permissions"
+        }
+      }
     },
     "notice": {
       "previewEmbed": {
@@ -419,17 +484,41 @@
       "started": "Started the announcement sending process. This may take a lot of time.",
       "error": {
         "noText": "Please enter the announcement text you want to send after the command."
+      },
+      "DESC": "Sends global announcement.",
+      "args": {
+        "text": {
+          "DESC": "The content to send globally"
+        }
       }
     },
     "disablecmd": {
       "noSuchCommand": "cannot find that command.",
       "complete": "`%1$s` command is now disabled.",
-      "alreadyDisabled": "that command is already disabled."
+      "alreadyDisabled": "that command is already disabled.",
+      "DESC": "Disables a command.",
+      "args": {
+        "command": {
+          "DESC": "The command to disable"
+        }
+      }
     },
     "enablecmd": {
       "complete": "`%1$s` command is now enabled.",
       "noSuchCommand": "cannot find that command.",
-      "alreadyEnabled": "that command is already enabled."
+      "alreadyEnabled": "that command is already enabled.",
+      "DESC": "Enables a command.",
+      "args": {
+        "command": {
+          "DESC": "The command to enable"
+        }
+      }
+    },
+    "blacklist": {
+      "DESC": "Blacklist"
+    },
+    "error": {
+      "DESC": "Force throw error for test purpose."
     }
   },
   "CommandHandler": {
@@ -448,7 +537,9 @@
   },
   "Command": {
     "makeUsage": {
-      "footer": "<Required> (Optional)"
+      "footer": "<Required> [Optional]",
+      "optional": "(optional)",
+      "detailedHelpNotice": "Go to online docs for more information.\n(Use `{{{prefix}}}help` to get the link)"
     },
     "pleaseRegister": {
       "guild": "You need to register this server in order to use this feature. Please register using the `%1$sactivate` command.",
@@ -473,7 +564,9 @@
     "activation": "Activations",
     "misc": "Others",
     "util": "Utilities",
-    "settings": "Settings"
+    "settings": "Settings",
+    "memo": "Memo",
+    "game": "Game"
   },
   "regions": {
     "south-korea": ":flag_kr: South Korea",

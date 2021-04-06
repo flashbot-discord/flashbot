@@ -6,14 +6,12 @@ class LoadCommand extends Command {
     super(client, {
       name: 'load',
       aliases: ['ㅣㅐㅁㅇ'],
-      description: 'commands.load.DESC:Loads a command.',
       group: 'dev',
       owner: true,
       args: [
         {
           key: 'command',
-          type: 'string',
-          description: 'commands.load.args.command.DESC:Command to load'
+          type: 'string'
         }
       ]
     })

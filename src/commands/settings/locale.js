@@ -14,7 +14,6 @@ class LocaleCommand extends Command {
         'language', 'lang', '언어',
         'ㅣㅐㅊ믿', 'ㅣ무혐ㅎㄷ', 'ㅣ뭏', 'djsdj'
       ],
-      description: 'commands.locale.DESC:See or change the bot locale on the server.',
       group: 'settings',
       requireDB: true,
       userReg: true
@@ -28,28 +27,28 @@ class LocaleCommand extends Command {
       unnamed: {
         key: 'mode',
         type: 'string',
-        description: 'commands.locale.args.mode.DESC: When present, change the locale of the server to this value.',
         optional: true
       }
     }
-    returnObj.mode = mode
 
     switch (mode) {
       case 'list':
+      case '목록':
+        returnObj.mode = 'list'
         break
 
-      case 'set': {
+      case 'set':
+      case '설정': {
+        returnObj.mode = 'set'
         const { locale, guild } = yield {
           named: {
             guild: {
-              type: 'boolean',
-              description: 'whether the locale shuold be set to guild.'
+              type: 'boolean'
             }
           },
           unnamed: {
             key: 'locale',
-            type: 'string',
-            description: 'commands.locale.args.locale.DESC:The locale to change.'
+            type: 'string'
           }
         }
         returnObj.locale = locale

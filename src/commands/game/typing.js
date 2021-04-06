@@ -15,7 +15,6 @@ class TypingGameCommand extends Command {
         'speedtype', 'fasttype', '타자', '타자게임',
         '쇼ㅔㅑㅜㅎ', '넫ㄷㅇ쇼ㅔㄷ', 'ㄹㅁㄴㅅ쇼ㅔㄷ', 'xkwk', 'xkwkrpdla'
       ],
-      description: 'commands.typing.DESC',
       group: 'game'
     })
 

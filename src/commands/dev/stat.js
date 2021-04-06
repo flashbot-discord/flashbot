@@ -5,7 +5,6 @@ class StatCommand extends Command {
     super(client, {
       name: 'stat',
       aliases: ['stats', 'statistics', '통계'],
-      description: 'commands.stat.DESC',
       group: 'dev',
       owner: true
     })

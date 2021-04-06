@@ -11,12 +11,10 @@ class TicTacToeCommand extends Command {
     super(client, {
       name: 'tictactoe',
       aliases: ['tic-tac-toe', '틱택토', '샻-ㅅㅁㅊ-샏', '샻ㅅㅁㅊ샏', 'xlrxorxh'],
-      description: 'commands.tictactoe.DESC',
       group: 'game',
       args: [
         {
           key: 'cmd',
-          description: '',
           type: 'string'
         }
       ]

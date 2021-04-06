@@ -4,13 +4,17 @@ class DBKRVerifyCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'hellothisisverification',
-      description: 'commands.hellothisisverification.DESC',
       group: 'misc'
     })
   }
 
   run (client, msg, _query, _) {
-    msg.reply('comjun04#5963 (393674169243402240)')
+    const owners = client.config.owner.map(id => {
+      const u = client.users.resolve(id)
+      return `${u.tag} (\`${u.id}\`)`
+    })
+    console.log(owners)
+    msg.reply(`Hello! This is Verification!\nBot Owners: ${owners.join(', ')}`)
   }
 }
 

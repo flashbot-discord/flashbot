@@ -8,7 +8,6 @@ class NoticeCommand extends Command {
     super(client, {
       name: 'notice',
       aliases: ['공지', 'ㅜㅐ샻ㄷ', 'rhdwl'],
-      description: 'commands.notice.DESC',
       group: 'dev',
       owner: true,
       clientPerms: ['EMBED_LINKS', 'ADD_REACTIONS'],

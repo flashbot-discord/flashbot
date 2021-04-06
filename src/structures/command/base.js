@@ -25,7 +25,7 @@ class Command {
      * 명령어 설명을 변역해야 하는지 여부
      * @type {boolean}
      */
-    this._descNeedsTranslate = !!infos.description
+    this._descNeedsTranslate = !infos.description
 
     /**
      * the aliases of a command
@@ -160,98 +160,56 @@ class Command {
     return await msg.reply(cmd._client.locale.t('Command.pleaseRegister.guild', locale, cmd._client.config.prefix))
   }
 
-  static makeUsage (cmd, query, t, argErr = null) {
-    if (!cmd._args.dynamic) {
-      /*
-       * Usage:
-       * //somecmd <necessary arg> [optional arg]
-       *
-       * `arg1` - <type> some arg desc
-       * `arg2` - <type> some another arg desc (optional)
-       * 
-       * Go to online docs for more detailed help.
-       * (Use `//help` to get the link)
-       */
-      // Don't show named args (flags) here.
-      let str1 = ''
-      let str2 = ''
+  static makeUsage (msg, cmd, query, t, argData = null) {
+    /*
+     * Usage:
+     * //somecmd <necessary arg> [optional arg]
+     *
+     * `arg1` - <type> some arg desc
+     * `arg2` - <type> some another arg desc (optional)
+     *
+     * <Required> [Optional]
+     *
+     * Go to online docs for more information.
+     * (Use `//help` to get the link)
+     */
+    // Don't show named args (flags) here.
+    let str1 = ''
+    let str2 = ''
 
-      for (const arg of cmd._args.args.unnamed) {
+    const makeUsageStr = (argsArr) => {
+      for (const arg of argsArr) {
         const startBracket = arg.optional ? '[' : '<'
         const endBracket = arg.optional ? ']' : '>'
         const description = arg.description || t(`commands.${cmd._name}.args.${arg.key}.DESC`)
 
         str1 += `${startBracket}${arg.key}${endBracket} `
-        str2 += `${startBracket}${arg.key}: ${arg.type}${endBracket} - ${description} ${arg.optional ? `*(${'OpTiOnAl'})*` : ''}`
+        str2 += `${startBracket}${arg.key}: ${arg.type}${endBracket} - ${description} ${arg.optional ? t('Command.makeUsage.optional') : ''}`
+      }
+    }
+
+    if (!cmd._args.dynamic) makeUsageStr(cmd._args.args.unnamed)
+    else {
+      if (!argData) {
+        argData = cmd.args(msg).next().value.unnamed
       }
 
-      let str = `${str1}\n\n${str2}`
-      return `${query.prefix}${query.cmd} ${str}\n\n${t('Command.makeUsage.footer')}`
-    } else {
-      console.log(argErr)
+      if (argData) makeUsageStr([argData])
+      str1 += '......'
     }
+
+    return (
+`${query.prefix}${query.cmd} ${str1}
+
+${str2}
+
+${t('Command.makeUsage.footer')}
+${t('Command.makeUsage.detailedHelpNotice', { prefix: query.prefix })}`)
   }
-
-  /*
-  static makeUsage (cmd, called, t) {
-    let str = ''
-    cmd._args.forEach((arg) => {
-      const name = t(arg.name)
-      const type = t(arg.type)
-
-      str = str + (arg.optional ? '[' : '(') + name + ': ' + type + (arg.optional ? ']' : ')') + ' '
-    })
-    str += '\n\n'
-    cmd._args.forEach((arg) => {
-      const name = t(arg.name)
-      const desc = t(arg.description)
-      str = str + (arg.optional ? '[' : '(') + name + (arg.optional ? ']' : ')') + ' - ' + desc + ' ' + '\n'
-    })
-
-    return t('Command.makeUsage.str', cmd._client.config.prefix, called, str)
-  }
-  */
 
   _translateDesc (t) {
     return this._descNeedsTranslate ? t(this._desc) : this._desc
   }
-
-  /*
-  _validateArgs (rawArgs) {
-    const argsParseOpts = { aliases: {}, default: {} }
-    if (!Array.isArray(this._args) && typeof this._args === 'object') {
-      for (const arg in this._args) {
-        if (arg === '_') continue
-
-        const argData = this._args[arg]
-        if (Array.isArray(argData.aliases) && argData.aliases.length > 0) argsParseOpts.alias[arg] = argData.aliases
-        if (argData.default != null) argsParseOpts.default[arg] = argData.default
-      }
-    }
-
-    const inputArgs = minimist(rawArgs, argsParseOpts)
-
-    let passed = true
-    if (Array.isArray(this._args)) {
-      this._args.forEach((cmdArg, idx) => {
-        if (!passed) return
-
-        // Is the type correct?
-        if (!argTypes[cmdArg.type].validate(inputArgs[idx])) {
-          passed = false
-          return
-        }
-
-        // Is required argument exist?
-        if (!cmdArg.optional && cmdArg.type !== 'boolean' && !inputArgs[idx]) {
-          passed = false
-          return
-        }
-
-      })
-    }
-  }
-  */
 }
 
 module.exports = Command

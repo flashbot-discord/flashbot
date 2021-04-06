@@ -11,7 +11,6 @@ class ExecuteCommand extends Command {
     super(client, {
       name: 'exec',
       aliases: ['execute', 'ㄷㅌㄷㅊ', 'ㄷㅌㄷ쳣ㄷ'],
-      description: 'commands.exec.DESC:Execute shell commands.',
       group: 'dev',
       owner: true,
       args: [
