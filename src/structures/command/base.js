@@ -184,7 +184,7 @@ class Command {
         const description = arg.description || t(`commands.${cmd._name}.args.${arg.key}.DESC`)
 
         str1 += `${startBracket}${arg.key}${endBracket} `
-        str2 += `${startBracket}${arg.key}: ${arg.type}${endBracket} - ${description} ${arg.optional ? t('Command.makeUsage.optional') : ''}`
+        str2 += `${startBracket}${arg.key}: ${arg.type}${endBracket} - ${description} ${arg.optional ? t('Command.makeUsage.optional') : ''}\n`
       }
     }
 
@@ -202,7 +202,6 @@ class Command {
 `${query.prefix}${query.cmd} ${str1}
 
 ${str2}
-
 ${t('Command.makeUsage.footer')}
 ${t('Command.makeUsage.detailedHelpNotice', { prefix: query.prefix })}`)
   }
