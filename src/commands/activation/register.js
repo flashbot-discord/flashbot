@@ -7,7 +7,7 @@ class RegisterCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'register',
-      aliases: ['등록', 'ㄱㄷ햔ㅅㄷㄱ', 'emdfhr'],
+      aliases: ['등록', '가입', 'ㄱㄷ햔ㅅㄷㄱ', 'emdfhr', 'rkdlq'],
       group: 'activation',
       requireDB: true
     })
