@@ -519,6 +519,27 @@
     },
     "error": {
       "DESC": "Force throw error for test purpose."
+    },
+    "base64": {
+      "DESC": "commands.base64.DESC",
+      "args": {
+        "cmd": {
+          "DESC": "commands.base64.args.cmd.DESC"
+        },
+        "value": {
+          "DESC": "commands.base64.args.value.DESC"
+        }
+      },
+      "emptyMsg": "commands.base64.emptyMsg"
+    },
+    "vcactivity": {
+      "done": "commands.vcactivity.done",
+      "args": {
+        "activity": {
+          "DESC": "commands.vcactivity.args.activity.DESC"
+        }
+      },
+      "noPerms": "commands.vcactivity.noPerms"
     }
   },
   "CommandHandler": {
