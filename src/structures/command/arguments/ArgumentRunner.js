@@ -168,7 +168,7 @@ async function runUnnamedArgs (msg, argDataList, argsArr) {
 
 async function runDynamicArgs (msg, command, argsArr) {
   const logger = _logger.extend('runDynamicArgs')
-  let rawArgs = argsArr.slice()
+  let rawArgs = argsArr.slice() // copy
   const iter = command.args(msg)
 
   let current = iter.next()

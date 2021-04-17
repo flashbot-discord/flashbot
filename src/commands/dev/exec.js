@@ -24,8 +24,8 @@ class ExecuteCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    const str = query.args.command
-    if (!str) return msg.reply(Command.makeUsage(this, query.cmd, t))
+    const str = query.args.cmd
+
     logger.log(`[EXEC] ${msg.author.tag} executed the command: ${str}`)
 
     const m = await msg.reply('Executing...')
