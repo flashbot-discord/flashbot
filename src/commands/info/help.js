@@ -41,10 +41,9 @@ class HelpCommand extends Command {
   async run (client, msg, query, { t }) {
     // is DM
     // const dm = !msg.guild || query.args.dm
+    const useEmbed = !query.args['no-embed'] && msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
     if (!query.args.command) {
-      const useEmbed = !query.args['no-embed'] && msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
-
       const makeLinkText = () => {
         let text = ''
         for (const linkName in LINKS) {
@@ -178,17 +177,42 @@ class HelpCommand extends Command {
         userPermsText += `\`${t(`perms.${perm}`)}\`${last ? '' : ', '}`
       })
 
-      const embed = new MessageEmbed()
-        .setTitle(t('commands.help.cmdhelp.title', {
-          cmdcall: `${fakeQueryObj.prefix}${fakeQueryObj.cmd}`
-        }))
-        .setDescription(desc)
-        .addField(t('commands.help.cmdhelp.requiredBotPerms'), botPermsText, true)
-        .addField(t('commands.help.cmdhelp.requiredUserPerms'), userPermsText, true)
-        .addField(t('commands.help.cmdhelp.ownerOnly'), cmd._owner ? ':o:' : ':x:', true)
-        .addField(t('commands.help.cmdhelp.usage'), `\`\`\`\n${Command.makeUsage(msg, cmd, fakeQueryObj, t)}\n\`\`\``)
+      const titleTxt = t('commands.help.cmdhelp.title', {
+        cmdcall: `${fakeQueryObj.prefix}${fakeQueryObj.cmd}`
+      })
+      const requiredBotPermsTxt = t('commands.help.cmdhelp.requiredBotPerms')
+      const requiredUserPermsTxt = t('commands.help.cmdhelp.requiredUserPerms')
+      const ownerOnlyTxt = t('commands.help.cmdhelp.ownerOnly')
+      const usageTxt = t('commands.help.cmdhelp.usage')
+      const usage = Command.makeUsage(msg, cmd, fakeQueryObj, t)
 
-      msg.channel.send(embed)
+      let output
+      if (useEmbed) {
+        const embed = new MessageEmbed()
+          .setTitle(titleTxt)
+          .setDescription(desc)
+          .addField(requiredBotPermsTxt, botPermsText, true)
+          .addField(requiredUserPermsTxt, userPermsText, true)
+          .addField(ownerOnlyTxt, cmd._owner ? ':o:' : ':x:', true)
+          .addField(usageTxt, `\`\`\`\n${usage}\n\`\`\``)
+
+        output = embed
+      } else {
+        const str =
+`**${titleTxt}**
+> ${desc}
+
+${requiredBotPermsTxt}: ${botPermsText}
+${requiredUserPermsTxt}: ${userPermsText}
+${ownerOnlyTxt}: ${cmd._owner ? ':o:' : ':x:'}
+\`\`\`
+${usage}
+\`\`\``
+
+        output = str
+      }
+
+      msg.channel.send(output)
     }
   }
 }
