@@ -182,7 +182,7 @@ class HelpCommand extends Command {
         .setTitle(t('commands.help.cmdhelp.title', {
           cmdcall: `${fakeQueryObj.prefix}${fakeQueryObj.cmd}`
         }))
-        .addField(t('commands.help.cmdhelp.description'), desc)
+        .setDescription(desc)
         .addField(t('commands.help.cmdhelp.requiredBotPerms'), botPermsText, true)
         .addField(t('commands.help.cmdhelp.requiredUserPerms'), userPermsText, true)
         .addField(t('commands.help.cmdhelp.ownerOnly'), cmd._owner ? ':o:' : ':x:', true)
