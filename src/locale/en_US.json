@@ -22,8 +22,7 @@
           "none": "None",
           "or": "or"
         },
-        "ownerOnly": "Owner-only command",
-        "description": "Command Description"
+        "ownerOnly": "Owner-only"
       },
       "firstMsg": "Thank you for using FlashBot! Flashbot is actively being developed to have many features; games, utility tools and more.\n\nCheck out the links below to see the docs and help manuals. (use `{{{prefix}}}{{{cmdcall}}} <command name>` for specific command help)",
       "links": {
@@ -521,25 +520,30 @@
       "DESC": "Force throw error for test purpose."
     },
     "base64": {
-      "DESC": "commands.base64.DESC",
+      "DESC": "Encodes and decodes base64 strings",
       "args": {
         "cmd": {
-          "DESC": "commands.base64.args.cmd.DESC"
+          "DESC": "working mode (encode, decode, e, d)"
         },
         "value": {
-          "DESC": "commands.base64.args.value.DESC"
+          "DESC": "value to encode/decode"
         }
       },
-      "emptyMsg": "commands.base64.emptyMsg"
+      "emptyMsg": "Cannot display output."
     },
     "vcactivity": {
-      "done": "commands.vcactivity.done",
+      "done": "Use {{{link}}} to play {{appName}}! (expires in 1 hour)",
       "args": {
         "activity": {
-          "DESC": "commands.vcactivity.args.activity.DESC"
+          "DESC": "activity name you want to play (youtube, betrayal, fishington)"
+        },
+        "channel": {
+          "DESC": "voice channel to create link"
         }
       },
-      "noPerms": "commands.vcactivity.noPerms"
+      "noPerms": "The bot needs `Create Invite` permission to create links to play activity.",
+      "needToJoinVC": "Please enter a voice channel and rerun this command. (or pass the voice channel id after the activity name)",
+      "DESC": "Play activities in voice channel!"
     }
   },
   "CommandHandler": {
