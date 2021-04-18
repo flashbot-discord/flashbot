@@ -168,14 +168,14 @@ class HelpCommand extends Command {
         botPermsText += t(`perms.${perm}`) + (last ? '' : ', ')
       })
 
-      let userPermsText = cmd._userPerms.length > 0
-        ? ''
+      const userPermsText = cmd._userPerms.length > 0
+        ? cmd._userPerms.reduce((acc, perm, idx) => {
+          const last = idx === cmd._userPerms.length - 1
+          if (last) acc += t('commands.help.cmdhelp.perms.or') + ' '
+          acc += `\`${t(`perms.${perm}`)}\`${last ? '' : ', '}`
+          return acc
+        })
         : t('commands.help.cmdhelp.perms.none')
-      cmd._userPerms.forEach((perm, idx) => {
-        const last = idx === cmd._userPerms.length - 1
-        if (last) userPermsText += t('commands.help.cmdhelp.perms.or') + ' '
-        userPermsText += `\`${t(`perms.${perm}`)}\`${last ? '' : ', '}`
-      })
 
       const titleTxt = t('commands.help.cmdhelp.title', {
         cmdcall: `${fakeQueryObj.prefix}${fakeQueryObj.cmd}`
