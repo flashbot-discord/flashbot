@@ -4,7 +4,7 @@ class PingCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'ping',
-      aliases: ['핑'],
+      aliases: ['핑', 'ㅔㅑㅜㅎ', 'vld'],
       group: 'info'
     })
   }
