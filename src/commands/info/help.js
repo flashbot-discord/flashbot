@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js')
 
 // const Paginator = require('../../structures/Paginator')
 const Command = require('../_Command')
+const { joinBacktick } = require('../../modules/textFormat')
 
 const LINKS = {
   main: 'https://flashbot.ga',
@@ -59,12 +60,15 @@ class HelpCommand extends Command {
 
       let mainData
       if (useEmbed) {
+        const footerText = t('commands.help.footer', client.VERSION)
+
         const mainEmbed = new MessageEmbed()
           .setTitle(t('commands.help.title'))
           .setDescription(t('commands.help.firstMsg', {
             prefix: query.prefix,
             cmdcall: query.cmd
           }))
+          .setFooter(footerText)
 
         client.commands.groups.forEach((cmdList, group) => {
           if (group === 'dev') return
@@ -159,30 +163,34 @@ class HelpCommand extends Command {
       }
       const desc = cmd._translateDesc(t)
 
-      let botPermsText = cmd._clientPerms.length > 0
-        ? ''
-        : t('commands.help.cmdhelp.perms.none')
-      cmd._clientPerms.forEach((perm, idx) => {
-        const last = idx === cmd._clientPerms.length - 1
-        if (last) botPermsText += t('commands.help.cmdhelp.perms.or') + ' '
-        botPermsText += t(`perms.${perm}`) + (last ? '' : ', ')
-      })
+      const aliasesText = cmd._aliases.length > 0
+        ? joinBacktick(cmd._aliases)
+        : t('commands.help.cmdhelp.noAlias')
 
-      const userPermsText = cmd._userPerms.length > 0
-        ? cmd._userPerms.reduce((acc, perm, idx) => {
-          const last = idx === cmd._userPerms.length - 1
-          if (last) acc += t('commands.help.cmdhelp.perms.or') + ' '
-          acc += `\`${t(`perms.${perm}`)}\`${last ? '' : ', '}`
-          return acc
-        })
-        : t('commands.help.cmdhelp.perms.none')
+      let botPermsText = ''
+      if (cmd._clientPerms.length > 0) {
+        const translatedPerms = cmd._clientPerms.map(perm => t(`perms.${perm}`))
+        botPermsText = joinBacktick(translatedPerms)
+      } else {
+        botPermsText = t('commands.help.cmdhelp.perms.none')
+      }
+
+      let userPermsText = ''
+      if (cmd._owner) {
+        userPermsText = `**${t('commands.help.cmdhelp.perms.owner')}**`
+      } else if (cmd._userPerms.length > 0) {
+        const translatedPerms = cmd._userPerms.map(perm => t(`perms.${perm}`))
+        userPermsText = joinBacktick(translatedPerms)
+      } else {
+        userPermsText = t('commands.help.cmdhelp.perms.none')
+      }
 
       const titleTxt = t('commands.help.cmdhelp.title', {
         cmdcall: `${fakeQueryObj.prefix}${fakeQueryObj.cmd}`
       })
+      const aliasesTitleTxt = t('commands.help.cmdhelp.aliases')
       const requiredBotPermsTxt = t('commands.help.cmdhelp.requiredBotPerms')
       const requiredUserPermsTxt = t('commands.help.cmdhelp.requiredUserPerms')
-      const ownerOnlyTxt = t('commands.help.cmdhelp.ownerOnly')
       const usageTxt = t('commands.help.cmdhelp.usage')
       const usage = Command.makeUsage(msg, cmd, fakeQueryObj, t)
 
@@ -191,9 +199,9 @@ class HelpCommand extends Command {
         const embed = new MessageEmbed()
           .setTitle(titleTxt)
           .setDescription(desc)
+          .addField(aliasesTitleTxt, aliasesText)
           .addField(requiredBotPermsTxt, botPermsText, true)
           .addField(requiredUserPermsTxt, userPermsText, true)
-          .addField(ownerOnlyTxt, cmd._owner ? ':o:' : ':x:', true)
           .addField(usageTxt, `\`\`\`\n${usage}\n\`\`\``)
 
         output = embed
@@ -202,9 +210,10 @@ class HelpCommand extends Command {
 `**${titleTxt}**
 > ${desc}
 
+${aliasesTitleTxt}: ${aliasesText}
 ${requiredBotPermsTxt}: ${botPermsText}
 ${requiredUserPermsTxt}: ${userPermsText}
-${ownerOnlyTxt}: ${cmd._owner ? ':o:' : ':x:'}
+
 \`\`\`
 ${usage}
 \`\`\``

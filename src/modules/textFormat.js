@@ -6,3 +6,7 @@ exports.cleanMarkdown = (text) => {
   // TODO WIP
   return text
 }
+
+exports.joinBacktick = (arr) => {
+  return `\`${arr.join('`, `')}\``
+}

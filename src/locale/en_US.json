@@ -10,9 +10,7 @@
       },
       "DESC": "Shows help message.",
       "sentToDM": "Sent the help messages to your DM.",
-      "footer": "Click the emoji to navigate through pages (30 seconds limit) / Version: %1$s",
-      "footerNoPage": "Version: %1$s",
-      "descNoPage": "commands.help.descNoPage",
+      "footer": "Version: %1$s",
       "cmdhelp": {
         "title": "`{{{cmdcall}}}` command help",
         "requiredBotPerms": "Required Bot Permissions",
@@ -20,9 +18,9 @@
         "usage": "Command usage",
         "perms": {
           "none": "None",
-          "or": "or"
+          "owner": "Bot Owner"
         },
-        "ownerOnly": "Owner-only"
+        "aliases": "Aliases"
       },
       "firstMsg": "Thank you for using FlashBot! Flashbot is actively being developed to have many features; games, utility tools and more.\n\nCheck out the links below to see the docs and help manuals. (use `{{{prefix}}}{{{cmdcall}}} <command name>` for specific command help)",
       "links": {
