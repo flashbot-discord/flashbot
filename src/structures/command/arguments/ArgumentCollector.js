@@ -28,7 +28,8 @@ class ArgumentCollector {
     logger.debug('flagInfo = %O', flagInfo)
 
     // name
-    if (flagName in this.flags) throw new Error('Flag already exists')
+    if (flagName.length < 1) throw new Error('Flag name is empty')
+    else if (flagName in this.flags) throw new Error('Flag already exists')
 
     // aliases
     const aliases = []
@@ -36,7 +37,7 @@ class ArgumentCollector {
       for (const alias of flagInfo.aliases) {
         if (!aliases.includes(alias)) aliases.push(alias)
       }
-    } else if (flagInfo.aliases != null) throw new TypeError('Argument aliases must be Array<string> or null')
+    }
 
     // type
     if (!this._validateType(flagInfo.type)) flagInfo.type = null

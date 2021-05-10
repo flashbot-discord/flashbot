@@ -105,6 +105,7 @@ async function runFlags (msg, flagDataList, inputArr, stopEarly = false) {
   if (parsedFlags._) {
     logger.verbose('found unparsed args from input')
     finalData.notParsedArgs = parsedFlags._
+    delete parsedFlags._
   }
 
   // NOTE: Validate flag value
@@ -119,7 +120,7 @@ async function runFlags (msg, flagDataList, inputArr, stopEarly = false) {
       data = await validateType(msg, flag, flagData)
     } catch (e) {
       // TODO: hmm
-      e.named = true
+      e.isFlag = true
       throw e
     }
     finalData.flags[flagName] = data.arg
@@ -147,7 +148,7 @@ async function runArgument (msg, argData, arg) {
     data = await validateType(msg, arg, argData)
   } catch (e) {
     // TODO: hmm
-    e.named = false
+    e.isFlag = true
     throw e
   }
 
