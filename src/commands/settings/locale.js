@@ -24,7 +24,7 @@ class LocaleCommand extends Command {
     const returnObj = {}
 
     const { mode } = yield {
-      unnamed: {
+      args: {
         key: 'mode',
         type: 'string',
         optional: true
@@ -41,19 +41,24 @@ class LocaleCommand extends Command {
       case '설정': {
         returnObj.mode = 'set'
         const { locale, guild } = yield {
-          named: {
+          flags: {
             guild: {
               type: 'boolean'
             }
           },
-          unnamed: {
+          args: {
             key: 'locale',
             type: 'string'
           }
         }
         returnObj.locale = locale
         returnObj.guild = guild
+
+        break
       }
+
+      default:
+        returnObj.mode = null
     }
 
     return returnObj

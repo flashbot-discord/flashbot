@@ -7,6 +7,7 @@ class ReloadCommand extends Command {
       aliases: ['리로드', 'ㄱ디ㅐㅁㅇ', 'flfhem'],
       group: 'dev',
       owner: true,
+      /*
       args: {
         all: {
           aliases: ['a', '모두'],
@@ -21,12 +22,38 @@ class ReloadCommand extends Command {
           }
         ]
       }
+      */
     })
   }
 
-  async run (client, msg, query, { t }) {
-    if (!query.args.all && !query.args.command) return msg.reply(Command.makeUsage(this, query.cmd))
+  * args () {
+    let returnObj = {}
 
+    const { all, command } = yield {
+      flag: {
+        all: {
+          type: 'boolean'
+        }
+      },
+      args: {
+        key: 'command',
+        type: 'string',
+        optional: true
+      }
+    }
+
+    returnObj.all = all
+    if (!all) {
+      if (command) returnObj.command = command
+      //else returnObj = null
+    }
+
+    return returnObj
+  }
+
+  async run (client, msg, query, { t }) {
+    // if (!query.args.all && !query.args.command) return msg.reply(Command.makeUsage(this, query.cmd))
+console.log(query.args)
     if (query.args.all) {
       const list = client.commands.commands.clone()
       const errCmds = []

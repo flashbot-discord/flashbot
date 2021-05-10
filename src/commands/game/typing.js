@@ -27,7 +27,7 @@ class TypingGameCommand extends Command {
     const returnObj = {}
 
     const { cmd } = yield {
-      unnamed: {
+      args: {
         key: 'cmd',
         type: 'string'
       }
@@ -48,7 +48,7 @@ class TypingGameCommand extends Command {
         returnObj.cmd = 'start'
 
         const { lang } = yield {
-          unnamed: {
+          args: {
             key: 'lang',
             type: 'string',
             optional: true
@@ -57,7 +57,7 @@ class TypingGameCommand extends Command {
         returnObj.lang = lang
 
         const { category } = yield {
-          unnamed: {
+          args: {
             key: 'category',
             type: 'string',
             optional: true
