@@ -3,6 +3,7 @@ const { MessageEmbed } = require('discord.js')
 // const Paginator = require('../../structures/Paginator')
 const Command = require('../_Command')
 const { joinBacktick } = require('../../modules/textFormat')
+const makeCommandUsage = require('../../modules/commandUsage')
 
 const LINKS = {
   main: 'https://flashbot.ga',
@@ -192,7 +193,7 @@ class HelpCommand extends Command {
       const requiredBotPermsTxt = t('commands.help.cmdhelp.requiredBotPerms')
       const requiredUserPermsTxt = t('commands.help.cmdhelp.requiredUserPerms')
       const usageTxt = t('commands.help.cmdhelp.usage')
-      const usage = Command.makeUsage(msg, cmd, fakeQueryObj, t)
+      const usage = makeCommandUsage(msg, cmd, fakeQueryObj, t)
 
       let output
       if (useEmbed) {

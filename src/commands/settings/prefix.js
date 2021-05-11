@@ -20,7 +20,7 @@ class PrefixCommand extends Command {
     const returnObj = {}
 
     const { mode } = yield {
-      args: {
+      arg: {
         key: 'mode',
         type: 'string',
         optional: true
@@ -33,7 +33,7 @@ class PrefixCommand extends Command {
         returnObj.mode = 'set'
 
         const { prefix } = yield {
-          args: {
+          arg: {
             key: 'prefix',
             type: 'string'
           }

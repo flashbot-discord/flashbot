@@ -24,7 +24,7 @@ class LocaleCommand extends Command {
     const returnObj = {}
 
     const { mode } = yield {
-      args: {
+      arg: {
         key: 'mode',
         type: 'string',
         optional: true
@@ -46,7 +46,7 @@ class LocaleCommand extends Command {
               type: 'boolean'
             }
           },
-          args: {
+          arg: {
             key: 'locale',
             type: 'string'
           }

@@ -1,4 +1,5 @@
 const Command = require('../_Command')
+const makeCommandUsage = require('../../modules/commandUsage')
 
 class ReloadCommand extends Command {
   constructor (client) {
@@ -30,12 +31,13 @@ class ReloadCommand extends Command {
     let returnObj = {}
 
     const { all, command } = yield {
-      flag: {
+      flags: {
         all: {
-          type: 'boolean'
+          type: 'boolean',
+          aliases: ['a']
         }
       },
-      args: {
+      arg: {
         key: 'command',
         type: 'string',
         optional: true
@@ -43,17 +45,17 @@ class ReloadCommand extends Command {
     }
 
     returnObj.all = all
+    returnObj.command = command
     if (!all) {
       if (command) returnObj.command = command
-      //else returnObj = null
     }
 
     return returnObj
   }
 
   async run (client, msg, query, { t }) {
-    // if (!query.args.all && !query.args.command) return msg.reply(Command.makeUsage(this, query.cmd))
-console.log(query.args)
+    if (!query.args.all && !query.args.command) return msg.reply(makeCommandUsage(msg, this, query, t, null, true))
+    // console.log(query.args)
     if (query.args.all) {
       const list = client.commands.commands.clone()
       const errCmds = []

@@ -27,7 +27,7 @@ class TypingGameCommand extends Command {
     const returnObj = {}
 
     const { cmd } = yield {
-      args: {
+      arg: {
         key: 'cmd',
         type: 'string'
       }
