@@ -139,7 +139,7 @@ class ArgumentCollector {
       if (!type.every(t => types[t] != null)) throw new TypeError(`Invalid argument type in one of ['${type.join('\', \'')}']`)
       else return true
     } else if (type == null) return false
-    else throw new TypeError('Argument type must be string, Array<string> or null')
+    else throw new TypeError('Argument type must be string or array of string')
   }
 
   /**

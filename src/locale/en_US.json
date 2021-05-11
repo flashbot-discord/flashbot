@@ -176,6 +176,9 @@
         "command": {
           "NAME": "command",
           "DESC": "Command to reload"
+        },
+        "undefined": {
+          "DESC": "commands.reload.args.undefined.DESC"
         }
       },
       "DESC": "reloads a command",
@@ -670,6 +673,12 @@
         },
         "author": "Written by %1$s"
       }
+    },
+    "commandUsage": {
+      "footer": "<Required> [Optional]",
+      "detailedHelpNotice": "Go to online docs for more information.\n(Use `{{{prefix}}}help` to get the link)",
+      "optional": "(optional)",
+      "usage": "Usage:"
     }
   }
 }

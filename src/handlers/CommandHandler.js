@@ -2,12 +2,12 @@ const fs = require('fs')
 const path = require('path')
 const { Collection } = require('discord.js')
 
-const Command = require('../structures/command/base')
 const StatHandler = require('./StatHandler')
 const argumentRunner = require('../structures/command/arguments/ArgumentRunner')
 const database = require('../database')
 const ClientError = require('../structures/ClientError')
 const ArgumentError = require('../structures/command/arguments/ArgumentError')
+const makeCommandUsage = require('../modules/commandUsage')
 
 const logger = require('../modules/logger')('CommandHandler')
 
@@ -274,7 +274,7 @@ class CommandHandler {
             : err.argData.type
           */
 
-          const usageText = Command.makeUsage(msg, cmd, query, t, err.argData)
+          const usageText = makeCommandUsage(msg, cmd, query, t, err.argData)
           const print =
 `${t('CommandHandler.usage')}\`\`\`
 ${usageText}

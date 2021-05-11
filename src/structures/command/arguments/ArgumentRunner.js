@@ -51,7 +51,7 @@ async function runArgs (msg, command, rawInput) {
 
   // NOTE: assign arguments first, then flags
   Object.assign(parsedData, args)
-  Object.assign(parsedData, data)
+  Object.assign(parsedData, data.flags)
 
   logger.debug('final data: %O', parsedData)
   return parsedData
@@ -219,15 +219,16 @@ async function runDynamic (msg, command, rawInput) {
     const data = current.value
 
     // NOTE: run flags first
-    if (data.flag && typeof data.flag === 'object') {
-      parsedFlags = await runFlags(msg, data.flag, inputArr, true)
-      inputArr = parsedFlags.notParsedArgs
+    if (data.flags && typeof data.flags === 'object') {
+      const parsedData = await runFlags(msg, data.flags, inputArr, true)
+      parsedFlags = parsedData.flags
+      inputArr = parsedData.notParsedArgs
     }
 
     // NOTE: run arguments
-    if (data.args && typeof data.args === 'object') {
+    if (data.arg && typeof data.arg === 'object') {
       const arg = inputArr.shift()
-      parsedArguments = await runArguments(msg, [data.args], [arg])
+      parsedArguments = await runArguments(msg, [data.arg], [arg])
     }
 
     Object.assign(parsedArgs, parsedArguments)
