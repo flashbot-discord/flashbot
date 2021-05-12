@@ -1,6 +1,12 @@
-const makeUsageStr = (argsArr, cmdName, t) => {
+const makeUsageStr = (argsArr, previousArgs, cmdName, t) => {
   let summary = ''
   let descText = ''
+
+  if (Array.isArray(previousArgs)) {
+    for (const parsedArg of previousArgs) {
+      summary += `${parsedArg} `
+    }
+  }
 
   for (const arg of argsArr) {
     const startBracket = arg.optional ? '[' : '<'
@@ -20,11 +26,11 @@ const makeUsageStr = (argsArr, cmdName, t) => {
  * @param {import('../structures/command/base')} cmd The command object
  * @param {import('../structures/MsgQuery')} query MsgQuery object
  * @param {Function} t The translate function
- * @param {*} argData Argument data
+ * @param {*} ctx
  * @param {boolean} wrap Whether to wrap result with noticement text
  * @returns {string}
  */
-module.exports = (msg, cmd, query, t, argData = null, wrap = false) => {
+module.exports = (msg, cmd, query, t, ctx, wrap = false) => {
   /*
    * Usage:
    * //somecmd <necessary arg> [optional arg]
@@ -39,11 +45,14 @@ module.exports = (msg, cmd, query, t, argData = null, wrap = false) => {
    */
   // Don't show flags here.
 
+  const { previous: previousArgs } = ctx
+  let { now: argData } = ctx
+
   let summary = ''
   let description = ''
 
   if (!cmd._args.dynamic) {
-    const data = makeUsageStr(cmd._args.args, cmd._name, t)
+    const data = makeUsageStr(cmd._args.args, null, cmd._name, t)
     summary += data.summary
     description += data.descText
   } else {
@@ -52,7 +61,7 @@ module.exports = (msg, cmd, query, t, argData = null, wrap = false) => {
     }
 
     if (argData) {
-      const data = makeUsageStr([argData], cmd._name, t)
+      const data = makeUsageStr([argData], previousArgs, cmd._name, t)
       summary += data.summary
       description += data.descText
     }

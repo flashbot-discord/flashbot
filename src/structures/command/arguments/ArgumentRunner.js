@@ -16,7 +16,8 @@ async function runArgs (msg, command, rawInput) {
   const collector = command._args
 
   const parsedData = {}
-  let data = {}
+  let data
+  let flags = {}
   let args = {}
   let argsToRun
 
@@ -31,6 +32,7 @@ async function runArgs (msg, command, rawInput) {
     logger.verbose('processing flags')
 
     data = await runFlags(msg, collector.flags, rawInput)
+    flags = data.flags
 
     if (data.notParsedArgs) {
       logger.verbose('arguments are included')
@@ -40,7 +42,7 @@ async function runArgs (msg, command, rawInput) {
 
   // NOTE: run arguments if collector has at least 1 argument data
   if (collector.args.length > 0) {
-    logger.verbose('running arguments')
+    logger.verbose('processing arguments')
 
     args = await runArguments(
       msg,
@@ -51,7 +53,7 @@ async function runArgs (msg, command, rawInput) {
 
   // NOTE: assign arguments first, then flags
   Object.assign(parsedData, args)
-  Object.assign(parsedData, data.flags)
+  Object.assign(parsedData, flags)
 
   logger.debug('final data: %O', parsedData)
   return parsedData
@@ -148,7 +150,7 @@ async function runArgument (msg, argData, arg) {
     data = await validateType(msg, arg, argData)
   } catch (e) {
     // TODO: hmm
-    e.isFlag = true
+    e.isFlag = false
     throw e
   }
 
@@ -208,12 +210,15 @@ async function runDynamic (msg, command, rawInput) {
   let inputArr = rawInput.slice() // copy
   const iter = command.args(msg)
 
+  let argIdx = 0
+  const previouslyParsedArgs = []
+
   let current = iter.next()
   while (!current.done) {
     // NOTE: handle multiple flags, but only one argument in one time
-    const parsedArgs = {}
+    const parsedData = {}
     let parsedFlags
-    let parsedArguments
+    const parsedArguments = {}
 
     logger.debug('current: %O', current)
     const data = current.value
@@ -228,14 +233,28 @@ async function runDynamic (msg, command, rawInput) {
     // NOTE: run arguments
     if (data.arg && typeof data.arg === 'object') {
       const arg = inputArr.shift()
-      parsedArguments = await runArguments(msg, [data.arg], [arg])
+      // parsedArguments = await runArguments(msg, [data.arg], [arg])
+
+      // NOTE: validate value and handle if mismatch
+      let parsedArg
+      try {
+        parsedArg = await runArgument(msg, data.arg, arg)
+      } catch (e) {
+        e.idx = argIdx
+        e.alreadyParsedArgs = previouslyParsedArgs
+        throw e
+      }
+
+      parsedArguments[data.arg.key] = parsedArg.arg
+      previouslyParsedArgs.push(parsedArg.arg)
+      argIdx++
     }
 
-    Object.assign(parsedArgs, parsedArguments)
-    Object.assign(parsedArgs, parsedFlags)
+    Object.assign(parsedData, parsedArguments)
+    Object.assign(parsedData, parsedFlags)
 
     // Object.assign(finalArgs, parsedArgs)
-    current = iter.next(parsedArgs)
+    current = iter.next(parsedData)
   }
 
   const finalArgs = current.value
