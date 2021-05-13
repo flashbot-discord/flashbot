@@ -30,7 +30,7 @@ const makeUsageStr = (argsArr, previousArgs, cmdName, t) => {
  * @param {boolean} wrap Whether to wrap result with noticement text
  * @returns {string}
  */
-module.exports = (msg, cmd, query, t, ctx, wrap = false) => {
+module.exports = (msg, cmd, query, t, ctx = {}, wrap = false) => {
   /*
    * Usage:
    * //somecmd <necessary arg> [optional arg]
