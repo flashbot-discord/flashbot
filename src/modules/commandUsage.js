@@ -13,8 +13,8 @@ const makeUsageStr = (argsArr, previousArgs, cmdName, t) => {
     const endBracket = arg.optional ? ']' : '>'
     const description = arg.description || t(`commands.${cmdName}.args.${arg.key}.DESC`)
 
-    summary += `${startBracket}${arg.key}${endBracket} `
-    descText += `${startBracket}${arg.key}: ${arg.type}${endBracket} - ${description} ${arg.optional ? t('modules.commandUsage.optional') : ''}\n`
+    summary += `${startBracket}${arg.key}${arg.infinity ? '...' : ''}${endBracket} `
+    descText += `${startBracket}${arg.key}: ${arg.type}${arg.infinity ? '...' : ''}${endBracket} - ${description} ${arg.optional ? t('modules.commandUsage.optional') : ''}\n`
   }
 
   return { summary, descText }
