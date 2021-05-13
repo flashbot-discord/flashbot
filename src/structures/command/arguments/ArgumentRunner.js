@@ -300,6 +300,11 @@ async function validateType (msg, value, argData) {
       } else break
     }
 
+    // NOTE: throw ArgumentError when matched arg is none and not optional
+    if (arr.length < 1) {
+      throw new ArgumentError('No arguments found which has correct type', { argData })
+    }
+
     returnObj.arg = arr
     returnObj.ignoreAfter = true
   } else {
