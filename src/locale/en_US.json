@@ -20,7 +20,8 @@
           "none": "None",
           "owner": "Bot Owner"
         },
-        "aliases": "Aliases"
+        "aliases": "Aliases",
+        "noAlias": "No aliases"
       },
       "firstMsg": "Thank you for using FlashBot! Flashbot is actively being developed to have many features; games, utility tools and more.\n\nCheck out the links below to see the docs and help manuals. (use `{{{prefix}}}{{{cmdcall}}} <command name>` for specific command help)",
       "links": {
