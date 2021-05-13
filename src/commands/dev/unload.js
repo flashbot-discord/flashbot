@@ -17,10 +17,6 @@ class UnloadCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    if (query.args.length < 1) {
-      return msg.reply(Command.makeUsage(this, query.msg, t))
-    }
-
     const input = query.args.command
     const cmd = client.commands.get(input)
     if (!cmd) return msg.reply(t('commands.unload.cannotfind', input))

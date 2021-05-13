@@ -7,28 +7,12 @@ class ReloadCommand extends Command {
       name: 'reload',
       aliases: ['리로드', 'ㄱ디ㅐㅁㅇ', 'flfhem'],
       group: 'dev',
-      owner: true,
-      /*
-      args: {
-        all: {
-          aliases: ['a', '모두'],
-          type: 'boolean',
-          optional: true
-        },
-        _: [
-          {
-            key: 'command',
-            type: 'string',
-            optional: true
-          }
-        ]
-      }
-      */
+      owner: true
     })
   }
 
   * args () {
-    let returnObj = {}
+    const returnObj = {}
 
     const { all, command } = yield {
       flags: {
