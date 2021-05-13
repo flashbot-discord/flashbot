@@ -122,11 +122,11 @@ class Command {
       if (typeof this.args === 'function') this._args.dynamic = true
 
       for (const arg in infos.args) {
-        if (arg === '_') this._args.registerUnnamedArguments(infos.args[arg])
-        else this._args.registerNamedArgument(arg, infos.args[arg])
+        if (arg === '_') this._args.registerArguments(infos.args[arg])
+        else this._args.registerFlag(arg, infos.args[arg])
       }
     } else if (Array.isArray(infos.args) && infos.args.length > 0) {
-      this._args.registerUnnamedArguments(infos.args)
+      this._args.registerArguments(infos.args)
     }
   }
 
@@ -188,7 +188,7 @@ class Command {
       }
     }
 
-    if (!cmd._args.dynamic) makeUsageStr(cmd._args.args.unnamed)
+    if (!cmd._args.dynamic) makeUsageStr(cmd._args.args)
     else {
       if (!argData) {
         argData = cmd.args(msg).next().value.unnamed

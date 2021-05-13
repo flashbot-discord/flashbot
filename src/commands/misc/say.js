@@ -22,9 +22,9 @@ class SayCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    if (query.args.length < 1) return await msg.reply(Command.makeUsage(this, query.cmd, t))
-
     const str = query.args.text
+
+    // TODO: Completely disabling mention feature
 
     // Reset the pattern count
     MessageMentions.EVERYONE_PATTERN.lastIndex = 0

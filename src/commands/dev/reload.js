@@ -1,4 +1,5 @@
 const Command = require('../_Command')
+const makeCommandUsage = require('../../modules/commandUsage')
 
 class ReloadCommand extends Command {
   constructor (client) {
@@ -6,27 +7,39 @@ class ReloadCommand extends Command {
       name: 'reload',
       aliases: ['리로드', 'ㄱ디ㅐㅁㅇ', 'flfhem'],
       group: 'dev',
-      owner: true,
-      args: {
-        all: {
-          aliases: ['a', '모두'],
-          type: 'boolean',
-          optional: true
-        },
-        _: [
-          {
-            key: 'command',
-            type: 'string',
-            optional: true
-          }
-        ]
-      }
+      owner: true
     })
   }
 
-  async run (client, msg, query, { t }) {
-    if (!query.args.all && !query.args.command) return msg.reply(Command.makeUsage(this, query.cmd))
+  * args () {
+    const returnObj = {}
 
+    const { all, command } = yield {
+      flags: {
+        all: {
+          type: 'boolean',
+          aliases: ['a']
+        }
+      },
+      arg: {
+        key: 'command',
+        type: 'string',
+        optional: true
+      }
+    }
+
+    returnObj.all = all
+    returnObj.command = command
+    if (!all) {
+      if (command) returnObj.command = command
+    }
+
+    return returnObj
+  }
+
+  async run (client, msg, query, { t }) {
+    if (!query.args.all && !query.args.command) return msg.reply(makeCommandUsage(msg, this, query, t, null, true))
+    // console.log(query.args)
     if (query.args.all) {
       const list = client.commands.commands.clone()
       const errCmds = []

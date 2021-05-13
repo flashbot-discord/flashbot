@@ -3,20 +3,28 @@ class ArgumentError extends Error {
     super(msg)
 
     /**
-     * whether the arg is named.
+     * whether the data is a flag.
      * @type {string}
      */
-    this.named = Boolean(data.named)
+    this.isFlag = Boolean(data.named)
 
-    if (!this.named) {
-      /**
-       * the index number of arg. Only available for unnamed arg.
-       * @type {number|null}
-       */
-      this.index = typeof data.index === 'number' ? data.index : null
-    }
+    /**
+     * The position of this arg.
+     * Only available for arguments.
+     * @type {number|null}
+     */
+    this.idx = null
 
+    /**
+     * The argument which caused the error.
+     */
     this.argData = data.argData
+
+    /**
+     * Previous argument values before the error.
+     * @type {Array}
+     */
+    this.alreadyParsedArgs = []
   }
 }
 

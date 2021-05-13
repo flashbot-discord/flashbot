@@ -17,7 +17,7 @@ class TestCommand extends Command {
     const returnObj = {}
 
     const { cmd } = yield {
-      unnamed: {
+      arg: {
         key: 'cmd',
         type: 'string',
         optional: false,

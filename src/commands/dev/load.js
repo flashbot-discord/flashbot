@@ -18,8 +18,6 @@ class LoadCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    if (query.args.length < 1) return msg.reply(Command.makeUsage(this, query.cmd, t))
-
     const input = query.args.command
 
     const fullpath = path.join(client.commands.baseCmdPath, input + '.js')

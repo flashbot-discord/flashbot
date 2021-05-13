@@ -20,7 +20,8 @@
           "none": "None",
           "owner": "Bot Owner"
         },
-        "aliases": "Aliases"
+        "aliases": "Aliases",
+        "noAlias": "No aliases"
       },
       "firstMsg": "Thank you for using FlashBot! Flashbot is actively being developed to have many features; games, utility tools and more.\n\nCheck out the links below to see the docs and help manuals. (use `{{{prefix}}}{{{cmdcall}}} <command name>` for specific command help)",
       "links": {
@@ -176,6 +177,9 @@
         "command": {
           "NAME": "command",
           "DESC": "Command to reload"
+        },
+        "undefined": {
+          "DESC": "commands.reload.args.undefined.DESC"
         }
       },
       "DESC": "reloads a command",
@@ -374,6 +378,9 @@
       "args": {
         "mode": {
           "DESC": "Subcommand"
+        },
+        "prefix": {
+          "DESC": "prefix to change"
         }
       }
     },
@@ -670,6 +677,12 @@
         },
         "author": "Written by %1$s"
       }
+    },
+    "commandUsage": {
+      "footer": "<Required> [Optional]",
+      "detailedHelpNotice": "Go to online docs for more information.\n(Use `{{{prefix}}}help` to get the link)",
+      "optional": "(optional)",
+      "usage": "Usage:"
     }
   }
 }

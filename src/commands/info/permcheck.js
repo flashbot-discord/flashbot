@@ -44,7 +44,7 @@ class PermissionCheckCommand extends Command {
 
   * args (msg) {
     const { target } = yield {
-      unnamed: {
+      arg: {
         key: 'target',
         type: 'member',
         optional: true,
@@ -53,7 +53,7 @@ class PermissionCheckCommand extends Command {
     }
 
     const { channel } = yield {
-      unnamed: {
+      arg: {
         key: 'channel',
         type: 'channel',
         optional: true,

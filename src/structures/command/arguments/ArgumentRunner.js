@@ -6,136 +6,176 @@ const _logger = require('../../../modules/logger')('ArgumentRunner')
 
 /**
  * Get raw arguments and run them
- * @param {Message} message The message to run command
+ * @param {import('discord.js').Message} message The message to run command
  * @param {Command} command Command to use args
- * @param {Array<string>} rawArgs Raw argument from user input
+ * @param {Array<string>} rawInput Raw input from user input
  * @returns {*} Runned argument data
  */
-async function runArgs (msg, command, rawArgs) {
+async function runArgs (msg, command, rawInput) {
   const logger = _logger.extend('runArgs')
   const collector = command._args
 
-  const parsedArgs = {}
-  let namedArgs = {}
-  let unnamedArgs = {}
-  let unnamedArgsToRun
+  const parsedData = {}
+  let data
+  let flags = {}
+  let args = {}
+  let argsToRun
 
+  // NOTE: check if command uses dynamic args
   if (collector.dynamic) {
     logger.verbose('is dynamic args')
-    return await runDynamicArgs(msg, command, rawArgs)
+    return await runDynamic(msg, command, rawInput)
   }
 
-  if (Object.keys(collector.args.named).length > 0) {
-    logger.verbose('running named args')
+  // NOTE: process flags first with minimist
+  if (Object.keys(collector.flags).length > 0) {
+    logger.verbose('processing flags')
 
-    namedArgs = await runNamedArgs(msg, collector.args.named, rawArgs)
-    if (namedArgs._) {
-      logger.verbose('unnamed args are included')
-      unnamedArgsToRun = namedArgs._
-      delete namedArgs._
+    data = await runFlags(msg, collector.flags, rawInput)
+    flags = data.flags
+
+    if (data.notParsedArgs) {
+      logger.verbose('arguments are included')
+      argsToRun = data.notParsedArgs
     }
   }
-  if (collector.args.unnamed.length > 0) {
-    logger.verbose('running unnamed args')
 
-    unnamedArgs = await runUnnamedArgs(
+  // NOTE: run arguments if collector has at least 1 argument data
+  if (collector.args.length > 0) {
+    logger.verbose('processing arguments')
+
+    args = await runArguments(
       msg,
-      collector.args.unnamed,
-      Array.isArray(unnamedArgsToRun) ? unnamedArgsToRun : rawArgs
+      collector.args,
+      Array.isArray(argsToRun) ? argsToRun : rawInput
     )
   }
 
-  // NOTE: assign unnamed args first
-  Object.assign(parsedArgs, unnamedArgs)
-  Object.assign(parsedArgs, namedArgs)
+  // NOTE: assign arguments first, then flags
+  Object.assign(parsedData, args)
+  Object.assign(parsedData, flags)
 
-  logger.debug('final args: %O', parsedArgs)
-  return parsedArgs
+  logger.debug('final data: %O', parsedData)
+  return parsedData
 }
 
 /**
- * Run named arguments
- * @param {Array} argsArr Array of named arguments
+ * Run flags
+ * @param {import('discord.js').Message} msg The message which triggered the command
+ * @param {Array} flagDataList
+ * @param {Array} inputArr Array of flags
+ * @param {boolean} stopEarly
  * @private
  */
-async function runNamedArgs (msg, argDataList, argsArr, stopEarly = false) {
-  const logger = _logger.extend('runNamedArgs')
+async function runFlags (msg, flagDataList, inputArr, stopEarly = false) {
+  const logger = _logger.extend('runFlags')
 
-  const booleanTypedArgs = []
-  const stringTypedArgs = []
+  const booleanTypedFlags = []
+  const stringTypedFlags = []
   const aliases = {}
 
-  logger.verbose('parsing named args')
+  logger.verbose('parsing flags')
 
-  for (const argName in argDataList) {
-    const arg = argDataList[argName]
-    logger.debug('arg info: %O', arg)
+  for (const flagName in flagDataList) {
+    const flag = flagDataList[flagName]
+    logger.debug('flag info: %O', flag)
 
-    // Check boolean/string typed args
+    // Check boolean/string typed flags
     // to pass it to minimist
-    if (arg.type === 'boolean') booleanTypedArgs.push(argName)
-    else if (arg.type === 'string') stringTypedArgs.push(argName)
+    if (flag.type === 'boolean') booleanTypedFlags.push(flagName)
+    else if (flag.type === 'string') stringTypedFlags.push(flagName)
 
     // Aliases
-    if (arg.aliases) aliases[argName] = arg.aliases
+    if (flag.aliases) aliases[flagName] = flag.aliases
   }
 
-  // minimist
-  const parsedArgs = minimist(argsArr, {
-    boolean: booleanTypedArgs,
-    string: stringTypedArgs,
+  // parse flags with minimist
+  const parsedFlags = minimist(inputArr, {
+    boolean: booleanTypedFlags,
+    string: stringTypedFlags,
     alias: aliases,
     stopEarly
   })
-  logger.debug('raw minimist output: %O', parsedArgs)
+  logger.debug('raw minimist output: %O', parsedFlags)
 
-  const finalArgs = {}
-
-  // unnamed args inside named args
-  if (parsedArgs._) {
-    logger.verbose('found unnamed args in parsedArgs')
-    finalArgs._ = parsedArgs._
+  const finalData = {
+    flags: {},
+    notParsedArgs: []
   }
 
-  for (const argName in argDataList) {
-    const argData = argDataList[argName]
-    const arg = parsedArgs[argName]
-    logger.debug('using argData: %O', argData)
-    logger.debug('arg value to parse: %O', arg)
+  // NOTE: not parsed datas are arguments
+  if (parsedFlags._) {
+    logger.verbose('found unparsed args from input')
+    finalData.notParsedArgs = parsedFlags._
+    delete parsedFlags._
+  }
+
+  // NOTE: Validate flag value
+  for (const flagName in flagDataList) {
+    const flagData = flagDataList[flagName]
+    const flag = parsedFlags[flagName]
+    logger.debug('using flagData: %O', flagData)
+    logger.debug('flag value to parse: %O', flag)
 
     let data
     try {
-      data = await processArg(msg, arg, argData)
+      data = await validateType(msg, flag, flagData)
     } catch (e) {
-      e.named = true
+      // TODO: hmm
+      e.isFlag = true
       throw e
     }
-    finalArgs[argName] = data.arg
+    finalData.flags[flagName] = data.arg
   }
 
-  logger.debug('final parsed named args: %O', finalArgs)
-  return finalArgs
+  logger.debug('final parsed data: %O', finalData)
+  return finalData
 }
 
 /**
-   * Parses unnamed arguments
-   * @param {Array} argsArr array of unnamed arguments
+ * Parses an argument.
+ * @param {import('discord.js').Message} msg The message which triggerd the command
+ * @param {*} argData argument data
+ * @param {string} arg argument value
+ * @returns {Promise} parsed argument data
+ * @private
+ */
+async function runArgument (msg, argData, arg) {
+  const logger = _logger.extend('runArgument')
+  logger.debug('using argData: %O', argData)
+  logger.debug('using argv: %O', arg)
+
+  let data
+  try {
+    data = await validateType(msg, arg, argData)
+  } catch (e) {
+    // TODO: hmm
+    e.isFlag = false
+    throw e
+  }
+
+  return data
+}
+
+/**
+   * Parse arguments
+   * @param {import('discord.js').Message} msg The message which triggered the command
+   * @param {Array} argDataList list of argument data
+   * @param {Array<string>} argsArr array of arguments
    * @private
    */
-async function runUnnamedArgs (msg, argDataList, argsArr) {
-  const logger = _logger.extend('runUnnamedArgs')
+async function runArguments (msg, argDataList, argsArr) {
+  const logger = _logger.extend('runArguments')
   const parsedArgs = {}
   let ignoreAfter = false
 
-  logger.verbose('parsing unnamed args')
+  logger.verbose('parsing arguments')
   logger.debug('argDataList: %O', argDataList)
   logger.debug('argsArr: %O', argsArr)
 
   let idx = 0
   for (const argData of argDataList) {
     if (ignoreAfter) break
-
-    logger.debug('using argData: %O', argData)
 
     let arg
 
@@ -146,56 +186,75 @@ async function runUnnamedArgs (msg, argDataList, argsArr) {
     } else if (argData.infinity) arg = argsArr.slice(idx)
     else arg = argsArr[idx]
 
-    logger.debug('using argv: %O', arg)
-
     let data
     try {
-      data = await processArg(msg, arg, argData)
+      data = await runArgument(msg, argData, arg)
     } catch (e) {
-      e.named = false
       e.idx = idx
       throw e
     }
+
     if (data != null && data.ignoreAfter) ignoreAfter = true
+
     parsedArgs[argData.key] = data.arg
 
     idx++
   }
 
-  logger.debug('final parsed unnamed args: %O', parsedArgs)
+  logger.debug('final parsed arguments: %O', parsedArgs)
   return parsedArgs
 }
 
-async function runDynamicArgs (msg, command, argsArr) {
-  const logger = _logger.extend('runDynamicArgs')
-  let rawArgs = argsArr.slice() // copy
+async function runDynamic (msg, command, rawInput) {
+  const logger = _logger.extend('runDynamic')
+  let inputArr = rawInput.slice() // copy
   const iter = command.args(msg)
+
+  let argIdx = 0
+  const previouslyParsedArgs = []
 
   let current = iter.next()
   while (!current.done) {
-    // NOTE: handle multiple named args, but only one unnamed arg in one time
-    const parsedArgs = {}
-    let parsedNamedArgs
-    let parsedUnnamedArgs
+    // NOTE: handle multiple flags, but only one argument in one time
+    const parsedData = {}
+    let parsedFlags
+    const parsedArguments = {}
 
     logger.debug('current: %O', current)
     const data = current.value
 
-    if (data.named && typeof data.named === 'object') {
-      parsedNamedArgs = await runNamedArgs(msg, data.named, rawArgs, true)
-      rawArgs = parsedNamedArgs._
+    // NOTE: run flags first
+    if (data.flags && typeof data.flags === 'object') {
+      const parsedData = await runFlags(msg, data.flags, inputArr, true)
+      parsedFlags = parsedData.flags
+      inputArr = parsedData.notParsedArgs
     }
 
-    if (data.unnamed && typeof data.unnamed === 'object') {
-      const arg = rawArgs.shift()
-      parsedUnnamedArgs = await runUnnamedArgs(msg, [data.unnamed], [arg])
+    // NOTE: run arguments
+    if (data.arg && typeof data.arg === 'object') {
+      const arg = inputArr.shift()
+      // parsedArguments = await runArguments(msg, [data.arg], [arg])
+
+      // NOTE: validate value and handle if mismatch
+      let parsedArg
+      try {
+        parsedArg = await runArgument(msg, data.arg, arg)
+      } catch (e) {
+        e.idx = argIdx
+        e.alreadyParsedArgs = previouslyParsedArgs
+        throw e
+      }
+
+      parsedArguments[data.arg.key] = parsedArg.arg
+      previouslyParsedArgs.push(parsedArg.arg)
+      argIdx++
     }
 
-    Object.assign(parsedArgs, parsedUnnamedArgs)
-    Object.assign(parsedArgs, parsedNamedArgs)
+    Object.assign(parsedData, parsedArguments)
+    Object.assign(parsedData, parsedFlags)
 
     // Object.assign(finalArgs, parsedArgs)
-    current = iter.next(parsedArgs)
+    current = iter.next(parsedData)
   }
 
   const finalArgs = current.value
@@ -206,18 +265,18 @@ async function runDynamicArgs (msg, command, argsArr) {
 
 /**
    * Validates arg value with the type
-   * @param {string|Array<string>} arg The argument value, array of string if infinity arguments
-   * @param {string} type type of the argument
+   * @param {string|Array<string>} value The flag value or argument value, array of string if infinity arguments
+   * @param {Object} argData The data of the argument
    * @private
    */
-async function processArg (msg, arg, argData) {
-  const logger = _logger.extend('processArg')
+async function validateType (msg, value, argData) {
+  const logger = _logger.extend('validateType')
 
-  // NOTE: check if arg is empty
-  if (arg == null) {
-    logger.debug('argument is empty')
+  // NOTE: check if value is empty
+  if (value == null) {
+    logger.debug('value is empty')
     if (!argData.optional) {
-      throw new ArgumentError('non-optional argument is missing', { argData })
+      throw new ArgumentError('non-optional flag/argument is missing', { argData })
     }
   }
 
@@ -230,7 +289,7 @@ async function processArg (msg, arg, argData) {
   // NOTE: handle infinity args (and not text)
   if (argData.infinity && argData.type !== 'text') {
     logger.verbose('processing infinity args')
-    const args = arg.slice() // clone
+    const args = value.slice() // clone
     const arr = []
     for (const a of args) {
       usedType = await validateValue(msg, a, argData.type)
@@ -241,13 +300,18 @@ async function processArg (msg, arg, argData) {
       } else break
     }
 
+    // NOTE: throw ArgumentError when matched arg is none and not optional
+    if (arr.length < 1) {
+      throw new ArgumentError('No arguments found which has correct type', { argData })
+    }
+
     returnObj.arg = arr
     returnObj.ignoreAfter = true
   } else {
     // NOTE: handle normal args
     logger.verbose('processing non-infinity args')
 
-    usedType = await validateValue(msg, arg, argData.type)
+    usedType = await validateValue(msg, value, argData.type)
     logger.debug('usedType: %O', usedType)
 
     // NOTE: throw Error if type mismatch
@@ -258,7 +322,7 @@ async function processArg (msg, arg, argData) {
     }
 
     if (usedType) {
-      const parsedValue = await types[usedType].parse(msg, arg)
+      const parsedValue = await types[usedType].parse(msg, value)
       returnObj.arg = argData.optional
         ? parsedValue != null
           ? parsedValue

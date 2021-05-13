@@ -24,7 +24,7 @@ class LocaleCommand extends Command {
     const returnObj = {}
 
     const { mode } = yield {
-      unnamed: {
+      arg: {
         key: 'mode',
         type: 'string',
         optional: true
@@ -41,19 +41,25 @@ class LocaleCommand extends Command {
       case '설정': {
         returnObj.mode = 'set'
         const { locale, guild } = yield {
-          named: {
+          flags: {
             guild: {
-              type: 'boolean'
+              type: 'boolean',
+              aliases: ['g']
             }
           },
-          unnamed: {
+          arg: {
             key: 'locale',
             type: 'string'
           }
         }
         returnObj.locale = locale
         returnObj.guild = guild
+
+        break
       }
+
+      default:
+        returnObj.mode = null
     }
 
     return returnObj
@@ -85,6 +91,8 @@ class LocaleCommand extends Command {
             editPerms.forEach((p) => translatedPerms.push(t('perms.' + p)))
             return msg.channel.send(t('commands.locale.noPermission', translatedPerms.join('`, `')))
           }
+
+          // FIXME: guild registration check (manually)
 
           guildMode = true
           id = msg.guild.id
