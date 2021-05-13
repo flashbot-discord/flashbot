@@ -43,7 +43,8 @@ class LocaleCommand extends Command {
         const { locale, guild } = yield {
           flags: {
             guild: {
-              type: 'boolean'
+              type: 'boolean',
+              aliases: ['g']
             }
           },
           arg: {
@@ -90,6 +91,8 @@ class LocaleCommand extends Command {
             editPerms.forEach((p) => translatedPerms.push(t('perms.' + p)))
             return msg.channel.send(t('commands.locale.noPermission', translatedPerms.join('`, `')))
           }
+
+          // FIXME: guild registration check (manually)
 
           guildMode = true
           id = msg.guild.id
