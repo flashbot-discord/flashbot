@@ -377,6 +377,9 @@
       "args": {
         "mode": {
           "DESC": "Subcommand"
+        },
+        "prefix": {
+          "DESC": "prefix to change"
         }
       }
     },
