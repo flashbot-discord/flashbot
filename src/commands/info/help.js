@@ -17,32 +17,17 @@ class HelpCommand extends Command {
       name: 'help',
       aliases: ['도움', '도움말', 'ㅗ디ㅔ', 'ehdna', 'ehdnaakf'],
       group: 'info',
-      args: {
-        dm: {
-          aliases: ['d', '디엠'],
-          type: 'boolean',
+      args: [
+        {
+          key: 'command',
+          type: 'string',
           optional: true
-        },
-        'no-page': {
-          aliases: ['n', 'nopage', '페이지끄기', '노페이지', '페이지안씀'],
-          type: 'boolean',
-          optional: true
-        },
-
-        _: [
-          {
-            key: 'command',
-            type: 'string',
-            optional: true
-          }
-        ]
-      }
+        }
+      ]
     })
   }
 
   async run (client, msg, query, { t }) {
-    // is DM
-    // const dm = !msg.guild || query.args.dm
     const useEmbed = !query.args['no-embed'] && msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
     if (!query.args.command) {
