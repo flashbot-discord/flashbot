@@ -160,52 +160,6 @@ class Command {
     return await msg.reply(cmd._client.locale.t('Command.pleaseRegister.guild', locale, cmd._client.config.prefix))
   }
 
-  static makeUsage (msg, cmd, query, t, argData = null) {
-    /*
-     * Usage:
-     * //somecmd <necessary arg> [optional arg]
-     *
-     * `arg1` - <type> some arg desc
-     * `arg2` - <type> some another arg desc (optional)
-     *
-     * <Required> [Optional]
-     *
-     * Go to online docs for more information.
-     * (Use `//help` to get the link)
-     */
-    // Don't show named args (flags) here.
-    let str1 = ''
-    let str2 = ''
-
-    const makeUsageStr = (argsArr) => {
-      for (const arg of argsArr) {
-        const startBracket = arg.optional ? '[' : '<'
-        const endBracket = arg.optional ? ']' : '>'
-        const description = arg.description || t(`commands.${cmd._name}.args.${arg.key}.DESC`)
-
-        str1 += `${startBracket}${arg.key}${endBracket} `
-        str2 += `${startBracket}${arg.key}: ${arg.type}${endBracket} - ${description} ${arg.optional ? t('Command.makeUsage.optional') : ''}\n`
-      }
-    }
-
-    if (!cmd._args.dynamic) makeUsageStr(cmd._args.args)
-    else {
-      if (!argData) {
-        argData = cmd.args(msg).next().value.unnamed
-      }
-
-      if (argData) makeUsageStr([argData])
-      str1 += '......'
-    }
-
-    return (
-`${query.prefix}${query.cmd} ${str1}
-
-${str2}
-${t('Command.makeUsage.footer')}
-${t('Command.makeUsage.detailedHelpNotice', { prefix: query.prefix })}`)
-  }
-
   _translateDesc (t) {
     return this._descNeedsTranslate ? t(this._desc) : this._desc
   }
