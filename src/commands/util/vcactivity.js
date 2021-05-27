@@ -2,6 +2,20 @@ const fetch = require('node-fetch')
 
 const Command = require('../_Command')
 
+const ALIASES = {
+  youtube: 'youtube',
+  yt: 'youtube',
+  '유튜브': 'youtube',
+
+  betrayal: 'betrayal',
+  
+  fishington: 'fishington',
+  fish: 'fishington',
+
+  pokernight: 'pokernight',
+  poker: 'pokernight'
+}
+
 const APP = {
   youtube: {
     name: 'Youtube Together',
@@ -14,6 +28,10 @@ const APP = {
   fishington: {
     name: 'Fishington.io',
     id: '814288819477020702'
+  },
+  pokernight: {
+    name: 'Poker Night',
+    id: '755827207812677713'
   }
 }
 
