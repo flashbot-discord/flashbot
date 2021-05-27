@@ -11,9 +11,11 @@ const ALIASES = {
   
   fishington: 'fishington',
   fish: 'fishington',
+  '낚시': 'fishington',
 
   pokernight: 'pokernight',
-  poker: 'pokernight'
+  poker: 'pokernight',
+  '포커': 'pokernight'
 }
 
 const APP = {
@@ -39,7 +41,7 @@ class VoiceActivityCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'vcactivity',
-      aliases: ['vcact', '음챗액티비티', 'ㅍㅊㅁㅊㅅ', 'ㅍㅊㅁㅊ샤퍄쇼', 'dmacotdorxlqlxl'],
+      aliases: ['vcact', '음챗액티비티', '음성챗액티비티', '음성채팅액티비티', 'ㅍㅊㅁㅊㅅ', 'ㅍㅊㅁㅊ샤퍄쇼', 'dmacotdorxlqlxl', 'dmatjdcotdlrxlqlxl', 'dmatjdcoxlddorxlqlxl'],
       group: 'util',
       args: [
         {
@@ -61,7 +63,7 @@ class VoiceActivityCommand extends Command {
 
     if (!vc.permissionsFor(client.user).has('CREATE_INSTANT_INVITE')) return msg.reply(t('commands.vcactivity.noPerms'))
 
-    const app = APP[query.args.activity]
+    const app = APP[ALIASES[query.args.activity]]
     if (!app) return
 
     // NOTE: raw request; can be broken on api breaking changes
