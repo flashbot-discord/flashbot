@@ -39,7 +39,7 @@ class ReloadCommand extends Command {
 
   async run (client, msg, query, { t }) {
     if (!query.args.all && !query.args.command) return msg.reply(makeCommandUsage(msg, this, query, t, null, true))
-    // console.log(query.args)
+
     if (query.args.all) {
       const list = client.commands.commands.clone()
       const errCmds = []
