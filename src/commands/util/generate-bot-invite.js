@@ -24,13 +24,7 @@ class GenerateBotInviteCommand extends Command {
 
     if (!query.args.bot) return msg.reply(t('commands.generate-bot-invite.noArgs'))
 
-    if (msg.mentions.users.size > 0) {
-      const pending = msg.mentions.users.first()
-      if (!pending.bot) return msg.reply(t('commands.generate-bot-invite.userProvided'))
-      else id = pending.id
-    } else id = query.args.bot
-
-    const url = `https://discord.com/oauth2/authorize?client_id=${id}&permissions=2147483647&scope=bot`
+    const url = `https://discord.com/oauth2/authorize?client_id=${query.args.bot.id}&permissions=2147483647&scope=bot`
     msg.channel.send(url)
   }
 }
