@@ -38,8 +38,7 @@ class UserInfoCommand extends Command {
       ['offline', t('commands.userinfo.statusList.offline')]
     ])
     const status = statusTxt.get(user.presence.status)
-    const clientStatus = this.getClientStat(user.presence.clientStatus, t)
-
+    const clientStatus = user.presence.status !== 'offline' ? this.getClientStat(user.presence.clientStatus, t) : ['N/A']
     const createdAt = moment(user.createdAt).tz('Asia/Seoul').format(t('commands.userinfo.createdDate'))
 
     if (useEmbed) {
@@ -74,9 +73,6 @@ class UserInfoCommand extends Command {
   }
 
   getClientStat (clientStat, t) {
-    // TODO: i18n
-    if (clientStat == null) return ['null']
-
     const text = Object.keys(clientStat).map((el) => t('commands.userinfo.clientStatus.' + el)) || t('commands.userinfo.clientOffline')
     return text
   }
