@@ -8,15 +8,11 @@ async function onMessage (client, msg) {
   if (msg.author.bot || !msg.content) return
 
   logger.verbose('checking prefix')
-  let calledByMention = false
-  let prefix = await checkPrefix(msg)
+  const { prefix, mentionPrefix } = await checkPrefix(msg)
+
   if (typeof prefix !== 'string' && !prefix) return
-  else if (prefix === true) {
-    // TODO change this to default prefix
-    prefix = `<@${client.user.id}>`
-    calledByMention = true
-  }
-  logger.debug(`calledByMention = ${String(calledByMention)}`)
+
+  logger.debug(`calledByMention = ${String(mentionPrefix)}`)
   logger.debug(`prefix = ${prefix}`)
 
   // Log
@@ -25,9 +21,9 @@ async function onMessage (client, msg) {
   else logString = `DM ${msg.channel.recipient.tag} > ${msg.author.tag} > ${msg.content}`
   logger.chat(logString)
 
-  const query = new MsgQuery(msg.content, prefix, calledByMention)
-  query.calledByMention = calledByMention
-  if (calledByMention && query.cmd.length < 1) query.cmd = 'hello' // HelloCommand
+  const query = new MsgQuery(msg.content, prefix, mentionPrefix)
+  query.calledByMention = mentionPrefix
+  if (mentionPrefix && query.cmd.length < 1) query.cmd = 'hello' // HelloCommand
   logger.debug('query = %O', query)
 
   const cmd = client.commands.get(query.cmd)
@@ -39,19 +35,40 @@ async function onMessage (client, msg) {
 
 async function checkPrefix (msg) {
   const client = msg.client
-  if (msg.content.trim().startsWith(`<@${client.user.id}>`)) return true
+  const mentionRegex = /^(<@!?\d{17,19}>)/
+
+  // mention prefix
+  const mentionPrefixData = mentionRegex.exec(msg.content)
+  if (mentionPrefixData) {
+    return {
+      prefix: mentionPrefixData[1],
+      mentionPrefix: true
+    }
+  }
+
+  // DM channel
+  if (!msg.guild) {
+    return {
+      prefix: '',
+      mentionPrefix: false
+    }
+  }
 
   let prefix
   try {
-    prefix = await getPrefix(client, msg.guild ? msg.guild.id : null)
+    prefix = await getPrefix(client, msg.guild.id)
   } catch (err) {
     const e = new ClientError(err)
     e.report()
   }
 
-  if (!msg.guild && prefix.length < 1) return prefix
-  else if (msg.content.startsWith(prefix)) return prefix
-  else return false
+  if (msg.content.startsWith(prefix)) {
+    return {
+      prefix,
+      mentionPrefix: false
+    }
+  }
+  else return {}
 }
 
 module.exports = onMessage
