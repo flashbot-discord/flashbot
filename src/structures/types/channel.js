@@ -1,5 +1,5 @@
 const regexId = /^\d{17,19}$/
-const regexMention = /^<#\d{17,19}>$/
+const regexMention = /^<#(\d{17,19})>$/
 
 module.exports = {
   type: 'channel',
