@@ -371,7 +371,6 @@
         "pleaseEnterPrefix": "Please type `%1$sprefix set <new prefix>` to change this server's bot prefix.",
         "complete": "This server's bot prefix has been changed to `%1$s`.",
         "tooLong": "Bot prefix cannot be long than 11 characters.",
-        "everyoneNotAllowed": "You cannot set prefix to `@everyone` or `@here`!",
         "noPerms": "You need to have `Manage Server` permission to set the server prefix."
       },
       "DESC": "See or set the bot's prefix on the server.",

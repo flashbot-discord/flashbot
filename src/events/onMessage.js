@@ -68,7 +68,9 @@ async function checkPrefix (msg) {
       mentionPrefix: false
     }
   }
-  else return {}
+
+  // not match
+  return {}
 }
 
 module.exports = onMessage
