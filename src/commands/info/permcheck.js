@@ -6,25 +6,25 @@ const permList = new Collection([
   ['ADMINISTRATOR', { channelType: null }],
   ['VIEW_AUDIT_LOG', { channelType: null }],
   ['MANAGE_GUILD', { channelType: null }],
-  ['MANAGE_ROLES', { channelType: 'all' }],
-  ['MANAGE_CHANNELS', { channelType: 'all' }],
+  ['MANAGE_ROLES', { channelType: 'all', dm: false }],
+  ['MANAGE_CHANNELS', { channelType: 'all', dm: true }],
   ['KICK_MEMBERS', { channelType: null }],
   ['BAN_MEMBERS', { channelType: null }],
-  ['CREATE_INSTANT_INVITE', { channelType: 'all' }],
+  ['CREATE_INSTANT_INVITE', { channelType: 'all', dm: false }],
   ['CHANGE_NICKNAME', { channelType: null }],
   ['MANAGE_NICKNAMES', { channelType: null }],
   ['MANAGE_EMOJIS', { channelType: null }],
-  ['MANAGE_WEBHOOKS', { channelType: 'text' }],
-  ['VIEW_CHANNEL', { channelType: 'all' }],
-  ['SEND_MESSAGES', { channelType: 'text' }],
-  ['SEND_TTS_MESSAGES', { channelType: 'text' }],
-  ['MANAGE_MESSAGES', { channelType: 'text' }],
-  ['EMBED_LINKS', { channelType: 'text' }],
-  ['ATTACH_FILES', { channelType: 'text' }],
-  ['READ_MESSAGE_HISTORY', { channelType: 'text' }],
-  ['MENTION_EVERYONE', { channelType: 'text' }],
-  ['USE_EXTERNAL_EMOJIS', { channelType: 'text' }],
-  ['ADD_REACTIONS', { channelType: 'text' }],
+  ['MANAGE_WEBHOOKS', { channelType: 'text', dm: false }],
+  ['VIEW_CHANNEL', { channelType: 'all', dm: true }],
+  ['SEND_MESSAGES', { channelType: 'text', dm: true }],
+  ['SEND_TTS_MESSAGES', { channelType: 'text', dm: false }],
+  ['MANAGE_MESSAGES', { channelType: 'text', dm: false }],
+  ['EMBED_LINKS', { channelType: 'text', dm: true }],
+  ['ATTACH_FILES', { channelType: 'text', dm: true }],
+  ['READ_MESSAGE_HISTORY', { channelType: 'text', dm: true }],
+  ['MENTION_EVERYONE', { channelType: 'text', dm: true }],
+  ['USE_EXTERNAL_EMOJIS', { channelType: 'text', dm: true }],
+  ['ADD_REACTIONS', { channelType: 'text', dm: true }],
   ['CONNECT', { channelType: 'voice' }],
   ['SPEAK', { channelType: 'voice' }],
   ['MUTE_MEMBERS', { channelType: 'voice' }],
@@ -38,7 +38,8 @@ class PermissionCheckCommand extends Command {
     super(client, {
       name: 'permcheck',
       aliases: ['perm', 'perms', 'permission', 'permissions', '권한확인', '권한', 'ㅔㄷ그촏차', 'ㅔㄷ그', 'ㅔㄷ근', 'ㅔㄷ그ㅑㄴ냐ㅐㅜ', 'ㅔㄷ그ㅑㄴ냐ㅐㅜㄴ', 'rnjsgksghkrdls', 'rnjsgks'],
-      group: 'info'
+      group: 'info',
+      guildOnly: true
     })
   }
 
@@ -65,12 +66,12 @@ class PermissionCheckCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    const useEmbed = msg.channel.type === 'dm' || msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
 
     const targetUser = query.args.target
     const targetChannel = query.args.channel
     const serverPerms = targetUser.permissions
-    const channelPerms = targetChannel.permissionsFor(targetUser)
+    const channelPerms = msg.channel.type !== 'dm' ? targetChannel.permissionsFor(targetUser) : null
 
     let output
     if (useEmbed) {
