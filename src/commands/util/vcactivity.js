@@ -1,5 +1,3 @@
-const fetch = require('node-fetch')
-
 const Command = require('../_Command')
 
 const ALIASES = {
