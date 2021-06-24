@@ -35,7 +35,7 @@ async function onMessage (client, msg) {
 
 async function checkPrefix (msg) {
   const client = msg.client
-  const mentionRegex = /^(<@!?\d{17,19}>)/
+  const mentionRegex = new RegExp(`^(<@!?${client.user.id}>)`)
 
   // mention prefix
   const mentionPrefixData = mentionRegex.exec(msg.content)
