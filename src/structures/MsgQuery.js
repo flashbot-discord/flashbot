@@ -20,6 +20,8 @@ function splitDoubleQuotes (args = []) {
   args.forEach((arg) => {
     if (arg.startsWith('"')) return queue.push(arg)
     else if (arg.endsWith('"') && !arg.endsWith('\\"')) {
+      if (queue.length < 1) return newArgs.push(arg)
+
       queue.push(arg)
       newArgs.push(queue.join(' ').slice(1, -1))
       queue.length = 0
