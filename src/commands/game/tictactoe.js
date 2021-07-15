@@ -9,7 +9,7 @@ const { canSendEmbed } = require('../../components/permissions/checker')
 const _logger = require('../../shared/logger')('cmd:tictactoe')
 
 // for test
-const PLAY_MYSELF = true
+const PLAY_MYSELF = false
 
 class TicTacToeCommand extends Command {
   constructor (client) {
@@ -53,7 +53,7 @@ class TicTacToeCommand extends Command {
         const collected = await botMsg.awaitReactions((reaction, user) => {
           if (user.bot) return false
           else {
-            if (reaction.emoji.name === '✅' && (PLAY_MYSELF ? user.id === msg.author.id : user.id !== msg.author.id)) action = 'start'
+            if (reaction.emoji.name === '✅' && (PLAY_MYSELF || user.id !== msg.author.id)) action = 'start'
             else if (reaction.emoji.name === '❌' && user.id === msg.author.id) action = 'cancel'
             else return false
 
