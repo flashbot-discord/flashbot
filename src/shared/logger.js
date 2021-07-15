@@ -41,7 +41,7 @@ const myFormat = printf(({
 }) => {
   const _level = stripColor(level)
   const colorizer = colors[_level]
-  return `${chalk.grey(`[${timestamp}]`)} ${_level === 'chat' ? '' : `[${label}] `}${level} | ${colorizer(message)} ${chalk.magentaBright(ms)}`
+  return `${chalk.grey(`[${timestamp}]`)} ${_level === 'chat' ? '' : `[${label}] `}${level} ${colorizer(message)} ${chalk.magentaBright(ms)}`
 })
 
 const myCustomLevels = {
