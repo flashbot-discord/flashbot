@@ -345,13 +345,13 @@
         "categoryNotExist": "Cannot find that category.",
         "noDataInCategory": "There is no data in this category."
       },
-      "start": "Type below sentence **correctly**! (Time limit: 1 minute)```\n%1$s\n```Category: %2$s (`%3$s`)\nThis data is from: %4$s",
+      "start": "Type below sentence **correctly**! (Time limit: 1 minute)\nCategory: %2$s (`%3$s`)```\n%1$s\n```",
       "loading": "Loading typing data... (This job will run only first time, so please wait a bit)",
       "loaded": "Typing data loaded!",
       "finish": "The typing game ended because no one entered the correct sentence.",
       "notMatch": "The sentence you entered does not match.",
       "doNotCopyPaste": "Do not copy/paste.",
-      "correct": "You've entered correctly! (%1$s second(s), %2$s character(s)/min)",
+      "correct": "You've entered correctly! (%1$s seconds, %2$s characters/min)",
       "alreadyPlaying": "The typing game is already playing in this channel.",
       "notPlaying": "The typing game is not playing in this channel.",
       "cmdStop": "Stopped the typing game.",
@@ -424,12 +424,6 @@
       "gameCancelled": "Cancelled tic-tac-toe game.",
       "game": {
         "title": "Tic-Tac-Toe",
-        "description": {
-          "playing": "%1$s's turn",
-          "win": "%1$s won!",
-          "content": "%1$s :x:\n%2$s :o:",
-          "draw": "Tie!"
-        },
         "timeOut": "Input time exceeded, so %1$s won the tic-tac-toe game!",
         "win": "%1$s won the tic-tac-toe game!",
         "draw": "The tic-tac-toe game ended in a draw!"
@@ -548,6 +542,9 @@
       "noPerms": "The bot needs `Create Invite` permission to create links to play activity.",
       "needToJoinVC": "Please enter a voice channel and rerun this command. (or pass the voice channel id after the activity name)",
       "DESC": "Play activities in voice channel!"
+    },
+    "title": {
+      "description": "commands.title.description"
     }
   },
   "CommandHandler": {
@@ -578,6 +575,12 @@
       "typeMismatch": {
         "multipleArgs": "%1$s` or `%2$s"
       }
+    },
+    "usage": {
+      "footer": "<Required> [Optional]",
+      "detailedHelpNotice": "Go to online docs for more information.\n(Use `{{{prefix}}}help` to get the link)",
+      "optional": "(optional)",
+      "usage": "Usage:"
     }
   },
   "error": {
@@ -666,8 +669,17 @@
       "description": "Must have a verified phone on their Discord account."
     }
   },
-  "modules": {
-    "sendNotice": {
+  "components": {
+    "game": {
+      "tictactoe": {
+        "panel": {
+          "playing": "%1$s's turn",
+          "win": "%1$s won!",
+          "draw": "Tie!"
+        }
+      }
+    },
+    "notice": {
       "embed": {
         "title": "FlashBot announcement",
         "whyNoticeSentHere": {
@@ -676,12 +688,6 @@
         },
         "author": "Written by %1$s"
       }
-    },
-    "commandUsage": {
-      "footer": "<Required> [Optional]",
-      "detailedHelpNotice": "Go to online docs for more information.\n(Use `{{{prefix}}}help` to get the link)",
-      "optional": "(optional)",
-      "usage": "Usage:"
     }
   }
 }

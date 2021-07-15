@@ -10,9 +10,9 @@ function init (client) {
   isReady = true
 }
 
-function prepareGame (client, channelid) {
+function createSession (client, channelid) {
   if (!isReady) init(client)
-  sessions.set(channelid, 'preparing')
+  sessions.set(channelid, {})
 }
 
 function startGame (channelid, collector) {
@@ -25,9 +25,10 @@ function startGame (channelid, collector) {
     collector
   })
 }
-const endGame = (channelid) => sessions.delete(channelid)
 
-const isGamePlaying = (channelid) => sessions.has(channelid)
+const isSessionExist = (channelid) => sessions.has(channelid)
+const destroySession = (channelid) => sessions.delete(channelid)
+
 const getSession = (channelid) => sessions.get(channelid)
 
 function mark (channelid, player, position) {
@@ -51,11 +52,11 @@ function mark (channelid, player, position) {
 
   // Check winning conditions
   let win = checkWin(session.board)
-  if (isVaildPlayer(win)) endGame(channelid)
+  if (isVaildPlayer(win)) destroySession(channelid)
   else if (session.board.every(isVaildPlayer)) {
     // Tie
     win = -1
-    endGame(channelid)
+    destroySession(channelid)
   }
 
   return makeResultObj(true, {
@@ -76,7 +77,8 @@ function isVaildPlayer (player) {
  * @private
  */
 function makeResultObj (success, data) {
-  return { success, data }
+  if (success) return { success, data }
+  else return { success, reason: data }
 }
 
 /**
@@ -104,10 +106,10 @@ function checkWin (session) {
 }
 
 module.exports = {
-  prepareGame,
+  createSession,
   startGame,
-  endGame,
-  isGamePlaying,
+  destroySession,
+  isSessionExist,
   getSession,
   mark
 }

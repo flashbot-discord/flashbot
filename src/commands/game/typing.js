@@ -3,9 +3,7 @@ const { MessageCollector } = require('discord.js')
 const hangul = require('hangul-js')
 
 const Command = require('../_Command')
-const typingModule = require('../../modules/typing')
-
-// TODO change name to 'fasttype'
+const typing = require('../../components/game/typing/game')
 
 class TypingGameCommand extends Command {
   constructor (client) {
@@ -101,7 +99,6 @@ class TypingGameCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    // TODO args support
     switch (query.args.cmd) {
       case 'reload':
         if (!client.config.owner.includes(msg.author.id)) return msg.reply(t('commands.typing.error.noPermissionToReload'))
@@ -110,20 +107,20 @@ class TypingGameCommand extends Command {
 
       case 'start': {
         // Check if the data is loaded
-        if (!typingModule.isLoaded()) {
+        if (!typing.isLoaded()) {
           msg.channel.send(t('commands.typing.loading'))
-          if (typingModule.isLoading()) return
+          if (typing.isLoading()) return
           this.loadData(msg, t)
         }
 
         // Stop when session is present
-        if (typingModule.isPlaying(msg.channel.id)) return msg.channel.send(t('commands.typing.alreadyPlaying'))
+        if (typing.isPlaying(msg.channel.id)) return msg.channel.send(t('commands.typing.alreadyPlaying'))
 
         // Choose Language
         let lang = this.default
         if (query.args.lang) {
           const langInput = query.args.lang
-          if (typingModule.isLocaleExist(langInput)) lang = typingModule.getBaseLocale(langInput)
+          if (typing.isLocaleExist(langInput)) lang = typing.getBaseLocale(langInput)
           else return msg.reply(t('commands.typing.error.langNotExist'))
         }
 
@@ -131,25 +128,26 @@ class TypingGameCommand extends Command {
         let category
         if (query.args.category) {
           const categoryInput = query.args.category
-          if (!typingModule.isCategoryExist(lang, categoryInput)) return msg.reply(t('commands.typing.error.categoryNotExist'))
+          if (!typing.isCategoryExist(lang, categoryInput)) return msg.reply(t('commands.typing.error.categoryNotExist'))
           else category = categoryInput
         } else category = null
 
         // Check data
-        const data = typingModule.getData(lang, category)
+        const data = typing.getData(lang, category)
         if (data == null) return msg.reply(t('commands.typing.error.noDataInCategory'))
 
         const categoryData = data.category
-        const copyright = data.from ? data.from : (categoryData.fromDefault ? categoryData.fromDefault : t('commands.typing.noCopyright'))
 
-        const { text } = data
+        let { text } = data
+        console.log(data)
+        if (data.from) text += ` - ${data.from}`
         const displayText = text.split('').join('\u200b')
 
         // Make collector and register first to prevent multiple run
         const mc = msg.channel.createMessageCollector((m) => !m.author.bot, { time: 60000 })
-        typingModule.startGame(msg.channel.id, mc)
+        typing.startGame(msg.channel.id, mc)
 
-        await msg.channel.send(t('commands.typing.start', displayText, categoryData.name, categoryData.id, copyright))
+        await msg.channel.send(t('commands.typing.start', displayText, categoryData.name, categoryData.id))
 
         // Timer start
         const startTime = Date.now()
@@ -170,7 +168,7 @@ class TypingGameCommand extends Command {
           else if (reason !== 'correct') msg.channel.send(t('commands.typing.finish'))
 
           // remove channel from session storage
-          typingModule.endGame(msg.channel.id)
+          typing.endGame(msg.channel.id)
         })
 
         break
@@ -181,26 +179,26 @@ class TypingGameCommand extends Command {
         break
 
       case 'category':
-        console.log(query.rawArgs)
-        if (!query.rawArgs[1]) return msg.reply(t('commands.typing.emptyCategorySearchQuery', query.prefix))
+        // TODO: display category default copyright here
+        if (query.args.searchQuery.length < 1) return msg.reply(t('commands.typing.emptyCategorySearchQuery', query.prefix))
         else return msg.reply('WIP')
     }
   }
 
   stop (msg, t) {
-    if (!typingModule.isPlaying(msg.channel.id)) return msg.channel.send(t('commands.typing.notPlaying'))
+    if (!typing.isPlaying(msg.channel.id)) return msg.channel.send(t('commands.typing.notPlaying'))
 
-    const session = typingModule.getSession(msg.channel.id)
+    const session = typing.getSession(msg.channel.id)
     if (session instanceof MessageCollector) {
       session.stop('stopcmd')
-      typingModule.endGame(msg.channel.id)
+      typing.endGame(msg.channel.id)
     }
   }
 
   loadData (msg, t) {
-    if (!typingModule.isReady()) typingModule.init(msg.client)
+    if (!typing.isReady()) typing.init(msg.client)
 
-    const result = typingModule.loadData(this.path)
+    const result = typing.loadData(this.path)
 
     if (!result.success) {
       // TODO Only report this to console and support server error log channel

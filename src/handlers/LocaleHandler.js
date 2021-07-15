@@ -3,7 +3,7 @@ const { I18n } = require('i18n')
 
 const database = require('../database')
 
-const loggerGen = require('../modules/logger')
+const loggerGen = require('../shared/logger')
 const logger = loggerGen('LocaleHandler')
 const loggeri18n = loggerGen('i18n')
 

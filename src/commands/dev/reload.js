@@ -1,5 +1,5 @@
 const Command = require('../_Command')
-const makeCommandUsage = require('../../modules/commandUsage')
+const makeCommandUsage = require('../../structures/command/usage')
 
 class ReloadCommand extends Command {
   constructor (client) {

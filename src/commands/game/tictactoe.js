@@ -1,10 +1,15 @@
 const { MessageEmbed } = require('discord.js')
+
 const Command = require('../_Command')
-const tictactoeModule = require('../../modules/tictactoe')
+const tictactoe = require('../../components/game/tictactoe/game')
+const { modifyPanel } = require('../../components/game/tictactoe/panel')
 const ClientError = require('../../structures/ClientError')
+const { canSendEmbed } = require('../../components/permissions/checker')
+
+const _logger = require('../../shared/logger')('cmd:tictactoe')
 
 // for test
-const PLAY_MYSELF = false
+const PLAY_MYSELF = true
 
 class TicTacToeCommand extends Command {
   constructor (client) {
@@ -27,11 +32,14 @@ class TicTacToeCommand extends Command {
       case 'start':
       case 'tlwkr':
       case 'ㄴㅅㅁㄱㅅ': {
+        const logger = _logger.extend('start')
+
         // Prevent multiple games in one channel
-        if (tictactoeModule.isGamePlaying(msg.channel.id)) return msg.channel.send(t('commands.tictactoe.alreadyPlaying'))
+        if (tictactoe.isSessionExist(msg.channel.id)) return msg.channel.send(t('commands.tictactoe.alreadyPlaying'))
 
         // Start game session
-        tictactoeModule.prepareGame(client, msg.channel.id)
+        logger.verbose(`creating session for channel ${msg.channel.id}`)
+        tictactoe.createSession(client, msg.channel.id)
 
         // Wait for game
         const botMsg = await msg.channel.send(t('commands.tictactoe.waiting', msg.author.id))
@@ -53,32 +61,43 @@ class TicTacToeCommand extends Command {
           }
         }, { max: 1, time: 20000 })
 
-        // Cancel process
-        if (collected.size < 1) {
-          tictactoeModule.endGame(msg.channel.id)
+        if (!tictactoe.isSessionExist(msg.channel.id)) {
+          // Cancelled via command. Do nothing.
+          logger.verbose(`session for channel ${msg.channel.id} already destroyed via stop command`)
+          return
+        } else if (collected.size < 1) {
+          // No one joined.
+          tictactoe.destroySession(msg.channel.id)
           return msg.channel.send(t('commands.tictactoe.noOneJoined'))
         } else if (action === 'cancel') {
-          tictactoeModule.endGame(msg.channel.id)
+          // Cancelled while waiting.
+          tictactoe.destroySession(msg.channel.id)
           return msg.reply(t('commands.tictactoe.gameCancelled'))
-        } else if (action === 'manual') {
-          tictactoeModule.endGame(msg.channel.id)
         } else if (action !== 'start') throw new Error(`Unexpected action value '${action}'`)
 
         const player2 = collected.first().users.cache.find((u) => u.id !== client.user.id)
         runGame(msg, player2, t)
+
         break
       }
 
       case '종료':
       case 'stop':
       case 'whdfy':
-      case 'ㄴ새ㅔ':
-        if (tictactoeModule.isGamePlaying(msg.channel.id)) {
-          tictactoeModule.getSession(msg.channel.id).collector.stop('manual')
+      case 'ㄴ새ㅔ': {
+        const logger = _logger.extend('stop')
+
+        logger.verbose(`fetching session for channel ${msg.channel.id} to destroy`)
+        const session = tictactoe.getSession(msg.channel.id)
+        if (session != null) {
+          logger.verbose(`session for channel ${msg.channel.id} available. destroying.`)
+          session.collector?.stop('stop')
+          tictactoe.destroySession(msg.channel.id)
           msg.channel.send(t('commands.tictactoe.gameStopped'))
         } else msg.channel.send(t('commands.tictactoe.error.notPlaying'))
 
         break
+      }
 
       // Default
       default:
@@ -88,12 +107,18 @@ class TicTacToeCommand extends Command {
 }
 
 async function runGame (msg, player2, t) {
-  const useEmbed = msg.channel.permissionsFor(msg.client.user).has('EMBED_LINKS')
+  const useEmbed = canSendEmbed(msg.client.user, msg.channel)
 
   // Host, Guest
   const players = [msg.author, player2]
   const playerIds = players.map((p) => p.id)
   let turn = Math.floor(Math.random() * 2)
+
+  // Winner (for ending process)
+  let winner = null
+
+  // Game Panel Data
+  let panelData = []
 
   // Init game panel
   let gamePanel
@@ -102,19 +127,14 @@ async function runGame (msg, player2, t) {
       .setTitle(t('commands.tictactoe.game.title'))
   } else gamePanel = ''
 
-  gamePanel = modifyGamePanel(gamePanel, {
+  gamePanel = modifyPanel(gamePanel, {
     players,
     turn,
     panelData: []
   }, t)
 
+  // Send panel
   const gamePanelMsg = await msg.channel.send(gamePanel)
-
-  // Winner (for ending process)
-  let winner = null
-
-  // Game Panel Data
-  let panelData = []
 
   // Message Collector
   const inputCollector = msg.channel.createMessageCollector((m) => {
@@ -123,17 +143,18 @@ async function runGame (msg, player2, t) {
   }, { idle: 60000 })
 
   // Actual game start
-  tictactoeModule.startGame(msg.channel.id, inputCollector)
+  tictactoe.startGame(msg.channel.id, inputCollector)
 
+  // when someone entered a number
   inputCollector.on('collect', (userInput) => {
     if (playerIds[turn] !== userInput.author.id) return
-    const result = tictactoeModule.mark(msg.channel.id, turn, parseInt(userInput.content))
+    const result = tictactoe.mark(msg.channel.id, turn, parseInt(userInput.content))
     if (!result.success) {
       try {
         handleError(msg, result.data, t)
       } catch (err) {
         const e = new ClientError(err)
-        e.report(msg, t, 'Commands / tictactoe#runGame()')
+        e.report(msg, t, 'tictactoe:runGame')
       }
 
       return
@@ -149,7 +170,7 @@ async function runGame (msg, player2, t) {
     panelData = result.data.panel
 
     // Re-generate gamePanel
-    gamePanel = modifyGamePanel(gamePanel, {
+    gamePanel = modifyPanel(gamePanel, {
       players,
       turn,
       panelData,
@@ -167,24 +188,26 @@ async function runGame (msg, player2, t) {
     }
   })
 
+  // when game ends for some reason
   inputCollector.on('end', (_, reason) => {
     if (reason === 'idle') {
-      winner = players[changeTurn(turn)]
+      const winnerTurn = changeTurn(turn)
+      winner = players[winnerTurn]
 
       // Update gamePanel here
-      gamePanel = modifyGamePanel(gamePanel, {
+      gamePanel = modifyPanel(gamePanel, {
         players,
         turn,
         panelData,
-        win: changeTurn(turn)
+        win: winnerTurn
       }, t)
       gamePanelMsg.edit(gamePanel)
 
-      tictactoeModule.endGame(msg.channel.id)
+      tictactoe.destroySession(msg.channel.id)
       msg.channel.send(t('commands.tictactoe.game.timeOut', winner.toString()))
     } else if (reason === 'win') {
       msg.channel.send(t('commands.tictactoe.game.win', winner.toString()))
-    } else msg.channel.send(t('commands.tictactoe.game.draw'))
+    } else if (reason === 'draw') msg.channel.send(t('commands.tictactoe.game.draw'))
   })
 }
 
@@ -207,63 +230,6 @@ function handleError (msg, reason, t) {
     default:
       throw new Error(reason)
   }
-}
-
-function formatPanelNum (panel) {
-  let str = ''
-  const defaultNum = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine']
-
-  for (let i = 1; i <= 9; i++) {
-    switch (panel[i - 1]) {
-      case 0:
-        str += '❌'
-        break
-
-      case 1:
-        str += '⭕'
-        break
-
-      default:
-        str += `:${defaultNum[i - 1]}:`
-    }
-
-    if (i % 3 === 0) str += '\n'
-    else str += ' '
-  }
-
-  return str
-}
-
-function modifyGamePanel (panel, data, t) {
-  const { players, turn, win, panelData } = data
-  const useEmbed = panel instanceof MessageEmbed
-  const panelNum = formatPanelNum(panelData)
-  const someoneWin = win === 0 || win === 1 || win === -1
-
-  let statusText = ''
-  if (someoneWin) {
-    statusText = win !== -1
-      ? t('commands.tictactoe.game.description.win', players[win].toString())
-      : t('commands.tictactoe.game.description.draw')
-  } else statusText = t('commands.tictactoe.game.description.playing', players[turn].toString())
-
-  const panelContentText = t('commands.tictactoe.game.description.content', ...players.map(p => p.toString()))
-
-  const panelText = `
-${statusText}
-
-${panelContentText}
-
-${panelNum}
-  `
-
-  if (useEmbed) {
-    panel.setDescription(panelText)
-  } else {
-    panel = panelText
-  }
-
-  return panel
 }
 
 function changeTurn (turn) {

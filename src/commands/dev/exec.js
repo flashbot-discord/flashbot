@@ -2,9 +2,9 @@ const { MessageEmbed } = require('discord.js')
 const ch = require('child_process')
 
 const Command = require('../_Command')
-const canSendEmbed = require('../../modules/canSendEmbed')
+const { canSendEmbed } = require('../../components/permissions/checker')
 
-const logger = require('../../modules/logger')('cmd:exec')
+const logger = require('../../shared/logger')('cmd:exec')
 
 class ExecuteCommand extends Command {
   constructor (client) {

@@ -1,6 +1,6 @@
 const uuid = require('uuid-random')
 
-const loggerGen = require('../modules/logger')
+const loggerGen = require('../shared/logger')
 
 class ClientError extends Error {
   constructor (err) {

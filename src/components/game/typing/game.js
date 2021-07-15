@@ -2,7 +2,7 @@ const { Collection } = require('discord.js')
 const path = require('path')
 const fs = require('fs')
 
-const logger = require('./logger')('module:typing')
+const logger = require('../../../shared/logger')('components:typing')
 
 // Data Storage
 const typingData = new Collection()
@@ -30,7 +30,7 @@ function getData (baseLocale, category) {
   if (categoryData.data.length < 1) return null
 
   const data = categoryData.data[Math.floor(Math.random() * categoryData.data.length)]
-  if (!data.from && categoryData.fromDefault) data.from = categoryData.fromDefault
+  if (!data.from) data.from = null
 
   data.category = categoryData
   return data

@@ -9,7 +9,7 @@ const BUILD_DATE = '2021/6/24'
 /* eslint-enable no-unused-vars */
 
 // Setup logger first
-const logger = require('./modules/logger')
+const logger = require('./shared/logger')
 
 const log = logger('main')
 log.log(`

@@ -1,7 +1,7 @@
 const fs = require('fs')
 const path = require('path')
 const Extension = require('../structures/Extension')
-const logger = require('../modules/logger')('ExtensionHandler')
+const logger = require('../shared/logger')('ExtensionHandler')
 
 class ExtensionHandler {
   constructor (client) {

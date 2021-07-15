@@ -3,7 +3,7 @@ const fs = require('fs')
 
 const InternalStorageHandler = require('./InternalStorageHandler')
 
-const logger = require('../modules/logger')('DatabaseHandler')
+const logger = require('../shared/logger')('DatabaseHandler')
 
 class DatabaseHandler {
   constructor (client, type, connection) {

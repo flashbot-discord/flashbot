@@ -1,7 +1,7 @@
 const Command = require('../_Command')
 const ClientError = require('../../structures/ClientError')
 const database = require('../../database')
-const logger = require('../../modules/logger')('cmd:deactivate')
+const logger = require('../../shared/logger')('cmd:deactivate')
 
 class DeactivateCommand extends Command {
   constructor (client) {

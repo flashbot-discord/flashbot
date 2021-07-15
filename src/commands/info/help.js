@@ -2,8 +2,8 @@ const { MessageEmbed } = require('discord.js')
 
 // const Paginator = require('../../structures/Paginator')
 const Command = require('../_Command')
-const { joinBacktick } = require('../../modules/textFormat')
-const makeCommandUsage = require('../../modules/commandUsage')
+const { joinBacktick } = require('../../shared/textFormat')
+const makeCommandUsage = require('../../structures/command/usage')
 
 const LINKS = {
   main: 'https://flashbot.ga',

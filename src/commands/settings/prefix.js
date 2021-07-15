@@ -1,6 +1,6 @@
 const Command = require('../_Command')
 const database = require('../../database')
-const getPrefix = require('../../modules/getPrefix')
+const { getPrefix } = require('../../shared')
 
 class PrefixCommand extends Command {
   constructor (client) {

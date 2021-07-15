@@ -1,7 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 
 const Command = require('../_Command')
-const sendNotice = require('../../modules/sendNotice')
+const { send } = require('../../components/notice')
 
 class NoticeCommand extends Command {
   constructor (client) {
@@ -55,7 +55,7 @@ class NoticeCommand extends Command {
         // Run
         // TODO show live status
         msg.reply(t('commands.notice.started'))
-        await sendNotice(msg, t, text)
+        await send(msg, t, text)
       }
     }
   }

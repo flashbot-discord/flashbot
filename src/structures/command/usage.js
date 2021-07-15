@@ -14,7 +14,7 @@ const makeUsageStr = (argsArr, previousArgs, cmdName, t) => {
     const description = arg.description || t(`commands.${cmdName}.args.${arg.key}.DESC`)
 
     summary += `${startBracket}${arg.key}${arg.infinity ? '...' : ''}${endBracket} `
-    descText += `${startBracket}${arg.key}: ${arg.type}${arg.infinity ? '...' : ''}${endBracket} - ${description} ${arg.optional ? t('modules.commandUsage.optional') : ''}\n`
+    descText += `${startBracket}${arg.key}: ${arg.type}${arg.infinity ? '...' : ''}${endBracket} - ${description} ${arg.optional ? t('Command.usage.optional') : ''}\n`
   }
 
   return { summary, descText }
@@ -23,8 +23,8 @@ const makeUsageStr = (argsArr, previousArgs, cmdName, t) => {
 /**
  * Makes command usage.
  * @param {import('discord.js').Message} msg The message which triggered the command
- * @param {import('../structures/command/base')} cmd The command object
- * @param {import('../structures/MsgQuery')} query MsgQuery object
+ * @param {import('./base')} cmd The command object
+ * @param {import('../MsgQuery')} query MsgQuery object
  * @param {Function} t The translate function
  * @param {*} ctx
  * @param {boolean} wrap Whether to wrap result with noticement text
@@ -72,12 +72,12 @@ module.exports = (msg, cmd, query, t, ctx = {}, wrap = false) => {
 `${query.prefix}${query.cmd} ${summary}
 
 ${description}
-${t('modules.commandUsage.footer')}
-${t('modules.commandUsage.detailedHelpNotice', { prefix: query.prefix })}`
+${t('Command.usage.footer')}
+${t('Command.usage.detailedHelpNotice', { prefix: query.prefix })}`
 
   if (wrap) {
     return (
-`${t('modules.commandUsage.usage')}\`\`\`
+`${t('Command.usage.usage')}\`\`\`
 ${finalText}
 \`\`\``
     )

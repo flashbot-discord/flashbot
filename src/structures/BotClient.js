@@ -5,7 +5,7 @@ const path = require('path')
 const globalElements = require('./globalElements')
 const DatabaseHandler = require('../handlers/DatabaseHandler')
 
-const loggerGen = require('../modules/logger')
+const loggerGen = require('../shared/logger')
 const logger = loggerGen('BotClient')
 
 /**

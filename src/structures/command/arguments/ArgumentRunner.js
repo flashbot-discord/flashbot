@@ -2,7 +2,7 @@ const minimist = require('minimist')
 
 const types = require('../../types/index')
 const ArgumentError = require('./ArgumentError')
-const _logger = require('../../../modules/logger')('ArgumentRunner')
+const _logger = require('../../../shared/logger')('ArgumentRunner')
 
 /**
  * Get raw arguments and run them

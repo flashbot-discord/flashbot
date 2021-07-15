@@ -1,5 +1,5 @@
 const types = require('../../types/index')
-const loggerGen = require('../../../modules/logger')
+const loggerGen = require('../../../shared/logger')
 const logger = loggerGen('ArgumentCollector')
 
 class ArgumentCollector {

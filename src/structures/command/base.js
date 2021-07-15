@@ -1,5 +1,5 @@
 const ArgumentCollector = require('./arguments/ArgumentCollector')
-const logger = require('../../modules/logger')('Command')
+const logger = require('../../shared/logger')('Command')
 
 class Command {
   constructor (client, infos) {

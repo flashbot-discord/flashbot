@@ -1,7 +1,7 @@
 const { inspect } = require('util')
 
 const Command = require('../_Command')
-const parsePeriod = require('../../modules/parsePeriod')
+const { parsePeriod } = require('../../shared')
 
 class TestCommand extends Command {
   constructor (client) {

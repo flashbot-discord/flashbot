@@ -1,3 +1,5 @@
+// TODO: Logging
+
 const { MessageEmbed } = require('discord.js')
 
 module.exports = async (msg, t, noticeText) => {
@@ -8,14 +10,13 @@ module.exports = async (msg, t, noticeText) => {
   const tt = (phrase, ...args) => t({ phrase, locale }, ...args)
 
   const embed = new MessageEmbed()
-    .setTitle(':loudspeaker: ' + tt('modules.sendNotice.embed.title'))
+    .setTitle(':loudspeaker: ' + tt('components.notice.embed.title'))
     .setDescription(noticeText)
-    .setFooter(tt('modules.sendNotice.embed.author', requestedUser.tag), requestedUser.avatarURL())
-    .addField(tt('modules.sendNotice.embed.whyNoticeSentHere.title'), tt('modules.sendNotice.embed.whyNoticeSentHere.content'))
+    .setFooter(tt('components.notice.embed.author', requestedUser.tag), requestedUser.avatarURL())
+    .addField(tt('components.notice.embed.whyNoticeSentHere.title'), tt('components.notice.embed.whyNoticeSentHere.content'))
 
   const guilds = client.guilds.cache
-  // eslint-disable-next-line no-unused-vars
-  for await (const [_, guild] of guilds) {
+  for await (const [, guild] of guilds) {
     const availableChannels = guild.channels.cache.filter(ch => {
       return ['text', 'news'].includes(ch.type) &&
         ch.permissionsFor(client.user).has([

@@ -1,4 +1,4 @@
-const loggerGen = require('../modules/logger')
+const loggerGen = require('../shared/logger')
 const logger = loggerGen('Extension')
 
 class Extension {
