@@ -2,6 +2,7 @@ const { MessageEmbed, Collection } = require('discord.js')
 
 const Command = require('../_Command')
 const EMOJIS = require('../../shared/emojis')
+const { canSendEmbed } = require('../../components/permissions/checker')
 
 const permList = new Collection([
   // Server Perms
@@ -82,7 +83,7 @@ class PermissionCheckCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    const useEmbed = msg.channel.type === 'dm' || msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    const useEmbed = canSendEmbed(client.user, msg.channel)
 
     const targetUser = query.args.target
     const targetChannel = query.args.channel

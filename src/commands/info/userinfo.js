@@ -5,8 +5,10 @@
 
 const { MessageEmbed } = require('discord.js')
 const moment = require('moment-timezone')
+
 const Command = require('../_Command')
 const Paginator = require('../../structures/Paginator')
+const { canSendEmbed } = require('../../components/permissions/checker')
 
 class UserInfoCommand extends Command {
   constructor (client) {
@@ -29,7 +31,7 @@ class UserInfoCommand extends Command {
 
     const data = []
     const user = query.args.user ? query.args.user : msg.author
-    const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    const useEmbed = canSendEmbed(client.user, msg.channel)
 
     const statusTxt = new Map([
       ['online', t('commands.userinfo.statusList.online')],

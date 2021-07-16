@@ -2,6 +2,7 @@ const { MessageEmbed } = require('discord.js')
 // const moment = require('moment-timezone')
 
 const Command = require('../_Command')
+const { canSendEmbed } = require('../../components/permissions/checker')
 
 class UptimeCommand extends Command {
   constructor (client) {
@@ -13,7 +14,7 @@ class UptimeCommand extends Command {
   }
 
   async run (client, msg, _query, { t }) {
-    const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    const useEmbed = canSendEmbed(client.user, msg.channel)
 
     const uptime = Date.now() - client.readyAt.getTime()
 

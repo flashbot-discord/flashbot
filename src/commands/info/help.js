@@ -4,6 +4,7 @@ const { MessageEmbed } = require('discord.js')
 const Command = require('../_Command')
 const { joinBacktick } = require('../../shared/textFormat')
 const makeCommandUsage = require('../../structures/command/usage')
+const { canSendEmbed } = require('../../components/permissions/checker')
 
 const LINKS = {
   main: 'https://flashbot.ga',
@@ -28,7 +29,7 @@ class HelpCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    const useEmbed = !query.args['no-embed'] && msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    const useEmbed = !query.args['no-embed'] && canSendEmbed(client.user, msg.channel)
 
     if (!query.args.command) {
       const makeLinkText = () => {

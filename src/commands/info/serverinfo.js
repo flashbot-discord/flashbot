@@ -5,7 +5,9 @@
 
 const { MessageEmbed } = require('discord.js')
 const moment = require('moment-timezone')
+
 const Command = require('../_Command')
+const { canSendEmbed } = require('../../components/permissions/checker')
 
 class ServerInfoCommand extends Command {
   constructor (client) {
@@ -20,7 +22,7 @@ class ServerInfoCommand extends Command {
   async run (client, msg, _query, { t, tn }) {
     let data
     const guild = msg.guild
-    const useEmbed = msg.channel.permissionsFor(client.user).has('EMBED_LINKS')
+    const useEmbed = canSendEmbed(client.user, msg.channel)
 
     const members = await guild.members.fetch()
     const [bots, users] = members.partition((member) => member.user.bot)
