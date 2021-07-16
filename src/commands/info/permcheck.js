@@ -74,6 +74,8 @@ class PermissionCheckCommand extends Command {
     const serverPerms = targetUser.permissions
     const channelPerms = msg.channel.type !== 'dm' ? targetChannel.permissionsFor(targetUser) : null
 
+    const thisServerText = t('commands.permcheck.thisServer')
+
     let output
     if (useEmbed) {
       const embed = new MessageEmbed()
@@ -87,7 +89,7 @@ class PermissionCheckCommand extends Command {
         descText += t('commands.permcheck.isAdmin')
       }
 
-      descText += `\n:computer: ${t('commands.permcheck.thisServer')}\n:tv: ${targetChannel.toString()}\n\n:computer: | :tv:\n`
+      descText += `\n:computer: ${thisServerText}\n:tv: ${targetChannel.toString()}\n\n:computer: | :tv:\n`
 
       const availablePermList = filterPermList(permList, targetChannel.type)
       availablePermList.forEach((obj, perm) => {
@@ -108,7 +110,7 @@ class PermissionCheckCommand extends Command {
         str += `> ${t('commands.permcheck.isAdmin')}`
       }
 
-      str += `\n:computer: ${t('commands.permcheck.thisServer')}\n:tv: ${targetChannel.toString()}\n\n:computer: | :tv:\n`
+      str += `\n:computer: ${thisServerText}\n:tv: ${targetChannel.toString()}\n\n:computer: | :tv:\n`
 
       const availablePermList = filterPermList(permList, targetChannel.type)
       availablePermList.forEach((obj, perm) => {
