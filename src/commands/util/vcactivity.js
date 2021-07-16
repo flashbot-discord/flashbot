@@ -13,7 +13,10 @@ const ALIASES = {
 
   pokernight: 'pokernight',
   poker: 'pokernight',
-  포커: 'pokernight'
+  포커: 'pokernight',
+
+  chess: 'chess',
+  체스: 'chess'
 }
 
 const APP = {
@@ -32,6 +35,10 @@ const APP = {
   pokernight: {
     name: 'Poker Night',
     id: '755827207812677713'
+  },
+  chess: {
+    name: 'Chess In The Park',
+    id: '832012774040141894'
   }
 }
 
