@@ -80,25 +80,27 @@ class PermissionCheckCommand extends Command {
         .setAuthor(targetUser.user.tag, targetUser.user.avatarURL())
         .setTitle(t('commands.permcheck.embed.title'))
 
-      let descText = t('commands.permcheck.embed.channelName', targetChannel.toString()) + '\n\n'
+      let descText = ''
       if (targetUser.id === msg.guild.owner.id) {
         descText += t('commands.permcheck.isOwner')
       } else if (targetUser.permissions.has('ADMINISTRATOR')) {
         descText += t('commands.permcheck.isAdmin')
       }
-      embed.setDescription(descText)
+
+      descText += `\n:computer: ${t('commands.permcheck.thisServer')}\n:tv: ${targetChannel.toString()}\n\n:computer: | :tv:\n`
 
       const availablePermList = filterPermList(permList, targetChannel.type)
       availablePermList.forEach((obj, perm) => {
-        embed.addField(t(`perms.${perm}`), makePermsMsg({
+        descText += makePermsMsg({
           granted: serverPerms.has(perm),
           grantedInChannel: obj.channelType != null ? channelPerms.has(perm) : null
-        }, t))
+        }, t) + ` - ${t(`perms.${perm}`)}\n`
       })
 
+      embed.setDescription(descText)
       output = embed
     } else {
-      let str = t('commands.permcheck.noEmbed.title', targetUser.user.tag, targetChannel.toString()) + '\n'
+      let str = `**${t('commands.permcheck.noEmbed.title', targetUser.user.tag)}**\n`
 
       if (targetUser.id === msg.guild.owner.id) {
         str += `> ${t('commands.permcheck.isOwner')}`
@@ -106,16 +108,14 @@ class PermissionCheckCommand extends Command {
         str += `> ${t('commands.permcheck.isAdmin')}`
       }
 
-      str += '\n\n'
+      str += `\n:computer: ${t('commands.permcheck.thisServer')}\n:tv: ${targetChannel.toString()}\n\n:computer: | :tv:\n`
 
       const availablePermList = filterPermList(permList, targetChannel.type)
       availablePermList.forEach((obj, perm) => {
-        str += `**${t(`perms.${perm}`)}**\n` +
-          makePermsMsg({
-            granted: serverPerms.has(perm),
-            grantedInChannel: obj.channelType != null ? channelPerms.has(perm) : null
-          }, t) +
-          '\n\n'
+        str += makePermsMsg({
+          granted: serverPerms.has(perm),
+          grantedInChannel: obj.channelType != null ? channelPerms.has(perm) : null
+        }, t) + ` - ${t(`perms.${perm}`)}\n`
       })
 
       output = str
@@ -139,12 +139,12 @@ function makePermsMsg (opts, t) {
 
   const channelPermAvailable = typeof grantedInChannel === 'boolean'
 
-  msg += (granted ? EMOJIS.white_check_mark : EMOJIS.x) + ' '
-  msg += t(`commands.permcheck.${granted ? 'granted' : 'denied'}`)
+  msg += (granted ? EMOJIS.white_check_mark : EMOJIS.x) + ' | '
 
   if (channelPermAvailable) {
-    msg += '\n' + (grantedInChannel ? EMOJIS.white_check_mark : EMOJIS.x) + ' '
-    msg += `**${t(`commands.permcheck.${grantedInChannel ? 'granted' : 'denied'}InChannel`)}**`
+    msg += (grantedInChannel ? EMOJIS.white_check_mark : EMOJIS.x)
+  } else {
+    msg += ':black_large_square:'
   }
 
   return msg

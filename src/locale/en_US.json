@@ -452,24 +452,20 @@
     },
     "permcheck": {
       "embed": {
-        "title": "Permissions List",
-        "channelName": "In %1$s channel"
+        "title": "Permissions List"
       },
       "noEmbed": {
-        "title": "Permissions List for %1$s in %2$s"
+        "title": "Permissions List of %1$s"
       },
       "isOwner": "You are the owner of this server. All permissions are granted for you.",
-      "granted": "Granted",
-      "denied": "Denied",
-      "grantedInChannel": "Granted in this channel",
-      "deniedInChannel": "Denied in this channel",
       "isAdmin": "You have the `ADMINISTRATOR` permission in this channel. All permissions are granted for you.",
       "DESC": "Shows a member's permissions list.",
       "args": {
         "target": {
           "DESC": "The id or mention of member to see permissions"
         }
-      }
+      },
+      "thisServer": "This Server"
     },
     "notice": {
       "previewEmbed": {
