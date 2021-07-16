@@ -30,7 +30,7 @@ class HelloCommand extends Command {
       msg.channel.send(embed)
     } else {
       const str = `:wave: ${t('commands.hello.title')}\n` +
-        t('commands.title.description', prefixStr, prefix)
+        t('commands.hello.description', prefixStr, prefix)
       msg.channel.send(str)
     }
   }
