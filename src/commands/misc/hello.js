@@ -31,7 +31,7 @@ class HelloCommand extends Command {
     } else {
       const str = `:wave: ${t('commands.hello.title')}\n` +
         t('commands.hello.description', prefixStr, prefix)
-      msg.channel.send(str)
+      msg.channel.send(str, { disableMentions: 'everyone' })
     }
   }
 }
