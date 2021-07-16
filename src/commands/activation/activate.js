@@ -2,6 +2,7 @@ const Command = require('../_Command')
 const ClientError = require('../../structures/ClientError')
 const database = require('../../database')
 const logger = require('../../shared/logger')('cmd:activate')
+const EMOJIS = require('../../shared/emojis')
 
 class ActivateCommand extends Command {
   constructor (client) {
@@ -35,9 +36,9 @@ class ActivateCommand extends Command {
 
     const rcFilter = (reaction, user) => {
       if (user.id === msg.author.id) {
-        if (reaction.emoji.name !== '✅' && reaction.emoji.name !== '❌') return false
-        else if (reaction.emoji.name === '✅') result = true
-        else if (reaction.emoji.name === '❌') result = false
+        if (reaction.emoji.name !== EMOJIS.white_check_mark && reaction.emoji.name !== EMOJIS.x) return false
+        else if (reaction.emoji.name === EMOJIS.white_check_mark) result = true
+        else if (reaction.emoji.name === EMOJIS.x) result = false
         return true
       } else return false
     }
@@ -48,8 +49,8 @@ class ActivateCommand extends Command {
     )
 
     try {
-      await botMsg.react('✅')
-      await botMsg.react('❌')
+      await botMsg.react(EMOJIS.white_check_mark)
+      await botMsg.react(EMOJIS.x)
     } catch (err) {
       msg.channel.send(t('commands.activate.reactFail', client.locale.t('perms.ADD_REACTIONS')))
     }

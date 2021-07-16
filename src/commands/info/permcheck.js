@@ -1,6 +1,7 @@
 const { MessageEmbed, Collection } = require('discord.js')
 
 const Command = require('../_Command')
+const EMOJIS = require('../../shared/emojis')
 
 const permList = new Collection([
   ['ADMINISTRATOR', { channelType: null }],
@@ -138,11 +139,11 @@ function makePermsMsg (opts, t) {
 
   const channelPermAvailable = typeof grantedInChannel === 'boolean'
 
-  msg += (granted ? ':white_check_mark:' : ':x:') + ' '
+  msg += (granted ? EMOJIS.white_check_mark : EMOJIS.x) + ' '
   msg += t(`commands.permcheck.${granted ? 'granted' : 'denied'}`)
 
   if (channelPermAvailable) {
-    msg += '\n' + (grantedInChannel ? ':white_check_mark:' : ':x:') + ' '
+    msg += '\n' + (grantedInChannel ? EMOJIS.white_check_mark : EMOJIS.x) + ' '
     msg += `**${t(`commands.permcheck.${grantedInChannel ? 'granted' : 'denied'}InChannel`)}**`
   }
 

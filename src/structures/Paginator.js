@@ -1,5 +1,7 @@
 const { MessageEmbed } = require('discord.js')
 
+const EMOJIS = require('../shared/emojis')
+
 class Paginator {
   constructor (client, msg, options) {
     this._client = client
@@ -12,11 +14,11 @@ class Paginator {
 
     if (!options.emojis) {
       this.reactions = new Map([
-        ['first', '⏮️'],
-        ['prev', '◀️'],
-        ['stop', '⏹️'],
-        ['next', '▶️'],
-        ['last', '⏭️']
+        ['first', EMOJIS.track_previous],
+        ['prev', EMOJIS.arrow_backward],
+        ['stop', EMOJIS.stop_button],
+        ['next', EMOJIS.arrow_forward],
+        ['last', EMOJIS.track_next]
       ])
     }
   }

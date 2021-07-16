@@ -5,6 +5,7 @@ const tictactoe = require('../../components/game/tictactoe/game')
 const { modifyPanel } = require('../../components/game/tictactoe/panel')
 const ClientError = require('../../structures/ClientError')
 const { canSendEmbed } = require('../../components/permissions/checker')
+const EMOJIS = require('../../shared/emojis')
 
 const _logger = require('../../shared/logger')('cmd:tictactoe')
 
@@ -44,8 +45,8 @@ class TicTacToeCommand extends Command {
         // Wait for game
         const botMsg = await msg.channel.send(t('commands.tictactoe.waiting', msg.author.id))
 
-        await botMsg.react('✅')
-        await botMsg.react('❌')
+        await botMsg.react(EMOJIS.white_check_mark)
+        await botMsg.react(EMOJIS.x)
 
         let action = 'cancel' // 'start', 'cancel'
 
@@ -53,8 +54,8 @@ class TicTacToeCommand extends Command {
         const collected = await botMsg.awaitReactions((reaction, user) => {
           if (user.bot) return false
           else {
-            if (reaction.emoji.name === '✅' && (PLAY_MYSELF || user.id !== msg.author.id)) action = 'start'
-            else if (reaction.emoji.name === '❌' && user.id === msg.author.id) action = 'cancel'
+            if (reaction.emoji.name === EMOJIS.white_check_mark && (PLAY_MYSELF || user.id !== msg.author.id)) action = 'start'
+            else if (reaction.emoji.name === EMOJIS.x && user.id === msg.author.id) action = 'cancel'
             else return false
 
             return true
