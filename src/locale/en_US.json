@@ -626,7 +626,7 @@
     "MANAGE_NICKNAMES": "Manage Nicknames",
     "MANAGE_EMOJIS": "Manage Emojis",
     "MANAGE_WEBHOOKS": "Manage Webhooks",
-    "VIEW_CHANNEL": "Read Text Channels & See Voice Channels",
+    "VIEW_CHANNEL": "View Channel",
     "SEND_MESSAGES": "Send Messages",
     "SEND_TTS_MESSAGES": "Send TTS Messages",
     "MANAGE_MESSAGES": "Manage Messages",
@@ -641,7 +641,11 @@
     "MUTE_MEMBERS": "Mute Members",
     "DEAFEN_MEMBERS": "Deafen Members",
     "MOVE_MEMBERS": "Move Members",
-    "USE_VAD": "Use Voice Activity"
+    "USE_VAD": "Use Voice Activity",
+    "VIEW_GUILD_INSIGHTS": "View Server Insights",
+    "USE_SLASH_COMMANDS": "Use Slash Commands",
+    "STREAM": "Video",
+    "PRIORITY_SPEAKER": "Priority Speaker"
   },
   "verificationLevel": {
     "LOW": {

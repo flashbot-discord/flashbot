@@ -621,7 +621,7 @@
     "MANAGE_NICKNAMES": "별명 관리하기",
     "MANAGE_EMOJIS": "이모티콘 관리",
     "MANAGE_WEBHOOKS": "웹후크 관리하기",
-    "VIEW_CHANNEL": "채팅 채널 읽기 및 음성 채널 보기",
+    "VIEW_CHANNEL": "채널 보기",
     "SEND_MESSAGES": "메세지 보내기",
     "SEND_TTS_MESSAGES": "TTS 메세지 보내기",
     "MANAGE_MESSAGES": "메세지 관리",
@@ -636,7 +636,11 @@
     "MUTE_MEMBERS": "멤버들의 마이크 음소거하기",
     "DEAFEN_MEMBERS": "멤버의 헤드셋 음소거하기",
     "MOVE_MEMBERS": "멤버 이동",
-    "USE_VAD": "음성 감지 사용"
+    "USE_VAD": "음성 감지 사용",
+    "VIEW_GUILD_INSIGHTS": "서버 인사이트 보기",
+    "USE_SLASH_COMMANDS": "빗금 명령어 사용",
+    "STREAM": "동영상",
+    "PRIORITY_SPEAKER": "우선 발언권"
   },
   "verificationLevel": {
     "LOW": {

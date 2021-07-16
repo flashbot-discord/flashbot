@@ -4,19 +4,27 @@ const Command = require('../_Command')
 const EMOJIS = require('../../shared/emojis')
 
 const permList = new Collection([
+  // Server Perms
   ['ADMINISTRATOR', { channelType: null }],
   ['VIEW_AUDIT_LOG', { channelType: null }],
   ['MANAGE_GUILD', { channelType: null }],
-  ['MANAGE_ROLES', { channelType: 'all', dm: false }],
-  ['MANAGE_CHANNELS', { channelType: 'all', dm: true }],
   ['KICK_MEMBERS', { channelType: null }],
   ['BAN_MEMBERS', { channelType: null }],
-  ['CREATE_INSTANT_INVITE', { channelType: 'all', dm: false }],
+  ['VIEW_GUILD_INSIGHTS', { channelType: null }],
   ['CHANGE_NICKNAME', { channelType: null }],
   ['MANAGE_NICKNAMES', { channelType: null }],
   ['MANAGE_EMOJIS', { channelType: null }],
-  ['MANAGE_WEBHOOKS', { channelType: 'text', dm: false }],
+
+  // General Channel Permissions
   ['VIEW_CHANNEL', { channelType: 'all', dm: true }],
+  ['MANAGE_CHANNELS', { channelType: 'all', dm: true }],
+  ['MANAGE_ROLES', { channelType: 'all', dm: false }],
+  ['MANAGE_WEBHOOKS', { channelType: 'text', dm: false }],
+
+  // Membership Permissions
+  ['CREATE_INSTANT_INVITE', { channelType: 'all', dm: false }],
+
+  // Text Channel Permissions
   ['SEND_MESSAGES', { channelType: 'text', dm: true }],
   ['SEND_TTS_MESSAGES', { channelType: 'text', dm: false }],
   ['MANAGE_MESSAGES', { channelType: 'text', dm: false }],
@@ -26,12 +34,19 @@ const permList = new Collection([
   ['MENTION_EVERYONE', { channelType: 'text', dm: true }],
   ['USE_EXTERNAL_EMOJIS', { channelType: 'text', dm: true }],
   ['ADD_REACTIONS', { channelType: 'text', dm: true }],
+  // ['USE_SLASH_COMMANDS', { channelType: 'text', dm: false }], // TODO: djs v13 feature
+
+  // Voice Channel Permissions
   ['CONNECT', { channelType: 'voice' }],
   ['SPEAK', { channelType: 'voice' }],
+  ['STREAM', { channelType: 'voice' }],
+  ['USE_VAD', { channelType: 'voice' }],
+  ['PRIORITY_SPEAKER', { channelType: 'voice' }],
   ['MUTE_MEMBERS', { channelType: 'voice' }],
   ['DEAFEN_MEMBERS', { channelType: 'voice' }],
-  ['MOVE_MEMBERS', { channelType: 'voice' }],
-  ['USE_VAD', { channelType: 'voice' }]
+  ['MOVE_MEMBERS', { channelType: 'voice' }]
+
+  // TODO: Stage channel
 ])
 
 class PermissionCheckCommand extends Command {
