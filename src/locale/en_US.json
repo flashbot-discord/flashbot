@@ -83,8 +83,8 @@
             "other": "`%d` categories"
           },
           "newsChannelCount": {
-            "one": "`%d` news channel",
-            "other": "`%d` news channels"
+            "one": "`%d` announcement channel",
+            "other": "`%d` announcement channels"
           }
         }
       },

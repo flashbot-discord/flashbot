@@ -83,8 +83,8 @@
             "other": "카테고리 `%d`개"
           },
           "newsChannelCount": {
-            "one": "뉴스 채널 `%d`개",
-            "other": "뉴스 채널 `%d`개"
+            "one": "공지 채널 `%d`개",
+            "other": "공지 채널 `%d`개"
           }
         }
       },

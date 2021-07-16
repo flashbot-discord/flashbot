@@ -39,7 +39,7 @@ class ServerInfoCommand extends Command {
 :keyboard: ${tn('commands.serverinfo.channelCount.value.textChannelCount', textChannelCount)}
 :microphone2: ${tn('commands.serverinfo.channelCount.value.voieChannelCount', voiceChannelCount)}
 :file_folder: ${tn('commands.serverinfo.channelCount.value.categoryCount', categoryCount)}
-:newspaper: ${tn('commands.serverinfo.channelCount.value.newsChannelCount', newsChannelCount)}`
+:mega: ${tn('commands.serverinfo.channelCount.value.newsChannelCount', newsChannelCount)}`
 
     const verificationLevel = guild.verificationLevel
     const verificationLevelText = `
@@ -61,7 +61,7 @@ ${t(`verificationLevel.${verificationLevel}.description`)}`
     })} | ${guild.premiumTier >= 3
         ? t('commands.serverinfo.serverBoost.content.maxLevel')
         : t('commands.serverinfo.serverBoost.content.forNextLevel', {
-          requiredBoost: requiredBoostForNextLevel,
+          requiredBoost: requiredBoostForNextLevel - currentServerBoost,
           currentBoost: currentServerBoost,
           boostForNextLevel: requiredBoostForNextLevel
         })}`
@@ -80,7 +80,7 @@ ${t(`verificationLevel.${verificationLevel}.description`)}`
         .addField(':busts_in_silhouette: ' + tn('commands.serverinfo.memberCount.title', guild.memberCount), memberCountText, true)
         .addField(':tv: ' + tn('commands.serverinfo.channelCount.title', guild.channels.cache.size), channelCountText, true)
         .addField(':birthday: ' + t('commands.serverinfo.createdAt.title'), createdAt)
-        .addField(':diamonds: ' + t('commands.serverinfo.serverBoost.title', {
+        .addField(':rocket: ' + t('commands.serverinfo.serverBoost.title', {
           boost: currentServerBoost
         }), serverBoostText)
     } else {
