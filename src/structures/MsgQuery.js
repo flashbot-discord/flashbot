@@ -8,7 +8,7 @@ class MsgQuery {
 
     this.arr = this.content.split(' ').filter((c) => c.length > 0)
     if (calledByMention && this.arr.length < 1) this.arr = ['hello']
-    this.cmd = this.arr[0]
+    this.cmd = this.arr[0]?.toLowerCase()
     this.rawArgs = splitDoubleQuotes(this.arr.slice(1))
   }
 }
