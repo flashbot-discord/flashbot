@@ -1,18 +1,13 @@
 module.exports = {
   // Nature
 
-
   // Food
-  
 
   // Activities
 
-
   // Travel
 
-
   // Objects
-
 
   // Symbols
   white_check_mark: '✅',

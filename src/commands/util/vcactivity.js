@@ -3,17 +3,17 @@ const Command = require('../_Command')
 const ALIASES = {
   youtube: 'youtube',
   yt: 'youtube',
-  '유튜브': 'youtube',
+  유튜브: 'youtube',
 
   betrayal: 'betrayal',
-  
+
   fishington: 'fishington',
   fish: 'fishington',
-  '낚시': 'fishington',
+  낚시: 'fishington',
 
   pokernight: 'pokernight',
   poker: 'pokernight',
-  '포커': 'pokernight'
+  포커: 'pokernight'
 }
 
 const APP = {

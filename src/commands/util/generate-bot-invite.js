@@ -20,8 +20,6 @@ class GenerateBotInviteCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    let id
-
     if (!query.args.bot) return msg.reply(t('commands.generate-bot-invite.noArgs'))
 
     const url = `https://discord.com/oauth2/authorize?client_id=${query.args.bot.id}&permissions=2147483647&scope=bot`
