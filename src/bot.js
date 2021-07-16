@@ -24,6 +24,7 @@ const path = require('path')
 const BotClient = require('./structures/BotClient')
 const CommandHandler = require('./handlers/CommandHandler')
 const LocaleHandler = require('./handlers/LocaleHandler')
+const ExtensionHandler = require('./handlers/ExtensionHandler')
 
 const onReadyEvent = require('./events/onReady')
 const onMessageEvent = require('./events/onMessage')
@@ -46,6 +47,10 @@ client.setupDatabase()
 // Setup Locale (i18n)
 log.log('creating and registering locale handler')
 client.registerLocaleHandler(new LocaleHandler(client))
+
+// Extension Handler
+log.log('creating and registering extension handler')
+client.registerExtensionHandler(new ExtensionHandler(client))
 
 // event
 client.registerEvent('ready', onReadyEvent)

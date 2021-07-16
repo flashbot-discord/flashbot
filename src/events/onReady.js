@@ -6,9 +6,7 @@ async function onReady (client) {
   logger.log('Logged in as ' + client.user.tag)
   client.onlineMode = true
 
-  const extHandler = new ExtensionHandler(client)
-  if (!client.extensions) client.registerExtensionHandler(extHandler)
-  await extHandler.registerExtensionsIn(path.join(path.resolve(), 'extensions'))
+  await client.extensions.registerExtensionsIn(path.join(path.resolve(), 'extensions'))
 }
 
 module.exports = onReady
