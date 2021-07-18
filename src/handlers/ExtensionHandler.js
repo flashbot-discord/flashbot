@@ -9,6 +9,10 @@ class ExtensionHandler {
     this.extensions = new Map()
   }
 
+  get (extension) {
+    return this.extensions.get(extension)
+  }
+
   async register (ExtClass) {
     const Ext = new ExtClass(this._client)
     if (!(Ext instanceof Extension)) {
