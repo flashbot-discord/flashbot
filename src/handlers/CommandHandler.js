@@ -8,6 +8,7 @@ const database = require('../database')
 const ClientError = require('../structures/ClientError')
 const ArgumentError = require('../structures/command/arguments/ArgumentError')
 const makeCommandUsage = require('../structures/command/usage')
+const { reportError } = require('../shared')
 
 const logger = require('../shared/logger')('CommandHandler')
 
@@ -296,7 +297,8 @@ ${usageText}
       await cmd.run(client, msg, query, translateFunc)
     } catch (err) {
       const e = new ClientError(err)
-      e.report(msg, t, `${this.logPos}.run => ${cmd._name}`)
+      await reportError(e, msg, t, `${this.logPos}.run => ${cmd._name}`)
+
     }
   }
 }

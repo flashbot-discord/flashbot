@@ -17,6 +17,12 @@ module.exports = {
     level: 'chat',
     useDebug: false
   },
+  errorWebhook: {
+    enable: true,
+    mentionOwner: true,
+    id: '',
+    token: ''
+  },
   extensions: {
     extensionName: {
       your: 'config'

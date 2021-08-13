@@ -3,5 +3,6 @@ module.exports = {
   logger: require('./logger'),
   parsePeriod: require('./parsePeriod'),
   textFormat: require('./textFormat'),
-  emojis: require('./emojis')
+  emojis: require('./emojis'),
+  reportError: require('./reportError')
 }
