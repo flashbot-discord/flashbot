@@ -665,7 +665,7 @@
     "game": {
       "tictactoe": {
         "panel": {
-          "playing": "$1%s의 차례",
+          "playing": "%1$s의 차례",
           "win": "%1$s님 승리!",
           "draw": "무승부!"
         }

@@ -10,7 +10,7 @@ const EMOJIS = require('../../shared/emojis')
 const _logger = require('../../shared/logger')('cmd:tictactoe')
 
 // for test
-const PLAY_MYSELF = false
+const PLAY_MYSELF = true
 
 class TicTacToeCommand extends Command {
   constructor (client) {
@@ -149,10 +149,11 @@ async function runGame (msg, player2, t) {
   // when someone entered a number
   inputCollector.on('collect', (userInput) => {
     if (playerIds[turn] !== userInput.author.id) return
+
     const result = tictactoe.mark(msg.channel.id, turn, parseInt(userInput.content))
     if (!result.success) {
       try {
-        handleError(msg, result.data, t)
+        handleError(userInput, result.reason, t)
       } catch (err) {
         const e = new ClientError(err)
         e.report(msg, t, 'tictactoe:runGame')
