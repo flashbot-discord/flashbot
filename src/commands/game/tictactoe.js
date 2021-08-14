@@ -9,9 +9,6 @@ const EMOJIS = require('../../shared/emojis')
 
 const _logger = require('../../shared/logger')('cmd:tictactoe')
 
-// for test
-const PLAY_MYSELF = true
-
 class TicTacToeCommand extends Command {
   constructor (client) {
     super(client, {
@@ -54,7 +51,7 @@ class TicTacToeCommand extends Command {
         const collected = await botMsg.awaitReactions((reaction, user) => {
           if (user.bot) return false
           else {
-            if (reaction.emoji.name === EMOJIS.white_check_mark && (PLAY_MYSELF || user.id !== msg.author.id)) action = 'start'
+            if (reaction.emoji.name === EMOJIS.white_check_mark) action = 'start'
             else if (reaction.emoji.name === EMOJIS.x && user.id === msg.author.id) action = 'cancel'
             else return false
 
