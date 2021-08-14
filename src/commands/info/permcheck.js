@@ -168,11 +168,4 @@ function makePermsMsg (opts, t) {
   return msg
 }
 
-function makeNewPermsMsg (perms) {
-  let str = ''
-  perms.forEach(() => {
-
-  })
-}
-
 module.exports = PermissionCheckCommand
