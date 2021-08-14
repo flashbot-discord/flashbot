@@ -105,7 +105,7 @@ class PermissionCheckCommand extends Command {
         descText += t('commands.permcheck.isAdmin')
       }
 
-      descText += `\n:computer: ${thisServerText}\n:tv: ${targetChannel.toString()}\n\n:computer: | :tv:\n`
+      descText += `\n:computer: ${thisServerText}\n:tv: ${targetChannel.toString()} (\`${targetChannel.type}\`)\n\n:computer: | :tv:\n`
 
       const availablePermList = filterPermList(permList, targetChannel.type)
       availablePermList.forEach((obj, perm) => {
@@ -166,6 +166,13 @@ function makePermsMsg (opts, t) {
   }
 
   return msg
+}
+
+function makeNewPermsMsg (perms) {
+  let str = ''
+  perms.forEach(() => {
+
+  })
 }
 
 module.exports = PermissionCheckCommand
