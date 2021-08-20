@@ -124,7 +124,6 @@
       "createdAt": "계정 생성일",
       "status": "현재 상태",
       "clients": "접속한 클라이언트",
-      "createdDate": "YYYY년 MM월 DD일 HH시 mm분 ss초 (zz)",
       "statusList": {
         "online": ":green_circle: 온라인",
         "idle": ":crescent_moon: 자리 비움",
@@ -134,7 +133,7 @@
       "clientOffline": "오프라인",
       "page": {
         "1": "기본 정보",
-        "2": "이 서버에 관련된 정보"
+        "2": "서버 멤버 정보"
       },
       "pageText": "페이지 %1$d/%2$d",
       "requestedBy": "%1$s `%2$s`이(가) 요청함",
@@ -142,7 +141,12 @@
         "user": {
           "DESC": "유저정보를 확인할 유저"
         }
-      }
+      },
+      "isServerOwner": "이 서버 소유자 여부",
+      "notInGuild": "서버 채널이 아니라서 이 페이지를 표시할 수 없어요.",
+      "serverJoinedAt": "서버에 입장한 시각",
+      "nickname": "서버 닉네임",
+      "memberNotExist": "해당 유저가 이 서버에 없어 이 페이지를 표시할 수 없어요."
     },
     "eval": {
       "input": "입력:",

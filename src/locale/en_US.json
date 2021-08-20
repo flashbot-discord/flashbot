@@ -124,7 +124,6 @@
       "createdAt": "This account is created at",
       "status": "Current Status",
       "clients": "Clients Logged on",
-      "createdDate": "LLLL",
       "statusList": {
         "online": ":green_circle: online",
         "idle": ":crescent_moon: idle",
@@ -134,15 +133,20 @@
       "clientOffline": "Offline",
       "page": {
         "1": "Basic Information",
-        "2": "Informations related to this server"
+        "2": "Server Member Information"
       },
       "pageText": "Page %1$d of %2$d",
-      "requestedBy": "(Requested by %1$s `%2$s`)",
+      "requestedBy": "Requested by %1$s `%2$s`",
       "args": {
         "user": {
           "DESC": "The user to show their information"
         }
-      }
+      },
+      "isServerOwner": "Is server owner?",
+      "notInGuild": "This page is not available outside server channels.",
+      "serverJoinedAt": "Joined this server at",
+      "nickname": "Server Nickname",
+      "memberNotExist": "This page is not available because the user is not in this server."
     },
     "eval": {
       "desc": "Evaluates JS code. Needs Administrator permission to use this.",

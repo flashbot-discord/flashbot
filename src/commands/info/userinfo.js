@@ -4,17 +4,30 @@
  */
 
 const { MessageEmbed } = require('discord.js')
-const moment = require('moment-timezone')
 
 const Command = require('../_Command')
 const Paginator = require('../../structures/Paginator')
 const { canSendEmbed } = require('../../components/permissions/checker')
 
+const PREPEND_EMOJI = {
+  default: ':small_blue_diamond:',
+  bot: ':robot:',
+  person: ':bust_in_silhouette:',
+  hashtag: ':hash:',
+  id: ':id:',
+  cake: ':birthday:',
+  crown: ':crown:',
+  check: ':white_check_mark:',
+  x: ':x:',
+  enter: ':inbox_tray:',
+  nameBadge: ':name_badge:'
+}
+
 class UserInfoCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'userinfo',
-      aliases: ['user-info', '이용자정보', '사용자정보', '유저정보', 'ㅕㄴㄷ갸ㅜ래', 'ㅕㄴㄷㄱ-ㅑㅜ래', 'dldydwkwjdqh', 'tkdydwkwjdqh', 'dbwjwjdqh'],
+      aliases: ['user-info', 'ui', '이용자정보', '사용자정보', '유저정보', 'ㅕㄴㄷ갸ㅜ래', 'ㅕㄴㄷㄱ-ㅑㅜ래', 'ㅕㅑ', 'dldydwkwjdqh', 'tkdydwkwjdqh', 'dbwjwjdqh'],
       group: 'info',
       args: [
         {
@@ -30,41 +43,97 @@ class UserInfoCommand extends Command {
     const m = await msg.channel.send('Loading...')
 
     const data = []
-    const user = query.args.user ? query.args.user : msg.author
+    const user = query.args.user ?? msg.author
     const useEmbed = canSendEmbed(client.user, msg.channel)
 
-    const statusTxt = new Map([
-      ['online', t('commands.userinfo.statusList.online')],
-      ['idle', t('commands.userinfo.statusList.idle')],
-      ['dnd', t('commands.userinfo.statusList.dnd')],
-      ['offline', t('commands.userinfo.statusList.offline')]
-    ])
-    const status = statusTxt.get(user.presence.status)
-    const clientStatus = user.presence.status !== 'offline' ? this.getClientStat(user.presence.clientStatus, t) : ['N/A']
-    const createdAt = moment(user.createdAt).tz('Asia/Seoul').format(t('commands.userinfo.createdDate'))
+    const sharedText = {
+      notInGuild: t('commands.userinfo.notInGuild'),
+      memberNotExist: t('commands.userinfo.memberNotExist'),
+
+      name: t('commands.userinfo.name'),
+      userTag: t('commands.userinfo.usertag'),
+      id: t('commands.userinfo.id'),
+      status: t('commands.userinfo.status'),
+      clients: t('commands.userinfo.clients'),
+      createdAt: t('commands.userinfo.createdAt'),
+
+      nickname: t('commands.userinfo.nickname'),
+      isServerOwner: t('commands.userinfo.isServerOwner'),
+      serverJoinedAt: t('commands.userinfo.serverJoinedAt')
+    }
+
+    // NOTE: activity status
+    const { status } = user.presence
+    const statusText = t('commands.userinfo.statusList.' + status)
+    const clientStatus = status !== 'offline' && !user.bot ? this.getClientStat(user.presence.clientStatus, t) : ['N/A']
+
+    // NOTE: account creation date
+    const createdAt = `<t:${Math.floor(user.createdAt.getTime() / 1000)}:F>`
+
+    // NOTE: Guild-only
+    let member
+    let nickname
+    let isServerOwner
+    let joinedAt
+    if (msg.guild) {
+      member = await msg.guild.members.fetch(user.id)
+        .catch(() => member = null)
+      
+      if (member) {
+        nickname = member.nickname ?? '\u200b'
+        isServerOwner = PREPEND_EMOJI[msg.guild.owner.id === user.id ? 'check' : 'x']
+        joinedAt = `<t:${Math.floor(member.joinedAt.getTime() / 1000)}:F>`
+      }
+    }
+
+    const totalPages = 2
 
     if (useEmbed) {
-      data.push(this.generateEmbed(msg.author, user, t, 1, 2)
-        .addField(':bust_in_silhouette: ' + t('commands.userinfo.name'), user.username, true)
-        .addField(':hash: ' + t('commands.userinfo.usertag'), user.discriminator, true)
-        .addField(':id: ' + t('commands.userinfo.id'), user.id)
-        .addField(t('commands.userinfo.status'), status, true)
-        .addField(t('commands.userinfo.clients'), clientStatus.join('\n'), true)
-        .addField(':birthday: ' + t('commands.userinfo.createdAt'), createdAt)
-      )
+      // basic information
+      const embed1 = this.generateEmbed(msg.author, user, t, 1, totalPages)
+        .addField(`${PREPEND_EMOJI.person} ${sharedText.name}`, user.username, true)
+        .addField(`${PREPEND_EMOJI.hashtag} ${sharedText.userTag}`, user.discriminator, true)
+        .addField(`${PREPEND_EMOJI.id} ${sharedText.id}`, user.id)
+        .addField(`${PREPEND_EMOJI.default} ${sharedText.status}`, statusText, true)
+        .addField(`${PREPEND_EMOJI.default} ${sharedText.clients}`, clientStatus.join('\n'), true)
+        .addField(`${PREPEND_EMOJI.cake} ${sharedText.createdAt}`, createdAt)
+      data.push(embed1)
 
-      data.push(this.generateEmbed(msg.author, user, t, 2, 2)
-        .addField('Coming soon', 'Stay tuned!') // TODO WIP
-      )
+      // server related values
+      const embed2 = this.generateEmbed(msg.author, user, t, 2, totalPages)
+      if (!msg.guild) {
+        embed2.setDescription(embed2.description + `\n\n${sharedText.notInGuild}`)
+      } else if (!member) {
+        embed2.setDescription(embed2.description + `\n\n${sharedText.memberNotExist}`)
+      } else {
+        embed2.addField(`${PREPEND_EMOJI.nameBadge} ${sharedText.nickname}`, nickname)
+          .addField(`${PREPEND_EMOJI.crown} ${sharedText.isServerOwner}`, isServerOwner)
+          .addField(`${PREPEND_EMOJI.enter} ${sharedText.serverJoinedAt}`, joinedAt)
+      }
+
+      data.push(embed2)
     } else {
-      data.push(`${this.generateTextPage(msg.author, user, t, 1, 2)}\n\n` +
-        `**:bust_in_silhouette: ${t('commands.userinfo.name')}**: ${user.username}\n` +
-        `**:hash: ${t('commands.userinfo.usertag')}**: ${user.discriminator}\n` +
-        `**:id: ${t('commands.userinfo.id')}**: ${user.id}\n` +
-        `**${t('commands.userinfo.status')}**: ${status}\n` +
-        `**${t('commands.userinfo.clients')}**: ${clientStatus.join(', ')}\n` +
-        `**:birthday: ${t('commands.userinfo.createdAt')}**: ${createdAt}`
-      )
+      const page1 = `${this.generateTextPage(msg.author, user, t, 1, totalPages)}\n\n` +
+        `**${PREPEND_EMOJI.person} ${sharedText.name}**: ${user.username}\n` +
+        `**${PREPEND_EMOJI.hashtag} ${sharedText.userTag}**: ${user.discriminator}\n` +
+        `**${PREPEND_EMOJI.id} ${sharedText.id}**: ${user.id}\n` +
+        `**${PREPEND_EMOJI.default} ${sharedText.status}**: ${statusText}\n` +
+        `**${PREPEND_EMOJI.default} ${sharedText.clients}**: ${clientStatus.join(', ')}\n` +
+        `**${PREPEND_EMOJI.cake} ${sharedText.createdAt}**: ${createdAt}`
+      data.push(page1)
+
+      let page2 = `${this.generateTextPage(msg.author, user, t, 2, totalPages)}\n\n`
+      if (!msg.guild) {
+        page2 += sharedText.notInGuild
+      } else if (!member) {
+        page2 += sharedText.memberNotExist
+      } else {
+        page2 += `**${PREPEND_EMOJI.nameBadge} ${sharedText.nickname}**: ${nickname}\n` +
+          `**${PREPEND_EMOJI.crown} ${sharedText.isServerOwner}**: ${isServerOwner}\n` +
+          `**${PREPEND_EMOJI.enter} ${sharedText.serverJoinedAt}**: ${joinedAt}`
+      }
+
+      data.push(page2)
     }
 
     const paginator = new Paginator(client, m, {
@@ -81,16 +150,16 @@ class UserInfoCommand extends Command {
 
   generateEmbed (author, user, t, currentPage, totalPage) {
     return new MessageEmbed()
-      .setTitle(t('commands.userinfo.title', user.tag))
+      .setTitle(`${user.bot ? PREPEND_EMOJI.bot : ''} ${t('commands.userinfo.title', user.tag)}`)
       .setDescription(`${t('commands.userinfo.page.' + currentPage)} (${t('commands.userinfo.pageText', currentPage, totalPage)})`)
       .setThumbnail(user.displayAvatarURL({ size: 1024, dynamic: true }))
       .setFooter(author.tag, author.displayAvatarURL())
   }
 
   generateTextPage (author, user, t, currentPage, totalPage) {
-    return `**${t('commands.userinfo.title', user.tag)}**\n` +
-        `${t('commands.userinfo.requestedBy', `<@${author.id}>`, author.tag)}\n` +
-        `${t('commands.userinfo.page.1')} (${t('commands.userinfo.pageText', currentPage, totalPage)})`
+    return `${user.bot ? PREPEND_EMOJI.bot : ''} **${t('commands.userinfo.title', user.tag)}**\n` +
+      `(${t('commands.userinfo.requestedBy', `<@${author.id}>`, author.tag)})\n\n` +
+      `${t('commands.userinfo.page.1')} (${t('commands.userinfo.pageText', currentPage, totalPage)})`
   }
 }
 
