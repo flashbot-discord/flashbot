@@ -138,7 +138,12 @@ class UserInfoCommand extends Command {
 
     const paginator = new Paginator(client, m, {
       contents: data,
-      userID: msg.author.id
+      userID: msg.author.id,
+      messageOptions: {
+        allowedMentions: {
+          parse: ['users']
+        }
+      }
     })
     paginator.start()
   }
