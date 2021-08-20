@@ -11,6 +11,7 @@ class Paginator {
     this.ctrlUser = options.userID || ''
     this.page = 0
     this.keepRun = true
+    this.messageOptions = options.messageOptions || {}
 
     if (!options.emojis) {
       this.reactions = new Map([
@@ -98,8 +99,8 @@ class Paginator {
   }
 
   update () {
-    if (this.contents[this.page] instanceof MessageEmbed) this.msg.edit({ content: '', embed: this.contents[this.page] })
-    else this.msg.edit(this.contents[this.page])
+    if (this.contents[this.page] instanceof MessageEmbed) this.msg.edit({ ...this.messageOptions, content: '', embed: this.contents[this.page]})
+    else this.msg.edit(this.contents[this.page], this.messageOptions)
   }
 
   stop () {
