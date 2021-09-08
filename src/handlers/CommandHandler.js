@@ -298,7 +298,6 @@ ${usageText}
     } catch (err) {
       const e = new ClientError(err)
       await reportError(e, msg, t, `${this.logPos}.run => ${cmd._name}`)
-
     }
   }
 }

@@ -86,7 +86,7 @@ class UserInfoCommand extends Command {
 
     if (msg.guild) {
       member = await msg.guild.members.fetch(user.id)
-        .catch(() => member = null)
+        .catch(() => { member = null })
 
       if (member) {
         nickname = member.nickname ?? '\u200b'
@@ -135,7 +135,7 @@ class UserInfoCommand extends Command {
         embed3.setDescription(`${embed3.description}\n\n${roleText}`)
           .addField(`${PREPEND_EMOJI.highest} ${sharedText.highestRole}`, `${highestRole.toString()} ${highestRole.name} (${highestRole.id})`)
           .addField(`${PREPEND_EMOJI.color} ${sharedText.highestRoleColor}`, highestRole.hexColor)
-        
+
         data.push(embed3)
       }
     } else {
@@ -162,10 +162,9 @@ class UserInfoCommand extends Command {
       data.push(page2)
 
       if (member) {
-        let page3 = `${this.generateTextPage(msg.author, user, t, 3, totalPages)}\n\n${roleText}\n\n` +
+        const page3 = `${this.generateTextPage(msg.author, user, t, 3, totalPages)}\n\n${roleText}\n\n` +
           `**${PREPEND_EMOJI.highest} ${sharedText.highestRole}**: ${highestRole.toString()} ${highestRole.name} (${highestRole.id})\n` +
           `**${PREPEND_EMOJI.color} ${sharedText.highestRoleColor}**: ${highestRole.hexColor}`
-        
 
         data.push(page3)
       }

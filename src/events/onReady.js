@@ -1,5 +1,4 @@
 const path = require('path')
-const ExtensionHandler = require('../handlers/ExtensionHandler')
 const logger = require('../shared/logger')('event:onReady')
 
 async function onReady (client) {

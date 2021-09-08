@@ -99,7 +99,7 @@ class Paginator {
   }
 
   update () {
-    if (this.contents[this.page] instanceof MessageEmbed) this.msg.edit({ ...this.messageOptions, content: '', embed: this.contents[this.page]})
+    if (this.contents[this.page] instanceof MessageEmbed) this.msg.edit({ ...this.messageOptions, content: '', embed: this.contents[this.page] })
     else this.msg.edit(this.contents[this.page], this.messageOptions)
   }
 
