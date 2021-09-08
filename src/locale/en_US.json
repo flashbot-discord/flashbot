@@ -133,7 +133,8 @@
       "clientOffline": "Offline",
       "page": {
         "1": "Basic Information",
-        "2": "Server Member Information"
+        "2": "Server Member Information",
+        "3": "Member Role Information"
       },
       "pageText": "Page %1$d of %2$d",
       "requestedBy": "Requested by %1$s `%2$s`",
@@ -146,7 +147,9 @@
       "notInGuild": "This page is not available outside server channels.",
       "serverJoinedAt": "Joined this server at",
       "nickname": "Server Nickname",
-      "memberNotExist": "This page is not available because the user is not in this server."
+      "memberNotExist": "This page is not available because the user is not in this server.",
+      "highestRole": "Highest Role",
+      "highestRoleColor": "Highest Role Color"
     },
     "eval": {
       "desc": "Evaluates JS code. Needs Administrator permission to use this.",

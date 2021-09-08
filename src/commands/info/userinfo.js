@@ -20,7 +20,9 @@ const PREPEND_EMOJI = {
   check: ':white_check_mark:',
   x: ':x:',
   enter: ':inbox_tray:',
-  nameBadge: ':name_badge:'
+  nameBadge: ':name_badge:',
+  highest: ':arrow_up:',
+  color: ':paintbrush:'
 }
 
 class UserInfoCommand extends Command {
@@ -59,7 +61,10 @@ class UserInfoCommand extends Command {
 
       nickname: t('commands.userinfo.nickname'),
       isServerOwner: t('commands.userinfo.isServerOwner'),
-      serverJoinedAt: t('commands.userinfo.serverJoinedAt')
+      serverJoinedAt: t('commands.userinfo.serverJoinedAt'),
+
+      highestRole: t('commands.userinfo.highestRole'),
+      highestRoleColor: t('commands.userinfo.highestRoleColor')
     }
 
     // NOTE: activity status
@@ -75,18 +80,29 @@ class UserInfoCommand extends Command {
     let nickname
     let isServerOwner
     let joinedAt
+
+    let roleText
+    let highestRole
+
     if (msg.guild) {
       member = await msg.guild.members.fetch(user.id)
         .catch(() => member = null)
-      
+
       if (member) {
         nickname = member.nickname ?? '\u200b'
         isServerOwner = PREPEND_EMOJI[msg.guild.owner.id === user.id ? 'check' : 'x']
         joinedAt = `<t:${Math.floor(member.joinedAt.getTime() / 1000)}:F>`
+
+        await msg.guild.roles.fetch() // cache all roles in a server
+        const memberRoles = member.roles.cache
+        const roleCountLimit = useEmbed ? 150 : 75 // 150 - max role count
+        roleText = memberRoles.first(roleCountLimit)
+          .reduce((acc, role) => `${acc} ${role.toString()}`, '')
+        highestRole = member.roles.highest
       }
     }
 
-    const totalPages = 2
+    const totalPages = member != null ? 3 : 2 // NOTE: first number = total pages if member is available
 
     if (useEmbed) {
       // basic information
@@ -112,6 +128,16 @@ class UserInfoCommand extends Command {
       }
 
       data.push(embed2)
+
+      if (member) {
+        // member role values
+        const embed3 = this.generateEmbed(msg.author, user, t, 3, totalPages)
+        embed3.setDescription(`${embed3.description}\n\n${roleText}`)
+          .addField(`${PREPEND_EMOJI.highest} ${sharedText.highestRole}`, `${highestRole.toString()} ${highestRole.name} (${highestRole.id})`)
+          .addField(`${PREPEND_EMOJI.color} ${sharedText.highestRoleColor}`, highestRole.hexColor)
+        
+        data.push(embed3)
+      }
     } else {
       const page1 = `${this.generateTextPage(msg.author, user, t, 1, totalPages)}\n\n` +
         `**${PREPEND_EMOJI.person} ${sharedText.name}**: ${user.username}\n` +
@@ -134,6 +160,15 @@ class UserInfoCommand extends Command {
       }
 
       data.push(page2)
+
+      if (member) {
+        let page3 = `${this.generateTextPage(msg.author, user, t, 3, totalPages)}\n\n${roleText}\n\n` +
+          `**${PREPEND_EMOJI.highest} ${sharedText.highestRole}**: ${highestRole.toString()} ${highestRole.name} (${highestRole.id})\n` +
+          `**${PREPEND_EMOJI.color} ${sharedText.highestRoleColor}**: ${highestRole.hexColor}`
+        
+
+        data.push(page3)
+      }
     }
 
     const paginator = new Paginator(client, m, {
@@ -141,7 +176,7 @@ class UserInfoCommand extends Command {
       userID: msg.author.id,
       messageOptions: {
         allowedMentions: {
-          parse: ['users']
+          parse: ['users'] // user mention only
         }
       }
     })

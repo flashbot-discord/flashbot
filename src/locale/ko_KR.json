@@ -133,7 +133,8 @@
       "clientOffline": "오프라인",
       "page": {
         "1": "기본 정보",
-        "2": "서버 멤버 정보"
+        "2": "서버 멤버 정보",
+        "3": "멤버 역할 정보"
       },
       "pageText": "페이지 %1$d/%2$d",
       "requestedBy": "%1$s `%2$s`이(가) 요청함",
@@ -146,7 +147,9 @@
       "notInGuild": "서버 채널이 아니라서 이 페이지를 표시할 수 없어요.",
       "serverJoinedAt": "서버에 입장한 시각",
       "nickname": "서버 닉네임",
-      "memberNotExist": "해당 유저가 이 서버에 없어 이 페이지를 표시할 수 없어요."
+      "memberNotExist": "해당 유저가 이 서버에 없어 이 페이지를 표시할 수 없어요.",
+      "highestRole": "제일 높은 역할",
+      "highestRoleColor": "제일 높은 역할 색"
     },
     "eval": {
       "input": "입력:",
