@@ -107,8 +107,17 @@
           "forNextLevel": "`{{requiredBoost}}` boost(s) for next level ({{currentBoost}} / {{boostForNextLevel}})",
           "maxLevel": "Maximum level!"
         },
-        "title": "`{{boost}}` server boost(s)"
-      }
+        "title": {
+          "one": "`{{boost}}` server boost",
+          "other": "`{{boost}}` server boosts"
+        }
+      },
+      "page": {
+        "1": "Basic Information",
+        "2": "Server Roles"
+      },
+      "pageText": "Page %1$d of %2$d",
+      "roleCount": "Role count"
     },
     "userinfo": {
       "DESC": "Shows user information.",

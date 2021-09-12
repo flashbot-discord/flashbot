@@ -7,46 +7,66 @@ const { MessageEmbed } = require('discord.js')
 const moment = require('moment-timezone')
 
 const Command = require('../_Command')
+const Paginator = require('../../structures/Paginator')
 const { canSendEmbed } = require('../../components/permissions/checker')
+
+const EMOJI = {
+  name: ':desktop:',
+  id: ':id:',
+  owner: ':crown:',
+  region: ':map:',
+  shield: ':shield:',
+  lock: ':lock:',
+  person: ':busts_in_silhouette:',
+  tv: ':tv:',
+  createdAt: ':birthday:',
+  boost: ':rocket:',
+  textCh: ':keyboard:',
+  voiceCh: ':microphone2:',
+  categoryCh: ':file_folder:',
+  announceCh: ':mega:',
+
+  count: ':1234:'
+}
 
 class ServerInfoCommand extends Command {
   constructor (client) {
     super(client, {
       name: 'serverinfo',
-      aliases: ['server-info', '서버정보', 'ㄴㄷㄱㅍㄷ갸ㅜ래', 'ㄴㄷㄱㅍㄷㄱ-ㅑㅜ래', 'tjqjwjdqh'],
+      aliases: ['server-info', 'si', '서버정보', 'ㄴㄷㄱㅍㄷ갸ㅜ래', 'ㄴㄷㄱㅍㄷㄱ-ㅑㅜ래', '냐', 'tjqjwjdqh'],
       group: 'info',
       guildOnly: true
     })
   }
 
   async run (client, msg, _query, { t, tn }) {
-    let data
-    const guild = msg.guild
+    const data = []
+    const { guild } = msg
     const useEmbed = canSendEmbed(client.user, msg.channel)
 
+    const m = await msg.channel.send('Loading...')
+
+    // page 1
     const members = await guild.members.fetch()
     const [bots, users] = members.partition((member) => member.user.bot)
-    const userCount = users.size
-    const botCount = bots.size
-    const memberCountText = `
-:adult: ${tn('commands.serverinfo.memberCount.value.userCount', userCount)}
-:robot: ${tn('commands.serverinfo.memberCount.value.botCount', botCount)}`
+    const userCountText = tn('commands.serverinfo.memberCount.value.userCount', users.size)
+    const botCountText = tn('commands.serverinfo.memberCount.value.botCount', bots.size)
+    const memberCountText = `:adult: ${userCountText}\n` +
+      `:robot: ${botCountText}`
 
     const channelCache = guild.channels.cache
     const textChannelCount = channelCache.filter((c) => c.type === 'text').size
     const voiceChannelCount = channelCache.filter((c) => c.type === 'voice').size
     const categoryCount = channelCache.filter((c) => c.type === 'category').size
     const newsChannelCount = channelCache.filter((c) => c.type === 'news').size
-    const channelCountText = `
-:keyboard: ${tn('commands.serverinfo.channelCount.value.textChannelCount', textChannelCount)}
-:microphone2: ${tn('commands.serverinfo.channelCount.value.voieChannelCount', voiceChannelCount)}
-:file_folder: ${tn('commands.serverinfo.channelCount.value.categoryCount', categoryCount)}
-:mega: ${tn('commands.serverinfo.channelCount.value.newsChannelCount', newsChannelCount)}`
+    const channelCountText = `${EMOJI.textCh} ${tn('commands.serverinfo.channelCount.value.textChannelCount', textChannelCount)}\n` +
+      `${EMOJI.voiceCh} ${tn('commands.serverinfo.channelCount.value.voieChannelCount', voiceChannelCount)}\n` +
+      `${EMOJI.categoryCh} ${tn('commands.serverinfo.channelCount.value.categoryCount', categoryCount)}\n` +
+      `${EMOJI.announceCh} ${tn('commands.serverinfo.channelCount.value.newsChannelCount', newsChannelCount)}`
 
     const verificationLevel = guild.verificationLevel
-    const verificationLevelText = `
-**${t(`verificationLevel.${verificationLevel}.name`)}** (\`${verificationLevel}\`)
-${t(`verificationLevel.${verificationLevel}.description`)}`
+    const verificationLevelText = `**${t(`verificationLevel.${verificationLevel}.name`)}** (\`${verificationLevel}\`)\n` +
+      `  - ${t(`verificationLevel.${verificationLevel}.description`)}`
 
     const is2FAReqOn = guild.mfaLevel === 1
     const twoFARequireForModText = `${is2FAReqOn ? ':white_check_mark:' : ':x:'} ${t(`commands.serverinfo.2faRequireForMod.value.${is2FAReqOn ? 'enabled' : 'disabled'}`)} (\`${guild.mfaLevel}\`)`
@@ -68,45 +88,109 @@ ${t(`verificationLevel.${verificationLevel}.description`)}`
           boostForNextLevel: requiredBoostForNextLevel
         })}`
 
-    if (useEmbed) {
-      data = new MessageEmbed()
-        .setTitle(t('commands.serverinfo.title', guild.name))
-        .setThumbnail(guild.iconURL({ dynamic: true, size: 1024 }))
-        .setFooter(msg.author.tag, msg.author.avatarURL({ dynamic: true, size: 1024 }))
-        .addField(':desktop: ' + t('commands.serverinfo.name'), guild.name, true)
-        .addField(':id: ' + t('commands.serverinfo.id'), guild.id, true)
-        .addField(`:crown: ${t('commands.serverinfo.owner')}`, `<@${guild.owner.id}> ${guild.owner.user.tag} (${guild.owner.id})`)
-        .addField(`:map: ${t('commands.serverinfo.region')}`, `${t('regions.' + guild.region)} (\`${guild.region}\`)`)
-        .addField(':shield: ' + t('commands.serverinfo.verificationLevel'), verificationLevelText)
-        .addField(':lock: ' + t('commands.serverinfo.2faRequireForMod.title'), twoFARequireForModText)
-        .addField(':busts_in_silhouette: ' + tn('commands.serverinfo.memberCount.title', guild.memberCount), memberCountText, true)
-        .addField(':tv: ' + tn('commands.serverinfo.channelCount.title', guild.channels.cache.size), channelCountText, true)
-        .addField(':birthday: ' + t('commands.serverinfo.createdAt.title'), createdAt)
-        .addField(':rocket: ' + t('commands.serverinfo.serverBoost.title', {
-          boost: currentServerBoost
-        }), serverBoostText)
-    } else {
-      data = `
-**${t('commands.serverinfo.title', guild.name)}**
-(${t('commands.serverinfo.requestedBy', `<@${msg.author.id}>`, msg.author.tag)})
+    // page 2
+    const roleMgr = await guild.roles.fetch()
+    
+    const sharedText = {
+      // page 1
+      name: t('commands.serverinfo.name'),
+      id: t('commands.serverinfo.id'),
+      owner: t('commands.serverinfo.owner'),
+      region: t('commands.serverinfo.region'),
+      verificationLevel: t('commands.serverinfo.verificationLevel'),
+      '2faRequireForMod': t('commands.serverinfo.2faRequireForMod.title'),
+      memberCount: tn('commands.serverinfo.memberCount.title', guild.memberCount),
+      channelCount: tn('commands.serverinfo.channelCount.title', guild.channels.cache.size),
+      createdAt: t('commands.serverinfo.createdAt.title'),
+      boost: tn('commands.serverinfo.serverBoost.title', currentServerBoost),
 
-**:desktop: ${t('commands.serverinfo.name')}**: ${guild.name}
-**:id: ${t('commands.serverinfo.id')}**: ${guild.id}
-**:crown: ${t('commands.serverinfo.owner')}**: ${guild.owner.user.tag} (${guild.owner.id})
-**:map: ${t('commands.serverinfo.region')}**: ${t('regions.' + guild.region)} (\`${guild.region}\`)
-**:shield: ${t('commands.serverinfo.verificationLevel')}**: ${verificationLevelText}
-**:lock: ${t('commands.serverinfo.2faRequireForMod.title')}**: ${twoFARequireForModText}
-
-**:busts_in_silhouette: ${tn('commands.serverinfo.memberCount.title', guild.memberCount)}**
-${memberCountText}
-
-**:tv: ${tn('commands.serverinfo.channelCount.title', guild.channels.cache.size)}**
-${channelCountText}
-
-**:birthday: ${t('commands.serverinfo.createdAt.title')}**: ${createdAt}`
+      // page 2
+      roleCount: t('commands.serverinfo.roleCount')
     }
 
-    return msg.channel.send(data)
+    const totalPages = 2
+
+    if (useEmbed) {
+      // basic information
+      const embed1 = this.generateEmbed(msg.author, guild, t, 1, totalPages)
+        .addField(`${EMOJI.name} ${sharedText.name}`, guild.name, true)
+        .addField(`${EMOJI.id} ${sharedText.id}`, guild.id, true)
+        .addField(`${EMOJI.owner} ${sharedText.owner}`, `<@${guild.owner.id}> ${guild.owner.user.tag} (${guild.owner.id})`)
+        .addField(`${EMOJI.region} ${sharedText.region}`, `${t('regions.' + guild.region)} (\`${guild.region}\`)`)
+        .addField(`${EMOJI.shield} ${sharedText.verificationLevel}`, verificationLevelText)
+        .addField(`${EMOJI.lock} ${sharedText['2faRequireForMod']}`, twoFARequireForModText)
+        .addField(`${EMOJI.person} ${sharedText.memberCount}`, memberCountText, true)
+        .addField(`${EMOJI.tv} ${sharedText.channelCount}`, channelCountText, true)
+        .addField(`${EMOJI.createdAt} ${sharedText.createdAt}`, createdAt)
+        .addField(`${EMOJI.boost} ${sharedText.boost}`, serverBoostText)
+      data.push(embed1)
+
+      const roleText = roleMgr.cache
+        .map(rl => rl.toString())
+        .join(', ')
+
+      // roles
+      const embed2 = this.generateEmbed(msg.author, guild, t, 2, totalPages)
+      embed2.setDescription(`${embed2.description}\n\n${roleText}`)
+        .addField(`${EMOJI.count} ${sharedText.roleCount}`, roleMgr.cache.size)
+      data.push(embed2)
+    } else {
+      const memberCountText_ = memberCountText
+        .split('\n')
+        .reduce((acc, cur) => `${acc}  - ${cur}\n`, '')
+      const channelCountText_ = channelCountText
+        .split('\n')
+        .reduce((acc, cur) => `${acc}  - ${cur}\n`, '')
+
+      // basic information
+      const page1 = `${this.generateTextPage(msg.author, guild, t, 1, totalPages)}\n\n` +
+        `**${EMOJI.name} ${sharedText.name}**: ${guild.name}\n` +
+        `**${EMOJI.id} ${sharedText.id}**: ${guild.id}\n` +
+        `**${EMOJI.owner} ${sharedText.owner}**: ${guild.owner.user.tag} (${guild.owner.id})\n` +
+        `**${EMOJI.region} ${sharedText.region}**: ${t('regions.' + guild.region)} (\`${guild.region}\`)\n` +
+        `**${EMOJI.shield} ${sharedText.verificationLevel}**: ${verificationLevelText}\n` +
+        `**${EMOJI.lock} ${sharedText['2faRequireForMod']}**: ${twoFARequireForModText}\n\n` +
+        `**${EMOJI.person} ${sharedText.memberCount}**\n${memberCountText_}\n\n` +
+        `**${EMOJI.tv} ${sharedText.channelCount}**\n${channelCountText_}\n\n` +
+        `**${EMOJI.createdAt} ${sharedText.createdAt}**: ${createdAt}\n` +
+        `**${EMOJI.boost} ${sharedText.boost}**: ${serverBoostText}`
+      data.push(page1)
+
+      const roleCountLimit = 75 // 23 * 75 = 1725 + α
+      const roleText = roleMgr.cache
+        .first(roleCountLimit)
+        .map(rl => rl.toString())
+        .join(', ')
+      const remainingRoleCount = roleMgr.cache.size - roleCountLimit
+
+      // roles
+      const page2 = `${this.generateTextPage(msg.author, guild, t, 2, totalPages)}\n\n${roleText}${remainingRoleCount > 0 ? ` + ${remainingRoleCount}` : ''} = ${roleMgr.cache.size}`
+      data.push(page2)
+    }
+
+    const paginator = new Paginator(client, m, {
+      contents: data,
+      userID: msg.author.id,
+      messageOptions: {
+        allowedMentions: {
+          parse: ['users'] // user mention only
+        }
+      }
+    })
+    paginator.start()
+  }
+
+  generateEmbed (author, guild, t, currentPage, totalPage) {
+    return new MessageEmbed()
+      .setTitle(`${t('commands.serverinfo.title', guild.name)}`)
+      .setDescription(`${t('commands.serverinfo.page.' + currentPage)} (${t('commands.serverinfo.pageText', currentPage, totalPage)})`)
+      .setThumbnail(guild.iconURL({ size: 1024, dynamic: true }))
+      .setFooter(author.tag, author.displayAvatarURL())   }
+
+  generateTextPage (author, guild, t, currentPage, totalPage) {
+    return `**${t('commands.serverinfo.title', guild.name)}**\n` +
+      `(${t('commands.serverinfo.requestedBy', `<@${author.id}>`, author.tag)})\n\n` +
+      `${t('commands.serverinfo.page.' + currentPage)} (${t('commands.serverinfo.pageText', currentPage, totalPage)})`
   }
 }
 
