@@ -11,6 +11,7 @@ const Paginator = require('../../structures/Paginator')
 const { canSendEmbed } = require('../../components/permissions/checker')
 
 const EMOJI = {
+  // page 1
   name: ':desktop:',
   id: ':id:',
   owner: ':crown:',
@@ -21,11 +22,18 @@ const EMOJI = {
   tv: ':tv:',
   createdAt: ':birthday:',
   boost: ':rocket:',
+
+  // memberCount field
+  person2: ':adult:',
+  robot: ':robot:',
+
+  // channelCount field
   textCh: ':keyboard:',
   voiceCh: ':microphone2:',
   categoryCh: ':file_folder:',
   announceCh: ':mega:',
 
+  // page 2
   count: ':1234:'
 }
 
@@ -51,8 +59,8 @@ class ServerInfoCommand extends Command {
     const [bots, users] = members.partition((member) => member.user.bot)
     const userCountText = tn('commands.serverinfo.memberCount.value.userCount', users.size)
     const botCountText = tn('commands.serverinfo.memberCount.value.botCount', bots.size)
-    const memberCountText = `:adult: ${userCountText}\n` +
-      `:robot: ${botCountText}`
+    const memberCountText = `${EMOJI.person2} ${userCountText}\n` +
+      `${EMOJI.robot} ${botCountText}`
 
     const channelCache = guild.channels.cache
     const textChannelCount = channelCache.filter((c) => c.type === 'text').size
@@ -90,7 +98,10 @@ class ServerInfoCommand extends Command {
 
     // page 2
     const roleMgr = await guild.roles.fetch()
-    
+
+    // page 3
+    const emojis = guild.emojis.cache
+
     const sharedText = {
       // page 1
       name: t('commands.serverinfo.name'),
@@ -105,10 +116,13 @@ class ServerInfoCommand extends Command {
       boost: tn('commands.serverinfo.serverBoost.title', currentServerBoost),
 
       // page 2
-      roleCount: t('commands.serverinfo.roleCount')
+      roleCount: t('commands.serverinfo.roleCount'),
+
+      // page 3
+      emojiCount: t('commands.serverinfo.emojiCount')
     }
 
-    const totalPages = 2
+    const totalPages = 3
 
     if (useEmbed) {
       // basic information
@@ -134,6 +148,14 @@ class ServerInfoCommand extends Command {
       embed2.setDescription(`${embed2.description}\n\n${roleText}`)
         .addField(`${EMOJI.count} ${sharedText.roleCount}`, roleMgr.cache.size)
       data.push(embed2)
+
+      // custom emojis
+      const emojiText = emojis.map(e => e.toString()).join(' ')
+
+      const embed3 = this.generateEmbed(msg.author, guild, t, 3, totalPages)
+      embed3.setDescription(`${embed3.description}\n\n${emojiText}`)
+        .addField(`${EMOJI.count} ${sharedText.emojiCount}`, emojis.size)
+      data.push(embed3)
     } else {
       const memberCountText_ = memberCountText
         .split('\n')
@@ -164,8 +186,22 @@ class ServerInfoCommand extends Command {
       const remainingRoleCount = roleMgr.cache.size - roleCountLimit
 
       // roles
-      const page2 = `${this.generateTextPage(msg.author, guild, t, 2, totalPages)}\n\n${roleText}${remainingRoleCount > 0 ? ` + ${remainingRoleCount}` : ''} = ${roleMgr.cache.size}`
+      const page2 = `${this.generateTextPage(msg.author, guild, t, 2, totalPages)}\n\n` +
+        `${roleText}${remainingRoleCount > 0 ? ` + ${remainingRoleCount}` : ''} = ${roleMgr.cache.size}`
       data.push(page2)
+
+      // custom emojis
+      // <a:char(max 32):id(~19)> 3 + 32 + 1 + 19 + 1 = max 56 chars
+      const emojiCountLimit = 32 // 56 * 32 = 1795 + α
+      const emojiText = emojis
+        .first(emojiCountLimit)
+        .map(e => e.toString())
+        .join(' ')
+      const remainingEmojiCount = emojis.size - emojiCountLimit
+
+      const page3 = `${this.generateTextPage(msg.author, guild, t, 3, totalPages)}\n\n` +
+        `${emojiText}${remainingEmojiCount > 0 ? ` + ${remainingEmojiCount}` : ''} = ${emojis.size}`
+      data.push(page3)
     }
 
     const paginator = new Paginator(client, m, {
@@ -185,7 +221,8 @@ class ServerInfoCommand extends Command {
       .setTitle(`${t('commands.serverinfo.title', guild.name)}`)
       .setDescription(`${t('commands.serverinfo.page.' + currentPage)} (${t('commands.serverinfo.pageText', currentPage, totalPage)})`)
       .setThumbnail(guild.iconURL({ size: 1024, dynamic: true }))
-      .setFooter(author.tag, author.displayAvatarURL())   }
+      .setFooter(author.tag, author.displayAvatarURL())
+  }
 
   generateTextPage (author, guild, t, currentPage, totalPage) {
     return `**${t('commands.serverinfo.title', guild.name)}**\n` +

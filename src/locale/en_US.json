@@ -114,10 +114,12 @@
       },
       "page": {
         "1": "Basic Information",
-        "2": "Server Roles"
+        "2": "Server Roles",
+        "3": "Server Emojis"
       },
       "pageText": "Page %1$d of %2$d",
-      "roleCount": "Role count"
+      "roleCount": "Role count",
+      "emojiCount": "Emoji count"
     },
     "userinfo": {
       "DESC": "Shows user information.",
