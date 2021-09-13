@@ -101,6 +101,14 @@ class ServerInfoCommand extends Command {
 
     // page 3
     const emojis = guild.emojis.cache
+  
+    // <a:char(max 32):id(~19)> 3 + 32 + 1 + 19 + 1 = max 56 chars
+    const emojiCountLimit = useEmbed ? 68 : 32 // 56 * count + α
+    const emojiText = emojis
+      .first(emojiCountLimit)
+      .map(e => e.toString())
+      .join(' ')
+    const remainingEmojiCount = emojis.size - emojiCountLimit
 
     const sharedText = {
       // page 1
@@ -150,10 +158,8 @@ class ServerInfoCommand extends Command {
       data.push(embed2)
 
       // custom emojis
-      const emojiText = emojis.map(e => e.toString()).join(' ')
-
       const embed3 = this.generateEmbed(msg.author, guild, t, 3, totalPages)
-      embed3.setDescription(`${embed3.description}\n\n${emojiText}`)
+      embed3.setDescription(`${embed3.description}\n\n${emojiText}${remainingEmojiCount > 0 ? ` + ${remainingEmojiCount}` : ''}`)
         .addField(`${EMOJI.count} ${sharedText.emojiCount}`, emojis.size)
       data.push(embed3)
     } else {
@@ -192,13 +198,6 @@ class ServerInfoCommand extends Command {
 
       // custom emojis
       // <a:char(max 32):id(~19)> 3 + 32 + 1 + 19 + 1 = max 56 chars
-      const emojiCountLimit = 32 // 56 * 32 = 1795 + α
-      const emojiText = emojis
-        .first(emojiCountLimit)
-        .map(e => e.toString())
-        .join(' ')
-      const remainingEmojiCount = emojis.size - emojiCountLimit
-
       const page3 = `${this.generateTextPage(msg.author, guild, t, 3, totalPages)}\n\n` +
         `${emojiText}${remainingEmojiCount > 0 ? ` + ${remainingEmojiCount}` : ''} = ${emojis.size}`
       data.push(page3)
