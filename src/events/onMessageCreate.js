@@ -4,7 +4,7 @@ const ClientError = require('../structures/ClientError')
 
 const logger = require('../shared/logger')('event:onMessage')
 
-async function onMessage (client, msg) {
+async function onMessageCreate (client, msg) {
   if (msg.author.bot || !msg.content) return
 
   logger.verbose('checking prefix')
@@ -73,4 +73,4 @@ async function checkPrefix (msg) {
   return {}
 }
 
-module.exports = onMessage
+module.exports = onMessageCreate

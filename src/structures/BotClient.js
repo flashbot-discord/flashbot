@@ -1,4 +1,4 @@
-const { Client } = require('discord.js')
+const { Client, Intents } = require('discord.js')
 const fs = require('fs')
 const path = require('path')
 
@@ -14,7 +14,19 @@ const logger = loggerGen('BotClient')
  */
 class BotClient extends Client {
   constructor () {
-    super()
+    super({
+      intents: [
+        Intents.FLAGS.GUILDS,
+        Intents.FLAGS.GUILD_MEMBERS, // privileged intent
+        Intents.FLAGS.GUILD_EMOJIS_AND_STICKERS,
+        // Intents.FLAGS.GUILD_INVITES,
+        Intents.FLAGS.GUILD_PRESENCES, // privileged intent
+        Intents.FLAGS.GUILD_MESSAGES, // (will be) privileged intent
+        Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
+        Intents.FLAGS.DIRECT_MESSAGES, // (will be) privileged intent
+        Intents.FLAGS.DIRECT_MESSAGE_REACTIONS
+      ]
+    })
 
     logger.log('initializing bot instance')
 

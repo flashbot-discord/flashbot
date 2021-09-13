@@ -27,7 +27,7 @@ const LocaleHandler = require('./handlers/LocaleHandler')
 const ExtensionHandler = require('./handlers/ExtensionHandler')
 
 const onReadyEvent = require('./events/onReady')
-const onMessageEvent = require('./events/onMessage')
+const onMessageEvent = require('./events/onMessageCreate')
 
 /**
  * Main Client
@@ -54,7 +54,7 @@ client.registerExtensionHandler(new ExtensionHandler(client))
 
 // event
 client.registerEvent('ready', onReadyEvent)
-client.registerEvent('message', onMessageEvent)
+client.registerEvent('messageCreate', onMessageEvent)
 
 // Login to Discord
 client.start()

@@ -12,7 +12,7 @@ class SupportCommand extends Command {
   }
 
   run (client, msg, _query, { t }) {
-    return msg.reply(t('commands.support.text') + '\n' + this.inviteLink)
+    return msg.reply(`${t('commands.support.text')}\n${this.inviteLink}`)
   }
 }
 

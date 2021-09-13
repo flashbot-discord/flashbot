@@ -30,7 +30,7 @@ class NoticeCommand extends Command {
       .setTitle(':loudspeaker: ' + t('commands.notice.previewEmbed.title'))
       .setDescription(text)
 
-    const botMsg = await msg.reply(t('commands.notice.confirm'), embed)
+    const botMsg = await msg.reply({ content: t('commands.notice.confirm'), embed })
 
     botMsg.react('✅')
     botMsg.react('❌')
@@ -45,16 +45,16 @@ class NoticeCommand extends Command {
 
     if (collected.size < 1) {
       // Timeout
-      return msg.reply(t('commands.notice.timeOut'))
+      return msg.reply({ content: t('commands.notice.timeOut') })
     } else {
       const emoji = collected.first().emoji.name
       if (emoji === '❌') {
         // User cancelled
-        return msg.reply(t('commands.notice.cancelled'))
+        return msg.reply({ content: t('commands.notice.cancelled') })
       } else if (emoji === '✅') {
         // Run
         // TODO show live status
-        msg.reply(t('commands.notice.started'))
+        msg.reply({ content: t('commands.notice.started') })
         await send(msg, t, text)
       }
     }

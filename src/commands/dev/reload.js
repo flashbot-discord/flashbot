@@ -38,7 +38,9 @@ class ReloadCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    if (!query.args.all && !query.args.command) return msg.reply(makeCommandUsage(msg, this, query, t, null, true))
+    if (!query.args.all && !query.args.command) {
+      return msg.reply(makeCommandUsage(msg, this, query, t, null, true))
+    }
 
     if (query.args.all) {
       const list = client.commands.commands.clone()
@@ -57,15 +59,15 @@ class ReloadCommand extends Command {
       let result = t('commands.reload.allReload.result', list.size, successCmdCount)
       if (errCmds.length > 0) result += '\n' + t('commands.reload.allReload.failedCmds', errCmds.length, errCmds.join('`, `'))
 
-      return msg.reply(result)
+      return msg.reply({ content: result })
     }
 
     const input = query.args.command
     const cmd = client.commands.get(input)
-    if (!cmd) return msg.reply(t('commands.reload.cannotfind', input))
+    if (!cmd) return msg.reply({ content: t('commands.reload.cannotfind', input) })
 
     cmd.reload()
-    return msg.reply(t('commands.reload.reloaded', cmd._name))
+    return msg.reply({ content: t('commands.reload.reloaded', cmd._name) })
   }
 }
 

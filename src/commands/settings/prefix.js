@@ -58,15 +58,26 @@ class PrefixCommand extends Command {
       if (!query.args.prefix) {
         // TODO Delete this (should not work anymore)
         const prefix = await database.guilds.prefix.get((this._client.db, msg.guild.id))
-        return msg.reply(t('commands.prefix.set.pleaseEnterPrefix', prefix), { disableMentions: 'everyone' })
-      } else if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.any(setPerms)) return msg.reply(t('commands.prefix.set.noPerms'))
-      else {
+        return msg.reply({
+          content: t('commands.prefix.set.pleaseEnterPrefix', prefix),
+          allowedMentions: {
+            parse: ['users']
+          }
+        })
+      } else if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.any(setPerms)) {
+        return msg.reply(t('commands.prefix.set.noPerms'))
+      } else {
         const prefix = query.args.prefix
 
         if (prefix.length > 11) return msg.reply(t('commands.prefix.set.tooLong'))
 
         await database.guilds.prefix.set(this._client.db, msg.guild.id, prefix)
-        return msg.channel.send(t('commands.prefix.set.complete', prefix), { disableMentions: 'everyone' })
+        return msg.channel.send({
+          content: t('commands.prefix.set.complete', prefix),
+          allowedMentions: {
+            parse: ['users']
+          }
+        })
       }
     }
   }
