@@ -4,8 +4,8 @@
  */
 
 /* eslint-disable no-unused-vars */
-const VERSION = 'v1.0-beta.4'
-const BUILD_DATE = '2021/8/14'
+const VERSION = 'v1.0-beta.5'
+const BUILD_DATE = '2021/9/13'
 /* eslint-enable no-unused-vars */
 
 // Setup logger first
