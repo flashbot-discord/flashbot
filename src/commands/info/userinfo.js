@@ -52,6 +52,7 @@ class UserInfoCommand extends Command {
       notInGuild: t('commands.userinfo.notInGuild'),
       memberNotExist: t('commands.userinfo.memberNotExist'),
 
+      // page 1
       name: t('commands.userinfo.name'),
       userTag: t('commands.userinfo.usertag'),
       id: t('commands.userinfo.id'),
@@ -59,10 +60,12 @@ class UserInfoCommand extends Command {
       clients: t('commands.userinfo.clients'),
       createdAt: t('commands.userinfo.createdAt'),
 
+      // page 2
       nickname: t('commands.userinfo.nickname'),
       isServerOwner: t('commands.userinfo.isServerOwner'),
       serverJoinedAt: t('commands.userinfo.serverJoinedAt'),
 
+      // page 3
       highestRole: t('commands.userinfo.highestRole'),
       highestRoleColor: t('commands.userinfo.highestRoleColor')
     }
@@ -198,7 +201,7 @@ class UserInfoCommand extends Command {
   generateTextPage (author, user, t, currentPage, totalPage) {
     return `${user.bot ? PREPEND_EMOJI.bot : ''} **${t('commands.userinfo.title', user.tag)}**\n` +
       `(${t('commands.userinfo.requestedBy', `<@${author.id}>`, author.tag)})\n\n` +
-      `${t('commands.userinfo.page.1')} (${t('commands.userinfo.pageText', currentPage, totalPage)})`
+      `${t('commands.userinfo.page.' + currentPage)} (${t('commands.userinfo.pageText', currentPage, totalPage)})`
   }
 }
 

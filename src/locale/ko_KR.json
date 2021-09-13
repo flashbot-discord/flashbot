@@ -107,8 +107,19 @@
           "forNextLevel": "다음 레벨까지 `{{requiredBoost}}`개 남음 ({{currentBoost}} / {{boostForNextLevel}})",
           "maxLevel": "최대 레벨 도달!"
         },
-        "title": "서버 부스트 `{{boost}}`개"
-      }
+        "title": {
+          "one": "서버 부스트 `%1$d`개",
+          "other": "서버 부스트 `%1$d`개"
+        }
+      },
+      "page": {
+        "1": "기본 정보",
+        "2": "서버 역할",
+        "3": "서버 이모지"
+      },
+      "pageText": "페이지 %1$d/%2$d",
+      "roleCount": "역할 개수",
+      "emojiCount": "이모지 개수"
     },
     "userinfo": {
       "DESC": "사용자 정보를 보여줍니다.",
