@@ -1,6 +1,6 @@
 const canSendEmbed = (user, channel) => {
-  if (channel.type === 'dm') return true
-  else if (channel.type !== 'text') return null
+  if (channel.type === 'DM') return true
+  else if (channel.type !== 'GUILD_TEXT') return null
 
   return channel.permissionsFor(user).has('EMBED_LINKS')
 }

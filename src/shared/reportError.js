@@ -13,7 +13,7 @@ module.exports = async (err, msg, t, logPos) => {
   const { id, token, enable, mentionOwner } = client.config.errorWebhook
   if (!enable) return
 
-  const webhookClient = new WebhookClient(id, token)
+  const webhookClient = new WebhookClient({ id, token })
 
   const errStack = err.stack.length > 4000 ? (err.stack.slice(0, 4000) + '...') : err.stack
   const msgContent = msg.content.length > 1500 ? (msg.content.slice(0, 1500) + '...') : msg.content

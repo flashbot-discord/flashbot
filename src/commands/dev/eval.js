@@ -76,7 +76,7 @@ class EvalCommand extends Command {
         .addField(t('commands.eval.output'), '```js\n' + result + '\n```')
       embed.setColor(error.occured ? 'RED' : 'GREEN')
 
-      return m.edit({ content: '', embeds: [embed] })
+      return m.edit({ content: '\u200b', embeds: [embed] })
     } else {
       const _str = str.length > 150 ? str.slice(0, 150) + moreText : str
       const _result = result.length > 1750 ? result.slice(0, 1750) + moreText : result

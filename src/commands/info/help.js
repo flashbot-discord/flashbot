@@ -45,7 +45,6 @@ class HelpCommand extends Command {
         return text
       }
 
-      let mainData
       if (useEmbed) {
         const footerText = t('commands.help.footer', client.VERSION)
 
@@ -63,7 +62,7 @@ class HelpCommand extends Command {
         })
 
         mainEmbed.addField(t('commands.help.links.TITLE'), makeLinkText())
-        mainData = mainEmbed
+        await msg.channel.send({ embeds: [mainEmbed] })
       } else {
         const title = t('commands.help.title')
         const desc = t('commands.help.firstMsg', {
@@ -78,10 +77,9 @@ class HelpCommand extends Command {
           cmdListText += `__${t(`commandGroup.${group}`)}__\n` + `\`${cmdList.join('`, `')}\`\n`
         })
 
-        mainData = `**${title}**\n\n${desc}\n\n${cmdListText}\n${linkText}`
+        const finalText = `**${title}**\n\n${desc}\n\n${cmdListText}\n${linkText}`
+        await msg.channel.send(finalText)
       }
-
-      msg.channel.send(mainData)
 
       /*
       // FIXME: Not working on embed-unable channel
@@ -181,7 +179,6 @@ class HelpCommand extends Command {
       const usageTxt = t('commands.help.cmdhelp.usage')
       const usage = makeCommandUsage(msg, cmd, fakeQueryObj, t)
 
-      let output
       if (useEmbed) {
         const embed = new MessageEmbed()
           .setTitle(titleTxt)
@@ -190,8 +187,7 @@ class HelpCommand extends Command {
           .addField(requiredBotPermsTxt, botPermsText, true)
           .addField(requiredUserPermsTxt, userPermsText, true)
           .addField(usageTxt, `\`\`\`\n${usage}\n\`\`\``)
-
-        output = embed
+        await msg.channel.send({ embeds: [embed] })
       } else {
         const str =
 `**${titleTxt}**
@@ -204,11 +200,8 @@ ${requiredUserPermsTxt}: ${userPermsText}
 \`\`\`
 ${usage}
 \`\`\``
-
-        output = str
+        await msg.channel.send(str)
       }
-
-      msg.channel.send(output)
     }
   }
 }
