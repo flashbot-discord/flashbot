@@ -42,7 +42,7 @@ class UserInfoCommand extends Command {
   }
 
   async run (client, msg, query, { t }) {
-    const m = await msg.channel.send('Loading...')
+    const m = await msg.reply('Loading...')
 
     const data = []
     const user = query.args.user ?? msg.author

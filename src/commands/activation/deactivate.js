@@ -41,8 +41,8 @@ class DeactivateCommand extends Command {
       } else return false
     }
 
-    const botMsg = await msg.channel.send(t('commands.deactivate.title') + '\n\n' +
-      t('commands.deactivate.content', client.config.prefix) + '\n\n' +
+    const botMsg = await msg.channel.send(`${t('commands.deactivate.title')}\n\n` +
+      `${t('commands.deactivate.content', client.config.prefix)}\n\n` +
       t('commands.deactivate.confirm')
     )
 

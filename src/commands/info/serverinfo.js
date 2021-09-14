@@ -52,7 +52,7 @@ class ServerInfoCommand extends Command {
     const { guild } = msg
     const useEmbed = canSendEmbed(client.user, msg.channel)
 
-    const m = await msg.channel.send('Loading...')
+    const m = await msg.reply('Loading...')
 
     // page 1
     const members = await guild.members.fetch()

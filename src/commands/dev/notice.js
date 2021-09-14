@@ -30,7 +30,7 @@ class NoticeCommand extends Command {
       .setTitle(':loudspeaker: ' + t('commands.notice.previewEmbed.title'))
       .setDescription(text)
 
-    const botMsg = await msg.reply({ content: t('commands.notice.confirm'), embed })
+    const botMsg = await msg.reply({ content: t('commands.notice.confirm'), embeds: [embed] })
 
     botMsg.react('✅')
     botMsg.react('❌')

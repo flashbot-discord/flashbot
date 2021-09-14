@@ -40,7 +40,7 @@ class SayCommand extends Command {
           .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
           .setFooter(t('commands.say.embedFooter'))
           .setDescription(str)
-        msg.channel.send(embed)
+        msg.channel.send({ embeds: [embed] })
       } else msg.channel.send(t('commands.say.say', str, msg.author.tag))
     }
   }

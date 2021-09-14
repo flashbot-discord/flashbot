@@ -43,8 +43,8 @@ class ActivateCommand extends Command {
       } else return false
     }
 
-    const botMsg = await msg.channel.send(t('commands.activate.title') + '\n\n' +
-      t('commands.activate.content') + '\n\n' +
+    const botMsg = await msg.channel.send(`${t('commands.activate.title')}\n\n` +
+      `${t('commands.activate.content')}\n\n` +
       t('commands.activate.confirm')
     )
 

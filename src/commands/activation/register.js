@@ -40,8 +40,8 @@ class RegisterCommand extends Command {
       } else return false
     }
 
-    const botMsg = await msg.channel.send(t('commands.register.title') + '\n\n' +
-      t('commands.register.content') + '\n\n' +
+    const botMsg = await msg.channel.send(`${t('commands.register.title')}\n\n` +
+      `${t('commands.register.content')}\n\n` +
       t('commands.register.confirm'))
 
     try {

@@ -54,7 +54,7 @@ class ExecuteCommand extends Command {
         .addField(t('commands.exec.output'), '```\n' + result + '\n```')
       embed.setColor(error ? 'RED' : 'GREEN')
 
-      return m.edit({ content: '', embed })
+      return m.edit({ content: '', embeds: [embed] })
     } else {
       const _str = str.length > 150 ? str.slice(0, 150) + moreText : str
       const _result = result.length > 1750 ? result.slice(0, 1750) + moreText : result

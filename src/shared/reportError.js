@@ -34,5 +34,5 @@ module.exports = async (err, msg, t, logPos) => {
     ? '\u200b'
     : ownerList.reduce((acc, cur) => acc + `<@${cur}> `, '')
 
-  webhookClient.send(ownersPing, { embeds: [embed] })
+  webhookClient.send({ content: ownersPing, embeds: [embed] })
 }

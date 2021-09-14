@@ -45,7 +45,7 @@ module.exports = async (msg, t, noticeText) => {
     else if (preferredChannel2) channel = preferredChannel2
     else continue
 
-    await channel.send(embed)
+    await channel.send({ embeds: [embed] })
     await wait()
   }
 }
