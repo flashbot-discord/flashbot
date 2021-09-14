@@ -93,9 +93,9 @@ class BotClient extends Client {
 
   set onlineMode (mode) {
     this.user.setPresence({
-      activity: {
+      activities: [{
         name: mode ? `${this.config.prefix}help | ${this.VERSION}` : '점검중 Under maintenance'
-      },
+      }],
       status: mode ? 'online' : 'dnd'
     })
     this._onlineMode = mode
