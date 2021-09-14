@@ -1,4 +1,5 @@
-const { MessageEmbed } = require('discord.js')
+const { MessageButton } = require('discord.js')
+const { MessageEmbed, MessageActionRow } = require('discord.js')
 
 const EMOJIS = require('../shared/emojis')
 
@@ -7,117 +8,145 @@ class Paginator {
     this._client = client
     this.msg = msg
     this.contents = options.contents || ['']
-    this.timeout = options.timeout || 30000
+    this.timeout = options.timeout || 60000 // 1 minute
     this.ctrlUser = options.userID || ''
     this.page = 0
     this.keepRun = true
     this.messageOptions = options.messageOptions || {}
 
-    if (!options.emojis) {
-      this.reactions = new Map([
-        ['first', EMOJIS.track_previous],
-        ['prev', EMOJIS.arrow_backward],
-        ['stop', EMOJIS.stop_button],
-        ['next', EMOJIS.arrow_forward],
-        ['last', EMOJIS.track_next]
-      ])
-    }
+    this.buttonActions = new Map([
+      ['first', EMOJIS.track_previous],
+      ['prev', EMOJIS.arrow_backward],
+      ['stop', EMOJIS.stop_button],
+      ['next', EMOJIS.arrow_forward],
+      ['last', EMOJIS.track_next]
+    ])
   }
 
-  emojiChecker (reaction, user) {
+  validateUser (interaction) {
+    const { user } = interaction
+
     if (user.bot || user.id !== this.ctrlUser) return false
-    if (reaction.message.id !== this.msg.id) return false
-    if (Array.from(this.reactions.values()).find((r) => r === reaction.emoji.toString())) return true
-    return false
+    return true
   }
 
   async start () {
-    this.update()
+    const buttons = []
+    for (const id of this.buttonActions.keys()) {
+      const btn = new MessageButton()
+        .setCustomId(id)
+        .setLabel(this.buttonActions.get(id))
+        .setStyle('PRIMARY')
+      buttons.push(btn)
+    }
+    const buttonRow = new MessageActionRow()
+    buttonRow.addComponents(...buttons)
 
-    await Array.from(this.reactions.values()).asyncForEach(async (r) => await this.msg.react(r))
+    this.buttonRow = buttonRow
 
-    while (this.keepRun) {
-      const result = await this.msg.awaitReactions(this.emojiChecker.bind(this), {
-        time: this.timeout,
-        max: 1
+    // send message on start only. after that use button interaction.
+    if (this.contents[this.page] instanceof MessageEmbed) {
+      await this.msg.edit({
+        ...this.messageOptions,
+        content: '\u200b',
+        embeds: [this.contents[this.page]],
+        components: [buttonRow]
       })
-
-      if (result.size > 0) {
-        this.run(result)
-      } else this.keepRun = false
+    } else {
+      await this.msg.edit({
+        ...this.messageOptions,
+        content: this.contents[this.page],
+        components: [buttonRow]
+      })
     }
 
-    this.stop()
+    let interaction
+    while (this.keepRun) {
+      try {
+        console.log('before collect')
+        interaction = await this.msg.awaitMessageComponent({
+          time: this.timeout
+        })
+        console.log('after collect')
+      } catch (e) {
+        return console.error(e)
+      }
+
+      if (!this.validateUser(interaction)) {
+        await interaction.reply({ content: 'asdf', ephemeral: true })
+        continue
+      }
+
+      if (interaction) await this.run(interaction)
+      else this.keepRun = false
+    }
+
+    this.stop(interaction)
   }
 
-  async run (reactions) {
-    const sel = reactions.first()
-    const find = Array.from(this.reactions.entries())
-      .find((r) => r[1] === sel.emoji.toString())[0]
-
-    switch (find) {
+  async run (interaction) {
+    switch (interaction.customId) {
       case 'first':
         if (this.page > 0) {
           this.page = 0
-          this.update()
         }
+
+        await this.update(interaction)
         break
 
       case 'prev':
-        if (this.page < 1) break
-
-        this.page--
-        this.update()
+        if (this.page >= 1) this.page--
+        await this.update(interaction)
         break
 
       case 'stop':
-        this.stop()
+        this.keepRun = false // this.stop() will handle interaction updates
         return
 
       case 'next':
-        if (this.page >= this.contents.length - 1) break
-
-        this.page++
-        this.update()
+        if (this.page < this.contents.length - 1) this.page++
+        await this.update(interaction)
         break
 
       case 'last':
         if (this.page < this.contents.length - 1) {
           this.page = this.contents.length - 1
-          this.update()
         }
-    }
 
-    if (canManageReactions(this.msg)) {
-      const users = await sel.users.fetch()
-      Array.from(users.keys())
-        .filter((id) => id !== this._client.user.id)
-        .forEach((userid) => {
-          sel.users.remove(userid)
-        })
+        await this.update(interaction)
     }
   }
 
-  update () {
-    if (this.contents[this.page] instanceof MessageEmbed) this.msg.edit({ ...this.messageOptions, content: '', embeds: [this.contents[this.page]] })
-    else this.msg.edit(this.contents[this.page], this.messageOptions)
-  }
-
-  stop () {
-    this.keepRun = false
-
-    if (canManageReactions(this.msg)) this.msg.reactions.removeAll()
-    else {
-      const botReactions = this.msg.reactions.cache.filter((r) => Array.from(this.reactions.values()).includes(r.emoji.toString()))
-      botReactions.forEach((r) => {
-        r.users.remove(this._client.user)
+  // triggiered via button
+  async update (interaction) {
+    if (this.contents[this.page] instanceof MessageEmbed) {
+      await interaction.update({
+        ...this.messageOptions,
+        embeds: [this.contents[this.page]]
+      })
+    } else {
+      await interaction.update({
+        ...this.messageOptions,
+        content: this.contents[this.page]
       })
     }
   }
-}
 
-function canManageReactions (msg) {
-  return msg.guild && msg.channel.permissionsFor(msg.client.user).has('MANAGE_MESSAGES')
+  async stop (interaction) {
+    this.keepRun = false
+
+    if (this.contents[this.page] instanceof MessageEmbed) {
+      await interaction.update({
+        ...this.messageOptions,
+        components: []
+      })
+    } else {
+      await interaction.update({
+        ...this.messageOptions,
+        components: []
+      })
+    }
+  }
 }
 
 module.exports = Paginator

@@ -1,5 +1,6 @@
 const { inspect } = require('util')
 
+const Paginator = require('../../structures/Paginator')
 const Command = require('../_Command')
 const { parsePeriod } = require('../../shared')
 
@@ -21,7 +22,7 @@ class TestCommand extends Command {
         key: 'cmd',
         type: 'string',
         optional: false,
-        oneOf: ['parseperiod']
+        oneOf: ['parseperiod'] // not working yet
       }
     }
     returnObj.cmd = cmd
@@ -42,7 +43,7 @@ class TestCommand extends Command {
     return returnObj
   }
 
-  async run (_client, msg, query, _) {
+  async run (client, msg, query, _) {
     // Enter your code to test
     const cmd = query.args.cmd
 
@@ -55,6 +56,21 @@ class TestCommand extends Command {
 \`\`\`
 ${inspect(result)}
 \`\`\``)
+
+        break
+      }
+
+      case 'pagetest': {
+        const m = await msg.channel.send('Loading...')
+        const pg = new Paginator(client, m, {
+          contents: [
+            'Page 1/2\nhello',
+            'Page 2/2\nworld',
+            'Page 3/2\nTHIS IS THE SECRET PAGE HAHA'
+          ],
+          userID: msg.author.id
+        })
+        pg.start()
       }
     }
   }
