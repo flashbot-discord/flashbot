@@ -35,8 +35,8 @@ class Paginator {
     for (const id of this.buttonActions.keys()) {
       const btn = new MessageButton()
         .setCustomId(id)
-        .setLabel(this.buttonActions.get(id))
-        .setStyle('PRIMARY')
+        .setEmoji(this.buttonActions.get(id))
+        .setStyle('SECONDARY')
       buttons.push(btn)
     }
     const buttonRow = new MessageActionRow()
@@ -63,14 +63,10 @@ class Paginator {
     let interaction
     while (this.keepRun) {
       try {
-        console.log('before collect')
         interaction = await this.msg.awaitMessageComponent({
           time: this.timeout
         })
-        console.log('after collect')
-      } catch (e) {
-        return console.error(e)
-      }
+      } catch {}
 
       if (!this.validateUser(interaction)) {
         await interaction.reply({ content: 'asdf', ephemeral: true })
