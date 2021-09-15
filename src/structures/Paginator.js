@@ -66,7 +66,9 @@ class Paginator {
         interaction = await this.msg.awaitMessageComponent({
           time: this.timeout
         })
-      } catch {}
+      } catch {
+        break
+      }
 
       if (!this.validateUser(interaction)) {
         await interaction.reply({ content: 'asdf', ephemeral: true })
@@ -77,7 +79,7 @@ class Paginator {
       else this.keepRun = false
     }
 
-    this.stop(interaction)
+    this.stop(this.msg)
   }
 
   async run (interaction) {
@@ -128,20 +130,13 @@ class Paginator {
     }
   }
 
-  async stop (interaction) {
+  async stop (botMsg) {
     this.keepRun = false
 
-    if (this.contents[this.page] instanceof MessageEmbed) {
-      await interaction.update({
-        ...this.messageOptions,
-        components: []
-      })
-    } else {
-      await interaction.update({
-        ...this.messageOptions,
-        components: []
-      })
-    }
+    await botMsg.edit({
+      ...this.messageOptions,
+      components: []
+    })
   }
 }
 
