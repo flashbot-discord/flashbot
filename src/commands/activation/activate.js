@@ -1,3 +1,5 @@
+const { MessageActionRow, MessageButton } = require('discord.js')
+
 const Command = require('../_Command')
 const ClientError = require('../../structures/ClientError')
 const database = require('../../database')
@@ -21,60 +23,65 @@ class ActivateCommand extends Command {
     const isActivated = await database.guilds.isActivated(client.db, msg.guild.id)
     if (isActivated) return msg.reply(t('commands.activate.alreadyActivated'))
 
-    let result
-    let done = false
-
-    const mcFilter = (m) => {
-      if (m.author.id === msg.author.id) {
-        const content = m.content.toLowerCase()
-        if (content !== 'yes' && content !== 'no') return false
-        else if (content === 'yes') result = true
-        else if (content === 'no') result = false
-        return true
-      } else return false
-    }
-
-    const rcFilter = (reaction, user) => {
-      if (user.id === msg.author.id) {
-        if (reaction.emoji.name !== EMOJIS.white_check_mark && reaction.emoji.name !== EMOJIS.x) return false
-        else if (reaction.emoji.name === EMOJIS.white_check_mark) result = true
-        else if (reaction.emoji.name === EMOJIS.x) result = false
-        return true
-      } else return false
-    }
-
-    const botMsg = await msg.channel.send(`${t('commands.activate.title')}\n\n` +
-      `${t('commands.activate.content')}\n\n` +
-      t('commands.activate.confirm')
+    const buttonRow = new MessageActionRow().addComponents(
+      new MessageButton()
+        .setCustomId('yes')
+        .setLabel(t('commands.activate.buttons.yes'))
+        .setEmoji(EMOJIS.white_check_mark)
+        .setStyle('SUCCESS'),
+      new MessageButton()
+        .setCustomId('no')
+        .setLabel(t('commands.activate.buttons.no'))
+        .setEmoji(EMOJIS.x)
+        .setStyle('DANGER')
     )
 
-    try {
-      await botMsg.react(EMOJIS.white_check_mark)
-      await botMsg.react(EMOJIS.x)
-    } catch (err) {
-      msg.channel.send(t('commands.activate.reactFail', client.locale.t('perms.ADD_REACTIONS')))
+    const botMsg = await msg.reply({
+      content: `${t('commands.activate.title')}\n\n` +
+        t('commands.activate.content'),
+      components: [buttonRow]
+    })
+
+    const filterFn = (interaction, t) => {
+      const { user } = interaction
+
+      if (user.bot || user.id !== msg.author.id) {
+        return interaction.reply({
+          content: t('commands.activate.notExecutor'),
+          ephemeral: true
+        })
+      }
+      return true
     }
 
-    const pend = async (c) => {
-      if (done) return
+    let interaction
+    try {
+      interaction = await botMsg.awaitMessageComponent({
+        filter: (i) => filterFn(i, t),
+        time: 30000
+      })
+    } catch {}
 
-      if (c.size > 0 && result) {
-        await this.agree(msg, t)
-      } else {
-        this.deny(msg, t)
+    await botMsg.edit({
+      components: []
+    })
+    if (!interaction) return
+
+    switch (interaction.customId) {
+      case 'yes': {
+        await this.agree(interaction, t)
+        break
       }
 
-      done = true
+      case 'no': {
+        await this.deny(interaction, t)
+        break
+      }
     }
-
-    // Message Collector
-    msg.channel.awaitMessages(mcFilter, { time: 15000, max: 1 }).then(pend)
-
-    // Reaction Collector
-    botMsg.awaitReactions(rcFilter, { time: 15000, max: 1 }).then(pend)
   }
 
-  async agree (msg, t) {
+  async agree (interaction, t) {
+    const msg = interaction.message
     const loggerFn = logger.extend('agree')
 
     // Activation
@@ -87,11 +94,11 @@ class ActivateCommand extends Command {
 
     // Done!
     loggerFn.log(`[Server Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
-    msg.channel.send(t('commands.activate.agree'))
+    await interaction.reply(t('commands.activate.agree'))
   }
 
-  deny (msg, t) {
-    msg.channel.send(t('commands.activate.deny'))
+  async deny (interaction, t) {
+    await interaction.reply(t('commands.activate.deny'))
   }
 
   async dbHandle (dbHandler, guildID) {

@@ -239,22 +239,28 @@
     },
     "activate": {
       "title": "Activate **FlashBot**",
-      "confirm": "React with :white_check_mark: or type `Yes` to agree, otherwise react with :x: or type `No` to deny.",
       "deny": "Bot Activation cancelled.",
       "agree": "Thank you! You agreed with our Terms of Service and Privacy Policy. The Bot is now activated on this server.",
-      "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
       "content": "Some features of **Flashbot** need to store some server information to our database. You need to agree for this to activate the bot on this server.",
       "DESC": "Activate this bot on the server",
-      "alreadyActivated": "This bot is already activated on this server."
+      "alreadyActivated": "This bot is already activated on this server.",
+      "buttons": {
+        "yes": "Activate",
+        "no": "Cancel"
+      },
+      "notExecutor": "Only the command executor can press the button."
     },
     "deactivate": {
       "title": "Deactivate **FlashBot**",
       "content": "You're now going to deactivate FlashBot on this server. Some of the features which uses the stored information related to this server will be disabled. You can re-activate using the `%1$sactivate` command. **(Note: The actual data will not be deleted when deactivated. Please contact us in the Support Server if you want to delete the data.)**",
-      "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
       "agree": "The bot is now deactivated in this server. To reactivate, use the `%1$sactivate` command.",
       "deny": "Bot deactivation cancelled.",
-      "reactFail": "The Bot does not have `%1$s` permission, so the bot could not add reaction.\nPlease enter response via text, or add reaction manually.",
-      "DESC": "Deactivate this bot on the server"
+      "DESC": "Deactivate this bot on the server",
+      "buttons": {
+        "yes": "Deactivate",
+        "no": "Cancel"
+      },
+      "notExecutor": "Only the command executor can press the button."
     },
     "load": {
       "error": "An Error occured when loading the command: %1$s",
