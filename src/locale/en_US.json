@@ -338,12 +338,14 @@
     "register": {
       "title": "Flashbot user registration",
       "content": "We need to register your information to the bot. If you agree, you can register.",
-      "confirm": "React with :white_check_mark: or type `Yes` to confirm deactivation, otherwise react with :x: or type `No` to cancel.",
       "deny": "User registration cancelled.",
       "DESC": "Register you as a Flashbot user.",
       "agree": "commands.register.agree",
-      "reactFail": "commands.register.reactFail",
-      "alreadyRegistered": "Already registered as a user."
+      "alreadyRegistered": "Already registered as a user.",
+      "buttons": {
+        "yes": "Register",
+        "no": "Cancel"
+      }
     },
     "generate-bot-invite": {
       "noArgs": "Enter the bot `@mention` or its ID after the command to generate bot invite link.",
