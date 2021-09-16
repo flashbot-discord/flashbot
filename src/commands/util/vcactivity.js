@@ -5,6 +5,16 @@ const ALIASES = {
   yt: 'youtube',
   유튜브: 'youtube',
 
+  'youtube-dev': 'youtube_dev',
+  youtube_dev: 'youtube_dev',
+  ytdev: 'youtube_dev',
+  유튜브개발: 'youtube_dev',
+
+  'youtube-legacy': 'ytlegacy',
+  youtube_legacy: 'ytlegacy',
+  ytlegacy: 'ytlegacy',
+  구유튜브: 'ytlegacy',
+
   betrayal: 'betrayal',
 
   fishington: 'fishington',
@@ -22,6 +32,14 @@ const ALIASES = {
 const APP = {
   youtube: {
     name: 'Youtube Together',
+    id: '880218394199220334'
+  },
+  youtube_dev: {
+    name: 'Youtube Together (dev)',
+    id: '880218832743055411'
+  },
+  ytlegacy: {
+    name: 'Youtube Together (legacy)',
     id: '755600276941176913'
   },
   betrayal: {
