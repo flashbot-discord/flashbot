@@ -1,5 +1,4 @@
-const { MessageButton } = require('discord.js')
-const { MessageEmbed, MessageActionRow } = require('discord.js')
+const { MessageButton, MessageEmbed, MessageActionRow } = require('discord.js')
 
 const EMOJIS = require('../shared/emojis')
 
@@ -30,19 +29,46 @@ class Paginator {
     return true
   }
 
-  async start () {
-    const buttons = []
-    for (const id of this.buttonActions.keys()) {
-      const btn = new MessageButton()
-        .setCustomId(id)
-        .setEmoji(this.buttonActions.get(id))
-        .setStyle('SECONDARY')
-      buttons.push(btn)
-    }
-    const buttonRow = new MessageActionRow()
-    buttonRow.addComponents(...buttons)
+  generateMessageComponent () {
+    const firstBtn = new MessageButton()
+      .setCustomId('first')
+      .setLabel('1')
+      .setEmoji(EMOJIS.track_previous)
+      .setStyle('SECONDARY')
+    const previousBtn = new MessageButton()
+      .setCustomId('prev')
+      .setEmoji(EMOJIS.arrow_backward)
+      .setStyle('SECONDARY')
+    const stopBtn = new MessageButton()
+      .setCustomId('stop')
+      .setLabel(`${this.page + 1}`)
+      .setEmoji(EMOJIS.stop_button)
+      .setStyle('DANGER')
+    const nextBtn = new MessageButton()
+      .setCustomId('next')
+      .setEmoji(EMOJIS.arrow_forward)
+      .setStyle('SECONDARY')
+    const lastBtn = new MessageButton()
+      .setCustomId('last')
+      .setLabel(`${this.contents.length}`)
+      .setEmoji(EMOJIS.track_next)
+      .setStyle('SECONDARY')
 
-    this.buttonRow = buttonRow
+    if (this.page === 0) firstBtn.setDisabled(true)
+    if (this.page === this.contents.length - 1) lastBtn.setDisabled(true)
+
+    const row = new MessageActionRow().addComponents(
+      firstBtn,
+      previousBtn,
+      stopBtn,
+      nextBtn,
+      lastBtn
+    )
+    return row
+  }
+
+  async start () {
+    const components = this.generateMessageComponent()
 
     // send message on start only. after that use button interaction.
     if (this.contents[this.page] instanceof MessageEmbed) {
@@ -50,13 +76,13 @@ class Paginator {
         ...this.messageOptions,
         content: '\u200b',
         embeds: [this.contents[this.page]],
-        components: [buttonRow]
+        components: [components]
       })
     } else {
       await this.msg.edit({
         ...this.messageOptions,
         content: this.contents[this.page],
-        components: [buttonRow]
+        components: [components]
       })
     }
 
@@ -117,15 +143,19 @@ class Paginator {
 
   // triggiered via button
   async update (interaction) {
+    const newComponents = this.generateMessageComponent()
+
     if (this.contents[this.page] instanceof MessageEmbed) {
       await interaction.update({
         ...this.messageOptions,
-        embeds: [this.contents[this.page]]
+        embeds: [this.contents[this.page]],
+        components: [newComponents]
       })
     } else {
       await interaction.update({
         ...this.messageOptions,
-        content: this.contents[this.page]
+        content: this.contents[this.page],
+        components: [newComponents]
       })
     }
   }
