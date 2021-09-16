@@ -1,3 +1,5 @@
+const { MessageActionRow, MessageButton } = require('discord.js')
+
 const Command = require('../_Command')
 const ClientError = require('../../structures/ClientError')
 const database = require('../../database')
@@ -18,78 +20,85 @@ class RegisterCommand extends Command {
     const isRegistered = await database.users.isRegistered(client.db, msg.author.id)
     if (isRegistered) return msg.reply(t('commands.register.alreadyRegistered'))
 
-    let result
-    let done = false
+    const buttonRow = new MessageActionRow().addComponents(
+      new MessageButton()
+        .setCustomId('yes')
+        .setLabel(t('commands.register.buttons.yes'))
+        .setEmoji(EMOJIS.white_check_mark)
+        .setStyle('SUCCESS'),
+      new MessageButton()
+        .setCustomId('no')
+        .setLabel(t('commands.register.buttons.no'))
+        .setEmoji(EMOJIS.x)
+        .setStyle('DANGER')
+    )
 
-    const mcFilter = (m) => {
-      if (m.author.id === msg.author.id) {
-        const content = m.content.toLowerCase()
-        if (content !== 'yes' && content !== 'no') return false
-        else if (content === 'yes') result = true
-        else if (content === 'no') result = false
-        return true
-      } else return false
+    const botMsg = await msg.reply({
+      content: `${t('commands.register.title')}\n\n` +
+        t('commands.register.content'),
+      components: [buttonRow]
+    })
+
+    const filterFn = (interaction, t) => {
+      const { user } = interaction
+
+      if (user.bot || user.id !== msg.author.id) {
+        return interaction.reply({
+          content: t('commands.register.notExecutor'),
+          ephemeral: true
+        })
+      }
+      return true
     }
 
-    const rcFilter = (reaction, user) => {
-      if (user.id === msg.author.id) {
-        if (reaction.emoji.name !== EMOJIS.white_check_mark && reaction.emoji.name !== EMOJIS.x) return false
-        else if (reaction.emoji.name === EMOJIS.white_check_mark) result = true
-        else if (reaction.emoji.name === EMOJIS.x) result = false
-        return true
-      } else return false
-    }
-
-    const botMsg = await msg.channel.send(`${t('commands.register.title')}\n\n` +
-      `${t('commands.register.content')}\n\n` +
-      t('commands.register.confirm'))
-
+    let interaction
     try {
-      await botMsg.react(EMOJIS.white_check_mark)
-      await botMsg.react(EMOJIS.x)
-    } catch (err) {
-      msg.channel.send(t('commands.register.reactFail', t('perms.ADD_REACTIONS')))
-    }
+      interaction = await botMsg.awaitMessageComponent({
+        filter: (i) => filterFn(i, t),
+        time: 30000
+      })
+    } catch {}
 
-    const pend = async (c) => {
-      if (done) return
+    await botMsg.edit({
+      components: []
+    })
+    if (!interaction) return
 
-      if (c.size > 0 && result) {
-        await this.agree(msg, t)
-      } else {
-        this.deny(msg, t)
+    switch (interaction.customId) {
+      case 'yes': {
+        await this.agree(interaction, t)
+        break
       }
 
-      done = true
+      case 'no': {
+        await this.deny(interaction, t)
+        break
+      }
     }
-
-    // Message Collector
-    msg.channel.awaitMessages(mcFilter, { time: 15000, max: 1 }).then(pend)
-
-    // Reaction Collector
-    botMsg.awaitReactions(rcFilter, { time: 15000, max: 1 }).then(pend)
   }
 
-  async agree (msg, t) {
+  async agree (interaction, t) {
+    const { user, member } = interaction
     const loggerFn = logger.extend('agree')
 
     // Activation
     try {
       await database.users.register(this._client.db, {
-        id: msg.author.id
+        id: user.id
       })
     } catch (err) {
       const e = new ClientError(err)
-      e.report(msg, t, 'cmd:register.agree')
+      // TODO: interaction.message user field is bot, needs to change
+      e.report(interaction.message, t, 'cmd:register.agree')
     }
 
     // Done!
-    loggerFn.log(`[User Registration] ${msg.author.tag} (${msg.member.nickname}) has been registered`)
-    msg.channel.send(t('commands.register.agree', this._client.config.prefix))
+    loggerFn.log(`[User Registration] ${user.tag} (${member?.nickname}) has been registered`)
+    await interaction.reply(t('commands.register.agree', this._client.config.prefix))
   }
 
-  deny (msg, t) {
-    msg.channel.send(t('commands.register.deny'))
+  async deny (interaction, t) {
+    await interaction.reply(t('commands.register.deny'))
   }
 }
 
