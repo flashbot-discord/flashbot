@@ -81,7 +81,7 @@ class ActivateCommand extends Command {
   }
 
   async agree (interaction, t) {
-    const msg = interaction.message
+    const { user, member, message: msg } = interaction
     const loggerFn = logger.extend('agree')
 
     // Activation
@@ -93,7 +93,7 @@ class ActivateCommand extends Command {
     }
 
     // Done!
-    loggerFn.log(`[Server Activation] ${msg.author.tag} (${msg.member.nickname}) activated the bot in ${msg.guild.name}`)
+    loggerFn.log(`[Server Activation] ${user.tag} (${member?.nickname}}) activated the bot in ${msg.guild.name}`)
     await interaction.reply(t('commands.activate.agree'))
   }
 

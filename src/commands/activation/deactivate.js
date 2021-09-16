@@ -79,7 +79,7 @@ class DeactivateCommand extends Command {
   }
 
   async agree (interaction, t) {
-    const msg = interaction.message
+    const { user, member, message: msg } = interaction
     const loggerFn = logger.extend('agree')
 
     // Deactivation
@@ -91,7 +91,7 @@ class DeactivateCommand extends Command {
     }
 
     // Done!
-    loggerFn.log(`[Server Deactivation] ${msg.author.tag} (${msg.member.nickname}) deactivated the bot in ${msg.guild.name}`)
+    loggerFn.log(`[Server Deactivation] ${user.tag} (${member.nickname}) deactivated the bot in ${msg.guild.name}`)
     await interaction.reply(t('commands.deactivate.agree', this._client.config.prefix))
   }
 
