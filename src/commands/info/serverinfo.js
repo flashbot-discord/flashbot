@@ -4,7 +4,6 @@
  */
 
 const { MessageEmbed } = require('discord.js')
-const moment = require('moment-timezone')
 
 const Command = require('../_Command')
 const Paginator = require('../../structures/Paginator')
@@ -79,9 +78,8 @@ class ServerInfoCommand extends Command {
     const is2FAReqOn = guild.mfaLevel === 1
     const twoFARequireForModText = `${is2FAReqOn ? ':white_check_mark:' : ':x:'} ${t(`commands.serverinfo.2faRequireForMod.value.${is2FAReqOn ? 'enabled' : 'disabled'}`)} (\`${guild.mfaLevel}\`)`
 
-    const createdAt = moment(guild.createdAt)
-      .tz('Asia/Seoul')
-      .format(t('commands.serverinfo.createdAt.value'))
+    const createdAt = Math.floor(guild.createdAt.getTime() / 1000)
+    const createdAtText = `<t:${createdAt}:R>`
 
     const serverBoostLevelArr = [2, 7, 14, null]
     const currentServerBoost = guild.premiumSubscriptionCount
@@ -143,7 +141,7 @@ class ServerInfoCommand extends Command {
         .addField(`${EMOJI.lock} ${sharedText['2faRequireForMod']}`, twoFARequireForModText)
         .addField(`${EMOJI.person} ${sharedText.memberCount}`, memberCountText, true)
         .addField(`${EMOJI.tv} ${sharedText.channelCount}`, channelCountText, true)
-        .addField(`${EMOJI.createdAt} ${sharedText.createdAt}`, createdAt)
+        .addField(`${EMOJI.createdAt} ${sharedText.createdAt}`, createdAtText)
         .addField(`${EMOJI.boost} ${sharedText.boost}`, serverBoostText)
       data.push(embed1)
 
@@ -180,7 +178,7 @@ class ServerInfoCommand extends Command {
         `**${EMOJI.lock} ${sharedText['2faRequireForMod']}**: ${twoFARequireForModText}\n\n` +
         `**${EMOJI.person} ${sharedText.memberCount}**\n${memberCountText_}\n\n` +
         `**${EMOJI.tv} ${sharedText.channelCount}**\n${channelCountText_}\n\n` +
-        `**${EMOJI.createdAt} ${sharedText.createdAt}**: ${createdAt}\n` +
+        `**${EMOJI.createdAt} ${sharedText.createdAt}**: ${createdAtText}\n` +
         `**${EMOJI.boost} ${sharedText.boost}**: ${serverBoostText}`
       data.push(page1)
 
