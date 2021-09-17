@@ -84,6 +84,14 @@
           "newsChannelCount": {
             "one": "공지 채널 `%d`개",
             "other": "공지 채널 `%d`개"
+          },
+          "storeChannelCount": {
+            "one": "스토어 채널 `%d`개",
+            "other": "스토어 채널 `%d`개"
+          },
+          "stageCount": {
+            "one": "스테이지 채널 `%d`개",
+            "other": "스테이지 채널 `%d`개"
           }
         }
       },
@@ -118,7 +126,27 @@
       },
       "pageText": "페이지 %1$d/%2$d",
       "roleCount": "역할 개수",
-      "emojiCount": "이모지 개수"
+      "emojiCount": "이모지 개수",
+      "threadCount": {
+        "value": {
+          "publicThreadCount": {
+            "one": "공개 스레드 `%d`개",
+            "other": "공개 스레드 `%d`개"
+          },
+          "privateThreadCount": {
+            "one": "비공개 스레드 `%d`개",
+            "other": "비공개 스레드 `%d`개"
+          },
+          "newsThreadCount": {
+            "one": "뉴스 스레드 `%d`개",
+            "other": "뉴스 스레드 `%d`개"
+          }
+        },
+        "title": {
+          "one": "서버 내 활성 스레드 `%d`개",
+          "other": "서버 내 활성 스레드 `%d`개"
+        }
+      }
     },
     "userinfo": {
       "DESC": "사용자 정보를 보여줍니다.",

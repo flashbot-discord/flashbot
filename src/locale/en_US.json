@@ -84,6 +84,14 @@
           "newsChannelCount": {
             "one": "`%d` announcement channel",
             "other": "`%d` announcement channels"
+          },
+          "storeChannelCount": {
+            "one": "`%d` store channel",
+            "other": "`%d` store channels"
+          },
+          "stageCount": {
+            "one": "`%d` stage channel",
+            "other": "`%d` stage channels"
           }
         }
       },
@@ -118,7 +126,27 @@
       },
       "pageText": "Page %1$d of %2$d",
       "roleCount": "Role count",
-      "emojiCount": "Emoji count"
+      "emojiCount": "Emoji count",
+      "threadCount": {
+        "value": {
+          "publicThreadCount": {
+            "one": "`%d` public thread",
+            "other": "`%d` public threads"
+          },
+          "privateThreadCount": {
+            "one": "`%d` private thread",
+            "other": "`%d` private threads"
+          },
+          "newsThreadCount": {
+            "one": "`%d` news thread",
+            "other": "`%d` news threads"
+          }
+        },
+        "title": {
+          "one": "`%d` active thread in this server",
+          "other": "`%d` active threads in this server"
+        }
+      }
     },
     "userinfo": {
       "DESC": "Shows user information.",

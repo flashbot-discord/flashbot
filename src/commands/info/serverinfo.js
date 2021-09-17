@@ -20,6 +20,7 @@ const EMOJI = {
   lock: ':lock:',
   person: ':busts_in_silhouette:',
   tv: ':tv:',
+  thread: ':thread:',
   createdAt: ':birthday:',
   boost: ':rocket:',
 
@@ -32,6 +33,12 @@ const EMOJI = {
   voiceCh: ':microphone2:',
   categoryCh: ':file_folder:',
   announceCh: ':mega:',
+  storeCh: ':convenience_store:',
+  stageCh: ':microphone:',
+
+  publicThread: ':unlock:',
+  privateThread: ':lock:',
+  newsThread: ':newspaper:',
 
   // page 2
   count: ':1234:'
@@ -64,15 +71,29 @@ class ServerInfoCommand extends Command {
     const memberCountText = `${EMOJI.person2} ${userCountText}\n` +
       `${EMOJI.robot} ${botCountText}`
 
-    const channelCache = guild.channels.cache
+    // channels
+    const channelCache = await guild.channels.fetch()
     const textChannelCount = channelCache.filter((c) => c.type === 'GUILD_TEXT').size
     const voiceChannelCount = channelCache.filter((c) => c.type === 'GUILD_VOICE').size
     const categoryCount = channelCache.filter((c) => c.type === 'GUILD_CATEGORY').size
     const newsChannelCount = channelCache.filter((c) => c.type === 'GUILD_NEWS').size
+    const storeChannelCount = channelCache.filter((c) => c.type === 'GUILD_STORE').size
+    const stageCount = channelCache.filter((c) => c.type === 'GUILD_STAGE_VOICE').size
     const channelCountText = `${EMOJI.textCh} ${tn('commands.serverinfo.channelCount.value.textChannelCount', textChannelCount)}\n` +
       `${EMOJI.voiceCh} ${tn('commands.serverinfo.channelCount.value.voieChannelCount', voiceChannelCount)}\n` +
       `${EMOJI.categoryCh} ${tn('commands.serverinfo.channelCount.value.categoryCount', categoryCount)}\n` +
-      `${EMOJI.announceCh} ${tn('commands.serverinfo.channelCount.value.newsChannelCount', newsChannelCount)}`
+      `${EMOJI.announceCh} ${tn('commands.serverinfo.channelCount.value.newsChannelCount', newsChannelCount)}\n` +
+      `${EMOJI.storeCh} ${tn('commands.serverinfo.channelCount.value.storeChannelCount', storeChannelCount)}\n` +
+      `${EMOJI.stageCh} ${tn('commands.serverinfo.channelCount.value.stageCount', stageCount)}\n`
+
+    // thread channels
+    const activeThreadCache = (await guild.channels.fetchActiveThreads()).threads
+    const publicThreadCount = activeThreadCache.filter(c => c.type === 'GUILD_PUBLIC_THREAD').size
+    const privateThreadCount = activeThreadCache.filter(c => c.type === 'GUILD_PRIVATE_THREAD').size
+    const newsThreadCount = activeThreadCache.filter(c => c.type === 'GUILD_NEWS_THREAD').size
+    const threadCountText = `${EMOJI.publicThread} ${tn('commands.serverinfo.threadCount.value.publicThreadCount', publicThreadCount)}\n` +
+    `${EMOJI.privateThread} ${tn('commands.serverinfo.threadCount.value.privateThreadCount', privateThreadCount)}\n` +
+    `${EMOJI.newsThread} ${tn('commands.serverinfo.threadCount.value.newsThreadCount', newsThreadCount)}\n`
 
     const verificationLevel = guild.verificationLevel
     const verificationLevelText = `**${t(`verificationLevel.${verificationLevel}.name`)}** (\`${verificationLevel}\`)\n` +
@@ -130,7 +151,8 @@ class ServerInfoCommand extends Command {
       verificationLevel: t('commands.serverinfo.verificationLevel'),
       '2faRequireForMod': t('commands.serverinfo.2faRequireForMod.title'),
       memberCount: tn('commands.serverinfo.memberCount.title', guild.memberCount),
-      channelCount: tn('commands.serverinfo.channelCount.title', guild.channels.cache.size),
+      channelCount: tn('commands.serverinfo.channelCount.title', channelCache.size),
+      threadCount: tn('commands.serverinfo.threadCount.title', activeThreadCache.size),
       createdAt: t('commands.serverinfo.createdAt.title'),
       boost: tn('commands.serverinfo.serverBoost.title', currentServerBoost),
 
@@ -151,8 +173,9 @@ class ServerInfoCommand extends Command {
         .addField(`${EMOJI.owner} ${sharedText.owner}`, `<@${owner.id}> ${owner.user.tag} (${owner.id})`)
         .addField(`${EMOJI.shield} ${sharedText.verificationLevel}`, verificationLevelText)
         .addField(`${EMOJI.lock} ${sharedText['2faRequireForMod']}`, twoFARequireForModText)
-        .addField(`${EMOJI.person} ${sharedText.memberCount}`, memberCountText, true)
+        .addField(`${EMOJI.person} ${sharedText.memberCount}`, memberCountText)
         .addField(`${EMOJI.tv} ${sharedText.channelCount}`, channelCountText, true)
+        .addField(`${EMOJI.thread} ${sharedText.threadCount}`, threadCountText, true)
         .addField(`${EMOJI.createdAt} ${sharedText.createdAt}`, createdAt)
         .addField(`${EMOJI.boost} ${sharedText.boost}`, serverBoostText)
       data.push(embed1)
