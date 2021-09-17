@@ -65,10 +65,10 @@ class ServerInfoCommand extends Command {
       `${EMOJI.robot} ${botCountText}`
 
     const channelCache = guild.channels.cache
-    const textChannelCount = channelCache.filter((c) => c.type === 'text').size
-    const voiceChannelCount = channelCache.filter((c) => c.type === 'voice').size
-    const categoryCount = channelCache.filter((c) => c.type === 'category').size
-    const newsChannelCount = channelCache.filter((c) => c.type === 'news').size
+    const textChannelCount = channelCache.filter((c) => c.type === 'GUILD_TEXT').size
+    const voiceChannelCount = channelCache.filter((c) => c.type === 'GUILD_VOICE').size
+    const categoryCount = channelCache.filter((c) => c.type === 'GUILD_CATEGORY').size
+    const newsChannelCount = channelCache.filter((c) => c.type === 'GUILD_NEWS').size
     const channelCountText = `${EMOJI.textCh} ${tn('commands.serverinfo.channelCount.value.textChannelCount', textChannelCount)}\n` +
       `${EMOJI.voiceCh} ${tn('commands.serverinfo.channelCount.value.voieChannelCount', voiceChannelCount)}\n` +
       `${EMOJI.categoryCh} ${tn('commands.serverinfo.channelCount.value.categoryCount', categoryCount)}\n` +
@@ -78,19 +78,37 @@ class ServerInfoCommand extends Command {
     const verificationLevelText = `**${t(`verificationLevel.${verificationLevel}.name`)}** (\`${verificationLevel}\`)\n` +
       `  - ${t(`verificationLevel.${verificationLevel}.description`)}`
 
-    const is2FAReqOn = guild.mfaLevel === 1
+    const is2FAReqOn = guild.mfaLevel === 'ELEVATED'
     const twoFARequireForModText = `${is2FAReqOn ? ':white_check_mark:' : ':x:'} ${t(`commands.serverinfo.2faRequireForMod.value.${is2FAReqOn ? 'enabled' : 'disabled'}`)} (\`${guild.mfaLevel}\`)`
 
     const createdAt = moment(guild.createdAt)
       .tz('Asia/Seoul')
       .format(t('commands.serverinfo.createdAt.value'))
 
-    const serverBoostLevelArr = [2, 15, 30, null]
+    const serverBoostLevelArr = {
+      NONE: {
+        level: 0,
+        requiredForNext: 2
+      },
+      TIER_1: {
+        level: 1,
+        requiredForNext: 15
+      },
+      TIER_2: {
+        level: 2,
+        requiredForNext: 30
+      },
+      TIER_3: {
+        level: 3,
+        requiredForNext: null
+      }
+    }
     const currentServerBoost = guild.premiumSubscriptionCount
-    const requiredBoostForNextLevel = serverBoostLevelArr[guild.premiumTier]
+    const currentLevel = serverBoostLevelArr[guild.premiumTier].level
+    const requiredBoostForNextLevel = serverBoostLevelArr[guild.premiumTier].requiredForNext
     const serverBoostText = `${t('commands.serverinfo.serverBoost.content.level', {
-      level: guild.premiumTier
-    })} | ${guild.premiumTier >= 3
+      level: currentLevel
+    })} | ${currentLevel >= 3
         ? t('commands.serverinfo.serverBoost.content.maxLevel')
         : t('commands.serverinfo.serverBoost.content.forNextLevel', {
           requiredBoost: requiredBoostForNextLevel - currentServerBoost,
