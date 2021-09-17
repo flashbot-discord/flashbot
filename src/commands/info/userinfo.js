@@ -9,7 +9,7 @@ const Command = require('../_Command')
 const Paginator = require('../../structures/Paginator')
 const { canSendEmbed } = require('../../components/permissions/checker')
 
-const PREPEND_EMOJI = {
+const EMOJI = {
   default: ':small_blue_diamond:',
   bot: ':robot:',
   person: ':bust_in_silhouette:',
@@ -56,11 +56,11 @@ class UserInfoCommand extends Command {
       name: t('commands.userinfo.name'),
       userTag: t('commands.userinfo.usertag'),
       id: t('commands.userinfo.id'),
-      status: t('commands.userinfo.status'),
-      clients: t('commands.userinfo.clients'),
       createdAt: t('commands.userinfo.createdAt'),
 
       // page 2
+      status: t('commands.userinfo.status'),
+      clients: t('commands.userinfo.clients'),
       nickname: t('commands.userinfo.nickname'),
       isServerOwner: t('commands.userinfo.isServerOwner'),
       serverJoinedAt: t('commands.userinfo.serverJoinedAt'),
@@ -70,16 +70,15 @@ class UserInfoCommand extends Command {
       highestRoleColor: t('commands.userinfo.highestRoleColor')
     }
 
-    // NOTE: activity status
-    const { status } = user.presence
-    const statusText = t('commands.userinfo.statusList.' + status)
-    const clientStatus = status !== 'offline' && !user.bot ? this.getClientStat(user.presence.clientStatus, t) : ['N/A']
-
     // NOTE: account creation date
     const createdAt = `<t:${Math.floor(user.createdAt.getTime() / 1000)}:F>`
 
     // NOTE: Guild-only
     let member
+
+    let statusText
+    let clientStatusText
+
     let nickname
     let isServerOwner
     let joinedAt
@@ -92,8 +91,13 @@ class UserInfoCommand extends Command {
         .catch(() => { member = null })
 
       if (member) {
+        // NOTE: activity status
+        const { status, clientStatus } = member.presence
+        statusText = t('commands.userinfo.statusList.' + status)
+        clientStatusText = status !== 'offline' && !user.bot ? this.getClientStat(clientStatus, t) : ['N/A']
+
         nickname = member.nickname ?? '\u200b'
-        isServerOwner = PREPEND_EMOJI[msg.guild.owner.id === user.id ? 'check' : 'x']
+        isServerOwner = EMOJI[msg.guild.ownerId === user.id ? 'check' : 'x']
         joinedAt = `<t:${Math.floor(member.joinedAt.getTime() / 1000)}:F>`
 
         await msg.guild.roles.fetch() // cache all roles in a server
@@ -110,12 +114,10 @@ class UserInfoCommand extends Command {
     if (useEmbed) {
       // basic information
       const embed1 = this.generateEmbed(msg.author, user, t, 1, totalPages)
-        .addField(`${PREPEND_EMOJI.person} ${sharedText.name}`, user.username, true)
-        .addField(`${PREPEND_EMOJI.hashtag} ${sharedText.userTag}`, user.discriminator, true)
-        .addField(`${PREPEND_EMOJI.id} ${sharedText.id}`, user.id)
-        .addField(`${PREPEND_EMOJI.default} ${sharedText.status}`, statusText, true)
-        .addField(`${PREPEND_EMOJI.default} ${sharedText.clients}`, clientStatus.join('\n'), true)
-        .addField(`${PREPEND_EMOJI.cake} ${sharedText.createdAt}`, createdAt)
+        .addField(`${EMOJI.person} ${sharedText.name}`, user.username, true)
+        .addField(`${EMOJI.hashtag} ${sharedText.userTag}`, user.discriminator, true)
+        .addField(`${EMOJI.id} ${sharedText.id}`, user.id)
+        .addField(`${EMOJI.cake} ${sharedText.createdAt}`, createdAt)
       data.push(embed1)
 
       // server related values
@@ -125,9 +127,11 @@ class UserInfoCommand extends Command {
       } else if (!member) {
         embed2.setDescription(embed2.description + `\n\n${sharedText.memberNotExist}`)
       } else {
-        embed2.addField(`${PREPEND_EMOJI.nameBadge} ${sharedText.nickname}`, nickname)
-          .addField(`${PREPEND_EMOJI.crown} ${sharedText.isServerOwner}`, isServerOwner)
-          .addField(`${PREPEND_EMOJI.enter} ${sharedText.serverJoinedAt}`, joinedAt)
+        embed2.addField(`${EMOJI.default} ${sharedText.status}`, statusText, true)
+          .addField(`${EMOJI.default} ${sharedText.clients}`, clientStatusText.join('\n'), true)
+          .addField(`${EMOJI.nameBadge} ${sharedText.nickname}`, nickname)
+          .addField(`${EMOJI.crown} ${sharedText.isServerOwner}`, isServerOwner)
+          .addField(`${EMOJI.enter} ${sharedText.serverJoinedAt}`, joinedAt)
       }
 
       data.push(embed2)
@@ -136,19 +140,17 @@ class UserInfoCommand extends Command {
         // member role values
         const embed3 = this.generateEmbed(msg.author, user, t, 3, totalPages)
         embed3.setDescription(`${embed3.description}\n\n${roleText}`)
-          .addField(`${PREPEND_EMOJI.highest} ${sharedText.highestRole}`, `${highestRole.toString()} ${highestRole.name} (${highestRole.id})`)
-          .addField(`${PREPEND_EMOJI.color} ${sharedText.highestRoleColor}`, highestRole.hexColor)
+          .addField(`${EMOJI.highest} ${sharedText.highestRole}`, `${highestRole.toString()} ${highestRole.name} (${highestRole.id})`)
+          .addField(`${EMOJI.color} ${sharedText.highestRoleColor}`, highestRole.hexColor)
 
         data.push(embed3)
       }
     } else {
       const page1 = `${this.generateTextPage(msg.author, user, t, 1, totalPages)}\n\n` +
-        `**${PREPEND_EMOJI.person} ${sharedText.name}**: ${user.username}\n` +
-        `**${PREPEND_EMOJI.hashtag} ${sharedText.userTag}**: ${user.discriminator}\n` +
-        `**${PREPEND_EMOJI.id} ${sharedText.id}**: ${user.id}\n` +
-        `**${PREPEND_EMOJI.default} ${sharedText.status}**: ${statusText}\n` +
-        `**${PREPEND_EMOJI.default} ${sharedText.clients}**: ${clientStatus.join(', ')}\n` +
-        `**${PREPEND_EMOJI.cake} ${sharedText.createdAt}**: ${createdAt}`
+        `**${EMOJI.person} ${sharedText.name}**: ${user.username}\n` +
+        `**${EMOJI.hashtag} ${sharedText.userTag}**: ${user.discriminator}\n` +
+        `**${EMOJI.id} ${sharedText.id}**: ${user.id}\n` +
+        `**${EMOJI.cake} ${sharedText.createdAt}**: ${createdAt}`
       data.push(page1)
 
       let page2 = `${this.generateTextPage(msg.author, user, t, 2, totalPages)}\n\n`
@@ -157,17 +159,19 @@ class UserInfoCommand extends Command {
       } else if (!member) {
         page2 += sharedText.memberNotExist
       } else {
-        page2 += `**${PREPEND_EMOJI.nameBadge} ${sharedText.nickname}**: ${nickname}\n` +
-          `**${PREPEND_EMOJI.crown} ${sharedText.isServerOwner}**: ${isServerOwner}\n` +
-          `**${PREPEND_EMOJI.enter} ${sharedText.serverJoinedAt}**: ${joinedAt}`
+        page2 += `**${EMOJI.default} ${sharedText.status}**: ${statusText}\n` +
+          `**${EMOJI.default} ${sharedText.clients}**: ${clientStatusText.join(', ')}\n` +
+          `**${EMOJI.nameBadge} ${sharedText.nickname}**: ${nickname}\n` +
+          `**${EMOJI.crown} ${sharedText.isServerOwner}**: ${isServerOwner}\n` +
+          `**${EMOJI.enter} ${sharedText.serverJoinedAt}**: ${joinedAt}`
       }
 
       data.push(page2)
 
       if (member) {
         const page3 = `${this.generateTextPage(msg.author, user, t, 3, totalPages)}\n\n${roleText}\n\n` +
-          `**${PREPEND_EMOJI.highest} ${sharedText.highestRole}**: ${highestRole.toString()} ${highestRole.name} (${highestRole.id})\n` +
-          `**${PREPEND_EMOJI.color} ${sharedText.highestRoleColor}**: ${highestRole.hexColor}`
+          `**${EMOJI.highest} ${sharedText.highestRole}**: ${highestRole.toString()} ${highestRole.name} (${highestRole.id})\n` +
+          `**${EMOJI.color} ${sharedText.highestRoleColor}**: ${highestRole.hexColor}`
 
         data.push(page3)
       }
@@ -182,7 +186,7 @@ class UserInfoCommand extends Command {
         }
       }
     })
-    paginator.start()
+    await paginator.start()
   }
 
   getClientStat (clientStat, t) {
@@ -192,14 +196,14 @@ class UserInfoCommand extends Command {
 
   generateEmbed (author, user, t, currentPage, totalPage) {
     return new MessageEmbed()
-      .setTitle(`${user.bot ? PREPEND_EMOJI.bot : ''} ${t('commands.userinfo.title', user.tag)}`)
+      .setTitle(`${user.bot ? EMOJI.bot : ''} ${t('commands.userinfo.title', user.tag)}`)
       .setDescription(`${t('commands.userinfo.page.' + currentPage)} (${t('commands.userinfo.pageText', currentPage, totalPage)})`)
       .setThumbnail(user.displayAvatarURL({ size: 1024, dynamic: true }))
       .setFooter(author.tag, author.displayAvatarURL())
   }
 
   generateTextPage (author, user, t, currentPage, totalPage) {
-    return `${user.bot ? PREPEND_EMOJI.bot : ''} **${t('commands.userinfo.title', user.tag)}**\n` +
+    return `${user.bot ? EMOJI.bot : ''} **${t('commands.userinfo.title', user.tag)}**\n` +
       `(${t('commands.userinfo.requestedBy', `<@${author.id}>`, author.tag)})\n\n` +
       `${t('commands.userinfo.page.' + currentPage)} (${t('commands.userinfo.pageText', currentPage, totalPage)})`
   }
