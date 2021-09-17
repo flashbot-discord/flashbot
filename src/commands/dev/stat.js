@@ -10,9 +10,9 @@ class StatCommand extends Command {
     })
   }
 
-  run (client, msg, query, { t }) {
+  async run (client, msg, query, { t }) {
     const total = client.commands.stats.getTotal()
-    msg.channel.send(t('commands.stat.total', total))
+    await msg.reply(t('commands.stat.total', total))
   }
 }
 
