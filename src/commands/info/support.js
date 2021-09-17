@@ -1,3 +1,5 @@
+const { MessageActionRow, MessageButton } = require('discord.js')
+
 const Command = require('../_Command')
 
 class SupportCommand extends Command {
@@ -12,7 +14,17 @@ class SupportCommand extends Command {
   }
 
   run (client, msg, _query, { t }) {
-    return msg.reply(`${t('commands.support.text')}\n${this.inviteLink}`)
+    const row = new MessageActionRow().addComponents(
+      new MessageButton()
+        .setStyle('LINK')
+        .setURL(this.inviteLink)
+        .setLabel(t('commands.support.button'))
+    )
+
+    return msg.reply({
+      content: t('commands.support.text'),
+      components: [row]
+    })
   }
 }
 

@@ -1,3 +1,5 @@
+const { MessageActionRow, MessageButton } = require('discord.js')
+
 const Command = require('../_Command')
 
 class InviteCommand extends Command {
@@ -13,7 +15,23 @@ class InviteCommand extends Command {
   }
 
   async run (client, msg, guild, { t }) {
-    return msg.channel.send(t('commands.invite.text', this.inviteLink, this.koreanbotsLink))
+    const inviteBtn = new MessageButton()
+      .setStyle('LINK')
+      .setURL(this.inviteLink)
+      .setLabel(t('commands.invite.inviteBtn'))
+    const koreanbotsBtn = new MessageButton()
+      .setStyle('LINK')
+      .setURL(this.koreanbotsLink)
+      .setLabel(t('commands.invite.koreanbotsBtn'))
+    const row = new MessageActionRow().addComponents(
+      inviteBtn,
+      koreanbotsBtn
+    )
+
+    return msg.channel.send({
+      content: t('commands.invite.text', this.inviteLink, this.koreanbotsLink),
+      components: [row]
+    })
   }
 }
 

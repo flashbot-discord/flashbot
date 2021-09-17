@@ -316,8 +316,9 @@
       "DESC": "koreanbots"
     },
     "support": {
-      "text": "지원 서버에 입장하여 다른 유저들과 채팅하고, 질문하고, 봇 사용에 관한 지원을 받으세요.",
-      "DESC": "지원 서버로 들어갈 수 있는 링크를 제공합니다."
+      "text": "지원 서버에 입장하여 봇 사용에 관한 지원을 받으세요.",
+      "DESC": "지원 서버로 들어갈 수 있는 링크를 제공합니다.",
+      "button": "지원 서버 입장"
     },
     "exec": {
       "title": "명령어 실행",
@@ -414,8 +415,10 @@
       "DESC": "안녕하세요!"
     },
     "invite": {
-      "text": "아래 링크로 FlashBot을 초대하세요:\n%1$s\n\n추가로, koreanbots에서 :heart:도 눌러주세요!\n%2$s",
-      "DESC": "봇 초대 링크를 알려줘요."
+      "text": "아래 버튼을 눌러 FlashBot을 초대하세요.\n추가로, koreanbots에서 :heart:도 눌러주세요!",
+      "DESC": "봇 초대 링크를 알려줘요.",
+      "inviteBtn": "봇 초대하기",
+      "koreanbotsBtn": "Koreanbots 봇 페이지 가기"
     },
     "dice": {
       "result": "(정)%1$s면체 주사위에서 `%2$s`이(가) 나왔어요!",

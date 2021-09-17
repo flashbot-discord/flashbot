@@ -320,8 +320,9 @@
       "DESC": "koreanbots"
     },
     "support": {
-      "text": "Enter the Support server and chat, ask, or get support.",
-      "DESC": "Gives the link to the support server."
+      "text": "Join the Support server and get support.",
+      "DESC": "Gives the link to the support server.",
+      "button": "Support Server"
     },
     "exec": {
       "title": "Command Execution",
@@ -419,8 +420,10 @@
       "DESC": "Hello!"
     },
     "invite": {
-      "text": "Use below link to invite FlashBot:\n%1$s\n\nAlso, give me :heart: in koreanbots!\n%2$s",
-      "DESC": "Gives the bot invite link."
+      "text": "Press the below button to invite FlashBot\nAlso, give me :heart: in koreanbots!",
+      "DESC": "Gives the bot invite link.",
+      "inviteBtn": "Invite Bot",
+      "koreanbotsBtn": "Koreanbots bot page"
     },
     "dice": {
       "result": "Rolled %1$s-sided dice and `%2$s` came out!",
