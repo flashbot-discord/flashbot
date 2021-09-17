@@ -83,7 +83,7 @@ class ServerInfoCommand extends Command {
       .tz('Asia/Seoul')
       .format(t('commands.serverinfo.createdAt.value'))
 
-    const serverBoostLevelArr = [2, 15, 30, null]
+    const serverBoostLevelArr = [2, 7, 14, null]
     const currentServerBoost = guild.premiumSubscriptionCount
     const requiredBoostForNextLevel = serverBoostLevelArr[guild.premiumTier]
     const serverBoostText = `${t('commands.serverinfo.serverBoost.content.level', {
