@@ -188,22 +188,21 @@ class ServerInfoCommand extends Command {
         `**${EMOJI.owner} ${sharedText.owner}**: ${owner.user.tag} (${owner.id})\n` +
         `**${EMOJI.shield} ${sharedText.verificationLevel}**: ${verificationLevelText}\n` +
         `**${EMOJI.lock} ${sharedText['2faRequireForMod']}**: ${twoFARequireForModText}\n\n` +
-        `**${EMOJI.person} ${sharedText.memberCount}**\n${memberCountText_}\n\n` +
-        `**${EMOJI.tv} ${sharedText.channelCount}**\n${channelCountText_}\n\n` +
+        `**${EMOJI.person} ${sharedText.memberCount}**\n${memberCountText_}\n` +
+        `**${EMOJI.tv} ${sharedText.channelCount}**\n${channelCountText_}\n` +
         `**${EMOJI.createdAt} ${sharedText.createdAt}**: ${createdAt}\n` +
         `**${EMOJI.boost} ${sharedText.boost}**: ${serverBoostText}`
       data.push(page1)
 
       const roleCountLimit = 75 // 23 * 75 = 1725 + α
-      const roleText = roles.cache
-        .first(roleCountLimit)
+      const roleText = roles.first(roleCountLimit)
         .map(rl => rl.toString())
         .join(', ')
-      const remainingRoleCount = roles.cache.size - roleCountLimit
+      const remainingRoleCount = roles.size - roleCountLimit
 
       // roles
       const page2 = `${this.generateTextPage(msg.author, guild, t, 2, totalPages)}\n\n` +
-        `${roleText}${remainingRoleCount > 0 ? ` + ${remainingRoleCount}` : ''} = ${roles.cache.size}`
+        `${roleText}${remainingRoleCount > 0 ? ` + ${remainingRoleCount}` : ''} = ${roles.size}`
       data.push(page2)
 
       // custom emojis
