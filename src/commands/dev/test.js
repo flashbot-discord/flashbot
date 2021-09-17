@@ -60,7 +60,7 @@ ${inspect(result)}
         break
       }
 
-      case 'pagetest': {
+      case 'page': {
         const m = await msg.channel.send('Loading...')
         const pg = new Paginator(client, m, {
           contents: [
@@ -71,6 +71,33 @@ ${inspect(result)}
           userID: msg.author.id
         })
         pg.start()
+
+        break
+      }
+
+      case 'collector': {
+        const botMsg = await msg.reply('test')
+        await botMsg.react('✅')
+
+        const collector = botMsg.createReactionCollector({ time: 60000 })
+
+        collector.on('collect', () => {
+          botMsg.reply('collected')
+        })
+
+        collector.on('dispose', () => {
+          botMsg.reply('disposed')
+        })
+
+        collector.on('end', () => {
+          botMsg.reply('ended')
+        })
+
+        break
+      }
+
+      case 'alwaysbtn': {
+        break
       }
     }
   }
