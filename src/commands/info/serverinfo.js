@@ -55,6 +55,8 @@ class ServerInfoCommand extends Command {
     const m = await msg.reply('Loading...')
 
     // page 1
+    const owner = await guild.fetchOwner()
+
     const members = await guild.members.fetch()
     const [bots, users] = members.partition((member) => member.user.bot)
     const userCountText = tn('commands.serverinfo.memberCount.value.userCount', users.size)
@@ -97,7 +99,7 @@ class ServerInfoCommand extends Command {
         })}`
 
     // page 2
-    const roleMgr = await guild.roles.fetch()
+    const roles = await guild.roles.fetch()
 
     // page 3
     const emojis = guild.emojis.cache
@@ -107,7 +109,6 @@ class ServerInfoCommand extends Command {
       name: t('commands.serverinfo.name'),
       id: t('commands.serverinfo.id'),
       owner: t('commands.serverinfo.owner'),
-      region: t('commands.serverinfo.region'),
       verificationLevel: t('commands.serverinfo.verificationLevel'),
       '2faRequireForMod': t('commands.serverinfo.2faRequireForMod.title'),
       memberCount: tn('commands.serverinfo.memberCount.title', guild.memberCount),
@@ -129,8 +130,7 @@ class ServerInfoCommand extends Command {
       const embed1 = this.generateEmbed(msg.author, guild, t, 1, totalPages)
         .addField(`${EMOJI.name} ${sharedText.name}`, guild.name, true)
         .addField(`${EMOJI.id} ${sharedText.id}`, guild.id, true)
-        .addField(`${EMOJI.owner} ${sharedText.owner}`, `<@${guild.owner.id}> ${guild.owner.user.tag} (${guild.owner.id})`)
-        .addField(`${EMOJI.region} ${sharedText.region}`, `${t('regions.' + guild.region)} (\`${guild.region}\`)`)
+        .addField(`${EMOJI.owner} ${sharedText.owner}`, `<@${owner.id}> ${owner.user.tag} (${owner.id})`)
         .addField(`${EMOJI.shield} ${sharedText.verificationLevel}`, verificationLevelText)
         .addField(`${EMOJI.lock} ${sharedText['2faRequireForMod']}`, twoFARequireForModText)
         .addField(`${EMOJI.person} ${sharedText.memberCount}`, memberCountText, true)
@@ -139,14 +139,13 @@ class ServerInfoCommand extends Command {
         .addField(`${EMOJI.boost} ${sharedText.boost}`, serverBoostText)
       data.push(embed1)
 
-      const roleText = roleMgr.cache
-        .map(rl => rl.toString())
+      const roleText = roles.map(rl => rl.toString())
         .join(', ')
 
       // roles
       const embed2 = this.generateEmbed(msg.author, guild, t, 2, totalPages)
       embed2.setDescription(`${embed2.description}\n\n${roleText}`)
-        .addField(`${EMOJI.count} ${sharedText.roleCount}`, roleMgr.cache.size)
+        .addField(`${EMOJI.count} ${sharedText.roleCount}`, `${roles.size}`)
       data.push(embed2)
 
       // custom emojis
@@ -154,7 +153,7 @@ class ServerInfoCommand extends Command {
 
       const embed3 = this.generateEmbed(msg.author, guild, t, 3, totalPages)
       embed3.setDescription(`${embed3.description}\n\n${emojiText}`)
-        .addField(`${EMOJI.count} ${sharedText.emojiCount}`, emojis.size)
+        .addField(`${EMOJI.count} ${sharedText.emojiCount}`, `${emojis.size}`)
       data.push(embed3)
     } else {
       const memberCountText_ = memberCountText
@@ -168,8 +167,7 @@ class ServerInfoCommand extends Command {
       const page1 = `${this.generateTextPage(msg.author, guild, t, 1, totalPages)}\n\n` +
         `**${EMOJI.name} ${sharedText.name}**: ${guild.name}\n` +
         `**${EMOJI.id} ${sharedText.id}**: ${guild.id}\n` +
-        `**${EMOJI.owner} ${sharedText.owner}**: ${guild.owner.user.tag} (${guild.owner.id})\n` +
-        `**${EMOJI.region} ${sharedText.region}**: ${t('regions.' + guild.region)} (\`${guild.region}\`)\n` +
+        `**${EMOJI.owner} ${sharedText.owner}**: ${owner.user.tag} (${owner.id})\n` +
         `**${EMOJI.shield} ${sharedText.verificationLevel}**: ${verificationLevelText}\n` +
         `**${EMOJI.lock} ${sharedText['2faRequireForMod']}**: ${twoFARequireForModText}\n\n` +
         `**${EMOJI.person} ${sharedText.memberCount}**\n${memberCountText_}\n\n` +
@@ -179,15 +177,15 @@ class ServerInfoCommand extends Command {
       data.push(page1)
 
       const roleCountLimit = 75 // 23 * 75 = 1725 + α
-      const roleText = roleMgr.cache
+      const roleText = roles.cache
         .first(roleCountLimit)
         .map(rl => rl.toString())
         .join(', ')
-      const remainingRoleCount = roleMgr.cache.size - roleCountLimit
+      const remainingRoleCount = roles.cache.size - roleCountLimit
 
       // roles
       const page2 = `${this.generateTextPage(msg.author, guild, t, 2, totalPages)}\n\n` +
-        `${roleText}${remainingRoleCount > 0 ? ` + ${remainingRoleCount}` : ''} = ${roleMgr.cache.size}`
+        `${roleText}${remainingRoleCount > 0 ? ` + ${remainingRoleCount}` : ''} = ${roles.cache.size}`
       data.push(page2)
 
       // custom emojis
