@@ -13,7 +13,7 @@ class SupportCommand extends Command {
     this.inviteLink = 'https://discord.gg/epY3waF'
   }
 
-  run (client, msg, _query, { t }) {
+  async run (client, msg, _query, { t }) {
     const row = new MessageActionRow().addComponents(
       new MessageButton()
         .setStyle('LINK')
@@ -21,7 +21,7 @@ class SupportCommand extends Command {
         .setLabel(t('commands.support.button'))
     )
 
-    return msg.reply({
+    return await msg.reply({
       content: t('commands.support.text'),
       components: [row]
     })
