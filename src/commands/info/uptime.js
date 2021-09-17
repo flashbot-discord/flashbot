@@ -18,18 +18,17 @@ class UptimeCommand extends Command {
 
     const uptime = Date.now() - client.readyAt.getTime()
 
-    let output
     if (useEmbed) {
       const embed = new MessageEmbed()
         .setTitle(':clock1: ' + t('commands.uptime.title'))
         .setDescription(t('commands.uptime.description', uptime))
         .setFooter(msg.author.tag, msg.author.avatarURL())
         .setTimestamp()
-
-      output = embed
-    } else output = t('commands.uptime.description', uptime)
-
-    msg.channel.send(output)
+      await msg.reply({ embeds: [embed] })
+    } else {
+      const output = t('commands.uptime.description', uptime)
+      await msg.reply(output)
+    }
   }
 }
 
