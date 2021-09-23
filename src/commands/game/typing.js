@@ -103,38 +103,38 @@ class TypingGameCommand extends Command {
       case 'reload':
         if (!client.config.owner.includes(msg.author.id)) return msg.reply(t('commands.typing.error.noPermissionToReload'))
 
-        return this.loadData(msg, t)
+        return await this.loadData(msg, t)
 
       case 'start': {
         // Check if the data is loaded
         if (!typing.isLoaded()) {
-          msg.channel.send(t('commands.typing.loading'))
+          await msg.channel.send(t('commands.typing.loading'))
           if (typing.isLoading()) return
-          this.loadData(msg, t)
+          await this.loadData(msg, t)
         }
 
         // Stop when session is present
-        if (typing.isPlaying(msg.channel.id)) return msg.channel.send(t('commands.typing.alreadyPlaying'))
+        if (typing.isPlaying(msg.channel.id)) return await msg.reply(t('commands.typing.alreadyPlaying'))
 
         // Choose Language
         let lang = this.default
         if (query.args.lang) {
           const langInput = query.args.lang
           if (typing.isLocaleExist(langInput)) lang = typing.getBaseLocale(langInput)
-          else return msg.reply(t('commands.typing.error.langNotExist'))
+          else return await msg.reply(t('commands.typing.error.langNotExist'))
         }
 
         // Category select
         let category
         if (query.args.category) {
           const categoryInput = query.args.category
-          if (!typing.isCategoryExist(lang, categoryInput)) return msg.reply(t('commands.typing.error.categoryNotExist'))
+          if (!typing.isCategoryExist(lang, categoryInput)) return await msg.reply(t('commands.typing.error.categoryNotExist'))
           else category = categoryInput
         } else category = null
 
         // Check data
         const data = typing.getData(lang, category)
-        if (data == null) return msg.reply(t('commands.typing.error.noDataInCategory'))
+        if (data == null) return await msg.reply(t('commands.typing.error.noDataInCategory'))
 
         const categoryData = data.category
 
@@ -152,20 +152,21 @@ class TypingGameCommand extends Command {
         // Timer start
         const startTime = Date.now()
 
-        mc.on('collect', (m) => {
-          if (m.content === displayText) return msg.channel.send('<@' + m.author.id + '>, ' + t('commands.typing.doNotCopyPaste'))
+        mc.on('collect', async (m) => {
+          if (m.content === displayText) return await m.reply('<@' + m.author.id + '>, ' + t('commands.typing.doNotCopyPaste'))
 
-          if (m.content !== text) return // msg.channel.send('<@' + m.author.id + '>, ' + t('commands.typing.notMatch', locale))
+          if (m.content !== text) return
 
           const time = (Date.now() - startTime) / 1000
           const ta = Math.round(hangul.d(text).length / time * 60)
-          msg.channel.send('<@' + m.author.id + '>, ' + t('commands.typing.correct', time, ta))
+          await m.reply('<@' + m.author.id + '>, ' + t('commands.typing.correct', time, ta))
           mc.stop('correct')
         })
 
-        mc.on('end', (_, reason) => {
-          if (reason === 'stopcmd') msg.channel.send(t('commands.typing.cmdStop'))
-          else if (reason !== 'correct') msg.channel.send(t('commands.typing.finish'))
+        mc.on('end', async (_, reason) => {
+          if (reason !== 'stopcmd' && reason !== 'correct') {
+            await msg.channel.send(t('commands.typing.finish'))
+          }
 
           // remove channel from session storage
           typing.endGame(msg.channel.id)
@@ -175,7 +176,8 @@ class TypingGameCommand extends Command {
       }
 
       case 'stop':
-        this.stop(msg, t)
+        await this.stop(msg, t)
+        await msg.reply(t('commands.typing.cmdStop'))
         break
 
       case 'category':
@@ -185,8 +187,8 @@ class TypingGameCommand extends Command {
     }
   }
 
-  stop (msg, t) {
-    if (!typing.isPlaying(msg.channel.id)) return msg.channel.send(t('commands.typing.notPlaying'))
+  async stop (msg, t) {
+    if (!typing.isPlaying(msg.channel.id)) return await msg.reply(t('commands.typing.notPlaying'))
 
     const session = typing.getSession(msg.channel.id)
     if (session instanceof MessageCollector) {
@@ -195,7 +197,7 @@ class TypingGameCommand extends Command {
     }
   }
 
-  loadData (msg, t) {
+  async loadData (msg, t) {
     if (!typing.isReady()) typing.init(msg.client)
 
     const result = typing.loadData(this.path)
@@ -204,17 +206,17 @@ class TypingGameCommand extends Command {
       // TODO Only report this to console and support server error log channel
       switch (result.reason) {
         case 'noDataFolder':
-          msg.reply(t('commands.typing.error.noDataFolder'))
+          await msg.reply(t('commands.typing.error.noDataFolder'))
           break
 
         case 'noLocaleFolder':
-          msg.reply(t('commands.typing.error.noLocaleFolder'))
+          await msg.reply(t('commands.typing.error.noLocaleFolder'))
           break
 
         case 'dataContainsUnregisteredGroup':
-          msg.reply(t('commands.typing.error.dataContainsUnregisteredGroup'))
+          await msg.reply(t('commands.typing.error.dataContainsUnregisteredGroup'))
       }
-    } else msg.channel.send(t('commands.typing.loaded'))
+    } else await msg.channel.send(t('commands.typing.loaded'))
   }
 }
 

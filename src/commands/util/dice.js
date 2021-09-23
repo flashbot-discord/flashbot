@@ -26,7 +26,7 @@ class DiceCommand extends Command {
 
     // Random
     const randNum = Math.floor(Math.random() * (sides - 1)) + 1
-    return msg.channel.send(':game_die: ' + t('commands.dice.result', sides, randNum))
+    await msg.reply(':game_die: ' + t('commands.dice.result', sides, randNum))
   }
 }
 

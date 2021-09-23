@@ -33,15 +33,15 @@ class SayCommand extends Command {
     if (
       client.config.owner.includes(msg.author.id) ||
       msg.member.permissions.has('ADMINISTRATOR')
-    ) msg.channel.send(str)
+    ) await msg.channel.send(str)
     else {
       if (msg.channel.permissionsFor(client.user).has('EMBED_LINKS')) {
         const embed = new MessageEmbed()
           .setAuthor(msg.author.tag, msg.author.displayAvatarURL())
           .setFooter(t('commands.say.embedFooter'))
           .setDescription(str)
-        msg.channel.send({ embeds: [embed] })
-      } else msg.channel.send(t('commands.say.say', str, msg.author.tag))
+        await msg.reply({ embeds: [embed] })
+      } else await msg.channel.send(t('commands.say.say', str, msg.author.tag))
     }
   }
 }

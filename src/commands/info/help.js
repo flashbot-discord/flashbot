@@ -62,7 +62,7 @@ class HelpCommand extends Command {
         })
 
         mainEmbed.addField(t('commands.help.links.TITLE'), makeLinkText())
-        await msg.channel.send({ embeds: [mainEmbed] })
+        await msg.reply({ embeds: [mainEmbed] })
       } else {
         const title = t('commands.help.title')
         const desc = t('commands.help.firstMsg', {
@@ -78,7 +78,7 @@ class HelpCommand extends Command {
         })
 
         const finalText = `**${title}**\n\n${desc}\n\n${cmdListText}\n${linkText}`
-        await msg.channel.send(finalText)
+        await msg.reply(finalText)
       }
 
       /*
@@ -187,7 +187,7 @@ class HelpCommand extends Command {
           .addField(requiredBotPermsTxt, botPermsText, true)
           .addField(requiredUserPermsTxt, userPermsText, true)
           .addField(usageTxt, `\`\`\`\n${usage}\n\`\`\``)
-        await msg.channel.send({ embeds: [embed] })
+        await msg.reply({ embeds: [embed] })
       } else {
         const str =
 `**${titleTxt}**
@@ -200,7 +200,7 @@ ${requiredUserPermsTxt}: ${userPermsText}
 \`\`\`
 ${usage}
 \`\`\``
-        await msg.channel.send(str)
+        await msg.reply(str)
       }
     }
   }

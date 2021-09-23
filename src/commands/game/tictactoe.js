@@ -33,7 +33,7 @@ class TicTacToeCommand extends Command {
         const logger = _logger.extend('start')
 
         // Prevent multiple games in one channel
-        if (tictactoe.isSessionExist(msg.channel.id)) return msg.channel.send(t('commands.tictactoe.alreadyPlaying'))
+        if (tictactoe.isSessionExist(msg.channel.id)) return await msg.reply(t('commands.tictactoe.alreadyPlaying'))
 
         // Start game session
         logger.verbose(`creating session for channel ${msg.channel.id}`)
@@ -91,8 +91,8 @@ class TicTacToeCommand extends Command {
           logger.verbose(`session for channel ${msg.channel.id} available. destroying.`)
           session.collector?.stop('stop')
           tictactoe.destroySession(msg.channel.id)
-          msg.channel.send(t('commands.tictactoe.gameStopped'))
-        } else msg.channel.send(t('commands.tictactoe.error.notPlaying'))
+          await msg.reply(t('commands.tictactoe.gameStopped'))
+        } else await msg.reply(t('commands.tictactoe.error.notPlaying'))
 
         break
       }
@@ -188,7 +188,7 @@ async function runGame (msg, player2, t) {
   })
 
   // when game ends for some reason
-  inputCollector.on('end', (_, reason) => {
+  inputCollector.on('end', async (_, reason) => {
     if (reason === 'idle') {
       const winnerTurn = changeTurn(turn)
       winner = players[winnerTurn]
@@ -203,10 +203,10 @@ async function runGame (msg, player2, t) {
       gamePanelMsg.edit(gamePanel)
 
       tictactoe.destroySession(msg.channel.id)
-      msg.channel.send(t('commands.tictactoe.game.timeOut', winner.toString()))
+      await msg.channel.send(t('commands.tictactoe.game.timeOut', winner.toString()))
     } else if (reason === 'win') {
-      msg.channel.send(t('commands.tictactoe.game.win', winner.toString()))
-    } else if (reason === 'draw') msg.channel.send(t('commands.tictactoe.game.draw'))
+      await msg.channel.send(t('commands.tictactoe.game.win', winner.toString()))
+    } else if (reason === 'draw') await msg.channel.send(t('commands.tictactoe.game.draw'))
   })
 }
 

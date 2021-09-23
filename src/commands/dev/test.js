@@ -51,8 +51,8 @@ class TestCommand extends Command {
       case 'parseperiod': {
         const input = query.args.period
         const result = parsePeriod(input)
-        console.log(result)
-        msg.channel.send(`
+        // console.log(result)
+        await msg.reply(`
 \`\`\`
 ${inspect(result)}
 \`\`\``)
@@ -70,7 +70,7 @@ ${inspect(result)}
           ],
           userID: msg.author.id
         })
-        pg.start()
+        await pg.start()
 
         break
       }
@@ -81,22 +81,23 @@ ${inspect(result)}
 
         const collector = botMsg.createReactionCollector({ time: 60000 })
 
-        collector.on('collect', () => {
-          botMsg.reply('collected')
+        collector.on('collect', async () => {
+          await botMsg.reply('collected')
         })
 
-        collector.on('dispose', () => {
-          botMsg.reply('disposed')
+        collector.on('dispose', async () => {
+          await botMsg.reply('disposed')
         })
 
-        collector.on('end', () => {
-          botMsg.reply('ended')
+        collector.on('end', async () => {
+          await botMsg.reply('ended')
         })
 
         break
       }
 
       case 'alwaysbtn': {
+        // TODO
         break
       }
     }

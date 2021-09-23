@@ -23,12 +23,12 @@ class Base64Command extends Command {
     switch (query.args.cmd) {
       case 'e':
       case 'encode':
-        msg.channel.send(Buffer.from(query.args.value).toString('base64'))
+        await msg.reply(Buffer.from(query.args.value).toString('base64'))
         break
 
       case 'd':
       case 'decode':
-        msg.channel.send(Buffer.from(query.args.value, 'base64').toString())
+        await msg.reply(Buffer.from(query.args.value, 'base64').toString())
           .catch(e => {
             msg.react('⚠️')
             msg.reply(t('commands.base64.emptyMsg'))

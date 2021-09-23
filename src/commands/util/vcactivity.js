@@ -85,9 +85,9 @@ class VoiceActivityCommand extends Command {
           target_application_id: app.id
         }
       })
-      .then(res => {
+      .then(async res => {
         const link = 'https://discord.gg/' + res.code
-        msg.channel.send(t('commands.vcactivity.done', {
+        await msg.reply(t('commands.vcactivity.done', {
           appName: app.name,
           link
         }))

@@ -71,17 +71,23 @@ class LocaleCommand extends Command {
     if (!query.args.mode) {
       const userLocale = await client.locale.getLocale(false, msg.author)
       const guildLocale = await client.locale.getLocale(true, msg.guild)
-      return msg.channel.send(t('commands.locale.get', userLocale, guildLocale))
+      await msg.reply(t('commands.locale.get', userLocale, guildLocale))
     }
 
     const subcommand = query.args.mode
     switch (subcommand) {
-      case 'list':
-        return msg.channel.send(t('commands.locale.list', client.locale.i18n.getLocales().join('`\n`')))
+      case 'list': {
+        const listText = client.locale.i18n.getLocales()
+          .reduce((acc, localeCode) => `${acc}\n- \`${localeCode}\``, '')
+        await msg.reply(`${t('commands.locale.list')}${listText}`)
+        break
+      }
 
       case 'set': {
         const language = query.args.locale
-        if (!client.locale.i18n.getLocales().includes(language)) return msg.channel.send(t('commands.locale.noLanguage'))
+        if (!client.locale.i18n.getLocales().includes(language)) {
+          return await msg.reply(t('commands.locale.noLanguage'))
+        }
 
         let id = msg.author.id
         let guildMode = false
@@ -89,7 +95,7 @@ class LocaleCommand extends Command {
           if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.any(editPerms)) {
             const translatedPerms = []
             editPerms.forEach((p) => translatedPerms.push(t('perms.' + p)))
-            return msg.channel.send(t('commands.locale.noPermission', translatedPerms.join('`, `')))
+            return await msg.reply(t('commands.locale.noPermission', translatedPerms.join('`, `')))
           }
 
           // FIXME: guild registration check (manually)
@@ -99,10 +105,12 @@ class LocaleCommand extends Command {
         }
 
         await database.locale.set(this._client.db, id, guildMode, language)
-        msg.channel.send(t({
+        await msg.reply(t({
           phrase: guildMode ? 'commands.locale.set.guild' : 'commands.locale.set.user',
           locale: language
         }, language))
+
+        break
       }
     }
   }

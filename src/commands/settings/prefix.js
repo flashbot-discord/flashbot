@@ -50,7 +50,7 @@ class PrefixCommand extends Command {
     // Get mode
     if (query.args.mode === 'get') {
       const prefix = await getPrefix(client, msg.guild.id)
-      return msg.channel.send(t('commands.prefix.info', prefix))
+      await msg.reply(t('commands.prefix.info', prefix))
     } else if (query.args.mode === 'set') {
     // Set mode
       const setPerms = ['MANAGE_GUILD']
@@ -58,21 +58,21 @@ class PrefixCommand extends Command {
       if (!query.args.prefix) {
         // TODO Delete this (should not work anymore)
         const prefix = await database.guilds.prefix.get((this._client.db, msg.guild.id))
-        return msg.reply({
+        await msg.reply({
           content: t('commands.prefix.set.pleaseEnterPrefix', prefix),
           allowedMentions: {
             parse: ['users']
           }
         })
       } else if (!client.config.owner.includes(msg.author.id) && !msg.member.permissions.any(setPerms)) {
-        return msg.reply(t('commands.prefix.set.noPerms'))
+        await msg.reply(t('commands.prefix.set.noPerms'))
       } else {
         const prefix = query.args.prefix
 
-        if (prefix.length > 11) return msg.reply(t('commands.prefix.set.tooLong'))
+        if (prefix.length > 11) return await msg.reply(t('commands.prefix.set.tooLong'))
 
         await database.guilds.prefix.set(this._client.db, msg.guild.id, prefix)
-        return msg.channel.send({
+        await msg.reply({
           content: t('commands.prefix.set.complete', prefix),
           allowedMentions: {
             parse: ['users']

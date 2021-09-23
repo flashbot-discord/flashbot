@@ -10,7 +10,7 @@ class SampleCommand extends Command {
   }
 
   async run (_client, msg, _query, { t, tn }) {
-    // return msg.channel.send('This is a sample command. Copy and paste to create a new command.')
+    // await msg.reply('This is a sample command. Copy and paste to create a new command.')
   }
 }
 

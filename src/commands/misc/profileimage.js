@@ -20,7 +20,7 @@ class ProfileImageCommand extends Command {
 
   async run (client, msg, query, { t }) {
     const user = query.args.user || msg.author
-    await msg.channel.send(user.displayAvatarURL({ dynamic: true, size: 1024 }))
+    await msg.reply(user.displayAvatarURL({ dynamic: true, size: 1024 }))
   }
 }
 

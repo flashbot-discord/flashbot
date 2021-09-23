@@ -27,11 +27,11 @@ class HelloCommand extends Command {
         .setTitle(':wave: ' + t('commands.hello.title'))
         .setDescription(t('commands.hello.description', prefixStr, prefix))
 
-      msg.channel.send({ embeds: [embed] })
+      await msg.reply({ embeds: [embed] })
     } else {
       const str = `:wave: ${t('commands.hello.title')}\n` +
         t('commands.hello.description', prefixStr, prefix)
-      msg.channel.send({
+      await msg.reply({
         content: str,
         allowedMentions: {
           parse: ['users']

@@ -10,11 +10,11 @@ class PingCommand extends Command {
   }
 
   async run (client, msg, _query, { t }) {
-    const m = await msg.channel.send(t('commands.ping.pinging'))
+    const m = await msg.reply(t('commands.ping.pinging'))
 
     const wsPing = t('commands.ping.websocketPing', Math.round(client.ws.ping))
     const msgPing = t('commands.ping.msgPing', Math.round(m.createdTimestamp - msg.createdTimestamp))
-    return m.edit(wsPing + '\n' + msgPing)
+    await m.edit(wsPing + '\n' + msgPing)
   }
 }
 

@@ -21,7 +21,7 @@ class ArgsInfoCommand extends Command {
   }
 
   async run (_, msg, query, { t }) {
-    return msg.channel.send(t('commands.args-info.run', query.cmd, query.args.args.join(', ')))
+    await msg.reply(t('commands.args-info.run', query.cmd, query.args.args.join(', ')))
   }
 }
 
