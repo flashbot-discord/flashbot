@@ -8,6 +8,10 @@ const VERSION = 'v2.0-alpha.1-dev'
 const BUILD_DATE = '2021/9/14'
 /* eslint-enable no-unused-vars */
 
+// setup final layer of crash protection from errors
+process.on('uncaughtException', (e) => console.error(e))
+process.on('unhandledRejection', (e) => console.error(e))
+
 // Setup logger first
 const logger = require('./shared/logger')
 
