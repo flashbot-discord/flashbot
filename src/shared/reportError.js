@@ -7,7 +7,16 @@ module.exports = async (err, msg, t, logPos) => {
 
   const logger = loggerGen(logPos)
   logger.error(err.stack)
-  msg.reply(t('ClientError.error', err.message, err.uid)) // TODO: without translation
+
+  const errorText = t('ClientError.error', err.message, err.uid)
+  msg.reply(errorText) // TODO: without translation
+    .catch(async e => {
+      // cannot send error on server channel, so try sending to dm
+      // TODO: different error notify text
+      await msg.author.send(errorText)
+    }).catch(async e => {
+      // cannot send to dm also. so drop
+    })
 
   // NOTE: Webhook report
   const { id, token, enable, mentionOwner } = client.config.errorWebhook

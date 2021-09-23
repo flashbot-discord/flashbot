@@ -221,11 +221,11 @@ class CommandHandler {
     try {
       // Database Check
       if ((cmd._requireDB || cmd._userReg || cmd._guildAct) && !client.db.ready) {
-        return await msg.channel.send(t('error.DBNotReady'))
+        return await msg.reply(t('error.DBNotReady'))
       }
 
       // NOTE: Check if command is globally disabled
-      if (!owner && !cmd._enabled) return msg.reply(t('CommandHandler.cmdDisabled'))
+      if (!owner && !cmd._enabled) return await msg.reply(t('CommandHandler.cmdDisabled'))
 
       // Is User Registered?
       if (
@@ -233,8 +233,8 @@ class CommandHandler {
         !(await database.users.isRegistered(client.db, msg.author.id))
       ) {
         logger.debug('user is not registered')
-        if (owner) msg.channel.send(t('CommandHandler.unregisteredOwner'))
-        else return msg.reply(t('Command.pleaseRegister.user', client.config.prefix))
+        if (owner) await msg.channel.send(t('CommandHandler.unregisteredOwner'))
+        else return await msg.reply(t('Command.pleaseRegister.user', client.config.prefix))
       }
 
       // Is Guild Only?
@@ -246,16 +246,20 @@ class CommandHandler {
         !(await database.guilds.isActivated(client.db, msg.guild.id))
       ) {
         logger.debug('guild is not activated')
-        return msg.channel.send(t('Command.pleaseRegister.guild', client.config.prefix))
+        return await msg.reply(t('Command.pleaseRegister.guild', client.config.prefix))
       }
 
       // Perms Check
       if (cmd._owner && !owner) return await msg.reply(t('CommandHandler.run.ownerOnly'))
 
       if (msg.guild) {
-        if (!msg.channel.permissionsFor(client.user).has(cmd._clientPerms)) return msg.reply(t('CommandHandler.noClientPermission', cmd._clientPerms.join('`, `')))
+        if (!msg.channel.permissionsFor(client.user).has(cmd._clientPerms)) {
+          return await msg.reply(t('CommandHandler.noClientPermission', cmd._clientPerms.join('`, `')))
+        }
 
-        if (!owner && !msg.channel.permissionsFor(msg.author).has(cmd._userPerms)) return msg.reply(t('CommandHandler.noUserPermission', cmd._userPerms.join('`, `')))
+        if (!owner && !msg.channel.permissionsFor(msg.author).has(cmd._userPerms)) {
+          return await msg.reply(t('CommandHandler.noUserPermission', cmd._userPerms.join('`, `')))
+        }
       }
 
       logger.verbose('permission chack passed')
