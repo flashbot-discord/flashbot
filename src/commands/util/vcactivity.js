@@ -26,7 +26,15 @@ const ALIASES = {
   포커: 'pokernight',
 
   chess: 'chess',
-  체스: 'chess'
+  체스: 'chess',
+
+  doodlecrew: 'doodlecrew',
+  doodle: 'doodlecrew',
+  그림그리기: 'doodlecrew',
+
+  wordsnacks: 'wordsnacks',
+
+  lettertile: 'lettertile'
 }
 
 const APP = {
@@ -57,6 +65,18 @@ const APP = {
   chess: {
     name: 'Chess In The Park',
     id: '832012774040141894'
+  },
+  doodlecrew: {
+    name: 'Doodle Crew',
+    id: '878067389634314250'
+  },
+  wordsnacks: {
+    name: 'Word Snacks',
+    id: '879863976006127627'
+  },
+  lettertile: {
+    name: 'Letter Tile',
+    id: '879863686565621790'
   }
 }
 
