@@ -556,6 +556,10 @@
       "noPerms": "The bot needs `Create Invite` permission to create links to play activity.",
       "needToJoinVC": "Please enter a voice channel and rerun this command. (or pass the voice channel id after the activity name)",
       "DESC": "Play activities in voice channel!"
+    },
+    "vclist": {
+      "DESC": "Shows the list of voice channels in this server. Created this because there's no way to see ID of VCs.",
+      "title": "Voice channels in this server"
     }
   },
   "CommandHandler": {
