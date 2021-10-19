@@ -547,7 +547,7 @@
       "done": "Use {{{link}}} to play {{appName}}! (expires in 1 hour)",
       "args": {
         "activity": {
-          "DESC": "activity name you want to play (youtube, betrayal, fishington)"
+          "DESC": "activity name you want to play (youtube, betrayal, fishington, poker, chess, doodlecrew, wordsnacks, lettertile)"
         },
         "channel": {
           "DESC": "voice channel to create link"

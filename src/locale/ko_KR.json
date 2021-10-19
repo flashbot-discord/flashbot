@@ -542,7 +542,7 @@
       "done": "아래 링크로 {{appName}}을(를) 이용하세요! (1시간 동안 유효)\n{{{link}}}",
       "args": {
         "activity": {
-          "DESC": "이용할 activity (youtube, betrayal, fishington)"
+          "DESC": "이용할 activity (youtube, betrayal, fishington, poker, chess, doodlecrew, wordsnacks, lettertile)"
         },
         "channel": {
           "DESC": "링크를 생성할 음성 채널"
