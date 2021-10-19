@@ -1,4 +1,5 @@
 const Command = require('../_Command')
+const isSnowflake = require('../../structures/types').snowflake.validate
 
 const ALIASES = {
   youtube: 'youtube',
@@ -86,17 +87,24 @@ class VoiceActivityCommand extends Command {
       name: 'vcactivity',
       aliases: ['vcact', '음챗액티비티', '음성챗액티비티', '음성채팅액티비티', 'ㅍㅊㅁㅊㅅ', 'ㅍㅊㅁㅊ샤퍄쇼', 'dmacotdorxlqlxl', 'dmatjdcotdlrxlqlxl', 'dmatjdcoxlddorxlqlxl'],
       group: 'util',
-      args: [
-        {
-          key: 'activity',
-          type: 'string'
-        },
-        {
-          key: 'channel',
-          type: 'channel',
+      args: {
+        time: {
+          aliases: ['t'],
+          type: 'number',
           optional: true
-        }
-      ]
+        },
+        _: [
+          {
+            key: 'activity',
+            type: 'string'
+          },
+          {
+            key: 'channel',
+            type: 'channel',
+            optional: true
+          }
+        ]
+      }
     })
   }
 
@@ -106,8 +114,16 @@ class VoiceActivityCommand extends Command {
 
     if (!vc.permissionsFor(client.user).has('CREATE_INSTANT_INVITE')) return msg.reply(t('commands.vcactivity.noPerms'))
 
-    const app = APP[ALIASES[query.args.activity]]
-    if (!app) return
+    let app
+    const activity = query.args.activity
+    if (isSnowflake.test(activity)) {
+      // NOTE: only bot owner can create link with any id
+      if (!client.config.owner.includes(msg.author.id)) return
+      app = { name: activity, id: activity }
+    } else {
+      app = APP[ALIASES[query.args.activity]]
+      if (!app) return
+    }
 
     // NOTE: raw request; can be broken on api breaking changes
     client.api
