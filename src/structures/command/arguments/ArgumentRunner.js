@@ -71,7 +71,7 @@ async function runFlags (msg, flagDataList, inputArr, stopEarly = false) {
   const logger = _logger.extend('runFlags')
 
   const booleanTypedFlags = []
-  const stringTypedFlags = []
+  const stringTypedFlags = ['_'] // treat all non-flag args as string
   const aliases = {}
 
   logger.verbose('parsing flags')
