@@ -1,6 +1,6 @@
 {
   "name": "flashbot",
-  "version": "1.0.0-beta.7-dev",
+  "version": "1.0.0-beta.7",
   "description": "[![Codacy Badge](https://api.codacy.com/project/badge/Grade/debbd11ee96447e2bb9522ac60acb880)](https://www.codacy.com/app/comjun04/flashbot?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=comjun04/flashbot&amp;utm_campaign=Badge_Grade)",
   "main": "src/bot.js",
   "scripts": {
