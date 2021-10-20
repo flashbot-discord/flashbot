@@ -125,25 +125,34 @@ class VoiceActivityCommand extends Command {
       if (!app) return
     }
 
+    let time = 3600 // NOTE: default 1 hour
+    let timeCustomed = false
+    if (query.args.time != null && client.config.owner.includes(msg.author.id)) {
+      time = query.args.time
+      timeCustomed = true
+    }
+
     // NOTE: raw request; can be broken on api breaking changes
     client.api
       .channels(vc.id)
       .invites.post({
         data: {
           temporary: false,
-          max_age: 3600, // 1 hour
+          max_age: time,
           max_uses: 0,
           unique: false,
 
           target_type: 2,
           target_application_id: app.id
         }
-      }).then(res => {
+      }).then(async res => {
         const link = 'https://discord.gg/' + res.code
-        msg.channel.send(t('commands.vcactivity.done', {
+        const text = t(timeCustomed ? 'commands.vcactivity.doneWithCustomTime' : 'commands.vcactivity.done', {
           appName: app.name,
-          link
-        }))
+          link,
+          time
+        })
+        await msg.channel.send(text)
       }).catch(err => {
         // TODO: replace this temporary error handling
         console.error(err)
