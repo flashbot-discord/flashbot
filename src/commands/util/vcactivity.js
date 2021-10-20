@@ -116,7 +116,7 @@ class VoiceActivityCommand extends Command {
 
     let app
     const activity = query.args.activity
-    if (isSnowflake.test(activity)) {
+    if (isSnowflake(null, activity)) {
       // NOTE: only bot owner can create link with any id
       if (!client.config.owner.includes(msg.author.id)) return
       app = { name: activity, id: activity }
@@ -138,13 +138,16 @@ class VoiceActivityCommand extends Command {
           target_type: 2,
           target_application_id: app.id
         }
-      })
-      .then(res => {
+      }).then(res => {
         const link = 'https://discord.gg/' + res.code
         msg.channel.send(t('commands.vcactivity.done', {
           appName: app.name,
           link
         }))
+      }).catch(err => {
+        // TODO: replace this temporary error handling
+        console.error(err)
+        msg.channel.send(`\`\`\`\nError: ${err.message}\n\`\`\``)
       })
   }
 }
