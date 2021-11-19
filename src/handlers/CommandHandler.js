@@ -1,6 +1,6 @@
 const fs = require('fs')
 const path = require('path')
-const { Collection } = require('discord.js')
+const { Collection, CommandInteraction } = require('discord.js')
 
 const StatHandler = require('./StatHandler')
 const argumentRunner = require('../structures/command/arguments/ArgumentRunner')
@@ -195,18 +195,22 @@ class CommandHandler {
     return alias ? this.aliases.has(name) : this.commands.has(name)
   }
 
-  async run (cmd, client, msg, query) {
+  async run (cmd, client, msgOrInteraction, query) {
+    const isSlashCommand = msgOrInteraction instanceof CommandInteraction
+    const executor = isSlashCommand ? msgOrInteraction.user : msgOrInteraction.author
+    const guild = msgOrInteraction.guild
+
     logger.verbose('requested command execution of %o', cmd._name)
 
-    const owner = client.config.owner.includes(msg.author.id)
+    const owner = client.config.owner.includes(executor.id)
     logger.debug('isOwner: %o', owner)
 
     // Get locale and create translate function
-    let locale = await client.locale.getLocale(false, msg.author)
+    let locale = await client.locale.getLocale(false, executor)
     logger.debug('user locale: %o', locale)
 
-    if (msg.guild && locale == null) {
-      const guildLocale = await client.locale.getLocale(true, msg.guild)
+    if (guild && locale == null) {
+      const guildLocale = await client.locale.getLocale(true, guild)
       logger.debug('guild locale: %o', guildLocale)
 
       if (guildLocale != null) locale = guildLocale
@@ -221,44 +225,44 @@ class CommandHandler {
     try {
       // Database Check
       if ((cmd._requireDB || cmd._userReg || cmd._guildAct) && !client.db.ready) {
-        return await msg.reply(t('error.DBNotReady'))
+        return await msgOrInteraction.reply(t('error.DBNotReady'))
       }
 
       // NOTE: Check if command is globally disabled
-      if (!owner && !cmd._enabled) return await msg.reply(t('CommandHandler.cmdDisabled'))
+      if (!owner && !cmd._enabled) return await msgOrInteraction.reply(t('CommandHandler.cmdDisabled'))
 
       // Is User Registered?
       if (
         cmd._userReg &&
-        !(await database.users.isRegistered(client.db, msg.author.id))
+        !(await database.users.isRegistered(client.db, executor.id))
       ) {
         logger.debug('user is not registered')
-        if (owner) await msg.channel.send(t('CommandHandler.unregisteredOwner'))
-        else return await msg.reply(t('Command.pleaseRegister.user', client.config.prefix))
+        if (owner) await msgOrInteraction.reply(t('CommandHandler.unregisteredOwner'))
+        else return await msgOrInteraction.reply(t('Command.pleaseRegister.user', client.config.prefix))
       }
 
       // Is Guild Only?
-      if (cmd._guildOnly && !msg.guild) return await msg.reply(t('CommandHandler.run.guildOnly'))
+      if (cmd._guildOnly && !guild) return await msgOrInteraction.reply(t('CommandHandler.run.guildOnly'))
 
       // Is Guild Activated?
       if (
         cmd._guildAct &&
-        !(await database.guilds.isActivated(client.db, msg.guild.id))
+        !(await database.guilds.isActivated(client.db, guild.id))
       ) {
         logger.debug('guild is not activated')
-        return await msg.reply(t('Command.pleaseRegister.guild', client.config.prefix))
+        return await msgOrInteraction.reply(t('Command.pleaseRegister.guild', client.config.prefix))
       }
 
       // Perms Check
-      if (cmd._owner && !owner) return await msg.reply(t('CommandHandler.run.ownerOnly'))
+      if (cmd._owner && !owner) return await msgOrInteraction.reply(t('CommandHandler.run.ownerOnly'))
 
-      if (msg.guild) {
-        if (!msg.channel.permissionsFor(client.user).has(cmd._clientPerms)) {
-          return await msg.reply(t('CommandHandler.noClientPermission', cmd._clientPerms.join('`, `')))
+      if (guild) {
+        if (!msgOrInteraction.channel.permissionsFor(client.user).has(cmd._clientPerms)) {
+          return await msgOrInteraction.reply(t('CommandHandler.noClientPermission', cmd._clientPerms.join('`, `')))
         }
 
-        if (!owner && !msg.channel.permissionsFor(msg.author).has(cmd._userPerms)) {
-          return await msg.reply(t('CommandHandler.noUserPermission', cmd._userPerms.join('`, `')))
+        if (!owner && !msgOrInteraction.channel.permissionsFor(executor).has(cmd._userPerms)) {
+          return await msgOrInteraction.reply(t('CommandHandler.noUserPermission', cmd._userPerms.join('`, `')))
         }
       }
 
@@ -267,7 +271,7 @@ class CommandHandler {
 
       // Parse arguments and validate
       try {
-        query.args = await argumentRunner.runArgs(msg, cmd, query.rawArgs) // await cmd._args.parseArguments(msg, query.rawArgs)
+        query.args = await argumentRunner.runArgs(msgOrInteraction, cmd, query.rawArgs) // await cmd._args.parseArguments(msg, query.rawArgs)
       } catch (err) {
         logger.debug('error on arg parsing: %O', err)
         if (err instanceof ArgumentError) {
@@ -282,26 +286,26 @@ class CommandHandler {
             previous: err.alreadyParsedArgs,
             now: err.argData
           }
-          const usageText = makeCommandUsage(msg, cmd, query, t, ctx, false)
+          const usageText = makeCommandUsage(msgOrInteraction, cmd, query, t, ctx, false)
           const print =
 `${t('CommandHandler.usage')}\`\`\`
 ${usageText}
 \`\`\``
-          return msg.reply(print)
+          return msgOrInteraction.reply(print)
         } else throw err
       }
 
       logger.verbose('argument parsed')
 
       // Log command usage
-      this.stats.stat(query.cmd, msg.guild ? msg.guild.id : 0)
+      this.stats.stat(query.cmd, guild ? guild.id : 0)
 
       // Run
       logger.verbose('running command')
-      await cmd.run(client, msg, query, translateFunc)
+      await cmd.run(client, msgOrInteraction, query, translateFunc)
     } catch (err) {
       const e = new ClientError(err)
-      await reportError(e, msg, t, `${this.logPos}.run => ${cmd._name}`)
+      await reportError(e, msgOrInteraction, t, `${this.logPos}.run => ${cmd._name}`)
     }
   }
 }

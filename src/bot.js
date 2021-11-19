@@ -32,6 +32,7 @@ const ExtensionHandler = require('./handlers/ExtensionHandler')
 
 const onReadyEvent = require('./events/onReady')
 const onMessageEvent = require('./events/onMessageCreate')
+const onInteractionCreate = require('./events/onInteractionCreate')
 
 /**
  * Main Client
@@ -59,6 +60,7 @@ client.registerExtensionHandler(new ExtensionHandler(client))
 // event
 client.registerEvent('ready', onReadyEvent)
 client.registerEvent('messageCreate', onMessageEvent)
+client.registerEvent('interactionCreate', onInteractionCreate)
 
 // Login to Discord
 client.start()
